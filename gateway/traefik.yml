@@ -1,0 +1,74 @@
+# ==============================================
+# TRAEFIK STAGING CONFIGURATION
+# ==============================================
+
+# Global
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+# API y Dashboard
+api:
+  dashboard: true
+  insecure: false
+  debug: true
+
+# Entrypoints
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
+    address: ":443"
+    http:
+      tls:
+        options: default
+
+# Providers
+providers:
+  docker:
+    network: traefik-network
+    exposedByDefault: false
+    watch: true
+    endpoint: "unix:///var/run/docker.sock"
+  file:
+    filename: /etc/traefik/dynamic.yml
+    watch: true
+
+# Certificados SSL con Let's Encrypt (staging)
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: ${ACME_EMAIL}
+      storage: /letsencrypt/acme.json
+      keyType: EC256
+      httpChallenge:
+        entryPoint: web
+      # Usar servidor de staging de Let's Encrypt
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+
+# Health check
+ping:
+  entryPoint: "web"
+
+# Logging (más verbose para debug)
+log:
+  level: INFO
+  filepath: /logs/traefik.log
+  format: json
+
+accessLog:
+  filepath: /logs/access.log
+  format: json
+
+# Métricas para Prometheus
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    addServicesLabels: true
+    addRoutersLabels: true

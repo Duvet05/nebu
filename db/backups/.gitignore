@@ -1,0 +1,17 @@
+# Backup files
+*.sql
+*.dump
+*.backup
+*.bak
+*.rdb
+*.aof
+
+# Compressed backups
+*.gz
+*.zip
+*.tar
+*.tar.gz
+
+# Keep directory structure
+!.gitkeep
+!*/

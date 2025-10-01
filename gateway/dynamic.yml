@@ -1,0 +1,111 @@
+# ==============================================
+# TRAEFIK DYNAMIC CONFIGURATION
+# ==============================================
+
+http:
+  # Middlewares de seguridad
+  middlewares:
+    # Redirección HTTPS
+    https-redirect:
+      redirectScheme:
+        scheme: https
+        permanent: true
+    
+    # Headers de seguridad
+    security-headers:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+        customResponseHeaders:
+          X-Frame-Options: "DENY"
+          X-Content-Type-Options: "nosniff"
+          X-XSS-Protection: "1; mode=block"
+          Strict-Transport-Security: "max-age=31536000; includeSubDomains"
+          Referrer-Policy: "strict-origin-when-cross-origin"
+          Content-Security-Policy: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' ws: wss:;"
+    
+    # Strip prefix middleware for backend
+    backend-stripprefix:
+      stripPrefix:
+        prefixes:
+          - "/api"
+    
+        # CORS para API - ENABLED for WebSocket upgrades and preflight
+    cors-api:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          - OPTIONS
+        accessControlAllowOriginListRegex:
+          - "https?://localhost(:[0-9]+)?"
+          - "https?://.*\\.localhost(:[0-9]+)?"
+          - "https?://(www\\.)?nebu\\.academy"
+          - "https?://.*\\.nebu\\.academy"
+        accessControlAllowHeaders:
+          - "Content-Type"
+          - "Authorization"
+          - "X-Requested-With"
+          - "Accept"
+          - "Origin"
+          - "Connection"
+          - "Upgrade"
+          - "Sec-WebSocket-Key"
+          - "Sec-WebSocket-Version"
+          - "Sec-WebSocket-Protocol"
+          - "Sec-WebSocket-Extensions"
+        accessControlExposeHeaders:
+          - "Content-Length"
+          - "Content-Range"
+        accessControlAllowCredentials: true
+        accessControlMaxAge: 3600
+
+  # Routers dinámicos
+  routers:
+    # Backend API manual routing
+    backend-api:
+      rule: "Host(`api.nebu.academy`) || (Host(`nebu.academy`) && PathPrefix(`/api`))"
+      service: backend-api
+      middlewares:
+        - cors-api
+        - backend-stripprefix
+      tls:
+        certResolver: letsencrypt
+      entryPoints:
+        - websecure
+
+  # Servicios personalizados
+  services:
+    # Backend API manual service
+    backend-api:
+      loadBalancer:
+        servers:
+          - url: "http://backend:3001"
+        healthCheck:
+          path: "/api/v1/health"
+          interval: "30s"
+          timeout: "10s"
+
+# TLS Options
+tls:
+  options:
+    default:
+      sslVersions:
+        - "TLSv1.2"
+        - "TLSv1.3"
+      cipherSuites:
+        - "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+        - "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+        - "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+        - "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"
+        - "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305"
+        - "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+      curvePreferences:
+        - "X25519"
+        - "secp384r1"
+      alpnProtocols:
+        - "h2"
+        - "http/1.1"

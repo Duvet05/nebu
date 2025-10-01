@@ -1,0 +1,280 @@
+services:
+  # ==============================================
+  # TRAEFIK CONFIG GENERATOR
+  # ==============================================
+  traefik-config:
+    image: alpine:latest
+    container_name: nebu-mobile-traefik-config
+    volumes:
+      - ./gateway:/gateway
+    environment:
+      - ACME_EMAIL=${ACME_EMAIL}
+      - DOMAIN=${DOMAIN}
+    command: >
+      sh -c "
+        apk add --no-cache gettext &&
+        envsubst < /gateway/traefik.prod.template.yml > /gateway/traefik.prod.yml &&
+        echo 'Config generated with email:' &&
+        grep -A1 'email:' /gateway/traefik.prod.yml | tail -1
+      "
+    profiles:
+      - config
+
+  # ==============================================
+  # TRAEFIK - REVERSE PROXY & LOAD BALANCER
+  # ==============================================
+  traefik:
+    image: traefik:v3.0
+    container_name: nebu-mobile-traefik
+    restart: unless-stopped
+    ports:
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
+      - "8080:8080" # Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./gateway/traefik.prod.yml:/etc/traefik/traefik.yml:ro
+      - ./gateway/dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - ./gateway/letsencrypt:/letsencrypt
+      - traefik_logs:/logs
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+      - ACME_EMAIL=${ACME_EMAIL:-admin@nebu.com}
+    networks:
+      - traefik-network
+      - nebu-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+    healthcheck:
+      test: [ "CMD", "traefik", "healthcheck", "--ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ==============================================
+  # DATABASE - POSTGRESQL
+  # ==============================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: nebu-mobile-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/var/log/postgresql
+      - ./backend/scripts/setup-database.sql:/docker-entrypoint-initdb.d/setup-database.sql:ro
+      - ./db/init:/docker-entrypoint-initdb.d/custom:ro
+    networks:
+      - nebu-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # ==============================================
+  # CACHE & SESSION STORE - REDIS
+  # ==============================================
+  redis:
+    image: redis:7-alpine
+    container_name: nebu-mobile-redis
+    restart: unless-stopped
+    command: >
+      redis-server  --appendonly yes  --appendfsync everysec --maxmemory 512mb --maxmemory-policy allkeys-lru --tcp-keepalive 60
+    volumes:
+      - redis_data:/data
+      - redis_logs:/var/log/redis
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    networks:
+      - nebu-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ==============================================
+  # BACKEND API - NESTJS
+  # ==============================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: ${DOCKER_TARGET:-development}
+    container_name: nebu-mobile-backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=${BACKEND_PORT:-3001}
+      - DATABASE_HOST=${DATABASE_HOST:-postgres}
+      - DATABASE_PORT=${DATABASE_PORT:-5432}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_SSL=${DATABASE_SSL:-false}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - JWT_SECRET=${JWT_SECRET}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      # CORS para mobile app - permitir localhost para desarrollo
+      - CORS_ORIGIN=http://localhost:8081,http://localhost:19000,http://localhost:19006
+      # Stripe Configuration (optimizado - solo secret key en servidor)
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      # Cloudinary Configuration
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      # SMTP Configuration
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_SECURE=${SMTP_SECURE}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SMTP_FROM=${SMTP_FROM}
+      # LiveKit Configuration
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
+      - LIVEKIT_URL=${LIVEKIT_URL}
+      # Feature Flags
+      - ENABLE_ANALYTICS=${ENABLE_ANALYTICS}
+      - ENABLE_WEBSOCKET=${ENABLE_WEBSOCKET}
+      - ENABLE_CHAT=${ENABLE_CHAT}
+      - ENABLE_NOTIFICATIONS=${ENABLE_NOTIFICATIONS}
+      - ENABLE_EMAIL_NOTIFICATIONS=${ENABLE_EMAIL_NOTIFICATIONS}
+      - ENABLE_OAUTH=${ENABLE_OAUTH}
+      - ENABLE_STRIPE=${ENABLE_STRIPE}
+    volumes:
+      - ./backend:/app
+      - backend_node_modules:/app/node_modules
+      - backend_logs:/app/logs
+      - backend_uploads:/app/uploads
+    ports:
+      - "3001:3001"
+    networks:
+      - nebu-network
+      - traefik-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      livekit:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/v1/health" ] #CAMBIAR POR IP DEL VPS
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend.loadbalancer.server.port=3001"
+
+  # ==============================================
+  # MONITORING & LOGS (OPCIONAL)
+  # ==============================================
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: nebu-mobile-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=3600
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_RESTARTING=true
+    networks:
+      - nebu-network
+    profiles:
+      - monitoring
+
+  # ==============================================
+  # LIVEKIT - REAL-TIME AUDIO/VIDEO
+  # ==============================================
+  livekit:
+    image: livekit/livekit-server:latest
+    container_name: nebu-mobile-livekit
+    restart: unless-stopped
+    command: --config /etc/livekit.yaml
+    volumes:
+      - ./livekit/livekit.yaml:/etc/livekit.yaml:ro
+      - livekit_logs:/var/log/livekit
+    ports:
+      - "7880:7880" # HTTP API
+      - "7881:7881" # RTMP
+      - "7882:7882/udp" # WebRTC UDP
+      - "50000-50200:50000-50200/udp" # WebRTC ICE range
+    networks:
+      - nebu-network
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.livekit.rule=Host(`livekit.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.livekit.entrypoints=websecure"
+      - "traefik.http.routers.livekit.tls.certresolver=letsencrypt"
+      - "traefik.http.services.livekit.loadbalancer.server.port=7880"
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:7880/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+  # ==============================================
+  # N8N - AUTOMATION WORKFLOWS
+  # ==============================================
+  # ==============================================
+  # VOLUMES
+  # ==============================================
+volumes:
+  # Base de datos
+  postgres_data:
+    driver: local
+  postgres_logs:
+    driver: local
+
+  # Cache
+  redis_data:
+    driver: local
+  redis_logs:
+    driver: local
+
+  # Backend
+  backend_node_modules:
+    driver: local
+  backend_logs:
+    driver: local
+  backend_uploads:
+    driver: local
+
+  # Traefik
+  traefik_logs:
+    driver: local
+
+  # LiveKit
+  livekit_logs:
+    driver: local
+
+# ==============================================
+# NETWORKS
+# ==============================================
+networks:
+  nebu-network:
+    driver: bridge
+    internal: true
+  traefik-network:
+    driver: bridge
+    external: false

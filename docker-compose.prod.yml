@@ -1,0 +1,160 @@
+services:
+  # ==============================================
+  # TRAEFIK - PRODUCTION CONFIGURATION
+  # ==============================================
+  traefik:
+    environment:
+      - DOMAIN=${DOMAIN}
+      - ACME_EMAIL=${ACME_EMAIL}
+    volumes:
+      - ./gateway/traefik.prod.yml:/etc/traefik/traefik.yml:ro
+    labels:
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+
+  # ==============================================
+  # DATABASE - PRODUCTION CONFIGURATION
+  # ==============================================
+  postgres:
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    command: >
+      postgres -c max_connections=200 -c shared_buffers=256MB -c effective_cache_size=1GB -c maintenance_work_mem=64MB -c checkpoint_completion_target=0.9 -c wal_buffers=16MB -c default_statistics_target=100 -c random_page_cost=1.1 -c effective_io_concurrency=200 -c work_mem=4MB -c min_wal_size=1GB -c max_wal_size=4GB -c max_worker_processes=8 -c max_parallel_workers_per_gather=4 -c max_parallel_workers=8
+
+  # ==============================================
+  # REDIS - PRODUCTION CONFIGURATION
+  # ==============================================
+  redis:
+    command: >
+      redis-server  --appendonly yes  --appendfsync everysec --maxmemory 1gb --maxmemory-policy allkeys-lru --tcp-keepalive 60 --timeout 300 --save 900 1 --save 300 10 --save 60 10000
+
+  # ==============================================
+  # BACKEND - PRODUCTION CONFIGURATION
+  # ==============================================
+  backend:
+    build:
+      target: production
+    environment:
+      - NODE_ENV=production
+      - PORT=${BACKEND_PORT:-3001}
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_SSL=false
+      - DATABASE_SSL_REJECT_UNAUTHORIZED=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=${JWT_SECRET}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - DOMAIN=${DOMAIN}
+      - CORS_ORIGIN=${FRONTEND_URL}
+      - ALLOW_LOCALHOST_CORS=${ALLOW_LOCALHOST_CORS:-false}
+      - LOG_LEVEL=warn
+      - RATE_LIMIT_TTL=60000
+      - RATE_LIMIT_LIMIT=100
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+
+  # ==============================================
+  # MONITORING - PRODUCTION ONLY
+  # ==============================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: nebu-academy-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    networks:
+      - nebu-network
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`metrics.${DOMAIN}`)"
+      - "traefik.http.routers.prometheus.tls.certresolver=letsencrypt"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+    profiles:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: nebu-academy-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin123}
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    networks:
+      - nebu-network
+      - traefik-network
+    depends_on:
+      - prometheus
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`dashboard.${DOMAIN}`)"
+      - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+    profiles:
+      - monitoring
+
+  # ==============================================
+  # LOG AGGREGATION
+  # ==============================================
+  loki:
+    image: grafana/loki:latest
+    container_name: nebu-academy-loki
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/loki.yml:/etc/loki/local-config.yaml:ro
+      - loki_data:/loki
+    networks:
+      - nebu-network
+    profiles:
+      - monitoring
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: nebu-academy-promtail
+    restart: unless-stopped
+    volumes:
+      - /var/log:/var/log:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./monitoring/promtail.yml:/etc/promtail/config.yml:ro
+    networks:
+      - nebu-network
+    depends_on:
+      - loki
+    profiles:
+      - monitoring
+
+# ==============================================
+# ADDITIONAL VOLUMES FOR PRODUCTION
+# ==============================================
+volumes:
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  loki_data:
+    driver: local

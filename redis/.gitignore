@@ -1,0 +1,14 @@
+# Redis temporary files
+*.log
+*.rdb
+*.aof
+dump.rdb
+appendonly.aof
+
+# Backup files
+*.backup
+*.bak
+
+# Runtime data
+*.pid
+*.lock
