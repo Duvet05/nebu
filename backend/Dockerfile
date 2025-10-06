@@ -19,6 +19,27 @@ CMD ["npm", "run", "start:dev"]
 
 # Production stage
 FROM base AS production
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nestjs -u 1001
+
+# Build application
 RUN npm run build
+
+# Create uploads directory and set ownership
+RUN mkdir -p uploads && chown -R nestjs:nodejs uploads
+
+# Copy files with correct ownership
+COPY --chown=nestjs:nodejs . .
+
+# Switch to non-root user
+USER nestjs
+
 EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3001/health || exit 1
+
 CMD ["npm", "run", "start:prod"]

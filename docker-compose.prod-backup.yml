@@ -1,0 +1,311 @@
+services:
+  # ==============================================
+  # TRAEFIK - PRODUCCIÓN CON SSL
+  # ==============================================
+  traefik:
+    image: traefik:v3.0
+    container_name: nebu-traefik-prod
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+      - "9080:9080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./gateway/traefik.simple.yml:/etc/traefik/traefik.yml:ro
+      - ./gateway/letsencrypt:/letsencrypt:rw
+      - traefik_logs:/logs:rw
+    networks:
+      - traefik-network
+      - nebu-network
+    environment:
+      - DOMAIN=${DOMAIN:-flow-telligence.com}
+      - ACME_EMAIL=${ACME_EMAIL:-admin@flow-telligence.com}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN:-flow-telligence.com}`)"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9080/ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  # ==============================================
+  # FRONTEND - NEBU WEBSITE (REMIX)
+  # ==============================================
+  frontend:
+    build:
+      context: ../nebu-website
+      dockerfile: Dockerfile
+      target: production
+    container_name: nebu-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - APP_URL=https://flow-telligence.com
+      - API_URL=https://62.169.30.44/api
+      - SESSION_SECRET=${SESSION_SECRET:-your_session_secret_change_in_production_2024}
+    volumes:
+      - frontend_uploads:/app/public/uploads
+    networks:
+      - traefik-network
+      - nebu-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      
+      # Router principal para el dominio
+      - "traefik.http.routers.frontend-secure.rule=Host(`flow-telligence.com`) || Host(`www.flow-telligence.com`)"
+      - "traefik.http.routers.frontend-secure.entrypoints=websecure"
+      - "traefik.http.routers.frontend-secure.tls=true"
+      - "traefik.http.routers.frontend-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.frontend-secure.service=frontend"
+      
+      # Router para acceso directo por IP puerto 8080
+      - "traefik.http.routers.frontend-ip.rule=Host(`62.169.30.44`)"
+      - "traefik.http.routers.frontend-ip.entrypoints=websecure-8080"
+      - "traefik.http.routers.frontend-ip.tls=true"
+      - "traefik.http.routers.frontend-ip.service=frontend"
+      
+      # Router para acceso directo por IP puerto 443 (HTTPS estándar)
+      - "traefik.http.routers.frontend-ip-443.rule=Host(`62.169.30.44`)"
+      - "traefik.http.routers.frontend-ip-443.entrypoints=websecure"
+      - "traefik.http.routers.frontend-ip-443.tls=true"
+      - "traefik.http.routers.frontend-ip-443.service=frontend"
+      
+      # Servicio
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+      
+      # Middlewares para seguridad
+      - "traefik.http.middlewares.frontend-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.frontend-secure.middlewares=frontend-headers"
+      - "traefik.http.routers.frontend-ip.middlewares=frontend-headers"
+      - "traefik.http.routers.frontend-ip-443.middlewares=frontend-headers"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      - traefik
+
+  # ==============================================
+  # POSTGRESQL - BASE DE DATOS
+  # ==============================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: nebu-postgres-prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    command: >
+      postgres -c max_connections=200 -c shared_buffers=256MB -c effective_cache_size=1GB -c maintenance_work_mem=64MB -c checkpoint_completion_target=0.9 -c wal_buffers=16MB -c default_statistics_target=100 -c random_page_cost=1.1 -c effective_io_concurrency=200 -c work_mem=4MB -c min_wal_size=1GB -c max_wal_size=4GB -c max_worker_processes=8 -c max_parallel_workers_per_gather=4 -c max_parallel_workers=8
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init-master.sh:/docker-entrypoint-initdb.d/init-master.sh
+    networks:
+      - nebu-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ==============================================
+  # REDIS - CACHE Y SESSIONS
+  # ==============================================
+  redis:
+    image: redis:7-alpine
+    container_name: nebu-redis-prod
+    restart: unless-stopped
+    command: >
+      redis-server  --appendonly yes  --appendfsync everysec --maxmemory 1gb --maxmemory-policy allkeys-lru --tcp-keepalive 60 --timeout 300 --save 900 1 --save 300 10 --save 60 10000
+    volumes:
+      - redis_data:/data
+    networks:
+      - nebu-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  # ==============================================
+  # BACKEND - API NESTJS
+  # ==============================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: nebu-backend-prod
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=${BACKEND_PORT:-3001}
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_SSL=false
+      - DATABASE_SSL_REJECT_UNAUTHORIZED=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=${JWT_SECRET}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - DOMAIN=${DOMAIN}
+      - CORS_ORIGIN=${FRONTEND_URL}
+      - ALLOW_LOCALHOST_CORS=${ALLOW_LOCALHOST_CORS:-false}
+      - LOG_LEVEL=warn
+      - RATE_LIMIT_TTL=60000
+      - RATE_LIMIT_LIMIT=100
+      # LiveKit Configuration
+      - LIVEKIT_URL=${LIVEKIT_URL}
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
+    volumes:
+      - backend_uploads:/app/uploads
+    networks:
+      - traefik-network
+      - nebu-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN}`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend.loadbalancer.server.port=3001"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+
+  # ==============================================
+  # MONITORING - PROMETHEUS
+  # ==============================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: nebu-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    networks:
+      - nebu-network
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`metrics.${DOMAIN}`)"
+      - "traefik.http.routers.prometheus.tls.certresolver=letsencrypt"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+
+  # ==============================================
+  # MONITORING - GRAFANA
+  # ==============================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: nebu-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin123}
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    networks:
+      - nebu-network
+      - traefik-network
+    depends_on:
+      - prometheus
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`dashboard.${DOMAIN}`)"
+      - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+
+  # ==============================================
+  # LOG AGGREGATION - LOKI
+  # ==============================================
+  loki:
+    image: grafana/loki:latest
+    container_name: nebu-loki
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/loki.yml:/etc/loki/local-config.yaml:ro
+      - loki_data:/loki
+    networks:
+      - nebu-network
+
+  # ==============================================
+  # LOG COLLECTION - PROMTAIL
+  # ==============================================
+  promtail:
+    image: grafana/promtail:latest
+    container_name: nebu-promtail
+    restart: unless-stopped
+    volumes:
+      - /var/log:/var/log:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./monitoring/promtail.yml:/etc/promtail/config.yml:ro
+    networks:
+      - nebu-network
+    depends_on:
+      - loki
+
+volumes:
+  frontend_uploads:
+    driver: local
+  backend_uploads:
+    driver: local
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  traefik_logs:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  loki_data:
+    driver: local
+
+networks:
+  traefik-network:
+    driver: bridge
+  nebu-network:
+    driver: bridge
