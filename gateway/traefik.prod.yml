@@ -28,6 +28,11 @@ entryPoints:
     http:
       tls:
         options: default
+  websecure-8080:
+    address: ":8080"
+    http:
+      tls:
+        options: default
 
 # Providers
 providers:

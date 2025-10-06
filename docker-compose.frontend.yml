@@ -1,0 +1,71 @@
+services:
+  # ==============================================
+  # FRONTEND - NEBU WEBSITE (REMIX)
+  # ==============================================
+  frontend:
+    build:
+      context: ../nebu-website
+      dockerfile: Dockerfile
+      target: production
+    container_name: nebu-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - APP_URL=https://flow-telligence.com
+      - API_URL=https://62.169.30.44/api
+      - SESSION_SECRET=${SESSION_SECRET:-your_session_secret_change_in_production_2024}
+    volumes:
+      - frontend_uploads:/app/public/uploads
+    networks:
+      - traefik-network
+      - nebu-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      
+      # Router principal para el dominio
+      - "traefik.http.routers.frontend-secure.rule=Host(`flow-telligence.com`) || Host(`www.flow-telligence.com`)"
+      - "traefik.http.routers.frontend-secure.entrypoints=websecure"
+      - "traefik.http.routers.frontend-secure.tls=true"
+      - "traefik.http.routers.frontend-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.frontend-secure.service=frontend"
+      
+      # Router para acceso directo por IP puerto 8080
+      - "traefik.http.routers.frontend-ip.rule=Host(`62.169.30.44`)"
+      - "traefik.http.routers.frontend-ip.entrypoints=websecure-8080"
+      - "traefik.http.routers.frontend-ip.tls=true"
+      - "traefik.http.routers.frontend-ip.service=frontend"
+      
+      # Servicio
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+      
+      # Middlewares   para seguridad
+      - "traefik.http.middlewares.frontend-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.frontend-headers.headers.customrequestheaders.X-Forwarded-Port=8080"
+      - "traefik.http.routers.frontend-secure.middlewares=frontend-headers"
+      - "traefik.http.routers.frontend-domain.middlewares=frontend-headers"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  frontend_uploads:
+    driver: local
+
+networks:
+  traefik-network:
+    external: true
+  nebu-network:
+    external: true
