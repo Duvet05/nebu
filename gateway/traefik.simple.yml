@@ -1,0 +1,54 @@
+# ==============================================
+# TRAEFIK CONFIGURATION - SIMPLIFIED
+# ==============================================
+
+# Global
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+# API y Dashboard (movido a puerto 9080)
+api:
+  dashboard: true
+  insecure: true
+
+# Entrypoints
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+  websecure-8080:
+    address: ":8080"
+  traefik:
+    address: ":9080"
+
+# Providers
+providers:
+  docker:
+    network: traefik-network
+    exposedByDefault: false
+    watch: true
+    endpoint: "unix:///var/run/docker.sock"
+
+# Certificados SSL con Let's Encrypt
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: admin@flow-telligence.com
+      storage: /letsencrypt/acme.json
+      keyType: EC256
+      httpChallenge:
+        entryPoint: web
+
+# Health check
+ping:
+  entryPoint: "traefik"
+
+# Logging
+log:
+  level: INFO
+  format: json
+
+accessLog:
+  format: json
