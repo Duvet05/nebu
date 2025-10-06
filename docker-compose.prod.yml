@@ -71,6 +71,12 @@ services:
       - "traefik.http.routers.frontend-ip.tls=true"
       - "traefik.http.routers.frontend-ip.service=frontend"
       
+      # Router para acceso directo por IP puerto 443 (HTTPS estándar)
+      - "traefik.http.routers.frontend-ip-443.rule=Host(`62.169.30.44`)"
+      - "traefik.http.routers.frontend-ip-443.entrypoints=websecure"
+      - "traefik.http.routers.frontend-ip-443.tls=true"
+      - "traefik.http.routers.frontend-ip-443.service=frontend"
+      
       # Servicio
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
       
@@ -78,6 +84,7 @@ services:
       - "traefik.http.middlewares.frontend-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
       - "traefik.http.routers.frontend-secure.middlewares=frontend-headers"
       - "traefik.http.routers.frontend-ip.middlewares=frontend-headers"
+      - "traefik.http.routers.frontend-ip-443.middlewares=frontend-headers"
     deploy:
       resources:
         limits:
