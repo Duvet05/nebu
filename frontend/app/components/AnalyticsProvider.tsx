@@ -16,47 +16,25 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {
-    // Configurar Google Analytics cuando se monta el componente
-    if (typeof window !== "undefined") {
-      // Inicializar dataLayer si no existe
-      window.dataLayer = window.dataLayer || [];
+    // Solo enviar eventos adicionales, NO re-inicializar Analytics
+    if (typeof window !== "undefined" && window.gtag) {
+      // Analytics ya está configurado en root.tsx
+      // Solo enviamos eventos complementarios
       
-      // Función gtag
-      function gtag(...args: any[]) {
-        window.dataLayer!.push(arguments);
-      }
-      
-      // Hacer gtag disponible globalmente
-      window.gtag = gtag;
-      
-      // Configurar Google Analytics
-      gtag('js', new Date());
-      gtag('config', 'G-XHR2FBL4Z3', {
-        page_path: location.pathname,
-        page_title: document.title,
-        page_location: window.location.href,
-        send_page_view: true,
-        custom_map: {
-          'custom_parameter_1': 'nebu_website',
-          'custom_parameter_2': 'flow_telligence'
-        }
-      });
-
-      // Enviar eventos iniciales
       setTimeout(() => {
-        gtag('event', 'page_load_complete', {
+        window.gtag!('event', 'page_load_complete', {
           page_path: location.pathname,
           timestamp: new Date().toISOString()
         });
         
-        gtag('event', 'website_visit', {
+        window.gtag!('event', 'website_visit', {
           source: 'direct_or_organic',
           medium: 'website',
           campaign: 'nebu_launch'
         });
       }, 1000);
     }
-  }, []);
+  }, [location.pathname]);
 
   // Track cambios de ruta
   useEffect(() => {
