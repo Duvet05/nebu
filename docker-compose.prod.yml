@@ -4,8 +4,6 @@
 # Version: 2.1 - Sin Docker Secrets, con seguridad mejorada
 # Fecha: Octubre 2025
 
-version: '3.8'
-
 networks:
   traefik-network:
     driver: bridge
@@ -116,6 +114,8 @@ services:
       - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
       - RESEND_API_KEY=${RESEND_API_KEY}
       - FROM_EMAIL=${FROM_EMAIL}
+      - CULQI_SECRET_KEY=${CULQI_SECRET_KEY}
+      - CULQI_PUBLIC_KEY=${CULQI_PUBLIC_KEY}
     volumes:
       - frontend_uploads:/app/public/uploads:rw
     networks:
