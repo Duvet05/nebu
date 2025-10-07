@@ -1,1 +1,0 @@
-feat(docker): simplificar Dockerfile y .dockerignore para optimizar el entorno de desarrollo y producción
