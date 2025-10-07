@@ -1,0 +1,128 @@
+import { useEffect } from "react";
+import { useLocation } from "@remix-run/react";
+
+declare global {
+  interface Window {
+    gtag?: (
+      command: string,
+      targetId: string,
+      config?: Record<string, any>
+    ) => void;
+    dataLayer?: any[];
+  }
+}
+
+export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Configurar Google Analytics cuando se monta el componente
+    if (typeof window !== "undefined") {
+      // Inicializar dataLayer si no existe
+      window.dataLayer = window.dataLayer || [];
+      
+      // Función gtag
+      function gtag(...args: any[]) {
+        window.dataLayer!.push(arguments);
+      }
+      
+      // Hacer gtag disponible globalmente
+      window.gtag = gtag;
+      
+      // Configurar Google Analytics
+      gtag('js', new Date());
+      gtag('config', 'G-XHR2FBL4Z3', {
+        page_path: location.pathname,
+        page_title: document.title,
+        page_location: window.location.href,
+        send_page_view: true,
+        custom_map: {
+          'custom_parameter_1': 'nebu_website',
+          'custom_parameter_2': 'flow_telligence'
+        }
+      });
+
+      // Enviar eventos iniciales
+      setTimeout(() => {
+        gtag('event', 'page_load_complete', {
+          page_path: location.pathname,
+          timestamp: new Date().toISOString()
+        });
+        
+        gtag('event', 'website_visit', {
+          source: 'direct_or_organic',
+          medium: 'website',
+          campaign: 'nebu_launch'
+        });
+      }, 1000);
+    }
+  }, []);
+
+  // Track cambios de ruta
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "page_view", {
+        page_title: document.title,
+        page_location: window.location.href,
+        page_path: location.pathname,
+        content_group1: getPageCategory(location.pathname)
+      });
+
+      // Evento de navegación
+      window.gtag("event", "navigation", {
+        page_from: sessionStorage.getItem('last_page') || 'direct',
+        page_to: location.pathname
+      });
+
+      // Guardar página actual para próxima navegación
+      sessionStorage.setItem('last_page', location.pathname);
+    }
+  }, [location]);
+
+  return <>{children}</>;
+}
+
+function getPageCategory(pathname: string): string {
+  if (pathname === '/') return 'home';
+  if (pathname.includes('pre-order')) return 'ecommerce';
+  if (pathname.includes('contact')) return 'contact';
+  if (pathname.includes('faq')) return 'support';
+  if (pathname.includes('our-story')) return 'about';
+  return 'other';
+}
+
+// Hook para usar analytics en componentes
+export function useAnalytics() {
+  const sendEvent = (eventName: string, parameters?: Record<string, any>) => {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", eventName, {
+        timestamp: new Date().toISOString(),
+        user_engagement: true,
+        ...parameters
+      });
+    }
+  };
+
+  const trackUserAction = (action: string, category: string, label?: string) => {
+    sendEvent("user_action", {
+      event_category: category,
+      event_label: label,
+      action_type: action,
+      interaction_time: Date.now()
+    });
+  };
+
+  const trackConversion = (conversionName: string, value?: number) => {
+    sendEvent("conversion", {
+      conversion_name: conversionName,
+      conversion_value: value,
+      currency: "PEN"
+    });
+  };
+
+  return {
+    sendEvent,
+    trackUserAction,
+    trackConversion
+  };
+}

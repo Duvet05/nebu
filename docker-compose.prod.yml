@@ -74,7 +74,7 @@ services:
       - traefik-network
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=nebu-backend_traefik-network"
+      - "traefik.docker.network=nebu_traefik-network"
       
       # ✅ Dashboard con autenticación básica
       - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAIN:-flow-telligence.com}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
@@ -100,7 +100,7 @@ services:
   # ==============================================
   frontend:
     build:
-      context: ../nebu-website
+      context: ./frontend
       dockerfile: Dockerfile
       target: production
     container_name: nebu-frontend
@@ -123,7 +123,7 @@ services:
       - nebu-network
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=nebu-backend_traefik-network"
+      - "traefik.docker.network=nebu_traefik-network"
       
       # Router principal para el dominio
       - "traefik.http.routers.frontend-secure.rule=Host(`${DOMAIN:-flow-telligence.com}`) || Host(`www.${DOMAIN:-flow-telligence.com}`)"
@@ -309,11 +309,22 @@ services:
         condition: service_healthy
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=nebu-backend_traefik-network"
-      - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN}`)"
+      - "traefik.docker.network=nebu_traefik-network"
+      
+      # Router principal para el dominio
+      - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN:-flow-telligence.com}`)"
       - "traefik.http.routers.backend.entrypoints=websecure"
       - "traefik.http.routers.backend.tls=true"
       - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.backend.middlewares=api-rate-limit"
+      
+      # Router para acceso por IP con path /api/*
+      - "traefik.http.routers.backend-ip.rule=Host(`62.169.30.44`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend-ip.entrypoints=websecure"
+      - "traefik.http.routers.backend-ip.tls=true"
+      - "traefik.http.routers.backend-ip.service=backend"
+      - "traefik.http.routers.backend-ip.middlewares=api-rate-limit"
+      
       - "traefik.http.services.backend.loadbalancer.server.port=3001"
       
       # ✅ Rate limiting para API
