@@ -62,7 +62,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
         password: process.env.DATABASE_PASSWORD!,
         database: process.env.DATABASE_NAME!,
         entities: [], // Let autoLoadEntities handle this
-        synchronize: process.env.NODE_ENV !== 'production', // Auto-sync in development only
+        synchronize: true, // Force sync for initial setup in production
         logging: process.env.NODE_ENV === 'development',
         ssl: process.env.DATABASE_SSL === 'true' ? {
           rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false',
