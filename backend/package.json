@@ -1,5 +1,5 @@
 {
-  "name": "nebu-mobile-backend",
+  "name": "nebu-backend",
   "version": "1.0.0",
   "description": "Backend NestJS para Nebu Mobile - IoT y Voice Agent Platform",
   "main": "dist/main.js",
