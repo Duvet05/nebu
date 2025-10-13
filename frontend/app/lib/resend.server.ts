@@ -132,10 +132,10 @@ export const emailTemplates = {
 
               <p>🎁 <strong>Beneficios de pre-orden:</strong></p>
               <ul>
-                <li>✅ 33% de descuento (S/300 en vez de S/450)</li>
-                <li>✅ Envío gratis a todo Perú</li>
-                <li>✅ Contenido exclusivo para early adopters</li>
-                <li>✅ Soporte prioritario</li>
+                <li>33% de descuento (S/300 en vez de S/450)</li>
+                <li>Envío gratis a todo Perú</li>
+                <li>Contenido exclusivo para early adopters</li>
+                <li>Soporte prioritario</li>
               </ul>
 
               <p>Si tienes alguna pregunta, responde a este email o escríbenos por WhatsApp al +51 970 116 770.</p>

@@ -42,9 +42,9 @@ services:
   # TRAEFIK - REVERSE PROXY SEGURO
   # ==============================================
   traefik:
-    image: traefik:v3.0.4  # ✅ Versión específica
+    image: traefik:v3.0.4
     container_name: nebu-traefik-prod
-    restart: on-failure:3  # ✅ Restart policy específica
+    restart: on-failure:3
     command:
       - --api.dashboard=true
       - --api.insecure=false
@@ -63,8 +63,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      # ✅ Puerto 8080 REMOVIDO por seguridad
-      - "127.0.0.1:9080:9080"  # ✅ Dashboard solo localhost
+      - "127.0.0.1:9080:9080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik_letsencrypt:/letsencrypt
@@ -73,17 +72,17 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=nebu_traefik-network"
-      
-      # ✅ Dashboard con autenticación básica
+
+      # Dashboard con autenticación básica
       - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAIN:-flow-telligence.com}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
       - "traefik.http.routers.traefik-dashboard.entrypoints=traefik"
       - "traefik.http.routers.traefik-dashboard.service=api@internal"
       - "traefik.http.routers.traefik-dashboard.middlewares=auth-basic"
-      
-      # Middleware de autenticación (admin:admin123)
+
+      # Middleware de autenticación (admin:admin123) TODO Change this
       - "traefik.http.middlewares.auth-basic.basicauth.users=admin:$$2y$$10$$7jKKUP7/K.H.zt2VXtmQ4O6IjR7nKNZD8W8.IW5UIzW8QjV1rJ1Ka"
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9080/ping"]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9080/ping" ]
       interval: 30s
       timeout: 3s
       retries: 3
@@ -102,7 +101,7 @@ services:
       dockerfile: Dockerfile
       target: production
     container_name: nebu-frontend
-    restart: on-failure:3  # ✅ Restart policy específica
+    restart: on-failure:3
     environment:
       - NODE_ENV=production
       - PORT=3000
@@ -124,48 +123,48 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=nebu_traefik-network"
-      
+
       # Router principal para el dominio
       - "traefik.http.routers.frontend-secure.rule=Host(`${DOMAIN:-flow-telligence.com}`) || Host(`www.${DOMAIN:-flow-telligence.com}`)"
       - "traefik.http.routers.frontend-secure.entrypoints=websecure"
       - "traefik.http.routers.frontend-secure.tls=true"
       - "traefik.http.routers.frontend-secure.tls.certresolver=letsencrypt"
       - "traefik.http.routers.frontend-secure.service=frontend"
-      
+
       # Router para acceso por IP (temporal hasta DNS)
       - "traefik.http.routers.frontend-ip.rule=Host(`62.169.30.44`)"
       - "traefik.http.routers.frontend-ip.entrypoints=websecure"
       - "traefik.http.routers.frontend-ip.tls=true"
       - "traefik.http.routers.frontend-ip.service=frontend"
-      
+
       # Servicio
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
-      
-      # ✅ Middlewares de seguridad avanzada
+
+      # Middlewares de seguridad
       - "traefik.http.middlewares.security-headers.headers.frameDeny=true"
       - "traefik.http.middlewares.security-headers.headers.contentTypeNosniff=true"
       - "traefik.http.middlewares.security-headers.headers.browserXssFilter=true"
       - "traefik.http.middlewares.security-headers.headers.forceSTSHeader=true"
       - "traefik.http.middlewares.security-headers.headers.stsSeconds=31536000"
       - "traefik.http.middlewares.security-headers.headers.referrerPolicy=strict-origin-when-cross-origin"
-      
-      # ✅ Rate limiting
+
+      # Rate limiting
       - "traefik.http.middlewares.rate-limit.ratelimit.burst=100"
       - "traefik.http.middlewares.rate-limit.ratelimit.average=50"
-      
+
       # Aplicar middlewares
       - "traefik.http.routers.frontend-secure.middlewares=security-headers,rate-limit"
       - "traefik.http.routers.frontend-ip.middlewares=security-headers,rate-limit"
     deploy:
       resources:
         limits:
-          memory: 2G        # ✅ AUMENTADO: 2GB RAM
-          cpus: '1.0'       # ✅ AUMENTADO: 1 CPU completo
+          memory: 2G # TODO Definir memoria
+          cpus: '1.0' # TODO Definir CPUs 
         reservations:
           memory: 512M
           cpus: '0.5'
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -175,7 +174,7 @@ services:
   # POSTGRESQL - CON LÍMITES Y OPTIMIZACIÓN
   # ==============================================
   postgres:
-    image: postgres:15.4-alpine  # ✅ Versión específica
+    image: postgres:15.4-alpine
     container_name: nebu-postgres-prod
     restart: on-failure:3
     environment:
@@ -184,27 +183,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
     command: >
-      postgres 
-      -c max_connections=200 
-      -c shared_buffers=512MB 
-      -c effective_cache_size=2GB 
-      -c maintenance_work_mem=128MB 
-      -c checkpoint_completion_target=0.9 
-      -c wal_buffers=16MB 
-      -c default_statistics_target=100 
-      -c random_page_cost=1.1 
-      -c effective_io_concurrency=200 
-      -c work_mem=8MB 
-      -c min_wal_size=1GB 
-      -c max_wal_size=4GB 
-      -c max_worker_processes=4 
-      -c max_parallel_workers_per_gather=2 
-      -c max_parallel_workers=4
-      -c log_min_duration_statement=1000
-      -c log_checkpoints=on
-      -c log_connections=on
-      -c log_disconnections=on
-      -c log_lock_waits=on
+      postgres  -c max_connections=200  -c shared_buffers=512MB  -c effective_cache_size=2GB  -c maintenance_work_mem=128MB  -c checkpoint_completion_target=0.9  -c wal_buffers=16MB  -c default_statistics_target=100  -c random_page_cost=1.1  -c effective_io_concurrency=200  -c work_mem=8MB  -c min_wal_size=1GB  -c max_wal_size=4GB  -c max_worker_processes=4  -c max_parallel_workers_per_gather=2  -c max_parallel_workers=4 -c log_min_duration_statement=1000 -c log_checkpoints=on -c log_connections=on -c log_disconnections=on -c log_lock_waits=on
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db/init-master.sh:/docker-entrypoint-initdb.d/init-master.sh:ro
@@ -213,13 +192,13 @@ services:
     deploy:
       resources:
         limits:
-          memory: 2G        # ✅ AGREGADO: Límites de recursos
+          memory: 2G # TODO Definir memoria
           cpus: '1.0'
         reservations:
           memory: 512M
           cpus: '0.5'
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -228,23 +207,11 @@ services:
   # REDIS - CON AUTENTICACIÓN Y AOF MEJORADO
   # ==============================================
   redis:
-    image: redis:7.2.1-alpine  # ✅ Versión específica
+    image: redis:7.2.1-alpine
     container_name: nebu-redis-prod
     restart: on-failure:3
     command: >
-      redis-server 
-      --requirepass ${REDIS_PASSWORD}
-      --appendonly yes 
-      --appendfsync everysec 
-      --maxmemory 1gb 
-      --maxmemory-policy allkeys-lru 
-      --tcp-keepalive 60 
-      --timeout 300 
-      --save 900 1 
-      --save 300 10 
-      --save 60 10000
-      --auto-aof-rewrite-percentage 100
-      --auto-aof-rewrite-min-size 64mb
+      redis-server  --requirepass ${REDIS_PASSWORD} --appendonly yes  --appendfsync everysec  --maxmemory 1gb  --maxmemory-policy allkeys-lru  --tcp-keepalive 60  --timeout 300  --save 900 1  --save 300 10  --save 60 10000 --auto-aof-rewrite-percentage 100 --auto-aof-rewrite-min-size 64mb
     volumes:
       - redis_data:/data
     networks:
@@ -258,7 +225,7 @@ services:
           memory: 256M
           cpus: '0.25'
     healthcheck:
-      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping"]
+      test: [ "CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping" ]
       interval: 30s
       timeout: 3s
       retries: 3
@@ -284,7 +251,7 @@ services:
       - DATABASE_SSL=false
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD}  # ✅ Redis con autenticación
+      - REDIS_PASSWORD=${REDIS_PASSWORD} # Redis con autenticación
       - JWT_SECRET=${JWT_SECRET}
       - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
       - FRONTEND_URL=${FRONTEND_URL}
@@ -310,24 +277,24 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=nebu_traefik-network"
-      
+
       # Router principal para el dominio
       - "traefik.http.routers.backend.rule=Host(`api.${DOMAIN:-flow-telligence.com}`)"
       - "traefik.http.routers.backend.entrypoints=websecure"
       - "traefik.http.routers.backend.tls=true"
       - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
       - "traefik.http.routers.backend.middlewares=api-rate-limit"
-      
+
       # Router para acceso por IP con path /api/*
       - "traefik.http.routers.backend-ip.rule=Host(`62.169.30.44`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend-ip.entrypoints=websecure"
       - "traefik.http.routers.backend-ip.tls=true"
       - "traefik.http.routers.backend-ip.service=backend"
       - "traefik.http.routers.backend-ip.middlewares=api-rate-limit"
-      
+
       - "traefik.http.services.backend.loadbalancer.server.port=3001"
-      
-      # ✅ Rate limiting para API
+
+      # Rate limiting para API
       - "traefik.http.middlewares.api-rate-limit.ratelimit.burst=200"
       - "traefik.http.middlewares.api-rate-limit.ratelimit.average=100"
       - "traefik.http.routers.backend.middlewares=api-rate-limit"
@@ -335,12 +302,12 @@ services:
       resources:
         limits:
           memory: 1G
-          cpus: '1.0'        # ✅ AUMENTADO: 1 CPU completo
+          cpus: '1.0' # TODO: Definir CPUs completo
         reservations:
           memory: 512M
           cpus: '0.5'
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/v1/health"]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/v1/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -350,7 +317,7 @@ services:
   # PROMETHEUS - MONITOREO CON AUTENTICACIÓN
   # ==============================================
   prometheus:
-    image: prom/prometheus:v2.47.0  # ✅ Versión específica
+    image: prom/prometheus:v2.47.0
     container_name: nebu-prometheus
     restart: on-failure:3
     command:
@@ -373,7 +340,7 @@ services:
       - "traefik.http.routers.prometheus.tls=true"
       - "traefik.http.routers.prometheus.tls.certresolver=letsencrypt"
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
-      - "traefik.http.routers.prometheus.middlewares=auth-basic"  # ✅ Con autenticación
+      - "traefik.http.routers.prometheus.middlewares=auth-basic"
     deploy:
       resources:
         limits:
@@ -384,7 +351,7 @@ services:
   # GRAFANA - CON CONFIGURACIÓN SEGURA
   # ==============================================
   grafana:
-    image: grafana/grafana:10.1.2  # ✅ Versión específica
+    image: grafana/grafana:10.1.2
     container_name: nebu-grafana
     restart: on-failure:3
     environment:
@@ -421,7 +388,7 @@ services:
   # LOKI - LOGS CENTRALIZADOS
   # ==============================================
   loki:
-    image: grafana/loki:2.9.0  # ✅ Versión específica
+    image: grafana/loki:2.9.0
     container_name: nebu-loki
     restart: on-failure:3
     command: -config.file=/etc/loki/loki.yml
@@ -440,7 +407,7 @@ services:
   # PROMTAIL - RECOLECCIÓN DE LOGS
   # ==============================================
   promtail:
-    image: grafana/promtail:2.9.0  # ✅ Versión específica
+    image: grafana/promtail:2.9.0
     container_name: nebu-promtail
     restart: on-failure:3
     command: -config.file=/etc/promtail/promtail.yml

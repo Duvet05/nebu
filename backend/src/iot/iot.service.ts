@@ -158,7 +158,7 @@ export class IoTService {
     // Always generate a new token with fresh timestamp and unique room
     const token = await this.livekitService.generateIoTToken(deviceId, roomName);
 
-    this.logger.log(`✅ LiveKit token generated successfully for device: ${deviceId}`);
+    this.logger.log(`LiveKit token generated successfully for device: ${deviceId}`);
     this.logger.log(`🏠 Room: ${roomName}`);
     this.logger.log(`⏱️ TTL: 900 seconds`);
     this.logger.log(`🔄 NEW TOKEN GENERATED - Fresh timestamp: ${new Date().toISOString()}`);

@@ -179,10 +179,10 @@ export class LiveKitService {
     at.addGrant({
       room: roomName,
       roomJoin: true,
-      canPublish: true,      // ✅ Can publish tracks
-      canSubscribe: true,    // ✅ Can subscribe to tracks
-      canPublishData: true,  // ✅ Can publish to data channel
-      hidden: false          // ❌ Hidden/invisible participant
+      canPublish: true,      // Can publish tracks
+      canSubscribe: true,    // Can subscribe to tracks
+      canPublishData: true,  // Can publish to data channel
+      hidden: false          // Hidden/invisible participant
     });
 
     const token = await at.toJwt();

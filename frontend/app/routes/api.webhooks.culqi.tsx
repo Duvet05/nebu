@@ -21,12 +21,12 @@ export async function action({ request }: ActionFunctionArgs) {
     // Handle different event types
     switch (result.type) {
       case "charge_succeeded":
-        console.log("✅ Payment successful:", result.data);
+        console.log("Payment successful:", result.data);
         // TODO: Update database, send notification, etc.
         break;
 
       case "charge_failed":
-        console.log("❌ Payment failed:", result.data);
+        console.log("Payment failed:", result.data);
         // TODO: Send failure notification
         break;
 
