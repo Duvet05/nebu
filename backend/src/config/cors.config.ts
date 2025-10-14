@@ -73,6 +73,12 @@ export const corsRegexConfig = {
 
 export function getCorsOrigins() {
   const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+  
+  // Allow all origins for IoT devices in production
+  if (env === 'production') {
+    return true; // Allow all origins for IoT devices
+  }
+  
   return corsConfig[env];
 }
 

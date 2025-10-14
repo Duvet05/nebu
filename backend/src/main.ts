@@ -12,10 +12,20 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // CORS configuration using unified config
+  // CORS configuration for IoT devices and web apps
   app.enableCors({
     origin: getCorsOrigins(),
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type', 
+      'Authorization', 
+      'X-Requested-With',
+      'Accept',
+      'Origin',
+      'User-Agent'
+    ],
     credentials: true,
+    optionsSuccessStatus: 200, // For legacy browsers and IoT devices
   });
 
   // Log CORS configuration in development
