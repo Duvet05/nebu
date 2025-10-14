@@ -8,7 +8,6 @@ import {
   useLocation,
 } from "@remix-run/react";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { useChangeLanguage } from "remix-i18next/react";
 import { useTranslation } from "react-i18next";
 import { useEffect, type ReactNode } from "react";
@@ -38,10 +37,10 @@ export const links: LinksFunction = () => [
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const locale = await i18next.getLocale(request);
-  return json({
+  return {
     locale,
     culqiPublicKey: process.env.CULQI_PUBLIC_KEY || "",
-  });
+  };
 }
 
 export function Layout({ children }: { children: ReactNode }) {
