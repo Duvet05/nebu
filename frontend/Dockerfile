@@ -1,7 +1,28 @@
 # ==============================================
-# NEBU FRONTEND - DOCKERFILE SIMPLIFICADO
+# NEBU FRONTEND - DOCKERFILE MULTI-STAGE
 # ==============================================
 
+# Stage 1: Build
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Install build dependencies
+RUN apk add --no-cache python3 make g++
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN npm run build
+
+# Stage 2: Production
 FROM node:18-alpine AS production
 
 WORKDIR /app
@@ -13,13 +34,13 @@ RUN apk add --no-cache dumb-init curl
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S remix -u 1001
 
-# Copy package files and install dependencies
+# Copy package files and install production dependencies
 COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-# Copy built application (desde build local exitoso)
-COPY build ./build
-COPY public ./public
+# Copy built application from builder stage
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/public ./public
 
 # Create uploads directory with proper permissions
 RUN mkdir -p public/uploads && chown -R remix:nodejs public/uploads
