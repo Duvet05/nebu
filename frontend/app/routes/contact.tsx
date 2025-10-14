@@ -1,5 +1,4 @@
 import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 import { Header } from "~/components/layout/Header";
@@ -49,17 +48,17 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
   const message = formData.get("message") as string;
 
   if (!firstName || !lastName || !email || !subject || !message) {
-    return json<ActionData>({ error: "All fields are required" }, { status: 400 });
+    return Response.json({ error: "contact.form.errors.required" } as ActionData, { status: 400 });
   }
 
   try {
     // TODO: Implementar sendContactEmail para Nebu
     // await sendContactEmail({ firstName, lastName, email, subject, message });
     console.log('Contact form submitted:', { firstName, lastName, email, subject, message });
-    return json<ActionData>({ success: true });
+    return Response.json({ success: true } as ActionData);
   } catch (error) {
     console.error("Error al enviar email:", error);
-    return json<ActionData>({ error: "Error sending your message. Please try again." }, { status: 500 });
+    return Response.json({ error: "contact.form.errors.send" } as ActionData, { status: 500 });
   }
 }
 
@@ -185,7 +184,7 @@ export default function ContactPage() {
 
                   {actionData && "error" in actionData && (
                     <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                      <p className="text-red-600">{actionData.error}</p>
+                      <p className="text-red-600">{t(actionData.error)}</p>
                     </div>
                   )}
 

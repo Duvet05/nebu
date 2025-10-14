@@ -236,7 +236,11 @@
       "message": "Mensaje",
       "messagePlaceholder": "Cuéntanos cómo podemos ayudarte...",
       "submit": "Enviar mensaje",
-      "submitting": "Enviando..."
+      "submitting": "Enviando...",
+      "errors": {
+        "required": "Todos los campos son obligatorios",
+        "send": "Error al enviar tu mensaje. Por favor, inténtalo de nuevo."
+      }
     },
     "info": {
       "directContact": "Contacto Directo",

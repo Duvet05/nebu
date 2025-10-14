@@ -236,7 +236,11 @@
       "message": "Message",
       "messagePlaceholder": "Tell us how we can help you...",
       "submit": "Send message",
-      "submitting": "Sending..."
+      "submitting": "Sending...",
+      "errors": {
+        "required": "All fields are required",
+        "send": "Error sending your message. Please try again."
+      }
     },
     "info": {
       "directContact": "Direct Contact",
