@@ -13,12 +13,11 @@ export function Footer() {
           {/* Logo y descripción */}
           <div className="lg:col-span-4">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">N</span>
-              </div>
-              <span className="text-2xl font-heading font-bold text-gray-900 dark:text-white">
-                Nebu
-              </span>
+              <img 
+                src="/assets/logos/logo-flow.svg" 
+                alt="Flow Logo" 
+                className="h-8 md:h-10 w-auto"
+              />
             </Link>
             <p className="text-base text-gray-600 dark:text-gray-300 mb-2">
               {t("footer.description")}

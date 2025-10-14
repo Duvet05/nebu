@@ -14,12 +14,11 @@ export function Header() {
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-xl">N</span>
-            </div>
-            <span className="text-2xl font-heading font-bold text-gray-800">
-              Nebu
-            </span>
+            <img 
+              src="/assets/logos/logo-flow.svg" 
+              alt="Flow Logo" 
+              className="h-8 md:h-10 w-auto"
+            />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
