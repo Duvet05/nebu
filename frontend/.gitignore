@@ -8,8 +8,6 @@ package-lock.json
 # Remix build outputs
 /build
 /.cache
-/public/build
-
 # TypeScript
 *.tsbuildinfo
 
