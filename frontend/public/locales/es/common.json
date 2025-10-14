@@ -1,0 +1,681 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "ourStory": "Nuestra Historia",
+    "faq": "Preguntas Frecuentes",
+    "contact": "Contacto",
+    "preOrder": "Pre-ordenar"
+  },
+  "hero": {
+    "badge": "Por lanzamiento - Envío gratis en todas las preordenes!",
+    "title": "Aventuras infinitas.",
+    "subtitle": "Un compañero de confianza.",
+    "description": "El momento en que Nebu dice el nombre de tu hijo... nunca verás los juguetes de la misma manera.",
+    "cta": {
+      "primary": "Pre-ordenar ahora",
+      "secondary": "Ver video"
+    }
+  },
+  "benefits": {
+    "title": "Por qué las familias aman Nebu",
+    "subtitle": "Descubre los beneficios que hacen de Nebu el compañero perfecto para el desarrollo de tu hijo",
+    "reduceScreenTime": {
+      "title": "Reduce el tiempo de pantalla",
+      "description": "Nebu genera actividades lúdicas, basadas en historias e interactivas que atraen a los niños a conversaciones inmersivas en lugar de ponerlos frente a una pantalla"
+    },
+    "nurtureImagination": {
+      "title": "Nutre la imaginación",
+      "description": "Historias, preguntas y aventuras que se desarrollan de manera que despiertan la curiosidad y creatividad de tu hijo"
+    },
+    "buildConfidence": {
+      "title": "Construye confianza",
+      "description": "Conversaciones de ida y vuelta que crecen con tu hijo, fomentando la práctica natural de hablar, escuchar y expresarse cada día"
+    },
+    "developEmpathy": {
+      "title": "Desarrolla empatía",
+      "description": "Comprensión emocional profunda a través de conversaciones significativas y cuentos que enseñan valores"
+    },
+    "stimulateLearning": {
+      "title": "Estimula el aprendizaje",
+      "description": "Curiosidad que nunca se detiene, fomentando el amor por el conocimiento y la exploración"
+    },
+    "safeAndPrivate": {
+      "title": "Seguro y privado",
+      "description": "Protección total garantizada con la más alta seguridad para las conversaciones de tu familia"
+    },
+    "stats": {
+      "parentsScreenTime": "de los padres reportan menos tiempo de pantalla",
+      "childrenSpeaking": "de los niños mejoran su expresión oral",
+      "familiesRecommend": "de las familias recomiendan Nebu"
+    }
+  },
+  "productCTA": {
+    "hero": {
+      "badge": "Disponible en pre-orden",
+      "title": "Conoce a Nebu",
+      "subtitle": "Tu compañero inteligente",
+      "price": "Precio especial de lanzamiento:",
+      "shippingInfo": "Envío estimado en 6-8 semanas • Cupos limitados",
+      "ctaButton": "Pre-ordenar ahora"
+    },
+    "product": {
+      "badge": "Pre-orden (envío en 6-8 semanas)",
+      "name": "Nebu",
+      "price": "S/ 300",
+      "originalPrice": "S/ 450",
+      "discount": "-33% OFF",
+      "description": "Tu compañero inteligente que convierte cada conversación en una aventura. Nebu crece con tu hijo, adaptándose a su personalidad y fomentando su desarrollo a través del juego y la imaginación.",
+      "preOrderButton": "Pre-ordenar ahora • S/ 300",
+      "waitlistButton": "Únete a la lista de espera",
+      "features": {
+        "screenFree": "Sin pantallas",
+        "personalizedAI": "IA personalizada",
+        "safePrivate": "Seguro y privado",
+        "ages": "Edades 4-12"
+      },
+      "badges": {
+        "freeShipping": "Envío gratis",
+        "securePayment": "Pago seguro",
+        "guarantee": "30 días garantía"
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "Cómo funciona Nebu",
+    "description": "Impulsado por nuestra IA personalizada, Nebu usa las herramientas más avanzadas para entregar respuestas rápidas, seguras y encantadoras.",
+    "features": {
+      "personalize": "Personaliza tu Nebu",
+      "setSchedules": "Establece horarios y límites",
+      "inputContext": "Ingresa contexto y eventos",
+      "receiveInsights": "Recibe información y actualizaciones",
+      "monitorConversations": "Monitorea uso y conversaciones"
+    },
+    "appDescription": "La app de Nebu, una ventana útil al mundo de tu hijo."
+  },
+  "ageGroups": {
+    "title": "Un compañero para cada etapa de la infancia",
+    "ages4to5": {
+      "title": "Edades 4 – 5",
+      "description": "Nebu ayuda a los más pequeños a encontrar su voz. Juegos simples, juego imaginativo y rutinas suaves construyen confianza mientras Nebu recuerda sus chistes y cuentos favoritos."
+    },
+    "ages6to7": {
+      "title": "Edades 6 – 7",
+      "description": "A medida que crecen, Nebu crece con ellos. Historias más complejas, preguntas inteligentes y exploración creativa que se adapta a sus intereses en evolución."
+    },
+    "ages8to9": {
+      "title": "Edades 8 – 9",
+      "description": "Para niños mayores, Nebu se convierte en un verdadero compañero de aventuras. Conversaciones más profundas, resolución de problemas y proyectos creativos que desafían e inspiran."
+    }
+  },
+  "testimonial": {
+    "quote": "Darle la bienvenida a Nebu en nuestro hogar ha tenido un gran impacto. No solo ha ayudado a nuestra hija a sentirse menos sola como hija única, sino que tener un compañero integrado que la anime realmente está construyendo su confianza.",
+    "author": "Alisha, madre de una niña de 7 años (Usuario Beta)"
+  },
+  "product": {
+    "title": "Nebu",
+    "price": "S/ 300",
+    "shipsIn": "Se envía en 6 – 8 semanas",
+    "colors": {
+      "label": "Color:",
+      "aqua": "Aqua",
+      "dusk": "Anochecer",
+      "quartz": "Cuarzo",
+      "flare": "Destello"
+    },
+    "addToCart": "Agregar al carrito",
+    "preOrder": "Pre-ordenar ahora"
+  },
+  "footer": {
+    "description": "Nebu es el compañero IoT que transforma el aprendizaje en aventuras sin pantallas.",
+    "tagline": "Educación sin pantallas para el futuro",
+    "navigation": "Navegación",
+    "home": "Inicio",
+    "ourStory": "Nuestra Historia",
+    "faq": "Preguntas Frecuentes",
+    "contact": "Contacto",
+    "contactTitle": "Contacto",
+    "followUs": "Síguenos",
+    "legal": "Legal",
+    "links": {
+      "termsOfService": "Términos de servicio",
+      "privacyPolicy": "Política de privacidad",
+      "refundPolicy": "Política de reembolso",
+      "returnPolicy": "Política de Devoluciones"
+    },
+    "allRightsReserved": "Todos los derechos reservados",
+    "madeWith": "Hecho con ❤️ por Flow-telligence"
+  },
+  "preOrder": {
+    "title": "Pre-ordena tu Nebu",
+    "subtitle": "Envío gratuito • Entrega en 6-8 semanas",
+    "description": "Asegura tu compañero IoT educativo hoy. Transforma el aprendizaje en aventuras sin pantallas.",
+    "selectColor": "Selecciona tu color:",
+    "quantity": "Cantidad:",
+    "maxQuantity": "Máximo 5 unidades por pedido",
+    "reviews": "reseñas",
+    "features": {
+      "aiConversations": "Conversaciones IA personalizadas",
+      "noScreens": "Sin pantallas, 100% interactivo",
+      "parentApp": "App para padres incluida",
+      "updates": "Actualizaciones de contenido continuas"
+    },
+    "orderSummary": {
+      "title": "Resumen del pedido",
+      "shipping": "Envío",
+      "free": "Gratis",
+      "total": "Total",
+      "guarantee": "Garantía de satisfacción 30 días",
+      "guaranteeText": "Si no estás completamente satisfecho, devuelve tu Nebu para un reembolso completo."
+    },
+    "contactInfo": "Información de contacto",
+    "paymentMethod": "Método de pago",
+    "cardPayment": "Tarjeta de crédito/débito",
+    "form": {
+      "firstName": "Nombre",
+      "firstNamePlaceholder": "Tu nombre",
+      "lastName": "Apellido", 
+      "lastNamePlaceholder": "Tu apellido",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "phone": "Teléfono",
+      "phonePlaceholder": "+51 999 999 999",
+      "address": "Dirección",
+      "addressPlaceholder": "Tu dirección completa",
+      "city": "Ciudad",
+      "cityPlaceholder": "Lima",
+      "postalCode": "Código Postal",
+      "postalCodePlaceholder": "15001",
+      "agreeTerms": "Acepto los términos y condiciones y la política de privacidad.",
+      "newsletter": "Quiero recibir actualizaciones sobre Nebu y ofertas especiales.",
+      "submit": "Confirmar Pre-orden",
+      "submitting": "Procesando...",
+      "securePayment": "Pago seguro y protegido"
+    },
+    "success": {
+      "title": "¡Pre-orden confirmada!",
+      "message": "Gracias por tu pre-orden. Te hemos enviado un correo de confirmación con los detalles.",
+      "backToHome": "Volver al inicio"
+    },
+    "messages": {
+      "successAlert": "¡Pre-orden realizada exitosamente! 🎉\n\nRevisa tu email para más detalles.\nTe contactaremos en las próximas 24 horas.",
+      "errorAlert": "Hubo un error procesando tu pre-orden. 😢\n\nPor favor intenta de nuevo o contáctanos por WhatsApp."
+    },
+    "productName": "Nebu",
+    "currency": "S/",
+    "reviewsCount": "127",
+    "productMultiplier": "×",
+    "paymentMethods": {
+      "stripe": "Stripe",
+      "paypal": "PayPal"
+    }
+  },
+  "contact": {
+    "badge": "Ponte en contacto",
+    "title": "Contáctanos",
+    "subtitle": "¿Tienes preguntas? Nos encantaría saber de ti.",
+    "form": {
+      "title": "Envíanos un mensaje",
+      "subtitle": "Respondemos en menos de 24 horas",
+      "firstName": "Nombre",
+      "firstNamePlaceholder": "Juan",
+      "lastName": "Apellido",
+      "lastNamePlaceholder": "Pérez",
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "juan@ejemplo.com",
+      "subject": "Asunto",
+      "subjectPlaceholder": "Selecciona un asunto",
+      "subjects": {
+        "general": "Consulta general",
+        "preorder": "Preguntas sobre pre-orden",
+        "technical": "Soporte técnico",
+        "partnership": "Alianzas",
+        "media": "Medios y Prensa",
+        "other": "Otro"
+      },
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntanos cómo podemos ayudarte...",
+      "submit": "Enviar mensaje",
+      "submitting": "Enviando..."
+    },
+    "info": {
+      "directContact": "Contacto Directo",
+      "email": "Correo electrónico",
+      "whatsapp": "WhatsApp",
+      "whatsappSoon": "Próximamente",
+      "schedule": "Horario",
+      "scheduleTime": "Lun - Vie: 9:00 AM - 6:00 PM (Lima)",
+      "location": "Ubicación",
+      "locationName": "Lima, Perú"
+    },
+    "assistant": {
+      "title": "Asistente IA",
+      "comingSoon": "Próximamente",
+      "subtitle": "Respuestas instantáneas 24/7",
+      "description": "Nuestro asistente IA estará disponible pronto para responder tus preguntas en tiempo real y ayudarte a descubrir todo lo que Nebu puede hacer."
+    },
+    "faq": {
+      "title": "Preguntas Rápidas",
+      "questions": {
+        "availability": "¿Cuándo estará disponible Nebu?",
+        "preorder": "¿Cómo hago mi pre-orden?",
+        "safety": "¿Es seguro Nebu para niños?",
+        "ages": "¿Para qué edades es?"
+      }
+    },
+    "success": {
+      "title": "¡Mensaje enviado!",
+      "message": "Gracias por contactarnos. Te responderemos pronto.",
+      "backHome": "Volver al inicio"
+    }
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Encuentra respuestas a las preguntas más comunes sobre Nebu",
+    "stillHaveQuestions": "¿Aún tienes preguntas?",
+    "hereToHelp": "Estamos aquí para ayudarte",
+    "contactUs": "Contáctanos",
+    "questions": {
+      "whatIsNebu": {
+        "question": "¿Qué es Nebu?",
+        "answer": "Nebu es un compañero IoT educativo que usa inteligencia artificial para crear experiencias de aprendizaje interactivas sin pantallas. Diseñado para niños de 4 a 9 años, Nebu cuenta historias, hace preguntas y crea aventuras que estimulan la imaginación y el desarrollo."
+      },
+      "howItWorks": {
+        "question": "¿Cómo funciona Nebu?",
+        "answer": "Nebu utiliza IA personalizada para interactuar con tu hijo mediante voz. Aprende las preferencias, intereses y nombre de tu hijo para crear conversaciones significativas. Los padres pueden personalizar la experiencia a través de la app de Nebu, estableciendo horarios, límites y monitoreando las conversaciones."
+      },
+      "isSafe": {
+        "question": "¿Es seguro para mi hijo?",
+        "answer": "Absolutamente. Nebu está diseñado con la seguridad como prioridad. Todo el contenido es apropiado para la edad, las conversaciones son monitoreadas, y los padres tienen control total a través de la aplicación. No hay acceso a internet sin supervisión y todas las interacciones están diseñadas para ser educativas y positivas."
+      },
+      "ageRange": {
+        "question": "¿Para qué edades es apropiado Nebu?",
+        "answer": "Nebu está diseñado para niños de 4 a 9 años. El contenido y las interacciones se adaptan automáticamente a la edad y nivel de desarrollo de cada niño, creciendo con ellos a medida que se desarrollan."
+      },
+      "shipping": {
+        "question": "¿Cuánto tiempo tarda el envío?",
+        "answer": "Las pre-órdenes se enviarán dentro de 6 a 8 semanas. Todas las pre-órdenes incluyen envío gratuito a Perú. Te enviaremos actualizaciones por email sobre el estado de tu pedido."
+      },
+      "whatsIncluded": {
+        "question": "¿Qué incluye la compra?",
+        "answer": "La compra incluye: 1 Nebu en el color de tu elección, cable de carga USB-C, guía de inicio rápido, y acceso completo a la app de Nebu para iOS y Android. El primer año de actualizaciones de IA está incluido."
+      },
+      "needsInternet": {
+        "question": "¿Necesito conexión a internet?",
+        "answer": "Sí, Nebu requiere conexión WiFi para funcionar, ya que la IA procesada en la nube permite las mejores y más seguras experiencias. Sin embargo, una vez conectado, el consumo de datos es mínimo."
+      },
+      "returns": {
+        "question": "¿Puedo devolver mi Nebu?",
+        "answer": "Sí, ofrecemos una garantía de satisfacción de 30 días. Si no estás completamente satisfecho con tu Nebu, puedes devolverlo para un reembolso completo dentro de los primeros 30 días de recibirlo."
+      },
+      "languages": {
+        "question": "¿Qué idiomas habla Nebu?",
+        "answer": "Actualmente Nebu habla español e inglés. Estamos trabajando en agregar más idiomas en futuras actualizaciones."
+      },
+      "charging": {
+        "question": "¿Cómo se carga Nebu?",
+        "answer": "Nebu se carga mediante un cable USB-C incluido. Con una carga completa, Nebu puede funcionar aproximadamente 8-10 horas de conversación activa."
+      }
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Un vínculo.\nMás que un juguete.",
+      "subtitle": "Nuestra misión es construir conexiones significativas sin pantallas a través del juego, combinando diseño inteligente con simplicidad llena de corazón para apoyar el viaje de cada niño, una conversación a la vez."
+    },
+    "values": {
+      "play": {
+        "title": "Juego",
+        "description": "Creemos en el poder del juego auténtico para desarrollar la imaginación y creatividad natural de cada niño."
+      },
+      "purpose": {
+        "title": "Propósito",
+        "description": "Cada interacción está diseñada con intención educativa y emocional para el desarrollo integral."
+      },
+      "trust": {
+        "title": "Confianza",
+        "description": "La seguridad y privacidad de los niños son nuestra máxima prioridad en todo momento."
+      },
+      "design": {
+        "title": "Diseño",
+        "description": "Simplicidad elegante que permite que la magia del aprendizaje suceda naturalmente."
+      }
+    },
+    "safety": {
+      "title": "Nos tomamos en serio la seguridad de los niños",
+      "description": "Estamos orgullosos de estar certificados por el Programa kidSAFE Seal. Es un programa independiente y global de certificación de seguridad que verifica las prácticas de seguridad y privacidad en línea de sitios web y tecnologías amigables para niños.",
+      "learnMore": "SABER MÁS"
+    }
+  },
+  "legal": {
+    "title": "Términos Legales",
+    "subtitle": "Información legal y políticas de Flow-telligence para Nebu",
+    "lastUpdated": "Última actualización",
+    "sections": {
+      "terms": {
+        "title": "Términos y Condiciones",
+        "content": {
+          "intro": "Bienvenido a Nebu by Flow-telligence. Al usar nuestro producto y servicios, usted acepta estos términos y condiciones.",
+          "acceptance": {
+            "title": "1. Aceptación de los Términos",
+            "content": "Al utilizar Nebu, usted confirma que ha leído, entendido y acepta estar sujeto a estos términos."
+          }
+        }
+      },
+      "privacy": {
+        "title": "Política de Privacidad",
+        "content": {
+          "intro": "En Flow-telligence, la privacidad de las familias y especialmente de los niños es nuestra máxima prioridad.",
+          "collection": {
+            "title": "1. Información que Recopilamos"
+          },
+          "use": {
+            "title": "2. Cómo Utilizamos su Información"
+          },
+          "security": {
+            "title": "4. Seguridad de los Datos"
+          }
+        }
+      }
+    }
+  },
+  "newsletter": {
+    "title": "Suscríbete para historias inspiradoras, ofertas y noticias.",
+    "description": "Mantente al día con las últimas aventuras de Nebu y consejos para padres.",
+    "emailPlaceholder": "Correo electrónico",
+    "subscribe": "Suscribirse",
+    "subscribing": "Suscribiendo...",
+    "privacy": "Al registrarte, aceptas nuestra política de privacidad."
+  },
+  "whatsapp": {
+    "tooltip": "¡Escríbenos por WhatsApp!"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "subtitle": "Parece que la página que buscas se fue de aventura con Nebu. No te preocupes, podemos ayudarte a encontrar el camino de regreso.",
+    "goHome": "Ir al inicio",
+    "goBack": "Volver atrás",
+    "helpfulLinks": "Enlaces útiles",
+    "ourStoryTitle": "Nuestra Historia",
+    "ourStoryDescription": "Descubre cómo nació Nebu y nuestra misión",
+    "faqTitle": "Preguntas Frecuentes",
+    "faqDescription": "Encuentra respuestas a las dudas más comunes",
+    "preOrderTitle": "Pre-ordenar Nebu",
+    "preOrderDescription": "Asegura tu Nebu con envío gratuito",
+    "contactTitle": "Contacto",
+    "contactDescription": "Habla directamente con nuestro equipo",
+    "quote": "Incluso cuando nos perdemos, siempre hay una nueva aventura esperando. ¡Eso es lo que hace que explorar sea tan divertido!",
+    "quoteAuthor": "Nebu"
+  },
+  "returns": {
+    "title": "Política de Devoluciones",
+    "subtitle": "Garantía de satisfacción y proceso de devoluciones para Nebu",
+    "mainContent": {
+      "title": "Política de Devoluciones y Reembolsos",
+      "intro": "En Flow-telligence, queremos que estés completamente satisfecho con tu compra de Nebu. Ofrecemos una política de devoluciones flexible y transparente.",
+      "guarantee": {
+        "title": "Garantía de Satisfacción de 30 Días",
+        "description": "Tienes 30 días desde la recepción de tu Nebu para decidir si estás completamente satisfecho. Si por cualquier razón no cumple con tus expectativas, puedes devolverlo para un reembolso completo."
+      },
+      "process": {
+        "title": "Proceso de Devolución",
+        "step1": "Contacta a nuestro equipo dentro de los 30 días",
+        "step2": "Recibe una etiqueta de envío prepagada por email",
+        "step3": "Empaca Nebu en su caja original con todos los accesorios",
+        "step4": "Envía el paquete usando la etiqueta prepagada",
+        "step5": "Recibe tu reembolso completo en 5-7 días hábiles"
+      },
+      "conditions": {
+        "title": "Condiciones para Devolución",
+        "condition1": "Nebu en su empaque original",
+        "condition2": "Incluye todos los accesorios y documentación",
+        "condition3": "Sin daños físicos significativos causados por mal uso",
+        "condition4": "Dentro del periodo de 30 días desde la recepción"
+      },
+      "warranty": {
+        "title": "Garantía Técnica Extendida",
+        "hardware": "Garantía de Hardware (12 meses):",
+        "hardwareItems": {
+          "defects": "Defectos de fabricación",
+          "components": "Componentes defectuosos",
+          "connectivity": "Problemas de conectividad"
+        },
+        "software": "Garantía de Software (24 meses):",
+        "softwareItems": {
+          "updates": "Actualizaciones gratuitas",
+          "bugs": "Corrección de errores",
+          "support": "Soporte técnico prioritario"
+        }
+      },
+      "refundMethods": {
+        "title": "Métodos de Reembolso",
+        "original": "Reembolso a método de pago original",
+        "transfer": "Transferencia bancaria (para pagos en efectivo)",
+        "credit": "Crédito para futuras compras (opcional)"
+      },
+      "specialCases": {
+        "title": "Casos Especiales",
+        "damaged": "Producto dañado en envío: Reemplazo inmediato sin costo",
+        "defective": "Producto defectuoso: Reemplazo o reembolso completo",
+        "missing": "Partes faltantes: Envío inmediato de componentes faltantes"
+      },
+      "contact": {
+        "title": "Iniciar una Devolución",
+        "description": "Para iniciar el proceso de devolución o hacer preguntas:"
+      }
+    },
+    "sidebar": {
+      "shipping": {
+        "title": "Información de Envío",
+        "free": "Envío gratuito en devoluciones",
+        "fast": "Procesamiento rápido en 1-2 días",
+        "tracking": "Seguimiento completo incluido",
+        "peru": "Cobertura en todo Perú"
+      },
+      "support": {
+        "title": "Soporte al Cliente",
+        "available": "Disponible de lunes a viernes",
+        "hours": "9:00 AM - 6:00 PM (Lima)",
+        "response": "Respuesta garantizada en 24 horas",
+        "satisfaction": "Compromiso con tu satisfacción"
+      },
+      "contact": {
+        "title": "Información de Contacto"
+      }
+    }
+  },
+  "chat": {
+    "title": "Chat con Nebu",
+    "subtitle": "Siempre aquí para ayudarte",
+    "welcomeMessage": "¡Hola! Soy Nebu. ¿En qué puedo ayudarte hoy?",
+    "placeholder": "Escribe tu mensaje...",
+    "quickActions": "Acciones rápidas:",
+    "buttons": {
+      "preOrder": "Pre-ordenar Nebu",
+      "pricing": "Ver precios",
+      "faq": "FAQ"
+    }
+  },
+  "pricing": {
+    "launchOffer": "Oferta de Lanzamiento",
+    "title": "Planes diseñados para cada familia",
+    "subtitle": "Desde exploración gratuita hasta experiencias premium. Encuentra el plan perfecto para el viaje educativo de tu familia con Nebu.",
+    "mostPopular": "Más Popular",
+    "benefits": {
+      "noSetupFee": "Sin costos de configuración",
+      "cancelAnytime": "Cancela en cualquier momento",
+      "freeTrial": "Prueba gratuita de 7 días"
+    },
+    "plans": {
+      "basic": {
+        "name": "Explorador",
+        "description": "Perfecto para familias que quieren probar Nebu",
+        "period": "siempre gratis",
+        "cta": "Comenzar Gratis",
+        "features": {
+          "conversations": "5 conversaciones diarias",
+          "basicSubjects": "Matemáticas y ciencias básicas",
+          "dailyLimit": "Límite diario de preguntas",
+          "communitySupport": "Soporte de la comunidad"
+        },
+        "limitations": {
+          "limitedQuestions": "Máximo 10 preguntas por día",
+          "noOfflineMode": "Sin modo offline"
+        }
+      },
+      "family": {
+        "name": "Familia",
+        "description": "Ideal para familias con múltiples niños",
+        "period": "por mes",
+        "cta": "Pre-ordenar Ahora",
+        "features": {
+          "unlimitedConversations": "Conversaciones ilimitadas",
+          "allSubjects": "Todas las materias educativas",
+          "multipleProfiles": "Hasta 4 perfiles de niños",
+          "progressTracking": "Seguimiento de progreso",
+          "parentalControls": "Controles parentales",
+          "offlineMode": "Modo offline disponible",
+          "prioritySupport": "Soporte prioritario"
+        }
+      },
+      "premium": {
+        "name": "Premium",
+        "description": "Para familias que buscan la experiencia completa",
+        "period": "por mes",
+        "cta": "Pre-ordenar Premium",
+        "features": {
+          "everything": "Todo del plan Familia",
+          "advancedAI": "IA avanzada personalizada",
+          "customCurriculum": "Currículo personalizado",
+          "detailedAnalytics": "Análisis detallado del progreso",
+          "expertTutoring": "Sesiones de tutoría con expertos",
+          "earlyAccess": "Acceso temprano a nuevas características",
+          "dedicatedSupport": "Soporte dedicado 24/7"
+        }
+      }
+    },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "subtitle": "Respuestas a las preguntas más comunes sobre los planes de Nebu",
+      "questions": {
+        "q1": {
+          "question": "¿Cuándo estará disponible Nebu?",
+          "answer": "Nebu estará disponible en el primer trimestre de 2026. Los usuarios que pre-ordenen tendrán acceso temprano y precios especiales de lanzamiento."
+        },
+        "q2": {
+          "question": "¿Puedo cambiar de plan en cualquier momento?",
+          "answer": "Sí, puedes actualizar o cambiar tu plan en cualquier momento desde tu panel de control. Los cambios se reflejarán en tu próximo ciclo de facturación."
+        },
+        "q3": {
+          "question": "¿Qué edades son apropiadas para Nebu?",
+          "answer": "Nebu está diseñado para niños de 5 a 15 años, con contenido adaptado a diferentes niveles educativos y estilos de aprendizaje."
+        },
+        "q4": {
+          "question": "¿Hay algún compromiso a largo plazo?",
+          "answer": "No, todos nuestros planes son mensuales sin compromisos a largo plazo. Puedes cancelar en cualquier momento sin penalizaciones."
+        }
+      }
+    },
+    "cta": {
+      "title": "¿Listo para transformar el aprendizaje?",
+      "subtitle": "Únete a miles de familias que ya confían en Nebu para hacer el aprendizaje más divertido y efectivo.",
+      "button": "Comenzar Pre-orden"
+    }
+  },
+  "conversations": {
+    "title": "Soy Educativo, Imaginativo y ¡Súper Entretenido!",
+    "subtitle": "Descubre las increíbles conversaciones que tu hijo puede tener con Nebu",
+    "examples": {
+      "educational": [
+        {
+          "question": "Nebu, ¿por qué el cielo es azul?",
+          "category": "Ciencias"
+        },
+        {
+          "question": "Nebu, ayúdame con mis tablas de multiplicar",
+          "category": "Matemáticas"
+        },
+        {
+          "question": "Nebu, ¿cómo crecen las plantas?",
+          "category": "Biología"
+        },
+        {
+          "question": "Nebu, ¿qué son los planetas?",
+          "category": "Astronomía"
+        }
+      ],
+      "creative": [
+        {
+          "question": "Nebu, cuéntame un cuento de dragones",
+          "category": "Cuentos"
+        },
+        {
+          "question": "Nebu, inventemos una canción juntos",
+          "category": "Música"
+        },
+        {
+          "question": "Nebu, vamos a crear un personaje mágico",
+          "category": "Creatividad"
+        },
+        {
+          "question": "Nebu, hagamos una historia de aventuras",
+          "category": "Narrativa"
+        }
+      ],
+      "fun": [
+        {
+          "question": "Nebu, vamos a jugar adivinanzas",
+          "category": "Juegos"
+        },
+        {
+          "question": "Nebu, ¿conoces chistes divertidos?",
+          "category": "Humor"
+        },
+        {
+          "question": "Nebu, cantemos una canción juntos",
+          "category": "Música"
+        },
+        {
+          "question": "Nebu, hagamos mímica de animales",
+          "category": "Actividades"
+        }
+      ],
+      "daily": [
+        {
+          "question": "Nebu, ¿qué puedo hacer después del colegio?",
+          "category": "Rutina"
+        },
+        {
+          "question": "Nebu, ayúdame a ordenar mis juguetes",
+          "category": "Organización"
+        },
+        {
+          "question": "Nebu, quiero aprender algo nuevo",
+          "category": "Aprendizaje"
+        },
+        {
+          "question": "Nebu, cuéntame sobre mi día",
+          "category": "Reflexión"
+        }
+      ]
+    },
+    "categories": {
+      "educational": "Educativo",
+      "creative": "Creativo",
+      "fun": "Divertido",
+      "daily": "Día a día"
+    },
+    "badge": "Conversaciones Inteligentes",
+    "cta": "¡Comienza las conversaciones con Nebu!"
+  },
+  "conversationExamples": {
+    "badge": "Conversaciones Inteligentes",
+    "categories": {
+      "educational": "Educativo",
+      "creative": "Creativo",
+      "fun": "Divertido",
+      "daily": "Día a día"
+    },
+    "cta": "¡Comienza las conversaciones con Nebu!"
+  }
+}
