@@ -292,6 +292,15 @@ services:
       - "traefik.http.routers.backend-ip.service=backend"
       - "traefik.http.routers.backend-ip.middlewares=api-rate-limit"
 
+      # Routers HTTP (sin TLS) para dispositivos IoT
+      - "traefik.http.routers.backend-iot.rule=Host(`62.169.30.44`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend-iot.entrypoints=web"
+      - "traefik.http.routers.backend-iot.service=backend"
+      
+      - "traefik.http.routers.backend-iot-domain.rule=Host(`api.${DOMAIN:-flow-telligence.com}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend-iot-domain.entrypoints=web"
+      - "traefik.http.routers.backend-iot-domain.service=backend"
+
       - "traefik.http.services.backend.loadbalancer.server.port=3001"
 
       # Rate limiting para API
