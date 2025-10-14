@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
@@ -105,7 +105,7 @@ export default function PreOrder() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
 

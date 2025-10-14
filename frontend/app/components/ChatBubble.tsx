@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,7 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
     setIsOpen(!isOpen);
   };
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = (e: FormEvent) => {
     e.preventDefault();
     if (message.trim()) {
       // Aquí se integraría con el sistema de chat

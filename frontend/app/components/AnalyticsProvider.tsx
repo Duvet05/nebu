@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useLocation } from "@remix-run/react";
 
 declare global {
@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
+export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {

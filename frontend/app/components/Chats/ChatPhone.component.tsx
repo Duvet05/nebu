@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ChartNoAxesCombined, Send } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useFeatureFlags } from '@/lib/features';
 
 interface Message {
   id: string;
@@ -17,7 +16,6 @@ interface PhoneChatProps {
 }
 
 export const PhoneChat = ({ inputRefExternal }: PhoneChatProps) => {
-  const features = useFeatureFlags();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: crypto.randomUUID(),
@@ -60,22 +58,6 @@ export const PhoneChat = ({ inputRefExternal }: PhoneChatProps) => {
     const interval = setInterval(updateTime, 60000);
     return () => clearInterval(interval);
   }, []);
-
-  // Don't render chat if feature is disabled
-  if (!features.chat) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-400">
-            Chat Feature Disabled
-          </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-500">
-            Chat functionality is currently disabled in the system configuration.
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

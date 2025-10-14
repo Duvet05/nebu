@@ -11,7 +11,7 @@ import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useChangeLanguage } from "remix-i18next/react";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import i18next from "~/lib/i18next.server";
 import { ChatBubble } from "~/components/ChatBubble";
 import { WhatsAppButton } from "~/components/WhatsAppButton";
@@ -44,7 +44,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
 }
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: { children: ReactNode }) {
   const loaderData = useLoaderData<typeof loader>();
   const { i18n } = useTranslation();
 

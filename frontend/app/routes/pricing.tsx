@@ -4,10 +4,10 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
 import { 
   Check, 
-  X, 
-  Star, 
+  X,
   Zap, 
   Shield, 
   Users, 
@@ -50,7 +50,7 @@ interface PricingPlan {
   originalPrice?: string;
   period: string;
   popular?: boolean;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: LucideIcon;
   features: string[];
   limitations?: string[];
   ctaText: string;
