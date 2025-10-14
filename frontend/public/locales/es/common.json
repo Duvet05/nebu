@@ -143,7 +143,7 @@
       "returnPolicy": "Política de Devoluciones"
     },
     "allRightsReserved": "Todos los derechos reservados",
-    "madeWith": "Hecho con ❤️ por Flow-telligence"
+    "madeWith": "Hecho con ️ por Flow-telligence"
   },
   "preOrder": {
     "title": "Pre-ordena tu Nebu",
@@ -197,8 +197,8 @@
       "backToHome": "Volver al inicio"
     },
     "messages": {
-      "successAlert": "¡Pre-orden realizada exitosamente! 🎉\n\nRevisa tu email para más detalles.\nTe contactaremos en las próximas 24 horas.",
-      "errorAlert": "Hubo un error procesando tu pre-orden. 😢\n\nPor favor intenta de nuevo o contáctanos por WhatsApp."
+      "successAlert": "¡Pre-orden realizada exitosamente! \n\nRevisa tu email para más detalles.\nTe contactaremos en las próximas 24 horas.",
+      "errorAlert": "Hubo un error procesando tu pre-orden. \n\nPor favor intenta de nuevo o contáctanos por WhatsApp."
     },
     "productName": "Nebu",
     "currency": "S/",

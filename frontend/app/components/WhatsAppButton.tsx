@@ -11,7 +11,7 @@ interface WhatsAppButtonProps {
 export function WhatsAppButton({
   className = "",
   phoneNumber = "+51970116770", // Número de Flow-telligence Peru
-  message = "¡Hola! Me interesa conocer más sobre Nebu 🤖"
+  message = "¡Hola! Me interesa conocer más sobre Nebu "
 }: WhatsAppButtonProps) {
   const { t } = useTranslation("common");
 

@@ -1,6 +1,6 @@
-# 🚦 Traefik Gateway Configuration
+#  Traefik Gateway Configuration
 
-## 📁 Estructura del Directorio Gateway
+##  Estructura del Directorio Gateway
 
 ```
 gateway/
@@ -13,7 +13,7 @@ gateway/
     └── access.log      # Logs de acceso (formato JSON)
 ```
 
-## ⚙️ Configuración
+## ️ Configuración
 
 ### traefik.yml (Configuración Principal)
 - **Entrypoints**: HTTP (80) y HTTPS (443) con redirección automática
@@ -22,7 +22,7 @@ gateway/
 - **Logging**: Logs estructurados en JSON
 - **API**: Dashboard seguro solo por HTTPS
 
-### 🔄 dynamic.yml (Configuración Dinámica)
+###  dynamic.yml (Configuración Dinámica)
 - **Middlewares de Seguridad**:
   - Headers de seguridad (HSTS, XSS Protection, etc.)
   - Rate limiting (100 req/min average, 200 burst)
@@ -47,7 +47,7 @@ gateway/
 | pgAdmin           | `https://pgadmin.${DOMAIN}`   | Admin PostgreSQL (dev)       |
 | Portainer         | `https://portainer.${DOMAIN}` | Gestión Docker (management)  |
 
-## 🔒 Seguridad Implementada
+##  Seguridad Implementada
 
 ### SSL/TLS
 -  Certificados SSL automáticos con Let's Encrypt
@@ -93,7 +93,7 @@ ACME_EMAIL=admin@nebu.academy
 3. **Renovación**: Automática cada 60 días
 4. **Backup**: Incluir `gateway/letsencrypt/acme.json` en backups
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Verificar certificados
 ```bash

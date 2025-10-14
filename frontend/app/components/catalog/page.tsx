@@ -329,7 +329,7 @@ export default function CatalogPage({ params }: CatalogPageProps) {
               </svg>
             </div>
             <h3 className="text-2xl font-bold text-foreground mb-3 tracking-tight">
-              📚 Catálogo en Construcción
+               Catálogo en Construcción
             </h3>
             <p className="text-muted-foreground text-center mb-6 max-w-md mx-auto text-lg">
               Estamos preparando una experiencia de aprendizaje increíble para ti. Pronto tendrás acceso a nuestros cursos especializados.

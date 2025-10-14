@@ -171,15 +171,15 @@ export default function ReturnsPolicy() {
                         </h4>
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
-                            <span className="text-green-500">✓</span>
+                            <span className="text-green-500"></span>
                             <span className="text-sm text-gray-600">{t('returns.mainContent.refundMethods.original')}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-green-500">✓</span>
+                            <span className="text-green-500"></span>
                             <span className="text-sm text-gray-600">{t('returns.mainContent.refundMethods.transfer')}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-green-500">✓</span>
+                            <span className="text-green-500"></span>
                             <span className="text-sm text-gray-600">{t('returns.mainContent.refundMethods.credit')}</span>
                           </div>
                         </div>

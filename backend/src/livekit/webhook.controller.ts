@@ -23,19 +23,19 @@ export class LiveKitWebhookController {
         console.log(` Participant ${webhookData.participant?.identity} left room ${webhookData.room?.name}`);
         break;
       case 'track_published':
-        console.log(`📹 Track published in room ${webhookData.room?.name}`);
+        console.log(` Track published in room ${webhookData.room?.name}`);
         break;
       case 'track_unpublished':
-        console.log(`📹 Track unpublished in room ${webhookData.room?.name}`);
+        console.log(` Track unpublished in room ${webhookData.room?.name}`);
         break;
       case 'room_finished':
-        console.log(`🏁 Room ${webhookData.room?.name} finished`);
+        console.log(` Room ${webhookData.room?.name} finished`);
         break;
       case 'room_started':
         console.log(` Room ${webhookData.room?.name} started`);
         break;
       default:
-        console.log(`❓ Unknown event: ${webhookData.event}`);
+        console.log(` Unknown event: ${webhookData.event}`);
     }
 
     return { 

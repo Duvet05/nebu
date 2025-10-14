@@ -1,8 +1,8 @@
-# 🗄️ Database Initialization
+# ️ Database Initialization
 
 Este directorio contiene los scripts de inicialización de bases de datos para el proyecto Nebu.
 
-## 📁 Estructura
+##  Estructura
 
 ```
 db/
@@ -43,7 +43,7 @@ docker exec nebu-academy-postgres psql -U nebu_academy -d nebu_academy_dev -c "C
 docker exec nebu-academy-postgres psql -U nebu_academy -d nebu_academy_dev -c "\l" | grep n8n
 ```
 
-## 🐛 Solución de Problemas
+##  Solución de Problemas
 
 ### N8N no puede conectarse a la base de datos
 
@@ -74,14 +74,14 @@ docker exec nebu-academy-postgres psql -U nebu_academy -d nebu_academy_dev -c "\
 docker exec nebu-academy-postgres psql -U nebu_academy -d n8n_db -c "SELECT 1;"
 ```
 
-## 📝 Notas Importantes
+##  Notas Importantes
 
 - Los scripts de inicialización solo se ejecutan cuando se crea un nuevo volumen de PostgreSQL
 - Si ya existe un volumen con datos, los scripts no se ejecutarán automáticamente
 - Para forzar la re-inicialización, elimina el volumen: `docker volume rm theme-nebu-academy_postgres_data`
 - La base de datos de N8N se crea con las extensiones `uuid-ossp` y `pgcrypto`
 
-## 🔄 Flujo de Inicialización
+##  Flujo de Inicialización
 
 1. **PostgreSQL inicia** y ejecuta scripts en `/docker-entrypoint-initdb.d/`
 2. **Script 01** crea la base de datos principal y extensiones

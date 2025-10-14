@@ -130,7 +130,7 @@ export default async function BlogPostPageRoute({ params }: BlogPostProps) {
       "wordCount": post.content ? post.content.split(/\s+/).length : 0,
       "timeRequired": `PT${post.readingTime || 5}M`,
       
-      // 🚀 AUTOMATION-SPECIFIC STRUCTURED DATA
+      //  AUTOMATION-SPECIFIC STRUCTURED DATA
       "about": [
         {
           "@type": "Thing",

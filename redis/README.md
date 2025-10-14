@@ -1,6 +1,6 @@
-# 🔴 Redis Configuration
+#  Redis Configuration
 
-## 📁 Estructura del Directorio Redis
+##  Estructura del Directorio Redis
 
 ```
 redis/
@@ -9,9 +9,9 @@ redis/
 └── README.md           # Esta documentación
 ```
 
-## ⚙️ Configuración Optimizada
+## ️ Configuración Optimizada
 
-### 🧠 **Gestión de Memoria**
+###  **Gestión de Memoria**
 ```bash
 # Variables de entorno configurables:
 REDIS_MAX_MEMORY=256mb                    # Límite de memoria
@@ -28,12 +28,12 @@ REDIS_EVICTION_POLICY=allkeys-lru         # Política de expulsión
 - `volatile-ttl`: Expulsa claves con TTL más cercano a expirar
 - `noeviction`: No expulsa, devuelve error cuando se alcanza el límite
 
-### 💾 **Persistencia Optimizada**
+###  **Persistencia Optimizada**
 - **RDB**: Snapshots automáticos en intervalos configurados
 - **AOF**: Log de append para máxima durabilidad
 - **Híbrido**: RDB + AOF para mejor performance y durabilidad
 
-### 🔒 **Seguridad**
+###  **Seguridad**
 -  Autenticación con password
 -  Configuración de network binding
 -  Protección contra comandos peligrosos
@@ -69,7 +69,7 @@ REDIS_CONNECT_TIMEOUT=10000
 REDIS_COMMAND_TIMEOUT=5000
 ```
 
-## 🛠️ **Script de Gestión**
+## ️ **Script de Gestión**
 
 ### **Uso del Script**
 ```bash
@@ -101,7 +101,7 @@ cd redis/
 ./redis-manager.sh benchmark SET,GET 5000 25  # Benchmark personalizado
 ```
 
-## 📈 **Optimizaciones Implementadas**
+##  **Optimizaciones Implementadas**
 
 ### **1. Memoria**
 - Límite de memoria configurable (256MB por defecto)
@@ -127,7 +127,7 @@ cd redis/
 - Health checks mejorados
 - Logs estructurados
 
-## 🔍 **Casos de Uso por Configuración**
+##  **Casos de Uso por Configuración**
 
 ### **Para Cache de Aplicación (Actual)**
 ```bash

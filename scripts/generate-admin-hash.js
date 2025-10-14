@@ -11,7 +11,7 @@ async function generateAdminHash() {
     const hash = await bcrypt.hash(password, 12);
     
     console.log(' Hash generado exitosamente!');
-    console.log('📝 Agrega esta línea a tu archivo .env:\n');
+    console.log(' Agrega esta línea a tu archivo .env:\n');
     console.log(`ADMIN_PASSWORD_HASH=${hash}`);
     console.log('\n Credenciales de acceso:');
     console.log(`Email: admin@nebu.academy`);

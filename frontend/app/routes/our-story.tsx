@@ -50,22 +50,22 @@ export default function OurStory() {
     {
       title: t("about.values.play.title"),
       description: t("about.values.play.description"),
-      icon: "🎮"
+      icon: ""
     },
     {
       title: t("about.values.purpose.title"),
       description: t("about.values.purpose.description"),
-      icon: "🎯"
+      icon: ""
     },
     {
       title: t("about.values.trust.title"),
       description: t("about.values.trust.description"),
-      icon: "🛡️"
+      icon: ""
     },
     {
       title: t("about.values.design.title"),
       description: t("about.values.design.description"),
-      icon: "✨"
+      icon: ""
     }
   ];
 

@@ -30,8 +30,8 @@ export class ESP32TokenController {
   async getESP32Token(@Body() deviceTokenRequest: DeviceTokenRequestDto): Promise<DeviceTokenResponseDto> {
     const { device_id } = deviceTokenRequest;
     
-    this.logger.log(`🔧 ESP32 Token Request for Device: ${device_id}`);
-    this.logger.log(`⏰ Request Time: ${new Date().toISOString()}`);
+    this.logger.log(` ESP32 Token Request for Device: ${device_id}`);
+    this.logger.log(` Request Time: ${new Date().toISOString()}`);
 
     try {
       // Generate room name
@@ -54,8 +54,8 @@ export class ESP32TokenController {
 
       const token = await at.toJwt();
 
-      this.logger.log(`✅ ESP32 Token generated successfully for ${device_id}`);
-      this.logger.log(`🏠 Room: ${roomName}`);
+      this.logger.log(` ESP32 Token generated successfully for ${device_id}`);
+      this.logger.log(` Room: ${roomName}`);
 
       return {
         access_token: token,
@@ -66,8 +66,8 @@ export class ESP32TokenController {
       };
 
     } catch (error) {
-      this.logger.error(`❌ Failed to create ESP32 token for device: ${device_id}`);
-      this.logger.error(`💥 Error: ${error.message}`);
+      this.logger.error(` Failed to create ESP32 token for device: ${device_id}`);
+      this.logger.error(` Error: ${error.message}`);
       throw error;
     }
   }

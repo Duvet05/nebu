@@ -31,12 +31,12 @@ export async function action({ request }: ActionFunctionArgs) {
         break;
 
       case "order_expired":
-        console.log("⏰ Order expired:", result.data);
+        console.log(" Order expired:", result.data);
         // TODO: Update order status
         break;
 
       default:
-        console.log("📦 Unknown event type:", result.type);
+        console.log(" Unknown event type:", result.type);
     }
 
     return json({ received: true });

@@ -198,7 +198,7 @@ export class PushNotificationsService {
   // Métodos de conveniencia para notificaciones específicas
   async sendCourseEnrollmentNotification(userId: string, courseName: string): Promise<boolean> {
     return this.sendNotificationToUser(userId, {
-      title: '🎓 ¡Inscripción exitosa!',
+      title: ' ¡Inscripción exitosa!',
       body: `Te has inscrito exitosamente en "${courseName}"`,
       data: { type: 'enrollment', courseName },
       actionUrl: '/my-courses',
@@ -229,7 +229,7 @@ export class PushNotificationsService {
 
   async sendPaymentSuccessNotification(userId: string, courseName: string): Promise<boolean> {
     return this.sendNotificationToUser(userId, {
-      title: '💳 Pago procesado',
+      title: ' Pago procesado',
       body: `Tu pago para "${courseName}" ha sido procesado exitosamente`,
       data: { type: 'payment_success', courseName },
       actionUrl: '/my-courses',

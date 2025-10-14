@@ -1,4 +1,4 @@
-# 🎙️ LiveKit Local Setup - Nebu Mobile
+# ️ LiveKit Local Setup - Nebu Mobile
 
 LiveKit es un servidor de tiempo real para audio/video que se ejecuta localmente en tu stack de desarrollo.
 
@@ -22,7 +22,7 @@ API Key: nebu-dev
 Secret: nebu-dev-secret-key-2024
 ```
 
-⚠️ **IMPORTANTE**: Estas credenciales son solo para desarrollo. Cambiar en producción.
+ **IMPORTANTE**: Estas credenciales son solo para desarrollo. Cambiar en producción.
 
 ##  Integración con Mobile App
 
@@ -92,7 +92,7 @@ export class LiveKitService {
 }
 ```
 
-## 🛠️ Comandos Útiles
+## ️ Comandos Útiles
 
 ### Iniciar LiveKit
 ```bash
@@ -168,7 +168,7 @@ livekit:
 4. **Monitoring**: Monitoreo en tiempo real con audio/video
 5. **Collaborative Features**: Múltiples usuarios interactuando
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Problema: No se puede conectar
 ```bash
@@ -191,5 +191,5 @@ docker-compose logs livekit
 
 ---
 
-📚 **Documentación Oficial**: https://docs.livekit.io/
+ **Documentación Oficial**: https://docs.livekit.io/
 **SDK React Native**: https://github.com/livekit/client-sdk-react-native

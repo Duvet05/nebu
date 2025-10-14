@@ -15,7 +15,7 @@ export const emailTemplates = {
   newsletterWelcome: (email: string) => ({
     from: EMAIL_FROM,
     to: email,
-    subject: "¡Bienvenido a Nebu! 🤖",
+    subject: "¡Bienvenido a Nebu! ",
     html: `
       <!DOCTYPE html>
       <html>
@@ -34,7 +34,7 @@ export const emailTemplates = {
         <body>
           <div class="container">
             <div class="header">
-              <div class="emoji">🤖✨</div>
+              <div class="emoji"></div>
               <h1 style="margin: 0;">¡Bienvenido a la familia Nebu!</h1>
             </div>
             <div class="content">
@@ -44,10 +44,10 @@ export const emailTemplates = {
 
               <p><strong>¿Qué puedes esperar?</strong></p>
               <ul>
-                <li>🎁 Acceso anticipado a ofertas especiales</li>
-                <li>📚 Contenido exclusivo sobre educación sin pantallas</li>
-                <li>🌟 Las últimas novedades sobre Nebu</li>
-                <li>💡 Tips de crianza y desarrollo infantil</li>
+                <li> Acceso anticipado a ofertas especiales</li>
+                <li> Contenido exclusivo sobre educación sin pantallas</li>
+                <li> Las últimas novedades sobre Nebu</li>
+                <li> Tips de crianza y desarrollo infantil</li>
               </ul>
 
               <p style="text-align: center;">
@@ -84,7 +84,7 @@ export const emailTemplates = {
   }) => ({
     from: EMAIL_FROM,
     to: data.email,
-    subject: "¡Pre-orden confirmada! 🎉 - Nebu",
+    subject: "¡Pre-orden confirmada!  - Nebu",
     html: `
       <!DOCTYPE html>
       <html>
@@ -104,21 +104,21 @@ export const emailTemplates = {
         <body>
           <div class="container">
             <div class="header">
-              <div class="emoji">🎉✨</div>
+              <div class="emoji"></div>
               <h1 style="margin: 0;">¡Pre-orden confirmada!</h1>
             </div>
             <div class="content">
               <p>Hola <strong>${data.firstName}</strong>,</p>
 
-              <p>¡Gracias por pre-ordenar tu Nebu! Eres parte de algo especial. 🚀</p>
+              <p>¡Gracias por pre-ordenar tu Nebu! Eres parte de algo especial. </p>
 
               <div class="order-details">
                 <h3>Detalles de tu pre-orden:</h3>
                 <ul style="list-style: none; padding: 0;">
-                  <li>📦 <strong>Producto:</strong> Nebu IoT Companion</li>
-                  <li>🎨 <strong>Color:</strong> ${data.color}</li>
-                  <li>🔢 <strong>Cantidad:</strong> ${data.quantity}</li>
-                  <li class="price">💰 <strong>Total:</strong> S/${data.totalPrice}</li>
+                  <li> <strong>Producto:</strong> Nebu IoT Companion</li>
+                  <li> <strong>Color:</strong> ${data.color}</li>
+                  <li> <strong>Cantidad:</strong> ${data.quantity}</li>
+                  <li class="price"> <strong>Total:</strong> S/${data.totalPrice}</li>
                 </ul>
               </div>
 
@@ -130,7 +130,7 @@ export const emailTemplates = {
                 <li>Envío estimado: 6-8 semanas</li>
               </ol>
 
-              <p>🎁 <strong>Beneficios de pre-orden:</strong></p>
+              <p> <strong>Beneficios de pre-orden:</strong></p>
               <ul>
                 <li>33% de descuento (S/300 en vez de S/450)</li>
                 <li>Envío gratis a todo Perú</li>
@@ -173,7 +173,7 @@ export const emailTemplates = {
   }) => ({
     from: EMAIL_FROM,
     to: EMAIL_TO,
-    subject: `🎉 Nueva Pre-orden: ${data.firstName} ${data.lastName}`,
+    subject: ` Nueva Pre-orden: ${data.firstName} ${data.lastName}`,
     html: `
       <!DOCTYPE html>
       <html>
@@ -191,7 +191,7 @@ export const emailTemplates = {
         <body>
           <div class="container">
             <div class="header">
-              <h2 style="margin: 0;">🎉 Nueva Pre-orden Recibida</h2>
+              <h2 style="margin: 0;"> Nueva Pre-orden Recibida</h2>
             </div>
             <div class="content">
               <div class="info-box">

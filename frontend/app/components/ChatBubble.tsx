@@ -115,7 +115,7 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
                     transition={{ delay: 0.4 }}
                   >
                     <p className="text-sm text-gray-800 leading-relaxed">
-                      {t("chat.welcomeMessage", "¡Hola! Soy Nebu, tu asistente inteligente")} ✨
+                      {t("chat.welcomeMessage", "¡Hola! Soy Nebu, tu asistente inteligente")} 
                     </p>
                   </motion.div>
                 </motion.div>
@@ -134,21 +134,21 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      🚀 Pre-ordenar Nebu
+                       Pre-ordenar Nebu
                     </motion.button>
                     <motion.button 
                       className="bg-gradient-to-r from-accent/10 to-accent/5 text-accent px-4 py-2 rounded-full text-xs font-medium hover:from-accent/20 hover:to-accent/10 transition-all duration-200 border border-accent/20 hover:border-accent/30"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      💰 Ver precios
+                       Ver precios
                     </motion.button>
                     <motion.button 
                       className="bg-gradient-to-r from-gold/10 to-gold/5 text-gray-700 px-4 py-2 rounded-full text-xs font-medium hover:from-gold/20 hover:to-gold/10 transition-all duration-200 border border-gold/20 hover:border-gold/30"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      ❓ FAQ
+                       FAQ
                     </motion.button>
                   </div>
                 </motion.div>

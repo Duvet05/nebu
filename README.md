@@ -1,4 +1,4 @@
-# 🤖 Nebu - Consolidated Repository
+#  Nebu - Consolidated Repository
 
 <div align="center">
 
@@ -6,11 +6,11 @@
 ![Status](https://img.shields.io/badge/Status-Production%20Ready-green)
 ![Docker](https://img.shields.io/badge/Docker-Compose-blue)
 
-**🤖 Repositorio consolidado para el ecosistema Nebu IoT**
+** Repositorio consolidado para el ecosistema Nebu IoT**
 
 </div>
 
-## 🏗️ Architecture
+## ️ Architecture
 
 Consolidated monorepo structure for the Nebu IoT Companion project:
 
@@ -34,7 +34,7 @@ nebu/
 └── deploy-prod.sh     # Production deployment
 ```
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Production Deployment
 
@@ -60,30 +60,30 @@ cp template.env .env
 | Dashboard | http://127.0.0.1:9080 | 9080 | Traefik dashboard |
 | Grafana | Internal | - | Monitoring dashboard |
 
-## 📊 Features
+##  Features
 
 ### Production Ready
-- 🐳 Docker Compose orchestration
-- 🔒 SSL/TLS with Let's Encrypt
-- 🚦 Traefik reverse proxy
-- 📊 Complete monitoring stack
-- 🔴 Redis caching
-- 💾 PostgreSQL database
+-  Docker Compose orchestration
+-  SSL/TLS with Let's Encrypt
+-  Traefik reverse proxy
+-  Complete monitoring stack
+-  Redis caching
+-  PostgreSQL database
 
 ### Google Analytics 4
-- 📈 Real-time tracking
-- 🎯 Event tracking (CTA clicks, WhatsApp, newsletter)
-- 🌍 Multi-device support
-- 📱 Mobile optimization
+-  Real-time tracking
+-  Event tracking (CTA clicks, WhatsApp, newsletter)
+-  Multi-device support
+-  Mobile optimization
 
 ### Security & Performance
-- 🛡️ Rate limiting
-- 🔐 Security headers
-- 👤 Non-root containers
-- 💾 Resource limits
-- 🚀 Production optimization
+-  Rate limiting
+-  Security headers
+-  Non-root containers
+-  Resource limits
+-  Production optimization
 
-## 🛠️ Development
+## ️ Development
 
 ### Frontend (Remix)
 ```bash
@@ -99,14 +99,14 @@ npm install
 npm run start:dev
 ```
 
-## 📈 Monitoring
+##  Monitoring
 
 - **Grafana**: Dashboards and visualizations
 - **Prometheus**: Metrics collection  
 - **Loki**: Log aggregation
 - **Promtail**: Log shipping
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create feature branch
@@ -114,10 +114,10 @@ npm run start:dev
 4. Test thoroughly
 5. Submit pull request
 
-## 📄 License
+##  License
 
 MIT License - see LICENSE file for details.
 
 ---
 
-**Built with ❤️ by Flow-telligence Team**
+**Built with ️ by Flow-telligence Team**
