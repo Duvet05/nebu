@@ -49,7 +49,7 @@ export class AuthResponseDto {
   @ApiProperty({ type: AuthUserDto })
   user: AuthUserDto;
 
-  @ApiProperty()
+  @ApiProperty({ example: 86400, description: 'Token expiration time in seconds' })
   expiresIn: number;
 }
 
