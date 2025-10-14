@@ -78,7 +78,7 @@ export default function ConversationExamples() {
   const getCategoryLabel = (category: CategoryKey): string => {
     try {
       return t(`conversationExamples.categories.${category}`);
-    } catch (error) {
+    } catch {
       // Fallback labels
       const fallbackLabels = {
         educational: "Educativo",

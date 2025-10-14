@@ -1,7 +1,7 @@
 import type React from "react";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ChartNoAxesCombined, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface Message {

@@ -4,7 +4,7 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
-import { Mail, MapPin, Calendar, FileText, Shield, Cookie, Scale } from "lucide-react";
+import { Mail, Calendar, FileText, Shield, Cookie } from "lucide-react";
 
 export const meta: MetaFunction = () => {
   return [

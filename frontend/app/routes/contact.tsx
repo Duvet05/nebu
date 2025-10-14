@@ -54,7 +54,8 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
   try {
     // TODO: Implementar sendContactEmail para Nebu
     // await sendContactEmail({ firstName, lastName, email, subject, message });
-    console.log('Contact form submitted:', { firstName, lastName, email, subject, message });
+    // Development log - remove in production
+    // console.log('Contact form submitted:', { firstName, lastName, email, subject, message });
     return Response.json({ success: true } as ActionData);
   } catch (error) {
     console.error("Error al enviar email:", error);
@@ -300,7 +301,7 @@ export default function ContactPage() {
                         <Mail className="w-4 h-4" />
                         {t('contact.info.email')}
                       </h4>
-                      <p className="text-sm text-green-700">contact@flow-telligence.com</p>
+                      <p className="text-sm text-green-700">{t('contact.info.emailAddress')}</p>
                     </div>
                     
                     <div className="p-4 bg-blue-50 rounded-xl border border-blue-200">

@@ -20,10 +20,11 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
     e.preventDefault();
     if (message.trim()) {
       // Aquí se integraría con el sistema de chat
-      console.log("Mensaje enviado:", message);
+      // TODO: Integrar con backend de chat
+      // console.log("Mensaje enviado:", message);
       // Simular respuesta automática
       setTimeout(() => {
-        console.log("Respuesta automática de Nebu");
+        // console.log("Respuesta automática de Nebu");
       }, 1000);
       setMessage("");
     }
