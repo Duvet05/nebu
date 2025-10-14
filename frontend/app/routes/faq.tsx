@@ -1,5 +1,4 @@
 import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
