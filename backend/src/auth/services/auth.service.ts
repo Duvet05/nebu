@@ -18,6 +18,7 @@ import { AuthResponseDto, AuthUserDto } from '../dto/auth-response.dto';
 import { EmailService } from '../../email/services/email.service';
 import { OAuthProviderData } from '../../common/types/common.types';
 import { SocialLoginDto } from '../dto/social-login.dto';
+import { TokenValidationService } from './token-validation.service';
 
 interface OAuthVerificationResult {
   email: string;
@@ -35,7 +36,8 @@ export class AuthService {
     private userRepository: Repository<User>,
     private jwtService: JwtService,
     private emailService: EmailService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private tokenValidationService: TokenValidationService
   ) {}
 
   async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
@@ -282,25 +284,36 @@ export class AuthService {
     refreshToken: string;
     expiresIn: number;
   }> {
-    const payload = {
-      sub: user.id,
-      email: user.email,
-      role: user.role,
-    };
-
-    const accessToken = this.jwtService.sign(payload, {
-      expiresIn: this.configService.get<string>('auth.jwtExpiresIn'),
-    });
-
-    const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: this.configService.get<string>('auth.refreshTokenExpiresIn'),
-    });
+    // Emitir tokens con tipo y secretos adecuados
+    const accessToken = this.tokenValidationService.createAccessToken(user);
+    const refreshToken = this.tokenValidationService.createRefreshToken(user);
 
     return {
       accessToken,
       refreshToken,
-      expiresIn: 24 * 60 * 60, // 24 hours in seconds
+      expiresIn: this.getAccessTokenExpirySeconds(),
     };
+  }
+
+  private getAccessTokenExpirySeconds(): number {
+    const exp = this.configService.get<string>('auth.jwtExpiresIn', '24h');
+    // Soportar formatos como "60", "15m", "24h"
+    const match = /^\s*(\d+)\s*([smhd])?\s*$/i.exec(exp);
+    if (!match) return 24 * 60 * 60;
+    const value = parseInt(match[1], 10);
+    const unit = (match[2] || 's').toLowerCase();
+    switch (unit) {
+      case 's':
+        return value;
+      case 'm':
+        return value * 60;
+      case 'h':
+        return value * 60 * 60;
+      case 'd':
+        return value * 24 * 60 * 60;
+      default:
+        return 24 * 60 * 60;
+    }
   }
 
   private generateVerificationToken(): string {
@@ -397,27 +410,33 @@ export class AuthService {
 
   // Social Authentication Methods
   async socialLogin(socialLoginDto: SocialLoginDto): Promise<AuthResponseDto> {
-    const { token, provider, email, name, avatar } = socialLoginDto;
+    const { token, provider } = socialLoginDto;
 
     try {
-      // Verify token with social provider (simplified - in production, verify with provider APIs)
-      const isValidToken = await this.verifySocialToken(token, provider);
-      
-      if (!isValidToken) {
+      // Verificar token con el proveedor y obtener datos confiables (incluyendo providerId)
+      const verification = await this.verifySocialToken(token, provider);
+
+      if (!verification || !verification.email) {
         throw new UnauthorizedException('Invalid social token');
       }
 
       // Check if user exists
       let user = await this.userRepository.findOne({
         where: [
-          { email },
-          { oauthProvider: provider, oauthId: token }, // Using token as oauthId for simplicity
+          { email: verification.email },
+          { oauthProvider: provider, oauthId: verification.providerId },
         ],
       });
 
       if (!user) {
         // Create new user
-        user = await this.createSocialUser(email, name, avatar, provider, token);
+        user = await this.createSocialUser(
+          verification.email,
+          verification.name,
+          verification.picture,
+          provider,
+          verification.providerId
+        );
       } else {
         // Update last login
         user.lastLoginAt = new Date();
@@ -476,27 +495,27 @@ export class AuthService {
     });
   }
 
-  private async verifySocialToken(token: string, provider: string): Promise<boolean> {
+  private async verifySocialToken(
+    token: string,
+    provider: string
+  ): Promise<(OAuthVerificationResult & { providerId?: string }) | null> {
     try {
       switch (provider) {
         case 'google':
-          await this.verifyGoogleToken(token);
-          return true;
+          return await this.verifyGoogleToken(token);
         case 'facebook':
-          await this.verifyFacebookToken(token);
-          return true;
+          return await this.verifyFacebookToken(token);
         case 'apple':
-          await this.verifyAppleToken(token);
-          return true;
+          return await this.verifyAppleToken(token);
         default:
-          return false;
+          return null;
       }
     } catch {
-      return false;
+      return null;
     }
   }
 
-  private async verifyGoogleToken(token: string): Promise<OAuthVerificationResult> {
+  private async verifyGoogleToken(token: string): Promise<OAuthVerificationResult & { providerId?: string }> {
     // Verify token with Google's tokeninfo API
     // https://developers.google.com/identity/sign-in/web/backend-auth
     try {
@@ -508,7 +527,7 @@ export class AuthService {
         throw new UnauthorizedException('Invalid Google token');
       }
 
-      const data = await response.json();
+  const data = await response.json();
 
       // Verify the token audience matches your client ID
       const googleClientId = this.configService.get<string>('auth.googleClientId');
@@ -521,6 +540,7 @@ export class AuthService {
         name: data.name,
         picture: data.picture,
         emailVerified: data.email_verified,
+        providerId: data.sub,
       };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
@@ -529,7 +549,7 @@ export class AuthService {
     }
   }
 
-  private async verifyFacebookToken(token: string): Promise<OAuthVerificationResult> {
+  private async verifyFacebookToken(token: string): Promise<OAuthVerificationResult & { providerId?: string }> {
     // Verify token with Facebook's Graph API
     // https://developers.facebook.com/docs/facebook-login/guides/advanced/confirm
     try {
@@ -564,12 +584,13 @@ export class AuthService {
         throw new UnauthorizedException('Failed to get Facebook user info');
       }
 
-      const userData = await userResponse.json();
+  const userData = await userResponse.json();
 
       return {
         email: userData.email,
         name: userData.name,
         picture: userData.picture?.data?.url,
+        providerId: userData.id,
       };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
@@ -578,12 +599,12 @@ export class AuthService {
     }
   }
 
-  private async verifyAppleToken(token: string): Promise<OAuthVerificationResult> {
+  private async verifyAppleToken(token: string): Promise<OAuthVerificationResult & { providerId?: string }> {
     // Verify Apple's identity token
     // https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api/verifying_a_user
     try {
       // Apple uses JWT tokens that need to be verified
-      const decoded = this.jwtService.decode(token) as any;
+  const decoded = this.jwtService.decode(token) as any;
 
       if (!decoded) {
         throw new UnauthorizedException('Invalid Apple token');
@@ -613,6 +634,7 @@ export class AuthService {
         email: decoded.email,
         name: decoded.email?.split('@')[0] || 'Apple User',
         emailVerified: decoded.email_verified === 'true',
+        providerId: decoded.sub,
       };
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';

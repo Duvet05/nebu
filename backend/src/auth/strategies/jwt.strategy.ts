@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false, // We handle expiration in our validation service
+      ignoreExpiration: true, // Validaremos expiración con TokenValidationService
       secretOrKey: configService.get<string>('auth.jwtSecret'),
       passReqToCallback: true, // Allow access to request for token extraction
     });
@@ -35,8 +35,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         throw new UnauthorizedException('Token no proporcionado');
       }
 
-      // Use enhanced token validation
-      const validationResult = await this.tokenValidationService.validateToken(token, 'access');
+  // Validación integral del token de acceso
+  const validationResult = await this.tokenValidationService.validateToken(token, 'access');
 
       if (!validationResult.isValid) {
         if (validationResult.isExpired) {

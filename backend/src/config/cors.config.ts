@@ -22,9 +22,9 @@ export const corsConfig = {
   production: [
     process.env.FRONTEND_URL!,
     process.env.FRONTEND_URL?.replace('https://', 'https://www.'),
-    'https://nebu.com',
-    'https://www.nebu.com',
-    'https://api.nebu.com',
+    process.env.DOMAIN ? `https://${process.env.DOMAIN}` : undefined,
+    process.env.DOMAIN ? `https://www.${process.env.DOMAIN}` : undefined,
+    process.env.DOMAIN ? `https://api.${process.env.DOMAIN}` : undefined,
     ...getLocalhostOrigins(), // Conditionally add localhost origins
   ].filter(Boolean),
   development: [
@@ -74,9 +74,16 @@ export const corsRegexConfig = {
 export function getCorsOrigins() {
   const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
   
-  // Allow all origins for IoT devices in production
+  // En producción, NO permitir todo (*) sino lista cerrada
+  // EXCEPCIÓN: Si la variable IOT_ALLOW_ALL_ORIGINS=true, se permite para ESP32/IoT
   if (env === 'production') {
-    return true; // Allow all origins for IoT devices
+    const allowIotAll = process.env.IOT_ALLOW_ALL_ORIGINS === 'true';
+    if (allowIotAll) {
+      // Para dispositivos IoT que no manejan bien CORS o certificados autofirmados
+      return true;
+    }
+    // Lista cerrada de dominios confiables en producción
+    return corsConfig[env];
   }
   
   return corsConfig[env];

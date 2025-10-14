@@ -66,8 +66,8 @@ export class TokenValidationService {
         };
       }
 
-      // Verify token signature and structure
-      const verifiedPayload = this.jwtService.verify(token);
+  // Verify token signature and structure con secreto acorde
+  const verifiedPayload = this.verifyWithProperSecret(token, tokenType);
 
       // Validate token type if specified
       if (tokenType && verifiedPayload.tokenType && verifiedPayload.tokenType !== tokenType) {
@@ -136,6 +136,13 @@ export class TokenValidationService {
         error: 'Error interno validando token',
       };
     }
+  }
+
+  private verifyWithProperSecret(token: string, tokenType: 'access' | 'refresh') {
+    const secret = tokenType === 'refresh'
+      ? this.configService.get<string>('auth.refreshTokenSecret')
+      : this.configService.get<string>('auth.jwtSecret');
+    return this.jwtService.verify(token, { secret });
   }
 
   /**
@@ -227,6 +234,7 @@ export class TokenValidationService {
     };
 
     return this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('auth.jwtSecret'),
       expiresIn: this.configService.get<string>('auth.jwtExpiresIn', '1h'),
     });
   }
@@ -244,6 +252,7 @@ export class TokenValidationService {
     };
 
     return this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('auth.refreshTokenSecret'),
       expiresIn: this.configService.get<string>('auth.refreshTokenExpiresIn', '7d'),
     });
   }

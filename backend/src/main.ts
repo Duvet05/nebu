@@ -8,10 +8,14 @@ import { ValidationSanitizationPipe } from './common/pipes/validation-sanitizati
 import { getCorsOrigins } from './config/cors.config';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const logger = new Logger('Bootstrap');
+
+  // Determinar si se usa modo IoT (allow all origins)
+  const iotMode = process.env.IOT_ALLOW_ALL_ORIGINS === 'true';
 
   // CORS configuration for IoT devices and web apps
   app.enableCors({
@@ -25,9 +29,20 @@ async function bootstrap() {
       'Origin',
       'User-Agent'
     ],
-    credentials: true,
+    credentials: !iotMode, // Solo credentials si NO es modo IoT
     optionsSuccessStatus: 200, // For legacy browsers and IoT devices
   });
+
+  // Security headers via Helmet (CSP gestionada en Traefik)
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false,
+      crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
+      referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+      xPoweredBy: false as any,
+    })
+  );
 
   // Log CORS configuration in development
   if (process.env.NODE_ENV !== 'production') {
