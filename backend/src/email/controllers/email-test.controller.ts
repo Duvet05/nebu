@@ -43,11 +43,12 @@ export class EmailTestController {
     type: EmailType;
   }) {
     // Simular envío de email sin usar SMTP real
-    console.log(' MOCK EMAIL SENT:');
-    console.log(`   To: ${data.to}`);
-    console.log(`   Subject: ${data.subject}`);
-    console.log(`   Type: ${data.type}`);
-    console.log(`   Content: ${data.content.substring(0, 100)}...`);
+    // Development logging - disabled in production
+    // console.log('✅ MOCK EMAIL SENT:');
+    // console.log(`   To: ${data.to}`);
+    // console.log(`   Subject: ${data.subject}`);
+    // console.log(`   Type: ${data.type}`);
+    // console.log(`   Content: ${data.content.substring(0, 100)}...`);
     
     return {
       success: true,

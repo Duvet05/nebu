@@ -227,11 +227,14 @@ El equipo de Nebu`,
     if (!existingTemplate) {
       const template = emailTemplateRepository.create(templateData);
       await emailTemplateRepository.save(template);
+      // eslint-disable-next-line no-console
       console.log(` Plantilla "${templateData.name}" creada exitosamente`);
     } else {
+      // eslint-disable-next-line no-console
       console.log(` Plantilla "${templateData.name}" ya existe`);
     }
   }
 
+  // eslint-disable-next-line no-console
   console.log(' Plantillas de email sembradas exitosamente');
 }

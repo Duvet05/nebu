@@ -184,7 +184,7 @@ export class NotificationsService {
 
   private async sendNotification(notification: Notification): Promise<void> {
     switch (notification.type) {
-      case NotificationType.EMAIL:
+      case NotificationType.EMAIL: {
         // Extract action URL from notification data
         const data = notification.data ? JSON.parse(notification.data) : {};
         let actionUrl: string | undefined;
@@ -206,6 +206,7 @@ export class NotificationsService {
           actionText,
         });
         break;
+      }
       case NotificationType.PUSH:
         await this.pushService.sendPush(notification);
         break;

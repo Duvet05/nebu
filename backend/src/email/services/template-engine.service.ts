@@ -370,6 +370,7 @@ export class TemplateEngineService {
           rendered = rendered.replace(match, this.formatValue(value));
         } else {
           // If variable is not found, keep the original placeholder
+          // eslint-disable-next-line no-console
           console.warn(`Variable not found: ${variableName}`);
         }
       }

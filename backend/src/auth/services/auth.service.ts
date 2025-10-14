@@ -491,7 +491,7 @@ export class AuthService {
         default:
           return false;
       }
-    } catch (error) {
+    } catch {
       return false;
     }
   }
