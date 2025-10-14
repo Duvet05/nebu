@@ -1,7 +1,14 @@
 import { Resend } from "resend";
 
-// Initialize Resend client
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend client lazily
+let resend: Resend | null = null;
+
+const getResendClient = () => {
+  if (!resend && process.env.RESEND_API_KEY) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+};
 
 // Email configuration
 const EMAIL_FROM = process.env.EMAIL_FROM || "Nebu <noreply@flow-telligence.com>";
@@ -235,8 +242,13 @@ export const emailTemplates = {
  */
 export async function sendNewsletterWelcome(email: string) {
   try {
+    const client = getResendClient();
+    if (!client) {
+      console.warn("Resend client not initialized - missing RESEND_API_KEY");
+      return { success: false, error: "Email service not configured" };
+    }
     const emailData = emailTemplates.newsletterWelcome(email);
-    const response = await resend.emails.send(emailData);
+    const response = await client.emails.send(emailData);
     return { success: true, data: response };
   } catch (error) {
     console.error("Error sending newsletter welcome email:", error);
@@ -256,8 +268,13 @@ export async function sendPreOrderConfirmation(data: {
   totalPrice: number;
 }) {
   try {
+    const client = getResendClient();
+    if (!client) {
+      console.warn("Resend client not initialized - missing RESEND_API_KEY");
+      return { success: false, error: "Email service not configured" };
+    }
     const emailData = emailTemplates.preOrderConfirmation(data);
-    const response = await resend.emails.send(emailData);
+    const response = await client.emails.send(emailData);
     return { success: true, data: response };
   } catch (error) {
     console.error("Error sending pre-order confirmation:", error);
@@ -282,8 +299,13 @@ export async function sendPreOrderNotification(data: {
   paymentMethod: string;
 }) {
   try {
+    const client = getResendClient();
+    if (!client) {
+      console.warn("Resend client not initialized - missing RESEND_API_KEY");
+      return { success: false, error: "Email service not configured" };
+    }
     const emailData = emailTemplates.preOrderNotification(data);
-    const response = await resend.emails.send(emailData);
+    const response = await client.emails.send(emailData);
     return { success: true, data: response };
   } catch (error) {
     console.error("Error sending pre-order notification:", error);
