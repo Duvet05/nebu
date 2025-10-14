@@ -127,28 +127,30 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
                   transition={{ delay: 0.5 }}
                   className="space-y-3 mt-4"
                 >
-                  <p className="text-xs font-medium text-gray-600 px-2 mb-2">¿En qué puedo ayudarte?</p>
+                  <p className="text-xs font-medium text-gray-600 px-2 mb-2">
+                    {t("chat.quickActionsPrompt", "¿En qué puedo ayudarte?")}
+                  </p>
                   <div className="flex flex-wrap gap-2">
                     <motion.button 
                       className="bg-gradient-to-r from-primary/10 to-primary/5 text-primary px-4 py-2 rounded-full text-xs font-medium hover:from-primary/20 hover:to-primary/10 transition-all duration-200 border border-primary/20 hover:border-primary/30"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                       Pre-ordenar Nebu
+                      {t("chat.buttons.preOrder", "Pre-ordenar Nebu")}
                     </motion.button>
                     <motion.button 
                       className="bg-gradient-to-r from-accent/10 to-accent/5 text-accent px-4 py-2 rounded-full text-xs font-medium hover:from-accent/20 hover:to-accent/10 transition-all duration-200 border border-accent/20 hover:border-accent/30"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                       Ver precios
+                      {t("chat.buttons.pricing", "Ver precios")}
                     </motion.button>
                     <motion.button 
                       className="bg-gradient-to-r from-gold/10 to-gold/5 text-gray-700 px-4 py-2 rounded-full text-xs font-medium hover:from-gold/20 hover:to-gold/10 transition-all duration-200 border border-gold/20 hover:border-gold/30"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                       FAQ
+                      {t("chat.buttons.faq", "FAQ")}
                     </motion.button>
                   </div>
                 </motion.div>
@@ -169,7 +171,7 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
                     type="text"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Escribe tu mensaje..."
+                    placeholder={t("chat.placeholder", "Escribe tu mensaje...")}
                     className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 bg-white/90 backdrop-blur-sm shadow-sm"
                   />
                 </div>

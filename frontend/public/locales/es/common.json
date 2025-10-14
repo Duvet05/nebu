@@ -367,16 +367,55 @@
         "content": {
           "intro": "En Flow-telligence, la privacidad de las familias y especialmente de los niños es nuestra máxima prioridad.",
           "collection": {
-            "title": "1. Información que Recopilamos"
+            "title": "1. Información que Recopilamos",
+            "content": "Recopilamos solo la información mínima necesaria para proporcionar nuestros servicios educativos.",
+            "item1": "Consentimiento parental verificable antes de recopilar información de menores de 13 años",
+            "item2": "Control parental total para revisar, modificar o eliminar información",
+            "item3": "Recopilación mínima de datos necesarios para el funcionamiento",
+            "item4": "Prohibición absoluta de compartir información infantil con terceros"
           },
           "use": {
-            "title": "2. Cómo Utilizamos su Información"
+            "title": "2. Cómo Utilizamos su Información",
+            "content": "Utilizamos la información recopilada únicamente para mejorar la experiencia educativa de su hijo."
+          },
+          "sharing": {
+            "title": "3. Compartir Información",
+            "content": "Nunca compartimos información de niños con terceros. Sus datos permanecen privados y seguros."
           },
           "security": {
-            "title": "4. Seguridad de los Datos"
+            "title": "4. Seguridad de los Datos",
+            "content": "Implementamos medidas de seguridad de nivel empresarial para proteger toda la información."
+          },
+          "rights": {
+            "title": "5. Sus Derechos",
+            "content": "Tiene derecho a acceder, modificar o eliminar toda la información de su familia en cualquier momento."
+          }
+        }
+      },
+      "cookies": {
+        "title": "Política de Cookies",
+        "content": {
+          "intro": "Utilizamos cookies para mejorar su experiencia en nuestro sitio web.",
+          "what": {
+            "title": "¿Qué son las cookies?",
+            "content": "Las cookies son pequeños archivos de texto que se almacenan en su dispositivo para recordar sus preferencias."
+          },
+          "types": {
+            "title": "Tipos de cookies",
+            "content": "Utilizamos cookies esenciales para el funcionamiento del sitio y cookies analíticas para mejorar nuestros servicios."
+          },
+          "control": {
+            "title": "Control de cookies",
+            "content": "Puede controlar y eliminar cookies a través de la configuración de su navegador en cualquier momento."
           }
         }
       }
+    },
+    "contact": {
+      "title": "Información de Contacto",
+      "description": "¿Tiene preguntas sobre nuestra política de privacidad? Contáctenos:",
+      "email": "Email: privacidad@flow-telligence.com",
+      "address": "Lima, Perú"
     }
   },
   "newsletter": {
@@ -388,7 +427,8 @@
     "privacy": "Al registrarte, aceptas nuestra política de privacidad."
   },
   "whatsapp": {
-    "tooltip": "¡Escríbenos por WhatsApp!"
+    "tooltip": "¡Escríbenos por WhatsApp!",
+    "defaultMessage": "¡Hola! Me interesa conocer más sobre Nebu"
   },
   "notFound": {
     "title": "Página no encontrada",
@@ -490,6 +530,7 @@
     "welcomeMessage": "¡Hola! Soy Nebu. ¿En qué puedo ayudarte hoy?",
     "placeholder": "Escribe tu mensaje...",
     "quickActions": "Acciones rápidas:",
+    "quickActionsPrompt": "¿En qué puedo ayudarte?",
     "buttons": {
       "preOrder": "Pre-ordenar Nebu",
       "pricing": "Ver precios",

@@ -97,10 +97,10 @@ export default function PrivacyPolicy() {
                           {t('legal.sections.privacy.content.collection.content')}
                         </p>
                         <ul className="list-disc pl-6 space-y-1 text-gray-600">
-                          <li>Consentimiento parental verificable antes de recopilar información de menores de 13 años</li>
-                          <li>Control parental total para revisar, modificar o eliminar información</li>
-                          <li>Recopilación mínima de datos necesarios para el funcionamiento</li>
-                          <li>Prohibición absoluta de compartir información infantil con terceros</li>
+                          <li>{t('legal.sections.privacy.content.collection.item1', 'Consentimiento parental verificable antes de recopilar información de menores de 13 años')}</li>
+                          <li>{t('legal.sections.privacy.content.collection.item2', 'Control parental total para revisar, modificar o eliminar información')}</li>
+                          <li>{t('legal.sections.privacy.content.collection.item3', 'Recopilación mínima de datos necesarios para el funcionamiento')}</li>
+                          <li>{t('legal.sections.privacy.content.collection.item4', 'Prohibición absoluta de compartir información infantil con terceros')}</li>
                         </ul>
                       </div>
                       

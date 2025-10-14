@@ -11,15 +11,17 @@ interface WhatsAppButtonProps {
 export function WhatsAppButton({
   className = "",
   phoneNumber = "+51970116770", // Número de Flow-telligence Peru
-  message = "¡Hola! Me interesa conocer más sobre Nebu "
+  message
 }: WhatsAppButtonProps) {
   const { t } = useTranslation("common");
+  const defaultMessage = t("whatsapp.defaultMessage", "¡Hola! Me interesa conocer más sobre Nebu");
 
   const handleWhatsAppClick = () => {
     // Track WhatsApp click
     analytics.whatsappClick("floating-button");
 
-    const encodedMessage = encodeURIComponent(message);
+    const finalMessage = message || defaultMessage;
+    const encodedMessage = encodeURIComponent(finalMessage);
     const whatsappUrl = `https://wa.me/${phoneNumber.replace('+', '')}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
   };
