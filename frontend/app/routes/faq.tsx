@@ -1,5 +1,4 @@
 import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 import { Header } from "~/components/layout/Header";
@@ -38,14 +37,13 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const locale = await i18next.getLocale(request);
-  return json({
+  return ({
     locale,
   });
 }
 
 export default function FAQ() {
   const { t } = useTranslation();
-  const { locale } = useLoaderData<typeof loader>();
 
   const faqs = [
     {
