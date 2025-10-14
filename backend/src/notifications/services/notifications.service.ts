@@ -9,7 +9,7 @@ import {
 import { NotificationTemplate } from '../entities/notification-template.entity';
 import { CreateNotificationDto } from '../dto/create-notification.dto';
 import { SendNotificationDto } from '../dto/send-notification.dto';
-import { EmailNotificationsService } from './email-notifications.service';
+import { EmailService } from '../../email/services/email.service';
 import { PushNotificationsService } from './push-notifications.service';
 import { NotificationValidator } from '../validators/notification.validator';
 
@@ -20,7 +20,7 @@ export class NotificationsService {
     private notificationRepository: Repository<Notification>,
     @InjectRepository(NotificationTemplate)
     private templateRepository: Repository<NotificationTemplate>,
-    private emailService: EmailNotificationsService,
+    private emailService: EmailService,
     private pushService: PushNotificationsService,
     private validator: NotificationValidator
   ) {}
@@ -169,6 +169,7 @@ export class NotificationsService {
         status: NotificationStatus.PENDING,
         scheduledAt: Between(new Date(0), new Date()),
       },
+      relations: ['user'],
       take: 100,
     });
 
@@ -184,7 +185,26 @@ export class NotificationsService {
   private async sendNotification(notification: Notification): Promise<void> {
     switch (notification.type) {
       case NotificationType.EMAIL:
-        await this.emailService.sendEmail(notification);
+        // Extract action URL from notification data
+        const data = notification.data ? JSON.parse(notification.data) : {};
+        let actionUrl: string | undefined;
+        let actionText: string | undefined;
+
+        if (data.courseId) {
+          actionUrl = `${process.env.FRONTEND_URL}/courses/${data.courseId}`;
+          actionText = 'Ver Curso';
+        } else if (data.lessonId) {
+          actionUrl = `${process.env.FRONTEND_URL}/lessons/${data.lessonId}`;
+          actionText = 'Ver Lección';
+        }
+
+        await this.emailService.sendNotificationEmail({
+          to: notification.user.email,
+          title: notification.title,
+          message: notification.message,
+          actionUrl,
+          actionText,
+        });
         break;
       case NotificationType.PUSH:
         await this.pushService.sendPush(notification);

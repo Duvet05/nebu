@@ -166,6 +166,84 @@ export class EmailService {
     });
   }
 
+  async sendVerificationEmail(userEmail: string, verificationToken: string): Promise<EmailLog> {
+    const verificationUrl = `${this.configService.get('FRONTEND_URL')}/verify-email?token=${verificationToken}`;
+
+    const content = `
+      <h1>Verifica tu cuenta</h1>
+      <p>Bienvenido a Nebu. Por favor verifica tu cuenta haciendo clic en el siguiente enlace:</p>
+      <a href="${verificationUrl}" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Verificar cuenta</a>
+      <p>Este enlace expirará en 24 horas.</p>
+      <p>Si no creaste esta cuenta, puedes ignorar este email.</p>
+    `;
+
+    return this.sendEmail({
+      to: userEmail,
+      subject: 'Verifica tu cuenta - Nebu',
+      content,
+      type: EmailType.EMAIL_VERIFICATION,
+      accountType: EmailAccountType.NOREPLY,
+      isHtml: true,
+      metadata: { verificationToken, userEmail },
+    });
+  }
+
+  async sendNotificationEmail(data: {
+    to: string;
+    title: string;
+    message: string;
+    actionUrl?: string;
+    actionText?: string;
+  }): Promise<EmailLog> {
+    const content = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>${data.title}</title>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #4F46E5; color: white; padding: 20px; text-align: center; }
+            .content { padding: 20px; background: #f9f9f9; }
+            .footer { padding: 20px; text-align: center; font-size: 12px; color: #666; }
+            .button { display: inline-block; padding: 10px 20px; background: #4F46E5; color: white; text-decoration: none; border-radius: 5px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>${data.title}</h1>
+            </div>
+            <div class="content">
+              <p>${data.message}</p>
+              ${data.actionUrl && data.actionText ? `
+                <div style="text-align: center; margin: 20px 0;">
+                  <a href="${data.actionUrl}" class="button">${data.actionText}</a>
+                </div>
+              ` : ''}
+            </div>
+            <div class="footer">
+              <p>Este es un mensaje automático, por favor no responda a este correo.</p>
+              <p>© ${new Date().getFullYear()} Nebu</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    return this.sendEmail({
+      to: data.to,
+      subject: data.title,
+      content,
+      type: EmailType.NOTIFICATION,
+      accountType: EmailAccountType.TEAM,
+      isHtml: true,
+      metadata: { title: data.title, actionUrl: data.actionUrl },
+    });
+  }
+
   // ===== PRIVATE METHODS =====
 
   private async getEmailAccount(accountType: EmailAccountType): Promise<EmailAccount> {

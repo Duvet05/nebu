@@ -1,6 +1,6 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ClassSerializerInterceptor } from '@nestjs/common';
+import { ClassSerializerInterceptor, Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ErrorHandlingInterceptor } from './common/interceptors/error-handling.interceptor';
 import { QueryOptimizationInterceptor } from './common/interceptors/query-optimization.interceptor';
@@ -11,14 +11,15 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const logger = new Logger('Bootstrap');
 
   // CORS configuration for IoT devices and web apps
   app.enableCors({
     origin: getCorsOrigins(),
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: [
-      'Content-Type', 
-      'Authorization', 
+      'Content-Type',
+      'Authorization',
       'X-Requested-With',
       'Accept',
       'Origin',
@@ -30,12 +31,10 @@ async function bootstrap() {
 
   // Log CORS configuration in development
   if (process.env.NODE_ENV !== 'production') {
-    // eslint-disable-next-line no-console
-    console.log(' CORS Configuration:', {
-      NODE_ENV: process.env.NODE_ENV,
-      FRONTEND_URL: process.env.FRONTEND_URL,
-      DOMAIN: process.env.DOMAIN,
-    });
+    logger.log('🌐 CORS Configuration:');
+    logger.log(`  NODE_ENV: ${process.env.NODE_ENV}`);
+    logger.log(`  FRONTEND_URL: ${process.env.FRONTEND_URL}`);
+    logger.log(`  DOMAIN: ${process.env.DOMAIN}`);
   }
 
   // Global validation pipe with sanitization
@@ -90,21 +89,18 @@ async function bootstrap() {
   const port = process.env.PORT || 3001;
   await app.listen(port);
 
-  // eslint-disable-next-line no-console
-  console.log(`
- Nebu Mobile Backend iniciado!
- URL: http://localhost:${port}
- API Docs: http://localhost:${port}/api/docs
- Health Check: http://localhost:${port}/health
-� Health Detailed: http://localhost:${port}/health/detailed
- Readiness: http://localhost:${port}/health/readiness
-️ Liveness: http://localhost:${port}/health/liveness
-� Uploads: http://localhost:${port}/uploads/
-Admin Panel: http://localhost:${port}/admin
-️ LiveKit: http://localhost:7880
- Voice Agent: Ready for AI integration
- Mobile API: Ready for React Native
-  `);
+  logger.log('🚀 Nebu Mobile Backend iniciado!');
+  logger.log(`📍 URL: http://localhost:${port}`);
+  logger.log(`📚 API Docs: http://localhost:${port}/api/docs`);
+  logger.log(`💚 Health Check: http://localhost:${port}/health`);
+  logger.log(`🔍 Health Detailed: http://localhost:${port}/health/detailed`);
+  logger.log(`✅ Readiness: http://localhost:${port}/health/readiness`);
+  logger.log(`❤️ Liveness: http://localhost:${port}/health/liveness`);
+  logger.log(`📁 Uploads: http://localhost:${port}/uploads/`);
+  logger.log(`🔧 Admin Panel: http://localhost:${port}/admin`);
+  logger.log(`🎥 LiveKit: http://localhost:7880`);
+  logger.log(`🎤 Voice Agent: Ready for AI integration`);
+  logger.log(`📱 Mobile API: Ready for React Native`);
 }
 
 bootstrap();

@@ -19,6 +19,7 @@ export enum EmailStatus {
 export enum EmailType {
   NOTIFICATION = 'notification',
   WELCOME = 'welcome',
+  EMAIL_VERIFICATION = 'email_verification',
   PASSWORD_RESET = 'password_reset',
   COURSE_ENROLLMENT = 'course_enrollment',
   PAYMENT_CONFIRMATION = 'payment_confirmation',

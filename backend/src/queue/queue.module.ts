@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 import { ConfigService } from '@nestjs/config';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { EmailModule } from '../email/email.module';
 import { QueueService } from './services/queue.service';
 import { VideoProcessingService } from './services/video-processing.service';
 import { EmailQueueService } from './services/email-queue.service';
@@ -23,6 +24,7 @@ import { EmailProcessor } from './processors/email.processor';
     }),
     BullModule.registerQueue({ name: 'video-processing' }, { name: 'email-queue' }),
     NotificationsModule,
+    EmailModule,
   ],
   providers: [
     QueueService,

@@ -4,6 +4,7 @@ import {
   ConflictException,
   BadRequestException,
   NotFoundException,
+  Logger,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -14,12 +15,21 @@ import { User, UserStatus } from '../../users/entities/user.entity';
 import { RegisterDto } from '../dto/register.dto';
 import { LoginDto } from '../dto/login.dto';
 import { AuthResponseDto, AuthUserDto } from '../dto/auth-response.dto';
-import { EmailService } from './email.service';
+import { EmailService } from '../../email/services/email.service';
 import { OAuthProviderData } from '../../common/types/common.types';
 import { SocialLoginDto } from '../dto/social-login.dto';
 
+interface OAuthVerificationResult {
+  email: string;
+  name: string;
+  picture?: string;
+  emailVerified?: boolean;
+}
+
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -422,7 +432,7 @@ export class AuthService {
         ...tokens,
       };
     } catch (error) {
-      console.error('Social login error:', error);
+      this.logger.error(`Social login error: ${error.message}`, error.stack);
       throw new UnauthorizedException('Social login failed');
     }
   }
@@ -449,7 +459,7 @@ export class AuthService {
       provider: 'facebook',
       email: userInfo.email,
       name: userInfo.name,
-      avatar: userInfo.picture?.data?.url,
+      avatar: userInfo.picture,
     });
   }
 
@@ -467,42 +477,148 @@ export class AuthService {
   }
 
   private async verifySocialToken(token: string, provider: string): Promise<boolean> {
-    // Simplified verification - in production, verify with actual provider APIs
-    // For now, just check if token is not empty
-    return !!token && token.length > 10;
+    try {
+      switch (provider) {
+        case 'google':
+          await this.verifyGoogleToken(token);
+          return true;
+        case 'facebook':
+          await this.verifyFacebookToken(token);
+          return true;
+        case 'apple':
+          await this.verifyAppleToken(token);
+          return true;
+        default:
+          return false;
+      }
+    } catch (error) {
+      return false;
+    }
   }
 
-  private async verifyGoogleToken(token: string): Promise<any> {
-    // In production, use Google's tokeninfo API
+  private async verifyGoogleToken(token: string): Promise<OAuthVerificationResult> {
+    // Verify token with Google's tokeninfo API
     // https://developers.google.com/identity/sign-in/web/backend-auth
-    return {
-      email: 'user@gmail.com',
-      name: 'Google User',
-      picture: 'https://via.placeholder.com/150',
-    };
+    try {
+      const response = await fetch(
+        `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`
+      );
+
+      if (!response.ok) {
+        throw new UnauthorizedException('Invalid Google token');
+      }
+
+      const data = await response.json();
+
+      // Verify the token audience matches your client ID
+      const googleClientId = this.configService.get<string>('auth.googleClientId');
+      if (googleClientId && data.aud !== googleClientId) {
+        throw new UnauthorizedException('Google token audience mismatch');
+      }
+
+      return {
+        email: data.email,
+        name: data.name,
+        picture: data.picture,
+        emailVerified: data.email_verified,
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      this.logger.error(`Google token verification failed: ${message}`);
+      throw new UnauthorizedException(`Google token verification failed: ${message}`);
+    }
   }
 
-  private async verifyFacebookToken(token: string): Promise<any> {
-    // In production, use Facebook's Graph API
+  private async verifyFacebookToken(token: string): Promise<OAuthVerificationResult> {
+    // Verify token with Facebook's Graph API
     // https://developers.facebook.com/docs/facebook-login/guides/advanced/confirm
-    return {
-      email: 'user@facebook.com',
-      name: 'Facebook User',
-      picture: {
-        data: {
-          url: 'https://via.placeholder.com/150',
-        },
-      },
-    };
+    try {
+      const appId = this.configService.get<string>('auth.facebookAppId');
+      const appSecret = this.configService.get<string>('auth.facebookAppSecret');
+
+      // First, verify the token with Facebook
+      const debugResponse = await fetch(
+        `https://graph.facebook.com/debug_token?input_token=${token}&access_token=${appId}|${appSecret}`
+      );
+
+      if (!debugResponse.ok) {
+        throw new UnauthorizedException('Invalid Facebook token');
+      }
+
+      const debugData = await debugResponse.json();
+
+      if (!debugData.data || !debugData.data.is_valid) {
+        throw new UnauthorizedException('Facebook token is not valid');
+      }
+
+      if (debugData.data.app_id !== appId) {
+        throw new UnauthorizedException('Facebook token app ID mismatch');
+      }
+
+      // Get user info
+      const userResponse = await fetch(
+        `https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${token}`
+      );
+
+      if (!userResponse.ok) {
+        throw new UnauthorizedException('Failed to get Facebook user info');
+      }
+
+      const userData = await userResponse.json();
+
+      return {
+        email: userData.email,
+        name: userData.name,
+        picture: userData.picture?.data?.url,
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      this.logger.error(`Facebook token verification failed: ${message}`);
+      throw new UnauthorizedException(`Facebook token verification failed: ${message}`);
+    }
   }
 
-  private async verifyAppleToken(token: string): Promise<any> {
-    // In production, use Apple's identity token verification
+  private async verifyAppleToken(token: string): Promise<OAuthVerificationResult> {
+    // Verify Apple's identity token
     // https://developer.apple.com/documentation/sign_in_with_apple/sign_in_with_apple_rest_api/verifying_a_user
-    return {
-      email: 'user@apple.com',
-      name: 'Apple User',
-    };
+    try {
+      // Apple uses JWT tokens that need to be verified
+      const decoded = this.jwtService.decode(token) as any;
+
+      if (!decoded) {
+        throw new UnauthorizedException('Invalid Apple token');
+      }
+
+      // Verify token issuer
+      if (decoded.iss !== 'https://appleid.apple.com') {
+        throw new UnauthorizedException('Invalid Apple token issuer');
+      }
+
+      // Verify audience matches your app's client ID
+      const appleClientId = this.configService.get<string>('auth.appleClientId');
+      if (appleClientId && decoded.aud !== appleClientId) {
+        throw new UnauthorizedException('Apple token audience mismatch');
+      }
+
+      // Verify token expiration
+      const now = Math.floor(Date.now() / 1000);
+      if (decoded.exp && decoded.exp < now) {
+        throw new UnauthorizedException('Apple token has expired');
+      }
+
+      // TODO: In production, also verify the token signature using Apple's public keys
+      // Fetch from: https://appleid.apple.com/auth/keys
+
+      return {
+        email: decoded.email,
+        name: decoded.email?.split('@')[0] || 'Apple User',
+        emailVerified: decoded.email_verified === 'true',
+      };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      this.logger.error(`Apple token verification failed: ${message}`);
+      throw new UnauthorizedException(`Apple token verification failed: ${message}`);
+    }
   }
 
   private async createSocialUser(

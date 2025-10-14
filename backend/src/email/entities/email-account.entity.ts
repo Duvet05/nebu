@@ -9,7 +9,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { EmailProvider } from './email-provider.entity';
-import { EmailLog } from './email-log.entity';
+import { EmailLog, EmailType } from './email-log.entity';
 
 export enum EmailAccountType {
   TEAM = 'team',
@@ -25,15 +25,7 @@ export enum EmailAccountStatus {
   SUSPENDED = 'suspended',
 }
 
-export enum EmailType {
-  NOTIFICATION = 'notification',
-  WELCOME = 'welcome',
-  PASSWORD_RESET = 'password_reset',
-  COURSE_ENROLLMENT = 'course_enrollment',
-  PAYMENT_CONFIRMATION = 'payment_confirmation',
-  ADMIN_ALERT = 'admin_alert',
-  MARKETING = 'marketing',
-}
+export { EmailType };
 
 @Entity('email_accounts')
 export class EmailAccount {

@@ -6,17 +6,18 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { User } from '../users/entities/user.entity';
 import { AuthService } from './services/auth.service';
-import { EmailService } from './services/email.service';
 import { TokenValidationService } from './services/token-validation.service';
 import { AuthController } from './controllers/auth.controller';
 import { NextAuthController } from './controllers/nextauth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { FeaturesConfig } from '../config/features.config';
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    EmailModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -28,7 +29,7 @@ import { FeaturesConfig } from '../config/features.config';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, EmailService, TokenValidationService, JwtStrategy, FeaturesConfig],
+  providers: [AuthService, TokenValidationService, JwtStrategy, FeaturesConfig],
   controllers: [AuthController, NextAuthController],
   exports: [AuthService, TokenValidationService, JwtStrategy, FeaturesConfig, PassportModule],
 })

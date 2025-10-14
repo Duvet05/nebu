@@ -1,13 +1,13 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
-import { EmailNotificationsService } from '../../notifications/services/email-notifications.service';
+import { EmailService } from '../../email/services/email.service';
 
 @Processor('email-queue')
 export class EmailProcessor {
   private readonly logger = new Logger(EmailProcessor.name);
 
-  constructor(private emailService: EmailNotificationsService) {}
+  constructor(private emailService: EmailService) {}
 
   @Process('send-email')
   async sendEmail(
@@ -54,13 +54,7 @@ export class EmailProcessor {
     try {
       this.logger.log(`Sending welcome email to ${job.data.userEmail}`);
 
-      // TODO: Implement welcome email sending
-      // - Use email service to send welcome email
-      // - Include user onboarding information
-      // - Track email delivery
-
-      // Simulate email sending
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await this.emailService.sendWelcomeEmail(job.data.userEmail, job.data.userName);
 
       this.logger.log(`Welcome email sent to ${job.data.userEmail}`);
 
@@ -88,13 +82,7 @@ export class EmailProcessor {
     try {
       this.logger.log(`Sending course enrollment email to ${job.data.userEmail}`);
 
-      // TODO: Implement course enrollment email sending
-      // - Use email service to send enrollment email
-      // - Include course information and next steps
-      // - Track email delivery
-
-      // Simulate email sending
-      await new Promise(resolve => setTimeout(resolve, 1200));
+      await this.emailService.sendCourseEnrollmentEmail(job.data.userEmail, job.data.courseName);
 
       this.logger.log(`Course enrollment email sent to ${job.data.userEmail}`);
 
@@ -159,13 +147,7 @@ export class EmailProcessor {
     try {
       this.logger.log(`Sending password reset email to ${job.data.userEmail}`);
 
-      // TODO: Implement password reset email sending
-      // - Use email service to send reset email
-      // - Include secure reset link
-      // - Track email delivery
-
-      // Simulate email sending
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await this.emailService.sendPasswordResetEmail(job.data.userEmail, job.data.resetToken);
 
       this.logger.log(`Password reset email sent to ${job.data.userEmail}`);
 
@@ -189,18 +171,19 @@ export class EmailProcessor {
       title: string;
       message: string;
       actionUrl?: string;
+      actionText?: string;
     }>
   ) {
     try {
       this.logger.log(`Sending notification email to ${job.data.userEmail}`);
 
-      // TODO: Implement notification email sending
-      // - Use email service to send notification email
-      // - Include notification content and action button
-      // - Track email delivery
-
-      // Simulate email sending
-      await new Promise(resolve => setTimeout(resolve, 800));
+      await this.emailService.sendNotificationEmail({
+        to: job.data.userEmail,
+        title: job.data.title,
+        message: job.data.message,
+        actionUrl: job.data.actionUrl,
+        actionText: job.data.actionText,
+      });
 
       this.logger.log(`Notification email sent to ${job.data.userEmail}`);
 
