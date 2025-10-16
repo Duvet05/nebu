@@ -39,6 +39,22 @@ const config: Config = {
         
         // Color de fondo cálido Nebu
         'nebu-bg': '#FFF7F0', // rgb(255, 247, 240)
+        'nebu-dark': 'rgb(47, 77, 92)', // Color oscuro principal de Nebu
+        
+        // Override gray scale para usar el color de Nebu
+        gray: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          200: '#e5e7eb',
+          300: '#d1d5db',
+          400: '#9ca3af',
+          500: '#6b7280',
+          600: '#4b5563',
+          700: 'rgba(47, 77, 92, 0.8)', // Nebu dark con opacidad
+          800: 'rgba(47, 77, 92, 0.9)', // Nebu dark con opacidad
+          900: 'rgb(47, 77, 92)', // Nebu dark completo
+        },
+        black: 'rgb(47, 77, 92)', // Negro = Nebu dark
         
         // Shadcn/ui required colors
         border: "hsl(var(--border))",

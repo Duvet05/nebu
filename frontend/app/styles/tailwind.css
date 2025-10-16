@@ -133,7 +133,7 @@
 @layer base {
   :root {
     /* Nebu color palette - Juguetona y vibrante */
-    --color-text: #2D3748;
+    --color-text: rgb(47, 77, 92);
     --color-primary: #FF6B35;
     --color-accent: #4ECDC4;
     --color-gold: #FFD166;
