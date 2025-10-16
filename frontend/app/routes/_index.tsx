@@ -97,13 +97,13 @@ export default function Index() {
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
                 <span className="uppercase text-[8rem] md:text-[12rem] lg:text-[16rem] block" style={{ color: '#2F4D5C' }}>Nebu</span>
-                <span style={{ color: '#FF8C5A' }}>Infinite</span>
+                <span style={{ color: '#FF8C5A' }}>{t("hero.line1")}</span>
                 <br />
-                <span style={{ color: '#A89B7B' }}>adventures</span><span style={{ color: '#6FB89F' }}>.</span>
+                <span style={{ color: '#A89B7B' }}>{t("hero.line2")}</span><span style={{ color: '#6FB89F' }}>.</span>
                 <br />
-                <span style={{ color: '#5EBDB0' }}>One trusted</span>
+                <span style={{ color: '#5EBDB0' }}>{t("hero.line3")}</span>
                 <br />
-                <span style={{ color: '#A8D5A0' }}>companion</span>
+                <span style={{ color: '#A8D5A0' }}>{t("hero.line4")}</span>
               </motion.h1>
 
               <motion.p

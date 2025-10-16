@@ -10,6 +10,10 @@
     "badge": "Launch Special - Free shipping on all pre-orders!",
     "title": "Infinite adventures.",
     "subtitle": "One trusted companion.",
+    "line1": "Infinite",
+    "line2": "adventures",
+    "line3": "One trusted",
+    "line4": "companion",
     "description": "The moment Nebu says your child's name...you'll never look at toys the same again.",
     "cta": {
       "primary": "Pre-order now",
@@ -173,7 +177,7 @@
     "form": {
       "firstName": "First name",
       "firstNamePlaceholder": "Your first name",
-      "lastName": "Last name", 
+      "lastName": "Last name",
       "lastNamePlaceholder": "Your last name",
       "email": "Email",
       "emailPlaceholder": "your@email.com",

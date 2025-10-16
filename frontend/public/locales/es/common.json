@@ -10,6 +10,10 @@
     "badge": "Por lanzamiento - Envío gratis en todas las preordenes!",
     "title": "Aventuras infinitas.",
     "subtitle": "Un compañero de confianza.",
+    "line1": "Aventuras",
+    "line2": "infinitas",
+    "line3": "Un compañero",
+    "line4": "de confianza",
     "description": "El momento en que Nebu dice el nombre de tu hijo... nunca verás los juguetes de la misma manera.",
     "cta": {
       "primary": "Pre-ordenar ahora",
@@ -173,7 +177,7 @@
     "form": {
       "firstName": "Nombre",
       "firstNamePlaceholder": "Tu nombre",
-      "lastName": "Apellido", 
+      "lastName": "Apellido",
       "lastNamePlaceholder": "Tu apellido",
       "email": "Email",
       "emailPlaceholder": "tu@email.com",
