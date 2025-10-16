@@ -47,11 +47,6 @@
     "safeAndPrivate": {
       "title": "Seguro y privado",
       "description": "Protección total garantizada con la más alta seguridad para las conversaciones de tu familia"
-    },
-    "stats": {
-      "parentsScreenTime": "de los padres reportan menos tiempo de pantalla",
-      "childrenSpeaking": "de los niños mejoran su expresión oral",
-      "familiesRecommend": "de las familias recomiendan Nebu"
     }
   },
   "productCTA": {

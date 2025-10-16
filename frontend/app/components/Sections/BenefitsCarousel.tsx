@@ -129,36 +129,16 @@ export default function BenefitsCarousel() {
           <div className="absolute right-0 top-0 bottom-0 w-40 pointer-events-none z-10" style={{ background: 'linear-gradient(to left, #FFF7F0, transparent)' }}></div>
         </div>
 
-        {/* Stats Section */}
-        <motion.div
+        {/* Quote destacada */}
+        <motion.blockquote
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 text-center max-w-7xl mx-auto"
+          className="mt-20 text-center italic text-3xl md:text-4xl lg:text-5xl text-gray-700 max-w-5xl mx-auto leading-relaxed font-gochi px-4"
         >
-          <motion.div 
-            className="p-6"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-4xl font-bold text-primary mb-2">85%</div>
-            <div className="text-gray-600">{t("benefits.stats.parentsScreenTime")}</div>
-          </motion.div>
-          <motion.div 
-            className="p-6"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-4xl font-bold text-accent mb-2">92%</div>
-            <div className="text-gray-600">{t("benefits.stats.childrenSpeaking")}</div>
-          </motion.div>
-          <motion.div 
-            className="p-6"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="text-4xl font-bold text-gold mb-2">96%</div>
-            <div className="text-gray-600">{t("benefits.stats.familiesRecommend")}</div>
-          </motion.div>
-        </motion.div>
+          "{t("hero.description")}"
+        </motion.blockquote>
       </div>
     </section>
   );

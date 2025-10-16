@@ -49,17 +49,8 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
             <span style={{ color: '#A8D5A0' }}>{t("hero.line4")}</span>
           </motion.h1>
 
-          <motion.p
-            className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {t("hero.description")}
-          </motion.p>
-
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-6"
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
