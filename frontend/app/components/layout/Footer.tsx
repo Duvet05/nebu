@@ -112,24 +112,27 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                aria-label="Visita nuestro LinkedIn"
               >
-                <Linkedin size={20} />
+                <Linkedin size={20} aria-hidden="true" />
               </a>
               <a
                 href="https://www.instagram.com/flow_.ia/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                aria-label="Visita nuestro Instagram"
               >
-                <Instagram size={20} />
+                <Instagram size={20} aria-hidden="true" />
               </a>
               <a
                 href="https://www.facebook.com/flowtelligence"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
+                aria-label="Visita nuestro Facebook"
               >
-                <Facebook size={20} />
+                <Facebook size={20} aria-hidden="true" />
               </a>
             </div>
           </div>

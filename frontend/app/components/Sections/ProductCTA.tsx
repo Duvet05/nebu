@@ -98,13 +98,13 @@ const ProductCTA = () => {
             </p>
             
             <motion.button
-              className="bg-white text-primary font-bold py-4 px-10 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 text-lg inline-flex items-center gap-3 group hover:bg-gold"
+              className="bg-white text-gray-900 font-bold py-4 px-10 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 text-lg inline-flex items-center gap-3 group hover:bg-gold hover:text-white"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               aria-label={t("productCTA.hero.ctaButton")}
             >
               {t("productCTA.hero.ctaButton")}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </motion.button>
           </motion.div>
         </div>
@@ -192,7 +192,7 @@ const ProductCTA = () => {
                   {/* Pricing */}
                   <div className="flex flex-wrap items-baseline gap-4 mb-6">
                     <span className="text-4xl md:text-5xl font-bold text-gray-900">{t("productCTA.product.price")}</span>
-                    <span className="text-lg md:text-xl text-gray-400 line-through">{t("productCTA.product.originalPrice")}</span>
+                    <span className="text-lg md:text-xl text-gray-500 line-through">{t("productCTA.product.originalPrice")}</span>
                     <span className="bg-gradient-to-r from-primary to-gold text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">
                       {t("productCTA.product.discount")}
                     </span>

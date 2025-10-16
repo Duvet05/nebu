@@ -206,6 +206,7 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
         style={{
           boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1)"
         }}
+        aria-label={isOpen ? t("chat.close", "Cerrar chat") : t("chat.open", "Abrir chat con Nebu")}
       >
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -216,7 +217,7 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
               exit={{ opacity: 0, rotate: 180 }}
               transition={{ duration: 0.2 }}
             >
-              <X className="w-6 h-6" />
+              <X className="w-6 h-6" aria-hidden="true" />
             </motion.div>
           ) : (
             <motion.div
@@ -227,7 +228,7 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
               transition={{ duration: 0.2 }}
               className="relative"
             >
-              <MessageCircle className="w-6 h-6" />
+              <MessageCircle className="w-6 h-6" aria-hidden="true" />
               {/* Notification Dot */}
               <motion.div
                 className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"
@@ -240,6 +241,7 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
+                aria-hidden="true"
               />
             </motion.div>
           )}
@@ -258,6 +260,7 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
           repeat: Infinity,
           ease: "easeInOut"
         }}
+        aria-hidden="true"
       />
       
       {/* Secondary Animation Ring */}
@@ -272,6 +275,7 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
           repeat: Infinity,
           ease: "easeOut"
         }}
+        aria-hidden="true"
       />
     </div>
   );

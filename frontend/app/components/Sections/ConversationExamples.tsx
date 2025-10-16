@@ -135,8 +135,8 @@ export default function ConversationExamples() {
           className="text-center mb-16"
         >
           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 bg-accent/10 px-4 py-2 rounded-full border border-accent/20 mb-6">
-            <MessageSquare className="w-6 h-6 text-accent" />
-            <span className="text-accent font-semibold text-sm">
+            <MessageSquare className="w-6 h-6 text-accent" aria-hidden="true" />
+            <span className="text-accent-dark font-semibold text-sm">
               {t("conversationExamples.badge")}
             </span>
           </motion.div>
