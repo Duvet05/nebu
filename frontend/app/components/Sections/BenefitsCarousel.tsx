@@ -57,7 +57,6 @@ export default function BenefitsCarousel() {
     <section 
       className="min-h-[80vh] py-24 overflow-hidden flex items-center" 
       style={{ backgroundColor: '#FFF7F0' }}
-      role="region"
       aria-labelledby="benefits-title"
     >
       <div className="max-w-full px-4 sm:px-6 lg:px-8">

@@ -67,7 +67,7 @@ export default function Index() {
 
       {/* Hero Section - 95% Screen Height */}
       <main id="main-content">
-        <section className="h-[95vh] hero-gradient relative overflow-hidden flex items-center" role="region" aria-label="Hero section">
+  <section className="h-[95vh] hero-gradient relative overflow-hidden flex items-center" aria-label="Hero section">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
           
           {/* Animated Background Elements */}

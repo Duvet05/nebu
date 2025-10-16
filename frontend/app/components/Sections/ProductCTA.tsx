@@ -65,7 +65,6 @@ const ProductCTA = () => {
       {/* Hero CTA Section */}
       <section
         className="relative overflow-hidden bg-gradient-to-br from-primary via-accent to-primary/80 text-white"
-        role="region"
         aria-labelledby="product-cta-title"
       >
         <div className="absolute inset-0 bg-black/10" aria-hidden="true"></div>
