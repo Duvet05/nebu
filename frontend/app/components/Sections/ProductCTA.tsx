@@ -84,10 +84,10 @@ const ProductCTA = () => {
               <span className="font-medium text-sm md:text-base">{t("productCTA.hero.badge")}</span>
             </motion.div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-heading mb-6 leading-tight">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold font-heading mb-6 leading-tight">
               {t("productCTA.hero.title")}
               <span className="block text-gold mt-2">{t("productCTA.hero.subtitle")}</span>
-            </h1>
+            </h2>
 
             <p className="text-xl md:text-2xl font-semibold mb-4 text-white/90">
               {t("productCTA.hero.price")} <span className="text-gold">{t("productCTA.product.price")}</span>

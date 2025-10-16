@@ -28,6 +28,7 @@ const config: Config = {
         text: 'var(--color-text)',
         primary: 'var(--color-primary)',
         accent: 'var(--color-accent)',
+        'accent-dark': '#5B21B6', // Púrpura más oscuro para mejor contraste (AAA compliant)
         gold: 'var(--color-gold)',
         secondary: 'var(--color-secondary)',
         muted: 'var(--color-muted)',

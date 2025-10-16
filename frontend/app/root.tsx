@@ -42,12 +42,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export function Layout({ children }: { children: ReactNode }) {
-  const loaderData = useLoaderData<typeof loader>();
+  // Usar optional chaining y garantizar un valor por defecto
+  const loaderData = useLoaderData<typeof loader>() ?? { locale: "es", culqiPublicKey: "" };
+  const locale = loaderData.locale || "es";
 
-  useChangeLanguage(loaderData?.locale || "es");
+  useChangeLanguage(locale);
 
   return (
-    <html lang={loaderData?.locale || "es"} className="scroll-smooth">
+    <html lang={locale} className="scroll-smooth">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -80,7 +82,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              window.CULQI_PUBLIC_KEY = "${loaderData?.culqiPublicKey || ""}";
+              window.CULQI_PUBLIC_KEY = "${loaderData.culqiPublicKey || ""}";
             `,
           }}
         />
@@ -107,5 +109,52 @@ export default function App() {
     <AnalyticsProvider>
       <Outlet />
     </AnalyticsProvider>
+  );
+}
+
+// Agregar HydrateFallback para manejar errores de hidratación
+export function HydrateFallback() {
+  return (
+    <html lang="es" className="scroll-smooth">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Cargando... | Nebu</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <h1>Cargando...</h1>
+          <p>Por favor espera mientras se carga la aplicación.</p>
+        </div>
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+// Agregar ErrorBoundary para manejar errores
+export function ErrorBoundary() {
+  return (
+    <html lang="es" className="scroll-smooth">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Error | Nebu</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <h1>¡Oops! Algo salió mal</h1>
+          <p>Lo sentimos, ha ocurrido un error inesperado.</p>
+          <a href="/" style={{ color: '#8B5CF6', textDecoration: 'underline' }}>
+            Volver al inicio
+          </a>
+        </div>
+        <Scripts />
+      </body>
+    </html>
   );
 }
