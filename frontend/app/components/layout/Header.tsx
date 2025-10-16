@@ -17,7 +17,9 @@ export function Header() {
             <img 
               src="/assets/logos/logo-flow.svg" 
               alt="Flow Logo" 
-              className="h-8 md:h-10 w-auto"
+               className="h-8 md:h-10 w-auto"
+               role="img"
+               aria-label="Flow Telligence Logo"
             />
           </Link>
 
@@ -51,7 +53,9 @@ export function Header() {
                 <img 
                   src={i18n.language === "es" ? "/assets/icons/flags/peru-flag-icon.svg" : "/assets/icons/flags/united-states-flag-icon.svg"} 
                   alt={i18n.language === "es" ? "Español" : "English"}
-                  className="w-5 h-4 rounded-sm object-cover border border-gray-300/50"
+                   className="w-5 h-4 rounded-sm object-cover border border-gray-300/50"
+                   role="img"
+                   aria-label={i18n.language === "es" ? "Bandera de Perú - Idioma Español" : "United States Flag - English Language"}
                 />
               </div>
               <span className="text-sm font-semibold">

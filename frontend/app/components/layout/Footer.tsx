@@ -16,7 +16,9 @@ export function Footer() {
               <img 
                 src="/assets/logos/logo-flow.svg" 
                 alt="Flow Logo" 
-                className="h-8 md:h-10 w-auto"
+                 className="h-8 md:h-10 w-auto"
+                 role="img"
+                 aria-label="Flow Telligence Logo"
               />
             </Link>
             <p className="text-base text-gray-600 dark:text-gray-300 mb-2">

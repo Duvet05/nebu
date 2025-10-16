@@ -61,7 +61,9 @@ export function WhatsAppButton({
           <img 
             src="/assets/icons/whatsapp-icon.svg" 
             alt="WhatsApp" 
-            className="w-7 h-7 filter brightness-0 invert"
+             className="w-7 h-7 filter brightness-0 invert"
+             role="img"
+             aria-label="WhatsApp Icon"
           />
         </motion.div>
 
