@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { Link } from '@remix-run/react';
 import { 
   MonitorOff, 
   Bot, 
@@ -97,15 +98,20 @@ const ProductCTA = () => {
               {t("productCTA.hero.shippingInfo")}
             </p>
             
-            <motion.button
-              className="bg-white text-gray-900 font-bold py-4 px-10 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 text-lg inline-flex items-center gap-3 group hover:bg-gold hover:text-white"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label={t("productCTA.hero.ctaButton")}
+            <Link 
+              to="/pre-order" 
+              className="relative inline-flex items-center gap-3 bg-primary text-white font-gochi font-bold text-xl px-12 py-6 rounded-full shadow-[0_8px_30px_rgb(255,107,53,0.3)] hover:shadow-[0_12px_40px_rgb(255,107,53,0.5)] transform hover:scale-110 hover:-rotate-6 transition-all duration-400 ease-out group overflow-hidden"
             >
-              {t("productCTA.hero.ctaButton")}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-            </motion.button>
+              {/* Sparkle decorations */}
+              <span className="absolute -top-1 left-2 text-yellow-300 text-2xl animate-pulse" style={{ filter: 'drop-shadow(0 0 8px rgba(253, 224, 71, 0.6))' }}>✨</span>
+              <span className="absolute -bottom-1 right-2 text-yellow-300 text-xl animate-pulse" style={{ animationDelay: '0.3s', filter: 'drop-shadow(0 0 8px rgba(253, 224, 71, 0.6))' }}>✨</span>
+              
+              {/* Button text */}
+              <span className="relative z-10">{t("productCTA.hero.ctaButton")}</span>
+              
+              {/* Animated background shimmer */}
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+            </Link>
           </motion.div>
         </div>
 
