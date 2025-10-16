@@ -30,6 +30,12 @@ export function Header() {
               {t("nav.ourStory")}
             </Link>
             <Link
+              to="/pre-order"
+              className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all duration-300 font-medium"
+            >
+              {t("nav.preOrder")}
+            </Link>
+            <Link
               to="/faq"
               className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all duration-300 font-medium"
             >
@@ -113,6 +119,13 @@ export function Header() {
               className="block text-gray-700 hover:text-gray-900 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
             >
               {t("nav.ourStory")}
+            </Link>
+            <Link
+              to="/pre-order"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-gray-700 hover:text-gray-900 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
+            >
+              {t("nav.preOrder")}
             </Link>
             <Link
               to="/faq"
