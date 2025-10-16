@@ -96,11 +96,14 @@ export default function Index() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                Nebu:
+                <span className="uppercase text-[8rem] md:text-[12rem] lg:text-[16rem] block" style={{ color: '#2F4D5C' }}>Nebu</span>
+                <span style={{ color: '#FF8C5A' }}>Infinite</span>
                 <br />
-                <span className="bg-gradient-to-r from-primary via-accent to-gold bg-clip-text text-transparent">
-                  Infinite adventures.<br />One trusted companion
-                </span>
+                <span style={{ color: '#A89B7B' }}>adventures</span><span style={{ color: '#6FB89F' }}>.</span>
+                <br />
+                <span style={{ color: '#5EBDB0' }}>One trusted</span>
+                <br />
+                <span style={{ color: '#A8D5A0' }}>companion</span>
               </motion.h1>
 
               <motion.p

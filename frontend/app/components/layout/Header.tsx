@@ -13,13 +13,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-accent/20 bg-gradient-to-r from-accent/90 to-accent/80 backdrop-blur-md shadow-lg shadow-accent/10">
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <img 
-              src="/assets/logos/logo-flow.svg" 
-              alt="Flow-telligence" 
-               className="h-8 md:h-10 w-auto"
-            />
-          </Link>
+          {/* Logo removido */}
 
           <div className="hidden md:flex items-center gap-8">
             <Link
