@@ -134,17 +134,9 @@ export default function ConversationExamples() {
           animate="visible"
           className="text-center mb-16"
         >
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 bg-accent/10 px-4 py-2 rounded-full border border-accent/20 mb-6">
-            <MessageSquare className="w-6 h-6 text-accent" aria-hidden="true" />
-            <span className="text-accent-dark font-semibold text-sm">
-              {t("conversationExamples.badge")}
-            </span>
-          </motion.div>
-          
           <motion.h2 
             variants={itemVariants}
-            className="text-4xl md:text-5xl font-bold font-gochi mb-6"
-            style={{ color: '#A89B7B' }}
+            className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary"
           >
             {t("conversations.title")}
           </motion.h2>
