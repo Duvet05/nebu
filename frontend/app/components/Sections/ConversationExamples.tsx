@@ -143,7 +143,8 @@ export default function ConversationExamples() {
           
           <motion.h2 
             variants={itemVariants}
-            className="text-4xl md:text-5xl font-bold font-gochi text-gray-900 mb-6"
+            className="text-4xl md:text-5xl font-bold font-gochi mb-6"
+            style={{ color: '#A89B7B' }}
           >
             {t("conversations.title")}
           </motion.h2>

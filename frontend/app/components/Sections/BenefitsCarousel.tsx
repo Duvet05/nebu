@@ -67,7 +67,7 @@ export default function BenefitsCarousel() {
           viewport={{ once: true }}
           className="text-center mb-16 max-w-7xl mx-auto"
         >
-          <h2 id="benefits-title" className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-gray-900">
+          <h2 id="benefits-title" className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary">
             {t("benefits.title")}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
