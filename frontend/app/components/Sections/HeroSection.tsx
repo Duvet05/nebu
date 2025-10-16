@@ -42,18 +42,18 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
           >
             <Link 
               to="/pre-order" 
-              className="relative inline-flex items-center gap-3 bg-gradient-to-r from-primary via-[#FF7A4D] to-accent text-white font-gochi font-bold text-xl px-12 py-6 rounded-full shadow-[0_8px_30px_rgb(255,107,53,0.3)] hover:shadow-[0_12px_40px_rgb(255,107,53,0.4)] transform hover:scale-105 hover:-rotate-1 transition-all duration-300 group overflow-hidden"
+              className="relative inline-flex items-center gap-3 bg-gradient-to-r from-primary via-[#FF7A4D] to-accent text-white font-gochi font-bold text-xl px-12 py-6 rounded-full shadow-[0_8px_30px_rgb(255,107,53,0.3)] hover:shadow-[0_12px_40px_rgb(255,107,53,0.5)] transform hover:scale-110 hover:-rotate-6 transition-all duration-400 ease-out group overflow-hidden"
               onClick={() => onCTAClick("pre_order_from_hero")}
             >
               {/* Sparkle decorations */}
-              <span className="absolute top-1 left-4 text-yellow-300 text-2xl animate-pulse">✨</span>
-              <span className="absolute bottom-1 right-4 text-yellow-300 text-xl animate-pulse delay-300">⭐</span>
+              <span className="absolute -top-1 left-2 text-yellow-300 text-2xl animate-pulse" style={{ filter: 'drop-shadow(0 0 8px rgba(253, 224, 71, 0.6))' }}>✨</span>
+              <span className="absolute -bottom-1 right-2 text-yellow-300 text-xl animate-pulse" style={{ animationDelay: '0.3s', filter: 'drop-shadow(0 0 8px rgba(253, 224, 71, 0.6))' }}>✨</span>
               
               {/* Button text */}
               <span className="relative z-10">{t("hero.cta.primary")}</span>
               
-              {/* Animated background shimmer */}
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+              {/* Animated background shimmer - reducido */}
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
             </Link>
           </motion.div>
         </div>
