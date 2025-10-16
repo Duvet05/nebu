@@ -1,4 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700;800&family=Quicksand:wght@300;400;500;600;700&family=Gochi+Hand&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700;800&family=Quicksand:wght@300;400;500;600;700&display=swap");
+
+@font-face {
+  font-family: 'Gochi Hand';
+  src: url('/assets/fonts/GochiHand-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
