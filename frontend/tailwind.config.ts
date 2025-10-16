@@ -21,7 +21,8 @@ const config: Config = {
         display: ["Quicksand", "Nunito", "sans-serif"],
         mono: [
           "monospace"
-        ]
+        ],
+        gochi: ["Gochi Hand", "cursive"],
       },
       colors: {
         // Nebu color palette - Juguetona y vibrante

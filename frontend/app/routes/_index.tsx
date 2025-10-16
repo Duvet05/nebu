@@ -91,15 +91,15 @@ export default function Index() {
               </motion.div>
 
               <motion.h1
-                className="text-5xl md:text-7xl lg:text-8xl font-bold font-heading mb-6 leading-tight"
+                className="text-5xl md:text-7xl lg:text-8xl font-bold font-gochi mb-6 leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                {t("hero.title")}
+                Nebu:
                 <br />
                 <span className="bg-gradient-to-r from-primary via-accent to-gold bg-clip-text text-transparent">
-                  {t("hero.subtitle")}
+                  Infinite adventures.<br />One trusted companion
                 </span>
               </motion.h1>
 
