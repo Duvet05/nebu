@@ -80,7 +80,7 @@ export default function OurStory() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="h1-hero mb-6">
+              <h1 className="h1-hero font-gochi mb-6">
                 {t("about.hero.title")}
               </h1>
               <p className="p-lead mx-auto">

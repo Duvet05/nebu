@@ -74,9 +74,9 @@ const ProductCTA = () => {
             className="max-w-4xl mx-auto text-center"
             {...fadeInUp}
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
+                        <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-8 border border-white/30"
             >
@@ -84,7 +84,7 @@ const ProductCTA = () => {
               <span className="font-medium text-sm md:text-base">{t("productCTA.hero.badge")}</span>
             </motion.div>
 
-            <h2 id="product-cta-title" className="text-4xl md:text-6xl lg:text-7xl font-bold font-heading mb-6 leading-tight">
+            <h2 id="product-cta-title" className="text-4xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 leading-tight">
               {t("productCTA.hero.title")}
               <span className="block text-gold mt-2">{t("productCTA.hero.subtitle")}</span>
             </h2>

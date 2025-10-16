@@ -95,7 +95,7 @@ export default function FAQ() {
         <div className="container">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold font-gochi mb-4">
                 {t("faq.title")}
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-400">
