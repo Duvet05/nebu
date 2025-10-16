@@ -47,6 +47,8 @@ export function Header() {
           <div className="flex items-center gap-4">
             <button
               onClick={toggleLanguage}
+              type="button"
+              aria-label={i18n.language === "es" ? "Cambiar idioma a English" : "Cambiar idioma a Español"}
               className="flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-gray-800 hover:text-gray-900 font-medium px-4 py-2 rounded-xl border border-white/30 hover:border-white/50 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md"
             >
               <div className="relative">
