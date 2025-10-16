@@ -22,17 +22,6 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
 
       <div className="container relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-accent/20 backdrop-blur-sm border border-primary/30 text-primary px-6 py-3 rounded-full text-sm font-medium mb-6">
-              <span className="h-2 w-2 bg-primary rounded-full animate-pulse" aria-hidden="true"></span>
-              {t("hero.badge")}
-            </span>
-          </motion.div>
-
           <motion.h1
             className="text-5xl md:text-7xl lg:text-8xl font-bold font-gochi mb-6 leading-tight"
             initial={{ opacity: 0, y: 20 }}
@@ -40,17 +29,13 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <span className="uppercase text-[8rem] md:text-[12rem] lg:text-[16rem] block" style={{ color: '#2F4D5C' }}>Nebu</span>
-            <span style={{ color: '#FF8C5A' }}>{t("hero.line1")}</span>
+            <span style={{ color: '#FF8C5A' }}>{t("hero.line1")} {t("hero.line2")}.</span>
             <br />
-            <span style={{ color: '#A89B7B' }}>{t("hero.line2")}</span><span style={{ color: '#6FB89F' }}>.</span>
-            <br />
-            <span style={{ color: '#5EBDB0' }}>{t("hero.line3")}</span>
-            <br />
-            <span style={{ color: '#A8D5A0' }}>{t("hero.line4")}</span>
+            <span style={{ color: '#5EBDB0' }}>{t("hero.line3")} {t("hero.line4")}.</span>
           </motion.h1>
 
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-12"
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-16 md:mt-20 mb-24 md:mb-32"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -82,7 +67,7 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
 
       {/* Scroll Indicator */}
       <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 0.6 }}
