@@ -54,7 +54,12 @@ export default function BenefitsCarousel() {
   // Duplicamos los beneficios para crear el efecto infinito
   const extendedBenefits = [...benefits, ...benefits, ...benefits];
   return (
-    <section className="min-h-[80vh] py-24 overflow-hidden flex items-center" style={{ backgroundColor: '#FFF7F0' }}>
+    <section 
+      className="min-h-[80vh] py-24 overflow-hidden flex items-center" 
+      style={{ backgroundColor: '#FFF7F0' }}
+      role="region"
+      aria-labelledby="benefits-title"
+    >
       <div className="max-w-full px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -63,7 +68,7 @@ export default function BenefitsCarousel() {
           viewport={{ once: true }}
           className="text-center mb-16 max-w-7xl mx-auto"
         >
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold font-heading mb-6 text-gray-900">
+          <h2 id="benefits-title" className="text-5xl md:text-6xl lg:text-7xl font-bold font-heading mb-6 text-gray-900">
             {t("benefits.title")}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -72,10 +77,11 @@ export default function BenefitsCarousel() {
         </motion.div>
 
         {/* Horizontal Scrolling Carousel */}
-        <div className="relative w-full">
+        <div className="relative w-full" aria-label="Carousel de beneficios de Nebu">
           <div className="overflow-hidden">
             <motion.div
               className="flex gap-6"
+              aria-live="polite"
               animate={{
                 x: [0, -3600] // Más distancia para cards más grandes
               }}

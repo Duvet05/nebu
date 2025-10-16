@@ -65,9 +65,10 @@ const ProductCTA = () => {
       {/* Hero CTA Section */}
       <section
         className="relative overflow-hidden bg-gradient-to-br from-primary via-accent to-primary/80 text-white"
-        role="banner"
+        role="region"
+        aria-labelledby="product-cta-title"
       >
-        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="absolute inset-0 bg-black/10" aria-hidden="true"></div>
         
         <div className="container mx-auto px-4 py-16 md:py-20 relative z-10">
           <motion.div 
@@ -80,11 +81,11 @@ const ProductCTA = () => {
               transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-8 border border-white/30"
             >
-              <span className="w-2 h-2 bg-gold rounded-full animate-pulse"></span>
+              <span className="w-2 h-2 bg-gold rounded-full animate-pulse" aria-hidden="true"></span>
               <span className="font-medium text-sm md:text-base">{t("productCTA.hero.badge")}</span>
             </motion.div>
 
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold font-heading mb-6 leading-tight">
+            <h2 id="product-cta-title" className="text-4xl md:text-6xl lg:text-7xl font-bold font-heading mb-6 leading-tight">
               {t("productCTA.hero.title")}
               <span className="block text-gold mt-2">{t("productCTA.hero.subtitle")}</span>
             </h2>

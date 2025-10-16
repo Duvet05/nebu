@@ -40,6 +40,10 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="chat-title"
+            aria-describedby="chat-description"
             className="mb-4 w-80 h-96 bg-white rounded-2xl shadow-2xl border-0 overflow-hidden backdrop-blur-sm"
             style={{
               boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.06)"
@@ -68,25 +72,29 @@ export function ChatBubble({ className = "" }: ChatBubbleProps) {
                     <span className="text-white font-bold text-lg">N</span>
                   </motion.div>
                   <div>
-                    <h3 className="font-bold text-base">{t("chat.title", "Chat with Nebu")}</h3>
+                    <h3 id="chat-title" className="font-bold text-base">{t("chat.title", "Chat with Nebu")}</h3>
+                    <p id="chat-description" className="sr-only">
+                      {t("chat.description", "Chat interactivo con Nebu AI. Escribe tu mensaje y presiona Enter para enviar.")}
+                    </p>
                     <motion.div
                       className="flex items-center gap-1"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.3 }}
                     >
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" aria-hidden="true"></div>
                       <p className="text-xs text-white/90">{t("chat.subtitle", "Always here to help")}</p>
                     </motion.div>
                   </div>
                 </div>
                 <motion.button
                   onClick={toggleChat}
+                  aria-label={t("chat.close", "Cerrar chat")}
                   className="text-white/80 hover:text-white transition-colors p-1 rounded-full hover:bg-white/20"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5" aria-hidden="true" />
                 </motion.button>
               </div>
             </motion.div>
