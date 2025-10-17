@@ -15,29 +15,23 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
       
       {/* Decorative Leaves - Bottom Left */}
       <motion.div 
-        className="absolute bottom-0 left-0 w-80 h-80 pointer-events-none z-20"
+        className="absolute bottom-0 left-0 pointer-events-none z-20"
         initial={{ opacity: 0, x: -50, y: 50 }}
         animate={{ opacity: 1, x: 0, y: 0 }}
         transition={{ duration: 0.8, delay: 0.5 }}
         aria-hidden="true"
       >
         <img 
-          src="/assets/images/Leaf.png" 
-          alt="" 
-          className="absolute bottom-0 left-0 w-48 h-auto"
-          aria-hidden="true"
-        />
-        <img 
           src="/assets/images/Leaf (2).png" 
           alt="" 
-          className="absolute bottom-4 left-32 w-56 h-auto"
+          className="h-64 w-auto"
           aria-hidden="true"
         />
       </motion.div>
 
       {/* Decorative Leaves - Bottom Right */}
       <motion.div 
-        className="absolute bottom-0 right-0 w-80 h-80 pointer-events-none z-20"
+        className="absolute bottom-0 right-0 pointer-events-none z-20"
         initial={{ opacity: 0, x: 50, y: 50 }}
         animate={{ opacity: 1, x: 0, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
@@ -46,13 +40,7 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
         <img 
           src="/assets/images/Leaf.png" 
           alt="" 
-          className="absolute bottom-0 right-32 w-48 h-auto transform scale-x-[-1]"
-          aria-hidden="true"
-        />
-        <img 
-          src="/assets/images/Leaf (2).png" 
-          alt="" 
-          className="absolute bottom-4 right-0 w-60 h-auto transform scale-x-[-1]"
+          className="h-64 w-auto"
           aria-hidden="true"
         />
       </motion.div>
