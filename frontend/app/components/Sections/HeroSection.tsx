@@ -13,6 +13,50 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
     <section className="h-[95vh] hero-gradient relative overflow-hidden flex items-center" aria-label="Hero section">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
       
+      {/* Decorative Leaves - Bottom Left */}
+      <motion.div 
+        className="absolute bottom-0 left-0 w-80 h-80 pointer-events-none z-20"
+        initial={{ opacity: 0, x: -50, y: 50 }}
+        animate={{ opacity: 1, x: 0, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        aria-hidden="true"
+      >
+        <img 
+          src="/assets/images/Leaf.png" 
+          alt="" 
+          className="absolute bottom-0 left-0 w-48 h-auto"
+          aria-hidden="true"
+        />
+        <img 
+          src="/assets/images/Leaf (2).png" 
+          alt="" 
+          className="absolute bottom-4 left-32 w-56 h-auto"
+          aria-hidden="true"
+        />
+      </motion.div>
+
+      {/* Decorative Leaves - Bottom Right */}
+      <motion.div 
+        className="absolute bottom-0 right-0 w-80 h-80 pointer-events-none z-20"
+        initial={{ opacity: 0, x: 50, y: 50 }}
+        animate={{ opacity: 1, x: 0, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        aria-hidden="true"
+      >
+        <img 
+          src="/assets/images/Leaf.png" 
+          alt="" 
+          className="absolute bottom-0 right-32 w-48 h-auto transform scale-x-[-1]"
+          aria-hidden="true"
+        />
+        <img 
+          src="/assets/images/Leaf (2).png" 
+          alt="" 
+          className="absolute bottom-4 right-0 w-60 h-auto transform scale-x-[-1]"
+          aria-hidden="true"
+        />
+      </motion.div>
+      
       {/* Animated Background Elements */}
       <div className="absolute inset-0" aria-hidden="true">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
