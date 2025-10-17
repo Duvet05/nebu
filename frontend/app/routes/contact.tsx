@@ -5,7 +5,7 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
-import { ArrowRight, MessageCircle, Mail, Clock, HelpCircle, Send, Phone, MapPin } from "lucide-react";
+import { ArrowRight, MessageCircle, Mail, Clock, Send, Phone, MapPin } from "lucide-react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -163,12 +163,12 @@ export default function ContactPage() {
               
               {/* Contact Form - Left Column */}
               <motion.div 
-                className="xl:col-span-2"
+                className="xl:col-span-2 flex"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <div className="bg-white rounded-2xl shadow-lg p-8 md:p-10">
+                <div className="bg-white rounded-2xl shadow-lg p-8 md:p-10 flex-1 flex flex-col">
                   <div className="flex items-center gap-4 mb-8">
                     <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg">
                       <Send className="w-8 h-8 text-white" />
@@ -189,7 +189,7 @@ export default function ContactPage() {
                     </div>
                   )}
 
-                  <Form method="post" className="space-y-6">
+                  <Form method="post" className="space-y-6 flex-1 flex flex-col">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700">
@@ -253,15 +253,14 @@ export default function ContactPage() {
                       </select>
                     </div>
                     
-                    <div className="space-y-2">
+                    <div className="space-y-2 flex-1 flex flex-col">
                       <label htmlFor="message" className="block text-sm font-semibold text-gray-700">
                         {t('contact.form.message')} *
                       </label>
                       <textarea
                         id="message"
                         name="message"
-                        rows={5}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-gray-900 placeholder-gray-500 resize-none"
+                        className="w-full flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-gray-900 placeholder-gray-500 resize-none"
                         placeholder={t('contact.form.messagePlaceholder')}
                         required
                       ></textarea>
@@ -327,34 +326,6 @@ export default function ContactPage() {
                       </h4>
                       <p className="text-sm text-orange-700">{t('contact.info.locationName')}</p>
                     </div>
-                  </div>
-                </div>
-
-                {/* AI Assistant Preview */}
-                <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
-                        <HelpCircle className="w-6 h-6 text-white" />
-                      </div>
-                      {t('contact.assistant.title')}
-                    </h3>
-                  </div>
-                  
-                  <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mb-4 mx-auto">
-                        <MessageCircle className="w-10 h-10 text-white" />
-                      </div>
-                      <p className="text-gray-600 font-medium">{t('contact.assistant.comingSoon')}</p>
-                      <p className="text-sm text-gray-500 mt-1">{t('contact.assistant.subtitle')}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="p-6 bg-gradient-to-r from-blue-50 to-purple-50">
-                    <p className="text-sm text-gray-700 text-center">
-{t('contact.assistant.description')}
-                    </p>
                   </div>
                 </div>
 
