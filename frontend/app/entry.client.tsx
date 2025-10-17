@@ -21,8 +21,11 @@ async function hydrate() {
         loadPath: "/locales/{{lng}}/{{ns}}.json",
       },
       detection: {
-        order: ["htmlTag"],
-        caches: [],
+        order: ["localStorage", "htmlTag", "navigator"],
+        caches: ["localStorage"],
+      },
+      react: {
+        useSuspense: false,
       },
     });
 
