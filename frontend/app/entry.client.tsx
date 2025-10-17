@@ -25,7 +25,9 @@ async function hydrate() {
         caches: ["localStorage"],
       },
       react: {
-        useSuspense: false,
+        // Suspense is disabled to avoid hydration issues with i18next in SSR/CSR environments.
+        // If you want to enable React 18 concurrent features, consider wrapping your app in <React.Suspense>.
+                useSuspense: false,
       },
     });
 

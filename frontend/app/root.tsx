@@ -10,7 +10,6 @@ import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { useChangeLanguage } from "remix-i18next/react";
 import type { ReactNode } from "react";
 import i18next from "~/lib/i18next.server";
-import { ChatBubble } from "~/components/ChatBubble";
 import { WhatsAppButton } from "~/components/WhatsAppButton";
 import { AnalyticsProvider } from "~/components/AnalyticsProvider";
 
@@ -96,7 +95,6 @@ export function Layout({ children }: { children: ReactNode }) {
         </a>
         {children}
         <WhatsAppButton />
-        <ChatBubble />
         <ScrollRestoration />
         <Scripts />
       </body>

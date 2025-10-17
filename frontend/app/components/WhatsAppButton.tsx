@@ -27,7 +27,7 @@ export function WhatsAppButton({
   };
 
   return (
-    <div className={`fixed bottom-6 left-6 z-50 ${className}`}>
+    <div className={`fixed bottom-6 right-6 z-50 ${className}`}>
       {/* Floating Animation Ring */}
       <motion.div
         className="absolute inset-0 rounded-full bg-green-500/20 -z-10"
