@@ -296,7 +296,7 @@ services:
       - "traefik.http.routers.backend-iot.rule=Host(`62.169.30.44`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend-iot.entrypoints=web"
       - "traefik.http.routers.backend-iot.service=backend"
-      
+
       - "traefik.http.routers.backend-iot-domain.rule=Host(`api.${DOMAIN:-flow-telligence.com}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend-iot-domain.entrypoints=web"
       - "traefik.http.routers.backend-iot-domain.service=backend"
@@ -306,7 +306,6 @@ services:
       # Rate limiting para API
       - "traefik.http.middlewares.api-rate-limit.ratelimit.burst=200"
       - "traefik.http.middlewares.api-rate-limit.ratelimit.average=100"
-      - "traefik.http.routers.backend.middlewares=api-rate-limit"
     deploy:
       resources:
         limits:
