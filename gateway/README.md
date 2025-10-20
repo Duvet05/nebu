@@ -1,5 +1,7 @@
 #  Traefik Gateway Configuration
 
+> Nota (Oct 2025): El despliegue actual usa Traefik configurado por flags y labels en `docker-compose.yml` (providers.docker), sin montar archivos desde `gateway/`. Los YAML de este directorio (`traefik.yml`, `dynamic.yml`, `traefik.prod*.yml`, `traefik.simple.yml`) se han archivado en `gateway/_archived/` para evitar confusión. Si deseas volver a un setup basado en archivos, monta `traefik.yml` como `/etc/traefik/traefik.yml` y `dynamic.yml` como `/etc/traefik/dynamic.yml` y ajusta el servicio Traefik con `--configFile`.
+
 ##  Estructura del Directorio Gateway
 
 ```
