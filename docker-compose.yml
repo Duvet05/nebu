@@ -126,7 +126,7 @@ services:
       - "traefik.http.middlewares.security-headers.headers.referrerPolicy=strict-origin-when-cross-origin"
       - "traefik.http.middlewares.security-headers.headers.permissionsPolicy=camera=(), microphone=(), geolocation=()"
     healthcheck:
-      test: [ "CMD", "traefik", "healthcheck", "--ping" ]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9080/ping" ]
       interval: 30s
       timeout: 5s
       retries: 3
