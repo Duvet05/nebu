@@ -14,10 +14,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const logger = new Logger('Bootstrap');
 
-  // Determinar si se usa modo IoT (allow all origins)
   const iotMode = process.env.IOT_ALLOW_ALL_ORIGINS === 'true';
 
-  // CORS configuration for IoT devices and web apps
   app.enableCors({
     origin: getCorsOrigins(),
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -29,8 +27,8 @@ async function bootstrap() {
       'Origin',
       'User-Agent'
     ],
-    credentials: !iotMode, // Solo credentials si NO es modo IoT
-    optionsSuccessStatus: 200, // For legacy browsers and IoT devices
+    credentials: !iotMode,
+    optionsSuccessStatus: 200,
   });
 
   // Security headers via Helmet (CSP gestionada en Traefik)
@@ -46,10 +44,10 @@ async function bootstrap() {
 
   // Log CORS configuration in development
   if (process.env.NODE_ENV !== 'production') {
-    logger.log('🌐 CORS Configuration:');
-    logger.log(`  NODE_ENV: ${process.env.NODE_ENV}`);
-    logger.log(`  FRONTEND_URL: ${process.env.FRONTEND_URL}`);
-    logger.log(`  DOMAIN: ${process.env.DOMAIN}`);
+    logger.log('CORS Configuration:');
+    logger.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+    logger.log(`FRONTEND_URL: ${process.env.FRONTEND_URL}`);
+    logger.log(`DOMAIN: ${process.env.DOMAIN}`);
   }
 
   // Global validation pipe with sanitization
@@ -84,38 +82,18 @@ async function bootstrap() {
     SwaggerModule.setup('api/docs', app, document);
   }
 
-  // Simple health check endpoint (legacy)
-  app.getHttpAdapter().get('/health-simple', (req: any, res: any) => {
-    res.json({
-      status: 'ok',
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-      environment: process.env.NODE_ENV,
-      version: '1.0.0',
-    });
-  });
-
   // Configurar archivos estáticos para uploads
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/',
-    maxAge: '1d', // Cache por 1 día
+    maxAge: '1d',
   });
 
   const port = process.env.PORT || 3001;
   await app.listen(port);
 
   logger.log('🚀 Nebu Mobile Backend iniciado!');
-  logger.log(`📍 URL: http://localhost:${port}`);
   logger.log(`📚 API Docs: http://localhost:${port}/api/docs`);
   logger.log(`💚 Health Check: http://localhost:${port}/health`);
-  logger.log(`🔍 Health Detailed: http://localhost:${port}/health/detailed`);
-  logger.log(`✅ Readiness: http://localhost:${port}/health/readiness`);
-  logger.log(`❤️ Liveness: http://localhost:${port}/health/liveness`);
-  logger.log(`📁 Uploads: http://localhost:${port}/uploads/`);
-  logger.log(`🔧 Admin Panel: http://localhost:${port}/admin`);
-  logger.log(`🎥 LiveKit: http://localhost:7880`);
-  logger.log(`🎤 Voice Agent: Ready for AI integration`);
-  logger.log(`📱 Mobile API: Ready for React Native`);
 }
 
 bootstrap();

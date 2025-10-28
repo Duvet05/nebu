@@ -227,11 +227,6 @@ export class HealthController {
     return this.healthService.getHealthStatus();
   }
 
-  @Get('detailed')
-  async getDetailedHealth() {
-    return this.healthService.getHealthStatus();
-  }
-
   @Get('readiness')
   async getReadiness() {
     return this.healthService.getReadinessStatus();

@@ -37,22 +37,4 @@ export class SecurityController {
   async getSecurityMetrics() {
     return this.securityAuditService.getSecurityMetrics();
   }
-
-  @Get('health')
-  @ApiOperation({ summary: 'Verificar estado de seguridad del sistema' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Estado de seguridad verificado',
-  })
-  async getSecurityHealth() {
-    const audit = await this.securityAuditService.performSecurityAudit();
-
-    return {
-      status: audit.criticalIssues === 0 ? 'HEALTHY' : 'CRITICAL',
-      score: audit.overallScore,
-      criticalIssues: audit.criticalIssues,
-      warnings: audit.warnings,
-      lastAudit: audit.timestamp,
-    };
-  }
 }
