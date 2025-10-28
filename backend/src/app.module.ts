@@ -31,6 +31,8 @@ import { LiveKitModule } from './livekit/livekit.module';
 import { IoTModule } from './iot/iot.module';
 import { VoiceModule } from './voice/voice.module';
 import { ToysModule } from './toys/toys.module';
+import { MemoryModule } from './memory/memory.module';
+import { RedisModule } from './config/redis.module';
 import { DynamicModulesConfig } from './config/dynamic-modules.config';
 
 @Module({
@@ -126,6 +128,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     }),
 
     // Core Modules (always loaded)
+    RedisModule,
     AuthModule,
     UsersModule,
     AdminModule,
@@ -139,6 +142,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     IoTModule,
     VoiceModule,
     ToysModule,
+    MemoryModule,
     NotificationsModule,
 
     // Dynamic Modules (loaded based on feature flags)

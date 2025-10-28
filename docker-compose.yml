@@ -24,6 +24,8 @@ volumes:
     driver: local
   redis_data:
     driver: local
+  chromadb_data:
+    driver: local
   backend_uploads:
     driver: local
   frontend_uploads:
@@ -273,6 +275,41 @@ services:
       retries: 3
 
   # ==============================================
+  # CHROMADB - BASE DE DATOS VECTORIAL
+  # ==============================================
+  chromadb:
+    image: chromadb/chroma:0.4.22
+    container_name: nebu-chromadb-prod
+    restart: on-failure:3
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=${CHROMA_TELEMETRY:-FALSE}
+      - ALLOW_RESET=TRUE
+      - CHROMA_SERVER_AUTH_PROVIDER=${CHROMA_AUTH_PROVIDER:-}
+      - CHROMA_SERVER_AUTH_CREDENTIALS=${CHROMA_AUTH_CREDENTIALS:-}
+    volumes:
+      - chromadb_data:/chroma/chroma
+    ports:
+      # Solo expuesto en localhost para seguridad
+      - "127.0.0.1:8000:8000"
+    networks:
+      - nebu-network
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ==============================================
   # BACKEND - CON HEALTH CHECK Y OPTIMIZACIONES
   # ==============================================
   backend:
@@ -306,6 +343,13 @@ services:
       - LIVEKIT_URL=${LIVEKIT_URL}
       - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
       - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
+      # ChromaDB Configuration
+      - CHROMA_URL=http://chromadb:8000
+      # OpenAI Configuration (para embeddings)
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # Memory Configuration
+      - MEMORY_RETENTION_DAYS=${MEMORY_RETENTION_DAYS:-30}
+      - ENABLE_MEMORY_DECAY=${ENABLE_MEMORY_DECAY:-true}
     volumes:
       - backend_uploads:/app/uploads:rw
     networks:
@@ -315,6 +359,8 @@ services:
       postgres:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      chromadb:
         condition: service_healthy
     labels:
       - "traefik.enable=true"

@@ -5,70 +5,121 @@ import {
   HttpCode,
   HttpStatus,
   Logger,
+  Patch,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { AccessToken } from 'livekit-server-sdk';
+import { IoTService } from './iot.service';
 import { DeviceTokenRequestDto, DeviceTokenResponseDto } from './dto/device-token.dto';
+
+/**
+ * DTOs adicionales para ESP32
+ */
+export class ESP32TokenRequestDto extends DeviceTokenRequestDto {
+  firmware_version?: string;
+  battery_level?: number;
+  signal_strength?: number;
+}
+
+export class ESP32HeartbeatDto {
+  device_id: string;
+  battery_level?: number;
+  signal_strength?: number;
+  temperature?: number;
+  cpu_usage?: number;
+  memory_usage?: number;
+}
 
 @ApiTags('iot')
 @Controller('iot')
 export class ESP32TokenController {
   private readonly logger = new Logger(ESP32TokenController.name);
-  
-  private readonly apiKey = process.env.LIVEKIT_API_KEY!;
-  private readonly apiSecret = process.env.LIVEKIT_API_SECRET!;
-  private readonly livekitUrl = process.env.LIVEKIT_URL!;
 
+  constructor(private readonly iotService: IoTService) {}
+
+  /**
+   * ENDPOINT PRINCIPAL: Obtener token para ESP32
+   *
+   * POST /api/v1/iot/esp32/token
+   *
+   * El ESP32 llama a este endpoint al encenderse o reconectarse.
+   * Retorna un nuevo room de LiveKit y token de acceso.
+   *
+   * Edge cases manejados:
+   * - Primera conexión → Crear dispositivo y room
+   * - Reconexión → Crear nuevo room (por diseño, cada request = nuevo room)
+   * - Actualizar métricas del dispositivo
+   */
   @Post('esp32/token')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Generate ESP32-optimized LiveKit token' })
+  @ApiOperation({ summary: 'Generate ESP32-optimized LiveKit token with session management' })
   @ApiResponse({
     status: 200,
     description: 'ESP32-optimized token generated successfully',
     type: DeviceTokenResponseDto,
   })
-  async getESP32Token(@Body() deviceTokenRequest: DeviceTokenRequestDto): Promise<DeviceTokenResponseDto> {
-    const { device_id } = deviceTokenRequest;
-    
-    this.logger.log(` ESP32 Token Request for Device: ${device_id}`);
-    this.logger.log(` Request Time: ${new Date().toISOString()}`);
+  async getESP32Token(@Body() dto: ESP32TokenRequestDto): Promise<DeviceTokenResponseDto> {
+    this.logger.log(`🔧 ESP32 Token Request for Device: ${dto.device_id}`);
+    this.logger.log(`   Time: ${new Date().toISOString()}`);
+    this.logger.log(`   Firmware: ${dto.firmware_version || 'N/A'}`);
+    this.logger.log(`   Battery: ${dto.battery_level || 'N/A'}%`);
 
     try {
-      // Generate room name
-      const roomName = `esp32-${device_id.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}`;
-      
-      // Create token with ESP32-specific configuration
-      const at = new AccessToken(this.apiKey, this.apiSecret, {
-        identity: device_id,
-        ttl: 3600, // 1 hour for ESP32 devices
+      // Usar el nuevo método mejorado del IoTService
+      const result = await this.iotService.getESP32Token(dto.device_id, {
+        firmwareVersion: dto.firmware_version,
+        batteryLevel: dto.battery_level,
+        signalStrength: dto.signal_strength,
       });
 
-      at.addGrant({
-        room: roomName,
-        roomJoin: true,
-        canPublish: true,
-        canSubscribe: true,
-        canPublishData: true,
-        hidden: false,
-      });
-
-      const token = await at.toJwt();
-
-      this.logger.log(` ESP32 Token generated successfully for ${device_id}`);
-      this.logger.log(` Room: ${roomName}`);
+      this.logger.log(`✅ Token generated successfully for ${dto.device_id}`);
+      this.logger.log(`   Room: ${result.room_name}`);
+      this.logger.log(`   Device: ${result.device_info?.device_name || 'Unknown'}`);
 
       return {
-        access_token: token,
-        room_name: roomName,
-        expires_in: 3600,
-        server_url: this.livekitUrl,
-        participant_identity: device_id,
+        access_token: result.access_token,
+        room_name: result.room_name,
+        expires_in: result.expires_in,
+        server_url: result.server_url,
+        participant_identity: result.participant_identity,
       };
-
     } catch (error) {
-      this.logger.error(` Failed to create ESP32 token for device: ${device_id}`);
-      this.logger.error(` Error: ${error.message}`);
+      this.logger.error(`❌ Failed to create ESP32 token for device: ${dto.device_id}`);
+      this.logger.error(`   Error: ${error.message}`);
       throw error;
     }
+  }
+
+  /**
+   * ENDPOINT: Heartbeat del ESP32
+   *
+   * PATCH /api/v1/iot/esp32/heartbeat
+   *
+   * El ESP32 envía heartbeats cada 30-60 segundos para:
+   * - Mantener el dispositivo como "online"
+   * - Reportar métricas (batería, señal, temperatura, etc.)
+   * - Detectar desconexiones
+   */
+  @Patch('esp32/heartbeat')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Record ESP32 heartbeat with device metrics' })
+  @ApiResponse({
+    status: 200,
+    description: 'Heartbeat recorded successfully',
+  })
+  async recordHeartbeat(@Body() dto: ESP32HeartbeatDto): Promise<{ status: string; timestamp: string }> {
+    this.logger.debug(`💓 Heartbeat from ESP32: ${dto.device_id}`);
+
+    await this.iotService.recordDeviceHeartbeat(dto.device_id, {
+      batteryLevel: dto.battery_level,
+      signalStrength: dto.signal_strength,
+      temperature: dto.temperature,
+      cpuUsage: dto.cpu_usage,
+      memoryUsage: dto.memory_usage,
+    });
+
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+    };
   }
 }
