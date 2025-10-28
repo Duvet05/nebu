@@ -60,7 +60,11 @@ export class ChromaService {
    */
   async getOrCreateCollection(name: string): Promise<Collection> {
     try {
-      return await this.client.getCollection({ name });
+      // En ChromaDB v1.10.5, getCollection requiere embeddingFunction
+      return await this.client.getCollection({
+        name,
+        embeddingFunction: null // Usar embedding por defecto
+      });
     } catch {
       this.logger.log(`Collection ${name} not found, creating...`);
       return this.createCollection(name);
@@ -301,8 +305,9 @@ export class ChromaService {
    */
   async listCollections(): Promise<string[]> {
     try {
+      // En ChromaDB v1.10.5, listCollections devuelve array de strings
       const collections = await this.client.listCollections();
-      return collections.map(c => c.name);
+      return collections as string[];
     } catch (error) {
       this.logger.error('Failed to list collections:', error);
       throw error;
