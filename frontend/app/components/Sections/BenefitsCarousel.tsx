@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Monitor, Lightbulb, Star, Heart, Brain, Shield } from 'lucide-react';
+import { Star, Brain, Shield } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function BenefitsCarousel() {
@@ -9,20 +9,23 @@ export default function BenefitsCarousel() {
   const benefits = [
     {
       id: 1,
-      icon: Monitor,
+      iconType: 'svg',
+      iconPath: '/assets/images/Screentimeb268.svg',
       title: t("benefits.reduceScreenTime.title"),
       description: t("benefits.reduceScreenTime.description"),
       color: "from-blue-500 to-cyan-500"
     },
     {
       id: 2,
-      icon: Lightbulb,
+      iconType: 'svg',
+      iconPath: '/assets/images/Imagination-1ed0d.svg',
       title: t("benefits.nurtureImagination.title"),
       description: t("benefits.nurtureImagination.description"),
       color: "from-purple-500 to-pink-500"
     },
     {
       id: 3,
+      iconType: 'lucide',
       icon: Star,
       title: t("benefits.buildConfidence.title"),
       description: t("benefits.buildConfidence.description"),
@@ -30,13 +33,15 @@ export default function BenefitsCarousel() {
     },
     {
       id: 4,
-      icon: Heart,
+      iconType: 'svg',
+      iconPath: '/assets/images/Microphoone6492.svg',
       title: t("benefits.developEmpathy.title"),
       description: t("benefits.developEmpathy.description"),
       color: "from-red-500 to-rose-500"
     },
     {
       id: 5,
+      iconType: 'lucide',
       icon: Brain,
       title: t("benefits.stimulateLearning.title"),
       description: t("benefits.stimulateLearning.description"),
@@ -44,6 +49,7 @@ export default function BenefitsCarousel() {
     },
     {
       id: 6,
+      iconType: 'lucide',
       icon: Shield,
       title: t("benefits.safeAndPrivate.title"),
       description: t("benefits.safeAndPrivate.description"),
@@ -94,7 +100,6 @@ export default function BenefitsCarousel() {
               }}
             >
               {extendedBenefits.map((benefit, index) => {
-                const IconComponent = benefit.icon;
                 return (
                   <motion.div
                     key={`${benefit.id}-${index}`}
@@ -105,7 +110,16 @@ export default function BenefitsCarousel() {
                     }}
                   >
                     <div className={`w-16 h-16 bg-gradient-to-br ${benefit.color} rounded-2xl flex items-center justify-center mb-6`}>
-                      <IconComponent className="w-8 h-8 text-white" />
+                      {benefit.iconType === 'svg' ? (
+                        <img 
+                          src={benefit.iconPath} 
+                          alt="" 
+                          className="w-8 h-8"
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        benefit.icon && <benefit.icon className="w-8 h-8 text-white" />
+                      )}
                     </div>
                     
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">

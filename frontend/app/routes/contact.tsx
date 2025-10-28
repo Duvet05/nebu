@@ -6,6 +6,7 @@ import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
 import { ArrowRight, MessageCircle, Mail, Clock, Send, Phone, MapPin } from "lucide-react";
+import { sendContactEmail } from "~/lib/email.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -52,10 +53,13 @@ export async function action({ request }: ActionFunctionArgs): Promise<Response>
   }
 
   try {
-    // TODO: Implementar sendContactEmail para Nebu
-    // await sendContactEmail({ firstName, lastName, email, subject, message });
-    // Development log - remove in production
-    // console.log('Contact form submitted:', { firstName, lastName, email, subject, message });
+    // Enviar email de contacto
+    await sendContactEmail({ 
+      name: `${firstName} ${lastName}`,
+      email, 
+      subject, 
+      message 
+    });
     return Response.json({ success: true } as ActionData);
   } catch (error) {
     console.error("Error al enviar email:", error);

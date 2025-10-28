@@ -4,6 +4,7 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
+import { Star, Sparkles, ShieldCheck, Award } from 'lucide-react';
 import i18next from "~/lib/i18next.server";
 
 export const meta: MetaFunction = () => {
@@ -47,22 +48,22 @@ export default function OurStory() {
     {
       title: t("about.values.play.title"),
       description: t("about.values.play.description"),
-      icon: ""
+      icon: <Sparkles className="w-6 h-6 text-white" />
     },
     {
       title: t("about.values.purpose.title"),
       description: t("about.values.purpose.description"),
-      icon: ""
+      icon: <Star className="w-6 h-6 text-white" />
     },
     {
       title: t("about.values.trust.title"),
       description: t("about.values.trust.description"),
-      icon: ""
+      icon: <ShieldCheck className="w-6 h-6 text-white" />
     },
     {
       title: t("about.values.design.title"),
       description: t("about.values.design.description"),
-      icon: ""
+      icon: <Award className="w-6 h-6 text-white" />
     }
   ];
 
@@ -75,7 +76,7 @@ export default function OurStory() {
           <div className="max-w-4xl mx-auto">
             {/* Hero */}
             <motion.div
-              className="text-center mb-16"
+              className="text-center mb-20"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -83,7 +84,7 @@ export default function OurStory() {
               <h1 className="h1-hero font-gochi mb-6">
                 {t("about.hero.title")}
               </h1>
-              <p className="p-lead mx-auto">
+              <p className="p-lead mx-auto mt-4 max-w-3xl leading-relaxed">
                 {t("about.hero.subtitle")}
               </p>
             </motion.div>
@@ -109,15 +110,22 @@ export default function OurStory() {
 
             {/* Safety Section */}
             <motion.div
-              className="bg-gray-50 rounded-2xl p-8 text-center"
+              className="bg-gray-50 rounded-2xl p-8 text-center space-y-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <h2 className="text-2xl font-bold mb-4">{t("about.safety.title")}</h2>
-              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow">
+                  <Award className="w-6 h-6 text-primary" />
+                </div>
+                <h2 className="text-2xl font-bold">{t("about.safety.title")}</h2>
+              </div>
+
+              <p className="text-gray-600 max-w-2xl mx-auto">
                 {t("about.safety.description")}
               </p>
+
               <button className="btn btn-primary">
                 {t("about.safety.learnMore")}
               </button>

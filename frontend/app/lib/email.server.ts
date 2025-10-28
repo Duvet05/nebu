@@ -13,12 +13,12 @@ interface PreOrderData {
 // Configurar el transporter de nodemailer
 // NOTA: Debes configurar las variables de entorno en .env
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST || "smtp.gmail.com",
-  port: parseInt(process.env.EMAIL_PORT || "587"),
+  host: process.env.SMTP_HOST || "smtp.gmail.com",
+  port: parseInt(process.env.SMTP_PORT || "587"),
   secure: false,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD,
   },
 });
 
@@ -27,8 +27,8 @@ export async function sendPreOrderEmail(data: PreOrderData) {
 
   // Email al equipo de Flow-telligence
   await transporter.sendMail({
-    from: process.env.EMAIL_FROM || '"Nebu - Flow-telligence" <noreply@flow-telligence.com>',
-    to: process.env.EMAIL_TO || "ordenes@flow-telligence.com",
+    from: process.env.SMTP_FROM || '"Nebu - Flow-telligence" <noreply@flow-telligence.com>',
+    to: "ordenes@flow-telligence.com",
     subject: `Nueva Pre-orden de Nebu - ${name}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
