@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, LessThan } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Cron } from '@nestjs/schedule';
 import { IoTDevice, DeviceStatus, DeviceType } from './entities/iot-device.entity';
 import { LiveKitService } from '../livekit/livekit.service';
