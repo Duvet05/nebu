@@ -30,6 +30,7 @@ import { CompanyModule } from './company/company.module';
 import { LiveKitModule } from './livekit/livekit.module';
 import { IoTModule } from './iot/iot.module';
 import { VoiceModule } from './voice/voice.module';
+import { AgentsModule } from './agents/agents.module';
 import { ToysModule } from './toys/toys.module';
 import { MemoryModule } from './memory/memory.module';
 import { RedisModule } from './config/redis.module';
@@ -140,8 +141,10 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     CompanyModule,
     LiveKitModule,
     IoTModule,
-    VoiceModule,
-    ToysModule,
+  VoiceModule,
+  // Agents personalization module
+  AgentsModule,
+  ToysModule,
     MemoryModule,
     NotificationsModule,
 
