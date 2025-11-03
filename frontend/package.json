@@ -41,7 +41,8 @@
     "remix-i18next": "^6.4.1",
     "resend": "^6.1.2",
     "sonner": "^1.7.4",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.2",
+    "three": "^0.150.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.1",
