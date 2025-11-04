@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import { CreateToyDto } from './create-toy.dto';
-import { IsOptional, IsEnum, IsString } from 'class-validator';
+import { IsOptional, IsEnum, IsString, IsUUID } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { ToyStatus } from '../entities/toy.entity';
 
@@ -46,4 +46,12 @@ export class UpdateToyDto extends PartialType(CreateToyDto) {
   @IsOptional()
   @IsString()
   activatedAt?: string;
+
+  @ApiPropertyOptional({
+    description: 'ID del usuario propietario del juguete',
+    example: '550e8400-e29b-41d4-a716-446655440000',
+  })
+  @IsOptional()
+  @IsUUID()
+  userId?: string;
 }

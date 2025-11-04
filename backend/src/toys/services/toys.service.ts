@@ -396,9 +396,9 @@ export class ToysService {
       macAddress: toy.iotDevice?.macAddress || toy.getMacAddress(),
       statusText: toy.getStatusText(),
       statusColor: toy.getStatusColor(),
-      isActive: toy.isActive(),
-      isConnected: toy.isConnected(),
-      needsAttention: toy.needsAttention(),
+      isActive: toy.isActive,
+      isConnected: toy.isConnected,
+      needsAttention: toy.needsAttention,
     };
   }
 }
