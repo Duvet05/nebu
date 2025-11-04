@@ -281,7 +281,7 @@ export class MemoryService {
         try {
           const agent = await this.agentsService.findOne(agentId);
           agentPersona = agent.persona;
-        } catch (error) {
+        } catch {
           this.logger.warn(`Agent ${agentId} not found, continuing without agent persona`);
         }
       }
