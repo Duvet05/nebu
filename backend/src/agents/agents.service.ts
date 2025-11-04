@@ -77,17 +77,12 @@ export class AgentsService {
 
     const url = `${chromaUrl.replace(/\/$/, '')}/collections/${collection}/points`;
 
-    try {
-      const resp$ = this.httpService.post(url, body, { timeout: 5000 });
-      const resp = (await firstValueFrom(resp$)) as any;
-      if (resp.status >= 200 && resp.status < 300) {
-        this.logger.log(`Indexed agent ${agent.id} into Chroma at ${url}`);
-      } else {
-        this.logger.warn(`Chroma responded with status ${resp.status}`);
-      }
-    } catch (err) {
-      // Best effort: throw to be caught by caller
-      throw err;
+    const resp$ = this.httpService.post(url, body, { timeout: 5000 });
+    const resp = (await firstValueFrom(resp$)) as any;
+    if (resp.status >= 200 && resp.status < 300) {
+      this.logger.log(`Indexed agent ${agent.id} into Chroma at ${url}`);
+    } else {
+      this.logger.warn(`Chroma responded with status ${resp.status}`);
     }
   }
 
@@ -98,16 +93,12 @@ export class AgentsService {
     const collection = 'agents';
     const url = `${chromaUrl.replace(/\/$/, '')}/collections/${collection}/points/delete`;
     const body = { ids: [agentId] };
-    try {
-      const resp$ = this.httpService.post(url, body, { timeout: 5000 });
-      const resp = (await firstValueFrom(resp$)) as any;
-      if (resp.status >= 200 && resp.status < 300) {
-        this.logger.log(`Deleted agent ${agentId} from Chroma at ${url}`);
-      } else {
-        this.logger.warn(`Chroma delete responded with status ${resp.status}`);
-      }
-    } catch (err) {
-      throw err;
+    const resp$ = this.httpService.post(url, body, { timeout: 5000 });
+    const resp = (await firstValueFrom(resp$)) as any;
+    if (resp.status >= 200 && resp.status < 300) {
+      this.logger.log(`Deleted agent ${agentId} from Chroma at ${url}`);
+    } else {
+      this.logger.warn(`Chroma delete responded with status ${resp.status}`);
     }
   }
 }

@@ -37,7 +37,7 @@ export class AgentsRuntimeService {
         for (const candidate of candidates) {
           if (fs.existsSync(candidate)) {
             this.logger.log(`Using local agent runtime at ${candidate}`);
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
+             
             const mod = require(candidate);
             if (mod && typeof mod.applyAgentProfile === 'function') {
               // allow sync or async
