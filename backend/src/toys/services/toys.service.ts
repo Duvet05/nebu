@@ -21,47 +21,76 @@ export class ToysService {
   ) {}
 
   /**
-   * Crear un nuevo juguete
+   * Crear un nuevo juguete con macAddress
+   * @param createToyDto - Datos del juguete con macAddress
+   * @param userId - ID del usuario (opcional, se obtiene del JWT en el controller)
    */
-  async create(createToyDto: CreateToyDto): Promise<ToyResponseDto> {
-    // Verificar que el dispositivo IoT existe
-    const iotDevice = await this.iotDeviceRepository.findOne({
-      where: { id: createToyDto.iotDeviceId },
+  async create(createToyDto: CreateToyDto, userId?: string): Promise<ToyResponseDto> {
+    const normalizedMacAddress = this.normalizeMacAddress(createToyDto.macAddress);
+
+    // 1. Buscar o crear IoTDevice por MAC address
+    let iotDevice = await this.iotDeviceRepository.findOne({
+      where: { macAddress: normalizedMacAddress },
     });
 
     if (!iotDevice) {
-      throw new NotFoundException('Dispositivo IoT no encontrado');
+      // Crear nuevo IoTDevice si no existe
+      iotDevice = this.iotDeviceRepository.create({
+        name: createToyDto.name,
+        macAddress: normalizedMacAddress,
+        deviceType: 'controller',  // Tipo por defecto para juguetes
+        status: 'offline',
+        userId: userId || null,
+      });
+      iotDevice = await this.iotDeviceRepository.save(iotDevice);
     }
 
-    // Verificar si ya existe un juguete con este dispositivo IoT
+    // 2. Verificar si ya existe un toy con este IoTDevice
     const existingToy = await this.toyRepository.findOne({
-      where: { iotDeviceId: createToyDto.iotDeviceId },
+      where: { iotDeviceId: iotDevice.id },
     });
 
     if (existingToy) {
       throw new ConflictException(
-        `Ya existe un juguete registrado para el dispositivo IoT ${createToyDto.iotDeviceId}`
+        `Ya existe un juguete registrado con MAC address ${normalizedMacAddress}`
       );
     }
 
-    // Verificar que el usuario existe
-    const user = await this.userRepository.findOne({
-      where: { id: createToyDto.userId },
-    });
+    // 3. Verificar usuario si se proporciona
+    if (userId) {
+      const user = await this.userRepository.findOne({
+        where: { id: userId },
+      });
 
-    if (!user) {
-      throw new NotFoundException(`Usuario con ID ${createToyDto.userId} no encontrado`);
+      if (!user) {
+        throw new NotFoundException(`Usuario con ID ${userId} no encontrado`);
+      }
     }
 
-    // Crear el juguete
+    // 4. Crear el juguete
     const toy = this.toyRepository.create({
-      ...createToyDto,
+      name: createToyDto.name,
+      model: createToyDto.model,
+      manufacturer: createToyDto.manufacturer,
       status: createToyDto.status || ToyStatus.INACTIVE,
+      firmwareVersion: createToyDto.firmwareVersion,
+      capabilities: createToyDto.capabilities,
+      settings: createToyDto.settings,
+      notes: createToyDto.notes,
+      iotDeviceId: iotDevice.id,
+      userId: userId || null,
       activatedAt: createToyDto.status === ToyStatus.ACTIVE ? new Date() : null,
     });
 
     const savedToy = await this.toyRepository.save(toy);
-    return this.mapToyToResponseDto(savedToy);
+
+    // Cargar relaciones antes de mapear
+    const toyWithRelations = await this.toyRepository.findOne({
+      where: { id: savedToy.id },
+      relations: ['user', 'iotDevice'],
+    });
+
+    return this.mapToyToResponseDto(toyWithRelations);
   }
 
   /**
@@ -224,46 +253,46 @@ export class ToysService {
   }
 
   /**
-   * Asignar/desasignar un juguete a un usuario
+   * Asignar juguete a un usuario usando macAddress
    */
   async assignToy(assignToyDto: AssignToyDto): Promise<AssignToyResponseDto> {
+    const normalizedMacAddress = this.normalizeMacAddress(assignToyDto.macAddress);
+
+    // Buscar toy por MAC address
     const toy = await this.toyRepository.findOne({
-      where: { id: assignToyDto.toyId },
-      relations: ['user'],
+      where: {
+        iotDevice: { macAddress: normalizedMacAddress }
+      },
+      relations: ['user', 'iotDevice'],
     });
 
     if (!toy) {
-      throw new NotFoundException(`Juguete con ID ${assignToyDto.toyId} no encontrado`);
+      throw new NotFoundException(
+        `Juguete con MAC address ${normalizedMacAddress} no encontrado`
+      );
     }
 
-    // Verificar si el usuario existe (si se proporciona)
-    if (assignToyDto.userId) {
-      const user = await this.userRepository.findOne({
-        where: { id: assignToyDto.userId },
-      });
+    // Verificar que el usuario existe
+    const user = await this.userRepository.findOne({
+      where: { id: assignToyDto.userId },
+    });
 
-      if (!user) {
-        throw new NotFoundException(`Usuario con ID ${assignToyDto.userId} no encontrado`);
-      }
+    if (!user) {
+      throw new NotFoundException(`Usuario con ID ${assignToyDto.userId} no encontrado`);
     }
 
-    // Actualizar la asignación
-    toy.userId = assignToyDto.userId || null;
-    toy.user = assignToyDto.userId ? await this.userRepository.findOne({ where: { id: assignToyDto.userId } }) : null;
+    // Actualizar el toy
+    toy.userId = assignToyDto.userId;
+    if (assignToyDto.toyName) {
+      toy.name = assignToyDto.toyName;
+    }
 
     await this.toyRepository.save(toy);
 
     return {
       success: true,
-      message: assignToyDto.userId 
-        ? 'Juguete asignado exitosamente al usuario' 
-        : 'Juguete desasignado exitosamente',
-      toy: {
-        id: toy.id,
-        name: toy.name,
-        macAddress: toy.iotDevice?.macAddress || null,
-        userId: toy.userId,
-      },
+      message: 'Juguete asignado exitosamente al usuario',
+      toy: this.mapToyToResponseDto(toy),
     };
   }
 

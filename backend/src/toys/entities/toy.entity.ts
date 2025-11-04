@@ -83,21 +83,21 @@ export class Toy {
   @Column({ type: 'text', nullable: true })
   notes: string; // Notas adicionales del usuario
 
-  // Relación obligatoria con IoTDevice (1:1)
+  // Relación opcional con IoTDevice (1:0 o 1:1) - Se crea automáticamente con macAddress
   @OneToOne('IoTDevice', 'toy')
   @JoinColumn({ name: 'iotDeviceId' })
-  iotDevice: any;
+  iotDevice?: any;
 
-  @Column({ type: 'uuid' })
-  iotDeviceId: string;
+  @Column({ type: 'uuid', nullable: true })
+  iotDeviceId?: string;
 
-  // Relación obligatoria con User - Un juguete siempre pertenece a un usuario
-  @ManyToOne(() => User, user => user.toys, { nullable: false, onDelete: 'CASCADE' })
+  // Relación opcional con User - Un juguete puede estar sin asignar inicialmente
+  @ManyToOne(() => User, user => user.toys, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user?: User;
 
-  @Column({ type: 'uuid' })
-  userId: string;
+  @Column({ type: 'uuid', nullable: true })
+  userId?: string;
 
   // Metadatos de auditoría
   @CreateDateColumn()
@@ -106,16 +106,16 @@ export class Toy {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // Métodos helper
-  isActive(): boolean {
+  // Getters calculados (se serializan automáticamente en respuestas JSON)
+  get isActive(): boolean {
     return this.status === ToyStatus.ACTIVE || this.status === ToyStatus.CONNECTED;
   }
 
-  isConnected(): boolean {
+  get isConnected(): boolean {
     return this.status === ToyStatus.CONNECTED;
   }
 
-  needsAttention(): boolean {
+  get needsAttention(): boolean {
     return [
       ToyStatus.ERROR,
       ToyStatus.MAINTENANCE,
