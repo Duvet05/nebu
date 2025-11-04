@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { MemoryContext } from './entities/memory-context.entity';
@@ -9,6 +9,7 @@ import { AiConversation } from '../voice/entities/ai-conversation.entity';
 import { ChromaService } from './services/chroma.service';
 import { MemoryService } from './services/memory.service';
 import { RedisModule } from '../config/redis.module';
+import { AgentsModule } from '../agents/agents.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { RedisModule } from '../config/redis.module';
     ]),
     ConfigModule,
     RedisModule,
+    forwardRef(() => AgentsModule), // <-- NUEVO: Para evitar dependencias circulares
   ],
   providers: [ChromaService, MemoryService],
   exports: [ChromaService, MemoryService],

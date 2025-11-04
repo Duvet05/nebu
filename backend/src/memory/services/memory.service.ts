@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, LessThan } from 'typeorm';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -10,6 +10,7 @@ import { ChromaService } from './chroma.service';
 import { RedisService } from '../../config/redis.service';
 import { OpenAI } from 'openai';
 import { ConfigService } from '@nestjs/config';
+import { AgentsService } from '../../agents/agents.service';
 
 export interface ConversationMessage {
   role: 'user' | 'assistant' | 'system';
@@ -22,6 +23,7 @@ export interface AIContext {
   episodicMemories: MemoryContext[];
   semanticKnowledge: any[];
   userProfile: UserProfile;
+  agentPersona?: any;
 }
 
 @Injectable()
@@ -41,6 +43,8 @@ export class MemoryService {
     private chromaService: ChromaService,
     private redisService: RedisService,
     private configService: ConfigService,
+    @Inject(forwardRef(() => AgentsService))
+    private agentsService: AgentsService,
   ) {
     this.openai = new OpenAI({
       apiKey: this.configService.get<string>('OPENAI_API_KEY'),
@@ -106,6 +110,7 @@ export class MemoryService {
     sessionId: string,
     content: string,
     metadata: any,
+    agentId?: string,
   ): Promise<MemoryContext> {
     if (!userId) {
       throw new Error('userId is required for memory storage');
@@ -136,6 +141,7 @@ export class MemoryService {
       const memory = await this.memoryRepo.save({
         userId,
         sessionId,
+        agentId, // <-- NUEVO: Memoria específica del agente
         memoryType: MemoryType.EPISODIC,
         category: metadata.category || MemoryCategory.CONVERSATION,
         content,
@@ -162,6 +168,7 @@ export class MemoryService {
     userId: string,
     query: string,
     limit: number = 5,
+    agentId?: string,
   ): Promise<MemoryContext[]> {
     try {
       const collectionName = `episodic_memories_${userId}`;
@@ -176,9 +183,19 @@ export class MemoryService {
       // Obtener contexto completo de PostgreSQL
       const memoryIds = results.map(r => r.metadata.id || r.id);
 
-      const memories = await this.memoryRepo
+      const queryBuilder = this.memoryRepo
         .createQueryBuilder('memory')
-        .where('memory.chromaCollectionId IN (:...ids)', { ids: memoryIds })
+        .where('memory.chromaCollectionId IN (:...ids)', { ids: memoryIds });
+
+      // Filtrar por agente: incluir memorias del agente específico o compartidas (agentId IS NULL)
+      if (agentId) {
+        queryBuilder.andWhere(
+          '(memory.agentId = :agentId OR memory.agentId IS NULL)',
+          { agentId }
+        );
+      }
+
+      const memories = await queryBuilder
         .orderBy('memory.importance', 'DESC')
         .addOrderBy('memory.createdAt', 'DESC')
         .getMany();
@@ -255,36 +272,50 @@ export class MemoryService {
     userId: string,
     sessionId: string,
     currentMessage: string,
+    agentId?: string,
   ): Promise<string> {
     try {
-      // 1. Obtener memoria de trabajo (conversación actual)
+      // 1. Obtener perfil del agente (si existe)
+      let agentPersona = null;
+      if (agentId) {
+        try {
+          const agent = await this.agentsService.findOne(agentId);
+          agentPersona = agent.persona;
+        } catch (error) {
+          this.logger.warn(`Agent ${agentId} not found, continuing without agent persona`);
+        }
+      }
+
+      // 2. Obtener memoria de trabajo (conversación actual)
       const workingMemory = await this.getWorkingMemory(sessionId);
 
-      // 2. Buscar memorias episódicas relevantes
+      // 3. Buscar memorias episódicas relevantes (del agente o compartidas)
       const episodicMemories = await this.retrieveRelevantMemories(
         userId,
         currentMessage,
         3,
+        agentId, // <-- NUEVO: Filtrar por agente
       );
 
-      // 3. Obtener conocimiento semántico
+      // 4. Obtener conocimiento semántico
       const semanticKnowledge = await this.getSemanticKnowledge(
         userId,
         currentMessage,
         5,
       );
 
-      // 4. Obtener perfil del usuario
+      // 5. Obtener perfil del usuario
       const userProfile = await this.profileRepo.findOne({
         where: { userId },
       });
 
-      // 5. Ensamblar contexto
+      // 6. Ensamblar contexto
       return this.assembleContext({
         workingMemory,
         episodicMemories,
         semanticKnowledge,
         userProfile,
+        agentPersona, // <-- NUEVO: Personalidad del agente
       });
     } catch (error) {
       this.logger.error('Failed to build context for AI:', error);
@@ -298,7 +329,30 @@ export class MemoryService {
   private assembleContext(data: AIContext): string {
     const parts: string[] = [];
 
-    // 1. Perfil del usuario
+    // 1. Personalidad del Agente (si existe)
+    if (data.agentPersona) {
+      parts.push('=== ROL DEL AGENTE ===');
+
+      if (data.agentPersona.instructions) {
+        parts.push(data.agentPersona.instructions);
+      }
+
+      if (data.agentPersona.tone) {
+        parts.push(`Tono: ${data.agentPersona.tone}`);
+      }
+
+      if (data.agentPersona.expertise) {
+        parts.push(`Especialidad: ${Array.isArray(data.agentPersona.expertise) ? data.agentPersona.expertise.join(', ') : data.agentPersona.expertise}`);
+      }
+
+      if (data.agentPersona.constraints) {
+        parts.push(`Restricciones: ${Array.isArray(data.agentPersona.constraints) ? data.agentPersona.constraints.join(', ') : data.agentPersona.constraints}`);
+      }
+
+      parts.push('');
+    }
+
+    // 2. Perfil del usuario
     if (data.userProfile) {
       const profile = data.userProfile;
       parts.push('=== PERFIL DEL NIÑO ===');
@@ -316,7 +370,7 @@ export class MemoryService {
       parts.push('');
     }
 
-    // 2. Conocimiento semántico
+    // 3. Conocimiento semántico
     if (data.semanticKnowledge.length > 0) {
       parts.push('=== LO QUE SÉ SOBRE EL NIÑO ===');
       data.semanticKnowledge.forEach((item, index) => {
@@ -325,7 +379,7 @@ export class MemoryService {
       parts.push('');
     }
 
-    // 3. Memorias episódicas relevantes
+    // 4. Memorias episódicas relevantes
     if (data.episodicMemories.length > 0) {
       parts.push('=== CONVERSACIONES PASADAS RELEVANTES ===');
       data.episodicMemories.forEach((memory, index) => {
@@ -337,7 +391,7 @@ export class MemoryService {
       parts.push('');
     }
 
-    // 4. Conversación actual
+    // 5. Conversación actual
     if (data.workingMemory.length > 0) {
       parts.push('=== CONVERSACIÓN ACTUAL ===');
       data.workingMemory.forEach(msg => {

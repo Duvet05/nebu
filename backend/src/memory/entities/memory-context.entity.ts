@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { VoiceSession } from '../../voice/entities/voice-session.entity';
+import { Agent } from '../../agents/entities/agent.entity';
 
 export enum MemoryType {
   EPISODIC = 'episodic',     // Recuerdos de conversaciones pasadas
@@ -31,6 +32,7 @@ export enum MemoryCategory {
 
 @Entity('memory_contexts')
 @Index(['userId', 'memoryType'])
+@Index(['userId', 'agentId', 'memoryType'])
 @Index(['sessionId'])
 @Index(['importance'])
 @Index(['createdAt'])
@@ -52,6 +54,14 @@ export class MemoryContext {
   @ManyToOne(() => VoiceSession, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'sessionId' })
   session?: VoiceSession;
+
+  @Column({ type: 'uuid', nullable: true })
+  @Index()
+  agentId?: string;
+
+  @ManyToOne(() => Agent, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'agentId' })
+  agent?: Agent;
 
   @Column({
     type: 'enum',
