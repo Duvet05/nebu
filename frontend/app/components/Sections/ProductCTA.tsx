@@ -90,9 +90,16 @@ const ProductCTA = () => {
               <span className="block text-gold mt-2">{t("productCTA.hero.subtitle")}</span>
             </h2>
 
-            <p className="text-xl md:text-2xl font-semibold mb-4 text-white/90">
-              {t("productCTA.hero.price")} <span className="text-gold">{t("productCTA.product.price")}</span>
-            </p>
+            <div className="mb-4">
+              <p className="text-lg md:text-xl mb-2 text-white/80">{t("productCTA.hero.price")}</p>
+              <div className="flex items-center justify-center gap-4 flex-wrap">
+                <span className="text-4xl md:text-5xl font-bold text-gold">{t("productCTA.product.price")}</span>
+                <span className="text-xl md:text-2xl text-white/60 line-through">{t("productCTA.product.originalPrice")}</span>
+                <span className="bg-gold text-primary px-4 py-2 rounded-full text-base md:text-lg font-bold shadow-lg">
+                  -50%
+                </span>
+              </div>
+            </div>
             
             <p className="text-base md:text-lg opacity-90 mb-10 max-w-2xl mx-auto">
               {t("productCTA.hero.shippingInfo")}
@@ -196,12 +203,17 @@ const ProductCTA = () => {
                   </h2>
 
                   {/* Pricing */}
-                  <div className="flex flex-wrap items-baseline gap-4 mb-6">
-                    <span className="text-4xl md:text-5xl font-bold text-gray-900">{t("productCTA.product.price")}</span>
-                    <span className="text-lg md:text-xl text-gray-500 line-through">{t("productCTA.product.originalPrice")}</span>
-                    <span className="bg-gradient-to-r from-primary to-gold text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">
-                      {t("productCTA.product.discount")}
-                    </span>
+                  <div className="space-y-3 mb-6">
+                    <div className="flex flex-wrap items-baseline gap-3">
+                      <span className="text-5xl md:text-6xl font-bold text-primary">{t("productCTA.product.price")}</span>
+                      <span className="text-2xl md:text-3xl text-gray-400 line-through font-medium">{t("productCTA.product.originalPrice")}</span>
+                    </div>
+                    <div className="inline-flex items-center gap-2">
+                      <span className="bg-gradient-to-r from-primary via-accent to-gold text-white px-6 py-2.5 rounded-full text-lg font-bold shadow-xl animate-pulse">
+                        {t("productCTA.product.discount")}
+                      </span>
+                      <span className="text-sm text-gray-600 font-medium">Precio especial de preventa</span>
+                    </div>
                   </div>
 
                   {/* Description */}

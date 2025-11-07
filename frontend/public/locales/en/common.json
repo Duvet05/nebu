@@ -59,13 +59,13 @@
       "ctaButton": "Pre-order now"
     },
     "product": {
-      "badge": "Pre-order (ships in 6-8 weeks)",
-      "name": "Nebu",
-      "price": "S/ 300",
-      "originalPrice": "S/ 450",
-      "discount": "-33% OFF",
+      "badge": "Pre-order (only 20 units)",
+      "name": "Nebu Dino",
+      "price": "S/ 190",
+      "originalPrice": "S/ 380",
+      "discount": "50% OFF! 🎉",
       "description": "Your intelligent companion that turns every conversation into an adventure. Nebu grows with your child, adapting to their personality and fostering their development through play and imagination.",
-      "preOrderButton": "Pre-order now • S/ 300",
+      "preOrderButton": "Pre-order now • S/ 190",
       "waitlistButton": "Join the waitlist",
       "features": {
         "screenFree": "Screen-free",
