@@ -139,6 +139,7 @@ export default function OurStory() {
                 <div className="bg-gray-50 rounded-2xl p-4 shadow-lg max-w-md w-full">
                   <div className="relative overflow-hidden rounded-xl" style={{ paddingBottom: '177.78%' }}>
                     <iframe
+                      title="Video de presentación de Nebu"
                       src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1538072024288534&show_text=false&width=267&t=0"
                       className="absolute top-0 left-0 w-full h-full"
                       style={{ border: 'none', overflow: 'hidden' }}

@@ -63,13 +63,13 @@ export async function action({ request }: ActionFunctionArgs) {
       if (backendResponse.ok) {
         const order = await backendResponse.json();
         orderId = order.id;
-        console.log(`Order saved to backend with ID: ${orderId}`);
+        // Order saved successfully to backend
       } else {
-        console.error("Failed to save order to backend:", await backendResponse.text());
+        // Backend failed, but continue to send emails
+        await backendResponse.text();
       }
-    } catch (backendError) {
-      console.error("Backend connection error:", backendError);
-      // Continue even if backend fails - we still want to send emails
+    } catch {
+      // Backend connection error, continue to send emails anyway
     }
 
     // Send confirmation email to customer

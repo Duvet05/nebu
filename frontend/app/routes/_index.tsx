@@ -1,5 +1,4 @@
 import type { MetaFunction } from "@remix-run/node";
-import { useTranslation } from "react-i18next";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
@@ -26,7 +25,6 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const { t } = useTranslation("common");
   const { sendEvent, trackUserAction, trackConversion } = useAnalytics();
 
   // Track page view
