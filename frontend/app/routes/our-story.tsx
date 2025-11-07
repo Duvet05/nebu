@@ -71,23 +71,38 @@ export default function OurStory() {
     <div className="min-h-screen bg-nebu-bg">
       <Header />
       
-      <main className="section">
-        <div className="container">
-          <div className="max-w-4xl mx-auto">
+      <main>
+        {/* Hero Section */}
+        <section className="pt-32 pb-16 px-4">
+          <div className="max-w-6xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-primary/30 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <Sparkles className="w-4 h-4" />
+              {t("about.hero.badge", "Más que un Juguete, una Conexión")}
+            </div>
+
             {/* Hero */}
-            <motion.div
-              className="text-center mb-20"
+            <motion.h1
+              className="text-4xl md:text-6xl font-bold font-gochi mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="h1-hero font-gochi mb-6">
-                {t("about.hero.title")}
-              </h1>
-              <p className="p-lead mx-auto mt-4 max-w-3xl leading-relaxed">
-                {t("about.hero.subtitle")}
-              </p>
-            </motion.div>
+              {t("about.hero.title")}
+            </motion.h1>
+
+            <motion.p
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              {t("about.hero.subtitle")}
+            </motion.p>
+          </div>
+        </section>
+
+        <section className="pb-20 px-4">
+          <div className="max-w-4xl mx-auto">
 
             {/* Values Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -107,6 +122,33 @@ export default function OurStory() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Video Section */}
+            <motion.div
+              className="mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <h2 className="text-3xl font-bold text-center mb-8 font-gochi">
+                {t("about.videos.title", "Conoce más sobre Nebu")}
+              </h2>
+
+              <div className="flex justify-center">
+                {/* Facebook Reel */}
+                <div className="bg-gray-50 rounded-2xl p-4 shadow-lg max-w-md w-full">
+                  <div className="relative overflow-hidden rounded-xl" style={{ paddingBottom: '177.78%' }}>
+                    <iframe
+                      src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1538072024288534&show_text=false&width=267&t=0"
+                      className="absolute top-0 left-0 w-full h-full"
+                      style={{ border: 'none', overflow: 'hidden' }}
+                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                      allowFullScreen={true}
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
 
             {/* Safety Section */}
             <motion.div
@@ -131,7 +173,7 @@ export default function OurStory() {
               </button>
             </motion.div>
           </div>
-        </div>
+        </section>
       </main>
 
       <Newsletter />
