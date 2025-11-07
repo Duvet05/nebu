@@ -33,6 +33,7 @@ import { VoiceModule } from './voice/voice.module';
 import { AgentsModule } from './agents/agents.module';
 import { ToysModule } from './toys/toys.module';
 import { MemoryModule } from './memory/memory.module';
+import { OrdersModule } from './orders/orders.module';
 import { RedisModule } from './config/redis.module';
 import { DynamicModulesConfig } from './config/dynamic-modules.config';
 
@@ -146,6 +147,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
   AgentsModule,
   ToysModule,
     MemoryModule,
+    OrdersModule,
     NotificationsModule,
 
     // Dynamic Modules (loaded based on feature flags)

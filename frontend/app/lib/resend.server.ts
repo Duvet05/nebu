@@ -122,27 +122,31 @@ export const emailTemplates = {
               <div class="order-details">
                 <h3>Detalles de tu pre-orden:</h3>
                 <ul style="list-style: none; padding: 0;">
-                  <li> <strong>Producto:</strong> Nebu IoT Companion</li>
+                  <li> <strong>Producto:</strong> Peluche Nebu Dino (Edición Limitada)</li>
                   <li> <strong>Color:</strong> ${data.color}</li>
                   <li> <strong>Cantidad:</strong> ${data.quantity}</li>
-                  <li class="price"> <strong>Total:</strong> S/${data.totalPrice}</li>
+                  <li> <strong>Total del pedido:</strong> S/${data.totalPrice}</li>
+                  <li class="price"> <strong>A pagar ahora (50%):</strong> S/${data.totalPrice * 0.5}</li>
+                  <li> <strong>Resto contra entrega:</strong> S/${data.totalPrice * 0.5}</li>
                 </ul>
               </div>
 
               <p><strong>¿Qué sigue?</strong></p>
               <ol>
-                <li>Nuestro equipo revisará tu pre-orden en las próximas 24 horas</li>
-                <li>Te enviaremos instrucciones de pago</li>
-                <li>Una vez confirmado el pago, ¡tu Nebu entrará en producción!</li>
-                <li>Envío estimado: 6-8 semanas</li>
+                <li>Nuestro equipo te enviará las instrucciones de pago en las próximas 24 horas</li>
+                <li>Paga el 50% de adelanto (S/${data.totalPrice * 0.5}) vía Yape o tarjeta</li>
+                <li>Una vez confirmado el pago, ¡tu Nebu Dino entrará en producción!</li>
+                <li>El resto lo pagas cuando recibas tu pedido</li>
+                <li>Envío estimado: 4-6 semanas</li>
               </ol>
 
-              <p> <strong>Beneficios de pre-orden:</strong></p>
+              <p> <strong>Beneficios de esta pre-orden:</strong></p>
               <ul>
-                <li>33% de descuento (S/300 en vez de S/450)</li>
+                <li>Edición limitada - Solo 20 unidades disponibles</li>
+                <li>Reserva con solo el 50% de adelanto</li>
                 <li>Envío gratis a todo Perú</li>
+                <li>Pago sin comisiones con Yape</li>
                 <li>Contenido exclusivo para early adopters</li>
-                <li>Soporte prioritario</li>
               </ul>
 
               <p>Si tienes alguna pregunta, responde a este email o escríbenos por WhatsApp al +51 970 116 770.</p>
@@ -216,18 +220,22 @@ export const emailTemplates = {
 
               <div class="info-box">
                 <h3>Detalles del Pedido</h3>
-                <p><strong>Producto:</strong> Nebu IoT Companion</p>
+                <p><strong>Producto:</strong> Peluche Nebu Dino (Edición Limitada)</p>
                 <p><strong>Color:</strong> ${data.color}</p>
                 <p><strong>Cantidad:</strong> ${data.quantity}</p>
-                <p><strong>Método de pago:</strong> ${data.paymentMethod}</p>
-                <p class="price"><strong>Total:</strong> S/${data.totalPrice}</p>
+                <p><strong>Método de pago:</strong> ${data.paymentMethod === 'yape' ? '💜 Yape (Recomendado)' : data.paymentMethod}</p>
+                <p><strong>Total del pedido:</strong> S/${data.totalPrice}</p>
+                <p class="price"><strong>Reserva (50%):</strong> S/${data.totalPrice * 0.5}</p>
+                <p><strong>Saldo contra entrega:</strong> S/${data.totalPrice * 0.5}</p>
               </div>
 
               <p><strong>Próximos pasos:</strong></p>
               <ol>
-                <li>Contactar al cliente para confirmar pago</li>
-                <li>Enviar instrucciones de pago</li>
+                <li>Contactar al cliente en las próximas 24 horas</li>
+                <li>Enviar instrucciones de pago ${data.paymentMethod === 'yape' ? '(QR de Yape)' : ''}</li>
+                <li>Confirmar pago de la reserva (50%)</li>
                 <li>Marcar pedido como confirmado en el sistema</li>
+                <li>Coordinar entrega y cobro del saldo restante</li>
               </ol>
             </div>
           </div>

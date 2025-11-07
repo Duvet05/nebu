@@ -52,20 +52,20 @@
   "productCTA": {
     "hero": {
       "badge": "Disponible en pre-orden",
-      "title": "Conoce a Nebu",
+      "title": "Conoce a Nebu Dino",
       "subtitle": "Tu compañero inteligente",
       "price": "Precio especial de lanzamiento:",
-      "shippingInfo": "Envío estimado en 6-8 semanas • Cupos limitados",
+      "shippingInfo": "Solo 20 unidades disponibles • Reserva con 50%",
       "ctaButton": "Pre-ordenar ahora"
     },
     "product": {
-      "badge": "Pre-orden (envío en 6-8 semanas)",
-      "name": "Nebu",
-      "price": "S/ 300",
+      "badge": "Pre-orden (solo 20 unidades)",
+      "name": "Nebu Dino",
+      "price": "S/ 380",
       "originalPrice": "S/ 450",
-      "discount": "-33% OFF",
+      "discount": "Edición limitada",
       "description": "Tu compañero inteligente que convierte cada conversación en una aventura. Nebu crece con tu hijo, adaptándose a su personalidad y fomentando su desarrollo a través del juego y la imaginación.",
-      "preOrderButton": "Pre-ordenar ahora • S/ 300",
+      "preOrderButton": "Pre-ordenar ahora • S/ 190",
       "waitlistButton": "Únete a la lista de espera",
       "features": {
         "screenFree": "Sin pantallas",
@@ -112,9 +112,9 @@
     "author": "Alisha, madre de una niña de 7 años (Usuario Beta)"
   },
   "product": {
-    "title": "Nebu",
-    "price": "S/ 300",
-    "shipsIn": "Se envía en 6 – 8 semanas",
+    "title": "Nebu Dino",
+    "price": "S/ 380",
+    "shipsIn": "Solo 20 unidades disponibles",
     "colors": {
       "label": "Color:",
       "aqua": "Aqua",
@@ -146,9 +146,9 @@
     "madeWith": "Hecho con ❤️ por Flow-telligence"
   },
   "preOrder": {
-    "title": "Pre-ordena tu Nebu",
-    "subtitle": "Envío gratuito • Entrega en 6-8 semanas",
-    "description": "Asegura tu compañero IoT educativo hoy. Transforma el aprendizaje en aventuras sin pantallas.",
+    "title": "Pre-ordena tu Nebu Dino",
+    "subtitle": "Solo 20 unidades • Reserva con 50%",
+    "description": "Asegura tu peluche Nebu Dino edición limitada. El compañero más adorable para tu hijo.",
     "selectColor": "Selecciona tu color:",
     "quantity": "Cantidad:",
     "maxQuantity": "Máximo 5 unidades por pedido",
@@ -200,7 +200,7 @@
       "successAlert": "¡Pre-orden realizada exitosamente! \n\nRevisa tu email para más detalles.\nTe contactaremos en las próximas 24 horas.",
       "errorAlert": "Hubo un error procesando tu pre-orden. \n\nPor favor intenta de nuevo o contáctanos por WhatsApp."
     },
-    "productName": "Nebu",
+    "productName": "Nebu Dino",
     "currency": "S/",
     "reviewsCount": "127",
     "productMultiplier": "×",

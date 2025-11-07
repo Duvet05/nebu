@@ -4,6 +4,8 @@ import {
   sendPreOrderNotification,
 } from "~/lib/resend.server";
 
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:4000";
+
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
     return json({ error: "Method not allowed" }, { status: 405 });
@@ -28,6 +30,46 @@ export async function action({ request }: ActionFunctionArgs) {
     // Validate required fields
     if (!email || !firstName || !lastName || !phone || !address || !city) {
       return json({ error: "Faltan campos requeridos" }, { status: 400 });
+    }
+
+    // Save order to backend database
+    let orderId: string | null = null;
+    try {
+      const backendResponse = await fetch(`${BACKEND_URL}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          firstName,
+          lastName,
+          phone,
+          address,
+          city,
+          postalCode,
+          product: "Nebu Dino",
+          color,
+          quantity,
+          totalPrice,
+          paymentMethod,
+          metadata: {
+            source: "website",
+            userAgent: request.headers.get("user-agent"),
+          },
+        }),
+      });
+
+      if (backendResponse.ok) {
+        const order = await backendResponse.json();
+        orderId = order.id;
+        console.log(`Order saved to backend with ID: ${orderId}`);
+      } else {
+        console.error("Failed to save order to backend:", await backendResponse.text());
+      }
+    } catch (backendError) {
+      console.error("Backend connection error:", backendError);
+      // Continue even if backend fails - we still want to send emails
     }
 
     // Send confirmation email to customer
@@ -67,6 +109,7 @@ export async function action({ request }: ActionFunctionArgs) {
     return json({
       success: true,
       message: "Pre-orden realizada exitosamente",
+      orderId,
     });
   } catch (error) {
     console.error("Pre-order error:", error);
