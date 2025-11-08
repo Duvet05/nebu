@@ -54,17 +54,23 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
 
       <div className="container relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.h1
-            className="text-5xl md:text-7xl lg:text-8xl font-bold font-gochi mb-6 leading-tight"
+          <motion.div
+            className="flex flex-col items-center mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <span className="uppercase text-[8rem] md:text-[12rem] lg:text-[16rem] block" style={{ color: '#2F4D5C' }}>Nebu</span>
-            <span style={{ color: '#FF8C5A' }}>{t("hero.line1")} {t("hero.line2")}.</span>
-            <br />
-            <span style={{ color: '#5EBDB0' }}>{t("hero.line3")} {t("hero.line4")}.</span>
-          </motion.h1>
+            <img
+              src="/assets/logos/logo-nebu.svg"
+              alt="Nebu"
+              className="w-64 md:w-96 lg:w-[32rem] h-auto mb-8"
+            />
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-gochi leading-tight text-center">
+              <span style={{ color: '#FF8C5A' }}>{t("hero.line1")} {t("hero.line2")}.</span>
+              <br />
+              <span style={{ color: '#5EBDB0' }}>{t("hero.line3")} {t("hero.line4")}.</span>
+            </h1>
+          </motion.div>
 
           <motion.div
             className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-16 md:mt-20 mb-24 md:mb-32"
