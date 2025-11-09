@@ -16,12 +16,14 @@ async function hydrate() {
       supportedLngs: ["es", "en"],
       defaultNS: "common",
       fallbackLng: "es",
+      lng: "es",
       ns: getInitialNamespaces(),
       backend: {
         loadPath: "/locales/{{lng}}/{{ns}}.json",
       },
       detection: {
-        order: ["localStorage", "htmlTag", "navigator"],
+        order: ["localStorage"],
+        lookupLocalStorage: "i18nextLng",
         caches: ["localStorage"],
       },
       react: {

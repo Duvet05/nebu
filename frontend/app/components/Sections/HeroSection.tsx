@@ -63,12 +63,12 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
             <img
               src="/assets/logos/logo-nebu.svg"
               alt="Nebu"
-              className="w-64 md:w-96 lg:w-[32rem] h-auto mb-8"
+              className="w-96 md:w-[36rem] lg:w-[48rem] h-auto mb-8"
             />
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-gochi leading-tight text-center">
-              <span style={{ color: '#FF8C5A' }}>{t("hero.line1")} {t("hero.line2")}.</span>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-gochi leading-tight text-center">
+              <span className="text-primary">{t("hero.line1")} {t("hero.line2")}.</span>
               <br />
-              <span style={{ color: '#5EBDB0' }}>{t("hero.line3")} {t("hero.line4")}.</span>
+              <span className="text-accent">{t("hero.line3")} {t("hero.line4")}.</span>
             </h1>
           </motion.div>
 
