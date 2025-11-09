@@ -17,6 +17,7 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { analytics } from "~/lib/analytics";
+import NebuModel3D from "~/components/NebuModel3D";
 
 export const meta: MetaFunction = () => {
   return [
@@ -250,10 +251,10 @@ export default function PreOrder() {
               >
                 {/* Product Preview */}
                 <div className="bg-white rounded-2xl shadow-lg p-8">
+                  <div className="mb-8">
+                    <NebuModel3D color={selectedColor.color} />
+                  </div>
                   <div className="text-center mb-8">
-                    <div className={`w-32 h-32 mx-auto rounded-full bg-gradient-to-br ${selectedColor.gradient} shadow-lg mb-4 flex items-center justify-center`}>
-                      <span className="text-white font-bold text-4xl">N</span>
-                    </div>
                     <h3 className="text-2xl font-bold font-heading">{t("preOrder.productName")} {selectedColor.name}</h3>
                     <div className="flex items-center justify-center gap-1 mt-2">
                       {[1,2,3,4,5].map((star) => (

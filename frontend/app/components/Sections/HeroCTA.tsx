@@ -24,7 +24,24 @@ const HeroCTA: React.FC = () => {
       <div className="absolute inset-0 bg-black/5" aria-hidden="true"></div>
 
       <div className="container mx-auto px-4 py-16 md:py-20 relative z-10">
-        <motion.div className="max-w-4xl mx-auto text-center" {...fadeInUp}>
+        <div className="grid md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto">
+          {/* Imagen del producto */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center justify-center"
+          >
+            <img
+              src="/assets/images/61KUrjx-ybL._SX679_.jpg"
+              alt="Nebu Dino"
+              className="w-full max-w-md rounded-2xl shadow-2xl"
+            />
+          </motion.div>
+
+          {/* Contenido */}
+          <motion.div className="text-center md:text-left" {...fadeInUp}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -49,15 +66,16 @@ const HeroCTA: React.FC = () => {
             </div>
           </div>
 
-          <p className="text-base md:text-lg opacity-90 mb-10 max-w-2xl mx-auto">{t('productCTA.hero.shippingInfo')}</p>
+          <p className="text-base md:text-lg opacity-90 mb-10 max-w-2xl mx-auto md:mx-0">{t('productCTA.hero.shippingInfo')}</p>
 
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center md:justify-start gap-4">
             <CTAButton to="/pre-order" ariaLabel={t('productCTA.hero.ctaButton')}>
               {t('productCTA.hero.ctaButton')}
             </CTAButton>
           </div>
 
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
 
       <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>

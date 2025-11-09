@@ -12,10 +12,10 @@ import {
   ArrowRight,
   ChevronRight,
 } from 'lucide-react';
+import NebuModel3D from '../NebuModel3D';
 
 const ProductDetails: React.FC = () => {
   const { t } = useTranslation('common');
-  const [isHoveringImage, setIsHoveringImage] = useState(false);
   const [showWaitlist, setShowWaitlist] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
@@ -70,21 +70,11 @@ const ProductDetails: React.FC = () => {
             <div className="relative order-2 lg:order-1">
               <motion.div
                 className="relative"
-                onHoverStart={() => setIsHoveringImage(true)}
-                onHoverEnd={() => setIsHoveringImage(false)}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="aspect-square bg-gradient-to-br from-accent/10 to-primary/10 rounded-3xl p-8 shadow-xl overflow-hidden relative">
-                  <div className="w-full h-full bg-gradient-to-br from-accent/20 to-primary/20 rounded-2xl flex items-center justify-center relative overflow-hidden group">
-                    <motion.div className="filter drop-shadow-2xl" animate={isHoveringImage ? { rotate: [0, -5, 5, 0], scale: 1.1 } : {}} transition={{ duration: 0.5 }}>
-                      <Bot className="w-40 h-40 text-primary" strokeWidth={1.5} />
-                    </motion.div>
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-accent/30 to-transparent"></div>
-
-                    <motion.div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20" initial={{ opacity: 0 }} animate={{ opacity: isHoveringImage ? 1 : 0 }} transition={{ duration: 0.3 }} />
-                  </div>
+                <div className="aspect-square rounded-3xl shadow-xl overflow-hidden relative">
+                  <NebuModel3D color="#4ECDC4" />
                 </div>
 
                 <motion.div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-gold to-primary rounded-full shadow-lg" {...floatingAnimation} aria-hidden="true" />
