@@ -21,24 +21,6 @@ const HeroCTA: React.FC = () => {
       className="relative overflow-hidden bg-gradient-to-br from-[#34c3f4] via-[#2cc0f4] to-[#8404dc] text-white"
       aria-labelledby="product-cta-title"
     >
-      {/* Video background (YouTube embed) - replace YOUR_YOUTUBE_ID with the actual ID.
-          Notes:
-           - Autoplay usually requires muted video.
-           - Mobile browsers often block autoplay; consider providing a poster image or fallback.
-           - We set pointer-events-none to reduce interactions (can't fully prevent pause via context menu).
-           - If you prefer full control, host an MP4/WebM in `public/assets` and use <video> tag.
-      */}
-      <div className="absolute inset-0 z-0 hidden md:block" aria-hidden="true">
-        <iframe
-          title="Nebu demo video"
-          src={`https://www.youtube.com/embed/516e96l637A?autoplay=1&mute=1&controls=0&loop=1&playlist=516e96l637A&modestbranding=1&rel=0&playsinline=1`}
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          style={{ border: 0 }}
-          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-        />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
-
       <div className="absolute inset-0 bg-black/5" aria-hidden="true"></div>
 
       <div className="container mx-auto px-4 py-16 md:py-20 relative z-10">
