@@ -3,33 +3,23 @@ import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import i18next from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 import { getInitialNamespaces } from "remix-i18next/client";
 
 async function hydrate() {
   await i18next
     .use(initReactI18next)
-    .use(LanguageDetector)
     .use(Backend)
     .init({
       supportedLngs: ["es", "en"],
       defaultNS: "common",
       fallbackLng: "es",
-      lng: "es",
       ns: getInitialNamespaces(),
       backend: {
         loadPath: "/locales/{{lng}}/{{ns}}.json",
       },
-      detection: {
-        order: ["localStorage"],
-        lookupLocalStorage: "i18nextLng",
-        caches: ["localStorage"],
-      },
       react: {
-        // Suspense is disabled to avoid hydration issues with i18next in SSR/CSR environments.
-        // If you want to enable React 18 concurrent features, consider wrapping your app in <React.Suspense>.
-                useSuspense: false,
+        useSuspense: false,
       },
     });
 

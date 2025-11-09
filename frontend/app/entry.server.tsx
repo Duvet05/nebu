@@ -7,6 +7,8 @@ import { renderToPipeableStream } from "react-dom/server";
 import { createInstance } from "i18next";
 import i18nextServer from "~/lib/i18next.server";
 import { I18nextProvider, initReactI18next } from "react-i18next";
+import Backend from "i18next-fs-backend";
+import { resolve } from "node:path";
 
 const ABORT_DELAY = 5_000;
 
@@ -25,13 +27,19 @@ export default async function handleRequest(
   const lng = await i18nextServer.getLocale(request);
   const ns = i18nextServer.getRouteNamespaces(remixContext);
 
-  await instance.use(initReactI18next).init({
-    supportedLngs: ["es", "en"],
-    defaultNS: "common",
-    fallbackLng: "es",
-    lng,
-    ns,
-  });
+  await instance
+    .use(initReactI18next)
+    .use(Backend)
+    .init({
+      supportedLngs: ["es", "en"],
+      defaultNS: "common",
+      fallbackLng: "es",
+      lng,
+      ns,
+      backend: {
+        loadPath: resolve("./public/locales/{{lng}}/{{ns}}.json"),
+      },
+    });
 
   return new Promise((resolve, reject) => {
     let shellRendered = false;
