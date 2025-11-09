@@ -34,7 +34,7 @@ function NebuDinoModel({ color = "#4ECDC4" }: ModelProps) {
     }
   });
 
-  return <primitive object={obj} scale={0.8} position={[0, -2, 0]} />;
+  return <primitive object={obj} scale={0.65} position={[0, -1.8, 0]} />;
 }
 
 function LoadingPlaceholder() {
@@ -60,8 +60,8 @@ export default function NebuModel3D({ color }: ModelProps) {
   }
 
   return (
-    <div className="w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5">
-      <Canvas camera={{ position: [0, 0.5, 10], fov: 40 }}>
+    <div className="w-full h-full rounded-3xl overflow-hidden bg-nebu-bg">
+      <Canvas camera={{ position: [0, 0, 10], fov: 38 }}>
         <Suspense fallback={null}>
           <Stage environment="city" intensity={0.6}>
             <NebuDinoModel color={color} />

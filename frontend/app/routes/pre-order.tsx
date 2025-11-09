@@ -209,12 +209,13 @@ export default function PreOrder() {
             </div>
 
             <motion.h1
-              className="text-4xl md:text-6xl font-bold font-gochi mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+              className="text-4xl md:text-6xl font-bold font-gochi mb-6 flex items-center justify-center gap-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              Peluche Nebu Dino
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Peluche</span>
+              <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-12 md:h-16" />
             </motion.h1>
 
             <motion.p
@@ -250,7 +251,7 @@ export default function PreOrder() {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 {/* Product Preview */}
-                <div className="bg-white rounded-2xl shadow-lg p-8">
+                <div className="bg-nebu-bg rounded-2xl shadow-lg p-8">
                   <div className="mb-8">
                     <NebuModel3D color={selectedColor.color} />
                   </div>
@@ -348,7 +349,7 @@ export default function PreOrder() {
                 </div>
 
                 {/* Price Summary */}
-                <div className="bg-white rounded-2xl shadow-lg p-8">
+                <div className="bg-nebu-bg rounded-2xl shadow-lg p-8">
                   <h4 className="font-semibold text-gray-900 mb-6">{t("preOrder.orderSummary.title")}</h4>
                   <div className="space-y-4">
                     <div className="flex justify-between">
@@ -392,7 +393,7 @@ export default function PreOrder() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-8">
+                <form onSubmit={handleSubmit} className="bg-nebu-bg rounded-2xl shadow-lg p-8">
                   <h3 className="text-2xl font-bold font-heading mb-8">{t("preOrder.contactInfo")}</h3>
                   
                   {/* Contact Information */}

@@ -53,7 +53,10 @@ const HeroCTA: React.FC = () => {
           </motion.div>
 
           <h2 id="product-cta-title" className="text-4xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 leading-tight">
-            {t('productCTA.hero.title')}
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-white">Conoce a</span>
+              <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-12 md:h-16 lg:h-20" />
+            </div>
             <span className="block text-gold mt-2">{t('productCTA.hero.subtitle')}</span>
           </h2>
 
