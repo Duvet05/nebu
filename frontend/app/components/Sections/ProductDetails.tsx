@@ -73,7 +73,7 @@ const ProductDetails: React.FC = () => {
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="aspect-square rounded-3xl shadow-xl overflow-hidden relative">
+                <div className="aspect-square rounded-3xl shadow-xl relative">
                   <NebuModel3D color="#4ECDC4" />
                 </div>
 

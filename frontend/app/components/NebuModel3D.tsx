@@ -34,7 +34,7 @@ function NebuDinoModel({ color = "#4ECDC4" }: ModelProps) {
     }
   });
 
-  return <primitive object={obj} scale={0.3} position={[0, -1, 0]} />;
+  return <primitive object={obj} scale={0.8} position={[0, -2, 0]} />;
 }
 
 function LoadingPlaceholder() {
@@ -61,7 +61,7 @@ export default function NebuModel3D({ color }: ModelProps) {
 
   return (
     <div className="w-full h-64 md:h-96 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5">
-      <Canvas camera={{ position: [0, 0, 8], fov: 50 }}>
+      <Canvas camera={{ position: [0, 1, 6], fov: 35 }}>
         <Suspense fallback={null}>
           <Stage environment="city" intensity={0.6}>
             <NebuDinoModel color={color} />
@@ -72,6 +72,7 @@ export default function NebuModel3D({ color }: ModelProps) {
             autoRotateSpeed={2}
             minPolarAngle={Math.PI / 3}
             maxPolarAngle={Math.PI / 2}
+            target={[0, 0, 0]}
           />
         </Suspense>
       </Canvas>
