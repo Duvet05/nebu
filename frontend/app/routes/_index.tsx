@@ -4,7 +4,8 @@ import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import ConversationExamples from "~/components/Sections/ConversationExamples";
 import BenefitsCarousel from "~/components/Sections/BenefitsCarousel";
-import ProductCTA from "~/components/Sections/ProductCTA";
+import HeroCTA from "~/components/Sections/HeroCTA";
+import ProductDetails from "~/components/Sections/ProductDetails";
 import { HeroSection } from "~/components/Sections/HeroSection";
 import { useEffect } from "react";
 import { analytics } from "~/lib/analytics";
@@ -66,14 +67,15 @@ export default function Index() {
       <main id="main-content">
         <HeroSection onCTAClick={handleCTAClick} />
 
-        {/* Benefits Carousel Section */}
-        <BenefitsCarousel />
+  {/* Product CTA Section split into Hero + Details */}
+  <HeroCTA />
+  <ProductDetails />
 
         {/* Conversation Examples Section */}
         <ConversationExamples />
 
-        {/* Product CTA Section */}
-        <ProductCTA />
+        {/* Benefits Carousel Section */}
+        <BenefitsCarousel />
 
         <Newsletter />
       </main>
