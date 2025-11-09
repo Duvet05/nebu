@@ -63,7 +63,7 @@ const ProductDetails: React.FC = () => {
   };
 
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-20 px-4 bg-gradient-to-br from-primary/5 via-white to-accent/5">
       <motion.div {...fadeInUp} className="max-w-7xl mx-auto">
         <div className="bg-gradient-to-br from-gray-50 to-white rounded-3xl p-6 md:p-12 lg:p-16 shadow-2xl border border-gray-100">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
