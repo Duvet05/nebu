@@ -11,18 +11,6 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
 
   return (
     <section className="h-[95vh] hero-gradient relative overflow-hidden flex items-center" aria-label="Hero section">
-      {/* Video background (YouTube embed) */}
-      <div className="absolute inset-0 z-0 hidden md:block" aria-hidden="true">
-        <iframe
-          title="Nebu demo video"
-          src={`https://www.youtube.com/embed/516e96l637A?autoplay=1&mute=1&controls=0&loop=1&playlist=516e96l637A&modestbranding=1&rel=0&playsinline=1`}
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          style={{ border: 0 }}
-          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-        />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
-
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
 
       {/* Decorative Leaves - Bottom Left */}
