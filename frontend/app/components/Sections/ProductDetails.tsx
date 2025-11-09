@@ -9,10 +9,10 @@ import {
   Truck,
   Lock,
   RotateCcw,
-  ArrowRight,
   ChevronRight,
 } from 'lucide-react';
 import NebuModel3D from '../NebuModel3D';
+import CTAButton from './CTAButton';
 
 const ProductDetails: React.FC = () => {
   const { t } = useTranslation('common');
@@ -63,9 +63,9 @@ const ProductDetails: React.FC = () => {
   };
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-br from-primary/5 via-white to-accent/5">
+    <section className="py-20 px-4 bg-gradient-to-br from-primary/5 via-nebu-bg to-accent/5">
       <motion.div {...fadeInUp} className="max-w-7xl mx-auto">
-        <div className="bg-nebu-bg rounded-3xl p-6 md:p-12 lg:p-16 shadow-2xl border border-gray-100">
+        <div className="bg-white rounded-3xl p-6 md:p-12 lg:p-16 shadow-2xl border border-gray-200">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative order-2 lg:order-1">
               <motion.div
@@ -122,14 +122,13 @@ const ProductDetails: React.FC = () => {
               </div>
 
               <div className="space-y-4 pt-4">
-                <motion.button className="w-full bg-gradient-to-r from-primary to-accent text-white font-bold py-5 px-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 text-lg group relative overflow-hidden" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} aria-label={t('productCTA.product.preOrderButton')}>
-                  <span className="relative z-10 flex items-center justify-center gap-2">{t('productCTA.product.preOrderButton')}<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-accent to-gold opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </motion.button>
+                <CTAButton to="/pre-order" ariaLabel={t('productCTA.product.preOrderButton')} fullWidth>
+                  {t('productCTA.product.preOrderButton')}
+                </CTAButton>
 
-                <motion.button className="w-full border-2 border-gray-300 text-gray-700 font-semibold py-5 px-8 rounded-2xl hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-300 group" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => setShowWaitlist(!showWaitlist)} aria-label={t('productCTA.product.waitlistButton')}>
-                  <span className="flex items-center justify-center gap-2">{t('productCTA.product.waitlistButton')}<ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></span>
-                </motion.button>
+                <CTAButton variant="outline" onClick={() => setShowWaitlist(!showWaitlist)} ariaLabel={t('productCTA.product.waitlistButton')} fullWidth showSparkles={false}>
+                  <span className="flex items-center gap-2">{t('productCTA.product.waitlistButton')}<ChevronRight className="w-5 h-5" /></span>
+                </CTAButton>
               </div>
 
               <div className="flex flex-wrap items-center justify-center gap-6 pt-6 border-t border-gray-200">

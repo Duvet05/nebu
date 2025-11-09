@@ -60,7 +60,7 @@ export default function NebuModel3D({ color }: ModelProps) {
   }
 
   return (
-    <div className="w-full h-full rounded-3xl overflow-hidden bg-nebu-bg">
+    <div className="w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 via-nebu-bg to-accent/10 shadow-inner">
       <Canvas camera={{ position: [0, 0, 10], fov: 38 }}>
         <Suspense fallback={null}>
           <Stage environment="city" intensity={0.6}>

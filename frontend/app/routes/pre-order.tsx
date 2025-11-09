@@ -251,7 +251,7 @@ export default function PreOrder() {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 {/* Product Preview */}
-                <div className="bg-nebu-bg rounded-2xl shadow-lg p-8">
+                <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
                   <div className="mb-8">
                     <NebuModel3D color={selectedColor.color} />
                   </div>
@@ -349,7 +349,7 @@ export default function PreOrder() {
                 </div>
 
                 {/* Price Summary */}
-                <div className="bg-nebu-bg rounded-2xl shadow-lg p-8">
+                <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
                   <h4 className="font-semibold text-gray-900 mb-6">{t("preOrder.orderSummary.title")}</h4>
                   <div className="space-y-4">
                     <div className="flex justify-between">
@@ -393,7 +393,7 @@ export default function PreOrder() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <form onSubmit={handleSubmit} className="bg-nebu-bg rounded-2xl shadow-lg p-8">
+                <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
                   <h3 className="text-2xl font-bold font-heading mb-8">{t("preOrder.contactInfo")}</h3>
                   
                   {/* Contact Information */}
