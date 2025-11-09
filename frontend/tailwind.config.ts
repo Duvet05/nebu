@@ -32,6 +32,7 @@ const config: Config = {
         'accent-dark': '#5B21B6', // Púrpura más oscuro para mejor contraste (AAA compliant)
         gold: 'var(--color-gold)',
         secondary: 'var(--color-secondary)',
+        purple: 'var(--color-purple)',
         muted: 'var(--color-muted)',
         surface: 'var(--color-surface)',
         bg: 'var(--color-bg)',

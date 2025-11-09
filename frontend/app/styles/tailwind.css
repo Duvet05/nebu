@@ -135,13 +135,14 @@
     /* Nebu color palette - Juguetona y vibrante */
     --color-text: rgb(47, 77, 92);
     --color-primary: #FF6B35;
-    --color-accent: #4ECDC4;
-    --color-gold: #FFD166;
-    --color-secondary: #95E1D3;
+    --color-accent: #2cc0f4;
+    --color-gold: #b4ec1c;
+    --color-secondary: #e4145c;
+    --color-purple: #8404dc;
     --color-muted: #F7F7F7;
     --color-surface: #FFFFFF;
     --color-bg: #FFF7F0;
-    --color-yellow: #FCD34D;
+    --color-yellow: #b4ec1c;
 
     /* Shadcn/ui variables */
     --background: 0 0% 98%;
@@ -175,13 +176,14 @@
   .dark {
     --color-text: #F7FAFC;
     --color-primary: #FF8A5B;
-    --color-accent: #5FE3D9;
-    --color-gold: #FFE17B;
-    --color-secondary: #2D3748;
+    --color-accent: #2cc0f4;
+    --color-gold: #b4ec1c;
+    --color-secondary: #e4145c;
+    --color-purple: #8404dc;
     --color-muted: #1A202C;
     --color-surface: #2D3748;
     --color-bg: #1A202C;
-    --color-yellow: #FBBF24;
+    --color-yellow: #b4ec1c;
 
     /* Shadcn/ui dark variables */
     --background: 222.2 84% 4.9%;
@@ -496,7 +498,7 @@ body {
 /* Aesthetic accents */
 .hero-gradient {
   background: radial-gradient(800px 500px at 10% 0%, rgba(255, 107, 53, 0.08), transparent 60%),
-              radial-gradient(600px 400px at 90% 100%, rgba(78, 205, 196, 0.08), transparent 60%),
+              radial-gradient(600px 400px at 90% 100%, rgba(228, 20, 92, 0.08), transparent 60%),
               linear-gradient(180deg, var(--color-bg), var(--color-bg));
 }
 

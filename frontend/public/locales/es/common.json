@@ -8,13 +8,13 @@
   },
   "hero": {
     "badge": "Por lanzamiento - Envío gratis en todas las preordenes!",
-    "title": "Aventuras infinitas.",
-    "subtitle": "Un compañero de confianza.",
-    "line1": "Aventuras",
-    "line2": "infinitas",
+    "title": "Tu juguete de apoyo emocional y educativo.",
+    "subtitle": "Acompañamiento inteligente que crece con tu hijo.",
+    "line1": "Apoyo emocional",
+    "line2": "y educativo",
     "line3": "Un compañero",
-    "line4": "de confianza",
-    "description": "El momento en que Nebu dice el nombre de tu hijo... nunca verás los juguetes de la misma manera.",
+    "line4": "inteligente",
+    "description": "Nebu combina inteligencia artificial con interacción natural para ofrecer conversaciones empáticas, apoyo en el aprendizaje y acompañamiento en procesos de relajación y contención emocional.",
     "scrollToDiscover": "Scroll para descubrir",
     "cta": {
       "primary": "Pre-ordenar ahora",
@@ -126,8 +126,8 @@
     "preOrder": "Pre-ordenar ahora"
   },
   "footer": {
-    "description": "Nebu es el compañero IoT que transforma el aprendizaje en aventuras sin pantallas.",
-    "tagline": "Educación sin pantallas para el futuro",
+    "description": "Nebu es una herramienta de apoyo emocional y educativo que combina IA generativa con hardware, adaptándose al contexto del niño para ofrecer acompañamiento empático y personalizado.",
+    "tagline": "Tecnología con propósito, centrada en el bienestar humano",
     "navigation": "Navegación",
     "home": "Inicio",
     "ourStory": "Nuestra Historia",

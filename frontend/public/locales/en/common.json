@@ -8,13 +8,13 @@
   },
   "hero": {
     "badge": "Launch Special - Free shipping on all pre-orders!",
-    "title": "Infinite adventures.",
-    "subtitle": "One trusted companion.",
-    "line1": "Infinite",
-    "line2": "adventures",
-    "line3": "One trusted",
+    "title": "Your emotional and educational support companion.",
+    "subtitle": "Intelligent companionship that grows with your child.",
+    "line1": "Emotional and",
+    "line2": "educational support",
+    "line3": "An intelligent",
     "line4": "companion",
-    "description": "The moment Nebu says your child's name...you'll never look at toys the same again.",
+    "description": "Nebu combines artificial intelligence with natural interaction to offer empathetic conversations, learning support, and companionship in relaxation and emotional containment processes.",
     "scrollToDiscover": "Scroll to discover",
     "cta": {
       "primary": "Pre-order now",
@@ -126,8 +126,8 @@
     "preOrder": "Pre-order now"
   },
   "footer": {
-    "description": "Nebu is the IoT companion that transforms learning into screen-free adventures.",
-    "tagline": "Screen-free education for the future",
+    "description": "Nebu is an emotional and educational support tool that combines generative AI with hardware, adapting to the child's context to offer empathetic and personalized companionship.",
+    "tagline": "Technology with purpose, focused on human well-being",
     "navigation": "Navigation",
     "home": "Home",
     "ourStory": "Our Story",
