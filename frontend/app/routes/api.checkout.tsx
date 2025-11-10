@@ -3,6 +3,8 @@ import { json } from "@remix-run/node";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const CULQI_SECRET_KEY = process.env.CULQI_SECRET_KEY || "";
+const CULQI_API_URL = "https://api.culqi.com/v2";
 
 interface CheckoutItem {
   productId: string;
@@ -54,6 +56,16 @@ export async function action({ request }: ActionFunctionArgs) {
     // Generate order ID
     const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 
+    // Create Culqi Order (for payment link)
+    let culqiOrderId = null;
+    try {
+      const culqiOrder = await createCulqiOrder(data, orderId);
+      culqiOrderId = culqiOrder.id;
+    } catch (error) {
+      console.error("Error creating Culqi order:", error);
+      // Continue even if Culqi order creation fails
+    }
+
     // Send confirmation email to customer
     const customerEmail = await resend.emails.send({
       from: "Nebu - Flow Telligence <pedidos@flow-telligence.com>",
@@ -74,13 +86,13 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Here you would typically:
     // 1. Save order to database
-    // 2. Process payment with Culqi
-    // 3. Update inventory
-    // 4. Send to fulfillment system
+    // 2. Update inventory
+    // 3. Send to fulfillment system
 
     return json({
       success: true,
       orderId,
+      culqiOrderId,
       message: "Pre-orden procesada exitosamente",
     });
   } catch (error) {
@@ -345,4 +357,49 @@ function generateCompanyNotificationEmail(data: CheckoutData, orderId: string): 
       </body>
     </html>
   `;
+}
+
+/**
+ * Create a Culqi Order for payment link
+ */
+async function createCulqiOrder(data: CheckoutData, orderId: string) {
+  const amountInCents = Math.round(data.reserveAmount * 100); // Convert to cents
+
+  const orderData = {
+    amount: amountInCents,
+    currency_code: "PEN",
+    description: `Pre-orden ${orderId} - ${data.items.length} producto(s)`,
+    order_number: orderId,
+    client_details: {
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      phone_number: data.phone,
+    },
+    expiration_date: Math.floor(Date.now() / 1000) + 86400 * 7, // 7 days from now
+    metadata: {
+      order_id: orderId,
+      total_amount: data.total,
+      reserve_amount: data.reserveAmount,
+      items_count: data.items.length,
+      customer_address: data.address,
+      customer_city: data.city,
+    },
+  };
+
+  const response = await fetch(`${CULQI_API_URL}/orders`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${CULQI_SECRET_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(orderData),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Culqi API error: ${JSON.stringify(error)}`);
+  }
+
+  return await response.json();
 }
