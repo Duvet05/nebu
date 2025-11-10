@@ -633,7 +633,7 @@ export default function LibroReclamacionesPage() {
 
             <div className="space-y-4 text-sm text-gray-700">
               <div>
-                <span className="font-semibold">Razón Social:</span> Flow Telligence S.A.C.
+                <span className="font-semibold">Razón Social:</span> Flow  S.A.C.S
               </div>
               <div>
                 <span className="font-semibold">RUC:</span> 10703363135
