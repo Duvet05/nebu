@@ -1,6 +1,7 @@
 import { Link } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { CartButton } from "~/components/Cart";
 
 export function Header() {
   const { t, i18n, ready } = useTranslation("common");
@@ -100,8 +101,9 @@ export function Header() {
             </svg>
           </button>
 
-          {/* Language Switcher */}
+          {/* Cart & Language Switcher */}
           <div className="flex items-center gap-4">
+            <CartButton />
             <button
               onClick={toggleLanguage}
               type="button"
@@ -109,8 +111,8 @@ export function Header() {
               className="flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-gray-800 hover:text-gray-900 font-medium px-4 py-2 rounded-xl border border-white/30 hover:border-white/50 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md"
             >
               <div className="relative">
-                <img 
-                  src={i18n.language === "es" ? "/assets/icons/flags/peru-flag-icon.svg" : "/assets/icons/flags/united-states-flag-icon.svg"} 
+                <img
+                  src={i18n.language === "es" ? "/assets/icons/flags/peru-flag-icon.svg" : "/assets/icons/flags/united-states-flag-icon.svg"}
                   alt=""
                    className="w-5 h-4 rounded-sm object-cover border border-gray-300/50"
                    aria-hidden="true"

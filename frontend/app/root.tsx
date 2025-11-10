@@ -12,6 +12,8 @@ import type { ReactNode } from "react";
 import i18next from "~/lib/i18next.server";
 import { WhatsAppButton } from "~/components/WhatsAppButton";
 import { AnalyticsProvider } from "~/components/AnalyticsProvider";
+import { CartProvider } from "~/contexts/CartContext";
+import { CartSidebar } from "~/components/Cart";
 
 import stylesheet from "~/styles/tailwind.css?url";
 
@@ -119,7 +121,10 @@ export function Layout({ children }: { children: ReactNode }) {
 export default function App() {
   return (
     <AnalyticsProvider>
-      <Outlet />
+      <CartProvider>
+        <Outlet />
+        <CartSidebar />
+      </CartProvider>
     </AnalyticsProvider>
   );
 }

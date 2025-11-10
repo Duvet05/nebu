@@ -7,6 +7,8 @@ import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
 import { ShoppingCart, Star, Check, Info, Sparkles } from "lucide-react";
 import { products } from "~/data/products";
+import { useCart } from "~/contexts/CartContext";
+import { useState } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -29,6 +31,20 @@ export const meta: MetaFunction = () => {
 
 export default function ProductosPage() {
   const { t } = useTranslation("common");
+  const { addItem } = useCart();
+  const [selectedColors, setSelectedColors] = useState<Record<string, string>>(
+    products.reduce((acc, p) => ({ ...acc, [p.id]: p.colors[0].id }), {})
+  );
+
+  const handleAddToCart = (productId: string) => {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const colorId = selectedColors[productId];
+    const color = product.colors.find(c => c.id === colorId) || product.colors[0];
+
+    addItem(product, color, 1);
+  };
 
   return (
     <div className="min-h-screen bg-nebu-bg relative">
@@ -180,18 +196,34 @@ export default function ProductosPage() {
                       </div>
                     )}
 
-                    {/* CTA Button */}
-                    <Link
-                      to={product.inStock ? `/pre-order?product=${product.slug}` : "/waitlist"}
-                      className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex items-center justify-center gap-2 ${
-                        product.inStock
-                          ? "bg-gradient-to-r from-primary to-accent text-white"
-                          : "bg-gray-100 text-gray-900 hover:bg-gray-200"
-                      }`}
-                    >
-                      <ShoppingCart className="w-5 h-5" />
-                      {product.inStock ? "Pre-ordenar Ahora" : "Unirse a Lista de Espera"}
-                    </Link>
+                    {/* CTA Buttons */}
+                    <div className="space-y-2">
+                      {product.inStock ? (
+                        <>
+                          <button
+                            onClick={() => handleAddToCart(product.id)}
+                            className="w-full bg-gradient-to-r from-primary to-accent text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex items-center justify-center gap-2"
+                          >
+                            <ShoppingCart className="w-5 h-5" />
+                            Agregar al Carrito
+                          </button>
+                          <Link
+                            to={`/pre-order?product=${product.slug}`}
+                            className="block w-full bg-gray-100 text-gray-900 py-2 px-6 rounded-xl font-medium transition-all duration-300 hover:bg-gray-200 text-center"
+                          >
+                            Pre-ordenar Directo
+                          </Link>
+                        </>
+                      ) : (
+                        <Link
+                          to="/waitlist"
+                          className="w-full bg-gray-100 text-gray-900 py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:bg-gray-200 hover:scale-[1.02] flex items-center justify-center gap-2"
+                        >
+                          <ShoppingCart className="w-5 h-5" />
+                          Unirse a Lista de Espera
+                        </Link>
+                      )}
+                    </div>
 
                     {/* More Info Link */}
                     <Link

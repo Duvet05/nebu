@@ -636,7 +636,7 @@ export default function LibroReclamacionesPage() {
                 <span className="font-semibold">Razón Social:</span> Flow Telligence S.A.C.
               </div>
               <div>
-                <span className="font-semibold">RUC:</span> [Tu RUC aquí]
+                <span className="font-semibold">RUC:</span> 10703363135
               </div>
               <div>
                 <span className="font-semibold">Dirección:</span> Lima, Perú
