@@ -1,7 +1,7 @@
 import { useState, useEffect, type FormEvent } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Minus,
   Plus,
@@ -11,7 +11,8 @@ import {
   Shield,
   CheckCircle,
   Star,
-  Info
+  Info,
+  AlertCircle
 } from "lucide-react";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
@@ -61,6 +62,107 @@ const colorOptions: ColorOption[] = [
   { id: "quartz", name: "Cuarzo", color: "#EC4899", gradient: "from-pink-500 to-rose-600" },
   { id: "flare", name: "Destello", color: "#F59E0B", gradient: "from-amber-500 to-orange-600" }
 ];
+
+function WaitlistForm() {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatus("idle");
+
+    try {
+      const formData = new FormData();
+      formData.append("email", email);
+
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Track newsletter signup in GA4 with waitlist context
+        analytics.newsletterSignup(email, "nebu-gato-waitlist");
+
+        setStatus("success");
+        setMessage(data.message || "¡Genial! Estás en la lista de espera 🎉");
+        setEmail("");
+
+        // Clear success message after 5 seconds
+        setTimeout(() => setStatus("idle"), 5000);
+      } else {
+        setStatus("error");
+        setMessage(data.error || "Error al unirte. Intenta de nuevo.");
+      }
+    } catch (error) {
+      console.error("Waitlist error:", error);
+      setStatus("error");
+      setMessage("Error de conexión. Intenta de nuevo.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="text-center">
+      <h3 className="text-2xl font-bold mb-4 text-gray-900">
+        ¡Sé el primero en saber cuándo esté disponible!
+      </h3>
+      <p className="text-gray-600 mb-6">
+        Únete a la lista de espera y recibe un <span className="font-bold text-purple-600">10% de descuento</span> en tu pre-orden de Nebu Gato
+      </p>
+
+      <form onSubmit={handleSubmit} className="max-w-md mx-auto flex gap-3">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="tu@email.com"
+          required
+          className="flex-1 px-4 py-3 border-2 border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+        />
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? "..." : "Unirme"}
+        </button>
+      </form>
+
+      <AnimatePresence>
+        {status !== "idle" && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className={`mt-4 p-4 rounded-lg flex items-center justify-center gap-2 ${
+              status === "success"
+                ? "bg-green-50 text-green-800"
+                : "bg-red-50 text-red-800"
+            }`}
+          >
+            {status === "success" ? (
+              <CheckCircle className="w-5 h-5" />
+            ) : (
+              <AlertCircle className="w-5 h-5" />
+            )}
+            <span>{message}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <p className="text-xs text-gray-500 mt-4">
+        * Ya estás suscrito a nuestro newsletter? ¡Automáticamente estás en la lista! 🎉
+      </p>
+    </div>
+  );
+}
 
 export default function PreOrder() {
   const { t } = useTranslation("common");
@@ -691,32 +793,7 @@ export default function PreOrder() {
               </div>
 
               <div className="p-8 bg-white">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold mb-4 text-gray-900">
-                    ¡Sé el primero en saber cuándo esté disponible!
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    Únete a la lista de espera y recibe un <span className="font-bold text-purple-600">10% de descuento</span> en tu pre-orden de Nebu Gato
-                  </p>
-
-                  <form className="max-w-md mx-auto flex gap-3">
-                    <input
-                      type="email"
-                      placeholder="tu@email.com"
-                      className="flex-1 px-4 py-3 border-2 border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    />
-                    <button
-                      type="submit"
-                      className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200"
-                    >
-                      Unirme
-                    </button>
-                  </form>
-
-                  <p className="text-xs text-gray-500 mt-4">
-                    * Ya estás suscrito a nuestro newsletter? ¡Automáticamente estás en la lista! 🎉
-                  </p>
-                </div>
+                <WaitlistForm />
               </div>
             </motion.div>
           </div>

@@ -254,8 +254,20 @@ services:
     image: redis:7.2.1-alpine
     container_name: nebu-redis-prod
     restart: on-failure:3
-    command: >
-      redis-server  --requirepass ${REDIS_PASSWORD} --appendonly yes  --appendfsync everysec  --maxmemory 1gb  --maxmemory-policy allkeys-lru  --tcp-keepalive 60  --timeout 300  --save 900 1  --save 300 10  --save 60 10000 --auto-aof-rewrite-percentage 100 --auto-aof-rewrite-min-size 64mb
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --appendfsync
+      - everysec
+      - --maxmemory
+      - 1gb
+      - --maxmemory-policy
+      - allkeys-lru
+      - --tcp-keepalive
+      - "60"
+      - --timeout
+      - "300"
     volumes:
       - redis_data:/data
     networks:
@@ -269,7 +281,7 @@ services:
           memory: 256M
           cpus: '0.25'
     healthcheck:
-      test: [ "CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping" ]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 30s
       timeout: 3s
       retries: 3

@@ -30,7 +30,7 @@ import { CompanyModule } from './company/company.module';
 import { LiveKitModule } from './livekit/livekit.module';
 import { IoTModule } from './iot/iot.module';
 import { VoiceModule } from './voice/voice.module';
-import { AgentsModule } from './agents/agents.module';
+// import { AgentsModule } from './agents/agents.module'; // Temporalmente desactivado por error de @nestjs/axios
 import { ToysModule } from './toys/toys.module';
 import { MemoryModule } from './memory/memory.module';
 import { OrdersModule } from './orders/orders.module';
@@ -144,7 +144,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     IoTModule,
   VoiceModule,
   // Agents personalization module
-  AgentsModule,
+  // AgentsModule, // Temporalmente desactivado por error de @nestjs/axios
   ToysModule,
     MemoryModule,
     OrdersModule,

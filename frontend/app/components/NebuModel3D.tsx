@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useTexture, Stage } from '@react-three/drei';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
@@ -50,18 +50,53 @@ function LoadingPlaceholder() {
 
 export default function NebuModel3D({ color }: ModelProps) {
   const [isClient, setIsClient] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  if (!isClient) {
-    return <LoadingPlaceholder />;
+  // Intersection Observer para lazy loading
+  useEffect(() => {
+    if (!isClient || !containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Solo cargar cuando el elemento es visible
+            setShouldLoad(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        rootMargin: '50px', // Empezar a cargar 50px antes de ser visible
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, [isClient]);
+
+  if (!isClient || !shouldLoad) {
+    return (
+      <div ref={containerRef}>
+        <LoadingPlaceholder />
+      </div>
+    );
   }
 
   return (
-    <div className="w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 via-nebu-bg to-accent/10 shadow-inner">
-      <Canvas camera={{ position: [0, 0, 10], fov: 38 }}>
+    <div ref={containerRef} className="w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 via-nebu-bg to-accent/10 shadow-inner">
+      <Canvas
+        camera={{ position: [0, 0, 10], fov: 38 }}
+        dpr={[1, 2]} // Limitar resolución en dispositivos de alta densidad
+        performance={{ min: 0.5 }} // Reducir calidad si FPS baja
+      >
         <Suspense fallback={null}>
           <Stage environment="city" intensity={0.6}>
             <NebuDinoModel color={color} />

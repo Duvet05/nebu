@@ -20,15 +20,27 @@ export const links: LinksFunction = () => [
   { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
   { rel: "alternate icon", href: "/favicon.svg" },
   { rel: "apple-touch-icon", href: "/favicon.svg" },
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  // Preconnect para Google Fonts - mejora LCP
+  {
+    rel: "preconnect",
+    href: "https://fonts.googleapis.com"
+  },
   {
     rel: "preconnect",
     href: "https://fonts.gstatic.com",
     crossOrigin: "anonymous",
   },
+  // Preload de fuentes críticas para mejorar LCP
+  {
+    rel: "preload",
+    as: "style",
+    href: "https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Fredoka:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap",
+  },
+  // Cargar fuentes con display=swap para evitar FOIT
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Fredoka:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;600;700&display=swap",
+    // Reducir variantes de fuentes para cargar más rápido
   },
 ];
 
@@ -52,11 +64,23 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded">
+          Skip to main content
+        </a>
+        {children}
+        <WhatsAppButton />
+        <ScrollRestoration />
+        <Scripts />
 
-        {/* Google Analytics 4 */}
+        {/* Google Analytics 4 - Loaded after hydration */}
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-XHR2FBL4Z3"
+          suppressHydrationWarning
         />
         <script
           dangerouslySetInnerHTML={{
@@ -74,29 +98,19 @@ export function Layout({ children }: { children: ReactNode }) {
               });
             `,
           }}
+          suppressHydrationWarning
         />
 
-        {/* Culqi.js */}
-        <script src="https://checkout.culqi.com/js/v4"></script>
+        {/* Culqi.js - Loaded after hydration */}
+        <script src="https://checkout.culqi.com/js/v4" suppressHydrationWarning />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               window.CULQI_PUBLIC_KEY = "${loaderData.culqiPublicKey || ""}";
             `,
           }}
+          suppressHydrationWarning
         />
-
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded">
-          Skip to main content
-        </a>
-        {children}
-        <WhatsAppButton />
-        <ScrollRestoration />
-        <Scripts />
       </body>
     </html>
   );
