@@ -1,6 +1,7 @@
 import { useState, useEffect, type FormEvent } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
+import { useSearchParams, Link } from "@remix-run/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Minus,
@@ -19,6 +20,7 @@ import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { analytics } from "~/lib/analytics";
 import NebuModel3D from "~/components/NebuModel3D";
+import { products, getProductBySlug, type Product } from "~/data/products";
 
 export const meta: MetaFunction = () => {
   return [
@@ -166,10 +168,15 @@ function WaitlistForm() {
 
 export default function PreOrder() {
   const { t } = useTranslation("common");
+  const [searchParams] = useSearchParams();
+
+  // Get product from URL parameter or default to nebu-dino
+  const productSlug = searchParams.get("product") || "nebu-dino";
+  const selectedProduct: Product = getProductBySlug(productSlug) || products[0];
 
   // Form state
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState(colorOptions[0]);
+  const [selectedColor, setSelectedColor] = useState(selectedProduct.colors[0]);
   const [paymentMethod, setPaymentMethod] = useState("yape");
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -185,15 +192,15 @@ export default function PreOrder() {
   });
 
   // Inventory management
-  const [availableUnits, setAvailableUnits] = useState(20);
+  const [availableUnits, setAvailableUnits] = useState(selectedProduct.stockCount || 0);
   const soldOut = availableUnits <= 0;
 
   // Track page view and fetch inventory on mount
   useEffect(() => {
-    analytics.viewProduct("nebu-001", "Nebu IoT Companion");
+    analytics.viewProduct(selectedProduct.id, selectedProduct.name);
 
     // Fetch inventory from backend
-    fetch("/api/inventory?product=Nebu Dino")
+    fetch(`/api/inventory?product=${encodeURIComponent(selectedProduct.name)}`)
       .then(res => res.json())
       .then(data => {
         if (data.availableUnits !== undefined) {
@@ -202,11 +209,16 @@ export default function PreOrder() {
       })
       .catch(err => {
         console.error("Failed to fetch inventory:", err);
-        // Keep default value of 20
+        // Keep default value
       });
-  }, []);
+  }, [selectedProduct]);
 
-  const basePrice = 380;
+  // Update selected color when product changes
+  useEffect(() => {
+    setSelectedColor(selectedProduct.colors[0]);
+  }, [selectedProduct]);
+
+  const basePrice = selectedProduct.price;
   const reservePercentage = 0.5; // 50% de adelanto
   const totalPrice = basePrice * quantity;
   const reserveAmount = totalPrice * reservePercentage;
@@ -237,6 +249,8 @@ export default function PreOrder() {
     try {
       // Send pre-order data to API
       const formDataToSend = new FormData();
+      formDataToSend.append("product", selectedProduct.name);
+      formDataToSend.append("productId", selectedProduct.id);
       formDataToSend.append("email", formData.email);
       formDataToSend.append("firstName", formData.firstName);
       formDataToSend.append("lastName", formData.lastName);
@@ -352,18 +366,49 @@ export default function PreOrder() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
+                {/* Product Selector */}
+                <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+                  <h4 className="font-semibold text-gray-900 mb-4">Selecciona tu Nebu</h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    {products.slice(0, 5).map((product) => (
+                      <Link
+                        key={product.id}
+                        to={`/pre-order?product=${product.slug}`}
+                        className={`p-3 rounded-xl border-2 transition-all duration-200 text-center ${
+                          selectedProduct.id === product.id
+                            ? "border-primary bg-primary/5"
+                            : "border-gray-200 hover:border-primary/50"
+                        }`}
+                      >
+                        <div className="text-2xl mb-1">
+                          {product.id === "nebu-dino" && "🦕"}
+                          {product.id === "nebu-gato" && "🐱"}
+                          {product.id === "nebu-conejo" && "🐰"}
+                          {product.id === "nebu-oso" && "🐻"}
+                          {product.id === "nebu-dragon" && "🐉"}
+                        </div>
+                        <span className="text-sm font-medium text-gray-900">{product.name}</span>
+                        {!product.inStock && (
+                          <div className="text-xs text-gray-500 mt-1">Pre-orden</div>
+                        )}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Product Preview */}
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
                   <div className="mb-8">
-                    <NebuModel3D color={selectedColor.color} />
+                    <NebuModel3D color={selectedColor.hex} />
                   </div>
                   <div className="text-center mb-8">
-                    <h3 className="text-2xl font-bold font-heading">{t("preOrder.productName")} {selectedColor.name}</h3>
-                    <div className="flex items-center justify-center gap-1 mt-2">
+                    <h3 className="text-2xl font-bold font-heading">{selectedProduct.name} - {selectedColor.name}</h3>
+                    <p className="text-sm text-gray-600 mt-2">{selectedProduct.shortDescription}</p>
+                    <div className="flex items-center justify-center gap-1 mt-3">
                       {[1,2,3,4,5].map((star) => (
                         <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                       ))}
-                      <span className="text-sm text-gray-500 ml-2">({t("preOrder.reviewsCount")} {t("preOrder.reviews")})</span>
+                      <span className="text-sm text-gray-500 ml-2">(5.0 · 180 {t("preOrder.reviews")})</span>
                     </div>
                   </div>
 
@@ -371,7 +416,7 @@ export default function PreOrder() {
                   <div className="mb-8">
                     <h4 className="font-semibold text-gray-900 mb-4">{t("preOrder.selectColor")}</h4>
                     <div className="grid grid-cols-2 gap-3">
-                      {colorOptions.map((color) => (
+                      {selectedProduct.colors.map((color) => (
                         <button
                           key={color.id}
                           onClick={() => setSelectedColor(color)}
@@ -382,9 +427,9 @@ export default function PreOrder() {
                           }`}
                         >
                           <div className="flex items-center gap-3">
-                            <div 
+                            <div
                               className="w-8 h-8 rounded-full shadow-sm"
-                              style={{ backgroundColor: color.color }}
+                              style={{ backgroundColor: color.hex }}
                             />
                             <span className="font-medium text-gray-900">{color.name}</span>
                           </div>

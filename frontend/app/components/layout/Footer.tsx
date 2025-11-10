@@ -93,6 +93,11 @@ export function Footer() {
                   {t("footer.links.returnPolicy")}
                 </Link>
               </li>
+              <li>
+                <Link to="/libro-reclamaciones" className="hover:text-primary transition-colors font-semibold">
+                  📋 Libro de Reclamaciones
+                </Link>
+              </li>
             </ul>
           </div>
 

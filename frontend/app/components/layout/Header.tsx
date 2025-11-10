@@ -38,6 +38,12 @@ export function Header() {
               {t("nav.home")}
             </Link>
             <Link
+              to="/productos"
+              className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all duration-300 font-medium"
+            >
+              Productos
+            </Link>
+            <Link
               to="/our-story"
               className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all duration-300 font-medium"
             >
@@ -126,6 +132,13 @@ export function Header() {
               className="block text-gray-700 hover:text-gray-900 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
             >
               {t("nav.home")}
+            </Link>
+            <Link
+              to="/productos"
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-gray-700 hover:text-gray-900 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
+            >
+              Productos
             </Link>
             <Link
               to="/our-story"
