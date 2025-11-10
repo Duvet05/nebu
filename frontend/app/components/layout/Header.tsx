@@ -11,10 +11,21 @@ export function Header() {
     i18n.changeLanguage(newLang);
   };
 
+  // Evitar error de hidratación mostrando fallback hasta que las traducciones estén listas
+  if (!ready) {
+    return (
+      <header className="sticky top-0 z-50 w-full border-b border-accent/20 bg-gradient-to-r from-accent/90 to-accent/80 backdrop-blur-md shadow-lg shadow-accent/10">
+        <nav className="container mx-auto px-6 py-4">
+          <div className="h-10" /> {/* Placeholder para evitar layout shift */}
+        </nav>
+      </header>
+    );
+  }
+
   return (
     <header
       className="sticky top-0 z-50 w-full border-b border-accent/20 bg-gradient-to-r from-accent/90 to-accent/80 backdrop-blur-md shadow-lg shadow-accent/10 transition-opacity duration-300"
-      style={{ opacity: ready ? 1 : 0 }}
+      style={{ opacity: 1 }}
     >
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
