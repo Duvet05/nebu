@@ -32,7 +32,7 @@ import { IoTModule } from './iot/iot.module';
 import { VoiceModule } from './voice/voice.module';
 // import { AgentsModule } from './agents/agents.module'; // Temporalmente desactivado por error de @nestjs/axios
 import { ToysModule } from './toys/toys.module';
-import { MemoryModule } from './memory/memory.module';
+// import { MemoryModule } from './memory/memory.module'; // Temporalmente desactivado (depende de agents)
 import { OrdersModule } from './orders/orders.module';
 import { RedisModule } from './config/redis.module';
 import { DynamicModulesConfig } from './config/dynamic-modules.config';
@@ -146,7 +146,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
   // Agents personalization module
   // AgentsModule, // Temporalmente desactivado por error de @nestjs/axios
   ToysModule,
-    MemoryModule,
+    // MemoryModule, // Temporalmente desactivado (depende de agents)
     OrdersModule,
     NotificationsModule,
 

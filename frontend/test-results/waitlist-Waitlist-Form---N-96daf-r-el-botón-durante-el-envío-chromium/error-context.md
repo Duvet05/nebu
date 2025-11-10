@@ -1,0 +1,276 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Home" [ref=e8] [cursor=pointer]:
+              - /url: /
+            - link "Our Story" [ref=e9] [cursor=pointer]:
+              - /url: /our-story
+            - link "Pre-order" [ref=e10] [cursor=pointer]:
+              - /url: /pre-order
+            - link "FAQ" [ref=e11] [cursor=pointer]:
+              - /url: /faq
+            - link "Contact" [ref=e12] [cursor=pointer]:
+              - /url: /contact
+          - button "Cambiar idioma a Español" [ref=e14] [cursor=pointer]:
+            - img [ref=e16]
+            - generic [ref=e17]: EN
+    - generic [ref=e18]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - img [ref=e22]
+          - text: Free shipping • Delivery in 6-8 weeks
+        - heading "Peluche Nebu" [level=1] [ref=e27]:
+          - generic [ref=e28]: Peluche
+          - img "Nebu" [ref=e29]
+        - paragraph [ref=e30]: Secure your educational IoT companion today. Transform learning into screen-free adventures.
+        - generic [ref=e31]: 🔥 Solo 20 unidades disponibles
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e42]:
+              - heading "Nebu Aqua" [level=3] [ref=e43]
+              - generic [ref=e44]:
+                - img [ref=e45]
+                - img [ref=e47]
+                - img [ref=e49]
+                - img [ref=e51]
+                - img [ref=e53]
+                - generic [ref=e55]: (127 reviews)
+            - generic [ref=e56]:
+              - heading "Select your color:" [level=4] [ref=e57]
+              - generic [ref=e58]:
+                - button "Aqua" [ref=e59] [cursor=pointer]:
+                  - generic [ref=e62]: Aqua
+                - button "Anochecer" [ref=e63] [cursor=pointer]:
+                  - generic [ref=e66]: Anochecer
+                - button "Cuarzo" [ref=e67] [cursor=pointer]:
+                  - generic [ref=e70]: Cuarzo
+                - button "Destello" [ref=e71] [cursor=pointer]:
+                  - generic [ref=e74]: Destello
+            - generic [ref=e75]:
+              - generic [ref=e76]:
+                - heading "Quantity:" [level=4] [ref=e77]
+                - generic [ref=e79]: 20 disponibles
+              - generic [ref=e80]:
+                - button [disabled] [ref=e81]:
+                  - img [ref=e82]
+                - generic [ref=e83]: "1"
+                - button [ref=e84] [cursor=pointer]:
+                  - img [ref=e85]
+              - paragraph [ref=e86]: Maximum 5 units per order
+            - generic [ref=e87]:
+              - generic [ref=e88]:
+                - img [ref=e89]
+                - generic [ref=e92]: Personalized AI conversations
+              - generic [ref=e93]:
+                - img [ref=e94]
+                - generic [ref=e97]: Screen-free, 100% interactive
+              - generic [ref=e98]:
+                - img [ref=e99]
+                - generic [ref=e102]: Parent app included
+              - generic [ref=e103]:
+                - img [ref=e104]
+                - generic [ref=e107]: Continuous content updates
+          - generic [ref=e108]:
+            - heading "Order summary" [level=4] [ref=e109]
+            - generic [ref=e110]:
+              - generic [ref=e111]:
+                - generic [ref=e112]: Nebu × 1
+                - generic [ref=e113]: $ 380
+              - generic [ref=e114]:
+                - generic [ref=e115]: Shipping
+                - generic [ref=e116]: Free
+              - separator [ref=e117]
+              - generic [ref=e118]:
+                - generic [ref=e119]: Total del pedido
+                - generic [ref=e120]: $ 380
+              - generic [ref=e121]:
+                - generic [ref=e122]: Reserva ahora (50%)
+                - generic [ref=e123]: $ 190
+              - generic [ref=e124]:
+                - paragraph [ref=e125]: • Paga S/ 190 ahora para reservar
+                - paragraph [ref=e126]: • El resto (S/ 190) se paga contra entrega
+            - generic [ref=e128]:
+              - img [ref=e129]
+              - generic [ref=e131]:
+                - paragraph [ref=e132]: 30-day satisfaction guarantee
+                - paragraph [ref=e133]: If you're not completely satisfied, return your Nebu for a full refund.
+        - generic [ref=e135]:
+          - heading "Contact information" [level=3] [ref=e136]
+          - generic [ref=e137]:
+            - generic [ref=e138]:
+              - generic [ref=e139]:
+                - generic [ref=e140]: First name *
+                - textbox "Your first name" [ref=e141]
+              - generic [ref=e142]:
+                - generic [ref=e143]: Last name *
+                - textbox "Your last name" [ref=e144]
+            - generic [ref=e145]:
+              - generic [ref=e146]: Email *
+              - textbox "your@email.com" [ref=e147]
+            - generic [ref=e148]:
+              - generic [ref=e149]: Phone *
+              - textbox "+1 555 123 4567" [ref=e150]
+            - generic [ref=e151]:
+              - generic [ref=e152]: Address *
+              - textbox "Your complete address" [ref=e153]
+            - generic [ref=e154]:
+              - generic [ref=e155]:
+                - generic [ref=e156]: City *
+                - textbox "New York" [ref=e157]
+              - generic [ref=e158]:
+                - generic [ref=e159]: Postal Code
+                - textbox "10001" [ref=e160]
+          - generic [ref=e161]:
+            - heading "Payment method" [level=4] [ref=e162]
+            - generic [ref=e163]:
+              - generic [ref=e164] [cursor=pointer]:
+                - radio "Y YapeRecomendado Pago rápido y seguro • Sin comisiones" [checked] [ref=e165]
+                - generic [ref=e167]: "Y"
+                - generic [ref=e168]:
+                  - text: YapeRecomendado
+                  - paragraph [ref=e169]: Pago rápido y seguro • Sin comisiones
+              - generic [ref=e170] [cursor=pointer]:
+                - radio "Credit/debit card Stripe" [ref=e171]
+                - img [ref=e172]
+                - generic [ref=e174]:
+                  - text: Credit/debit card
+                  - paragraph [ref=e175]: Stripe
+              - generic [ref=e176] [cursor=pointer]:
+                - radio "P PayPal" [ref=e177]
+                - generic [ref=e179]: P
+                - generic [ref=e180]: PayPal
+          - generic [ref=e181]:
+            - generic [ref=e182] [cursor=pointer]:
+              - checkbox "I agree to the terms and conditions and privacy policy. *" [ref=e183]
+              - generic [ref=e184]: I agree to the terms and conditions and privacy policy. *
+            - generic [ref=e185] [cursor=pointer]:
+              - checkbox "I want to receive updates about Nebu and special offers." [checked] [ref=e186]
+              - generic [ref=e187]: I want to receive updates about Nebu and special offers.
+          - button "Reservar ahora • $ 190" [ref=e188] [cursor=pointer]:
+            - img [ref=e189]
+            - text: Reservar ahora • $ 190
+          - generic [ref=e193]:
+            - paragraph [ref=e194]: "📱 Pasos para pagar con Yape:"
+            - list [ref=e195]:
+              - listitem [ref=e196]: Completa el formulario y haz clic en "Reservar ahora"
+              - listitem [ref=e197]: Te enviaremos un correo con el QR de Yape
+              - listitem [ref=e198]: Escanea el QR y paga S/ 190
+              - listitem [ref=e199]: ¡Listo! Tu reserva queda confirmada
+          - generic [ref=e200]:
+            - img [ref=e201]
+            - generic [ref=e203]: Secure and protected payment
+      - generic [ref=e206]:
+        - generic [ref=e207]:
+          - generic [ref=e208]: ✨
+          - generic [ref=e209]: ✨
+          - generic [ref=e210]: 🌟
+          - generic [ref=e211]: 🌟
+          - generic [ref=e212]:
+            - generic [ref=e214]: 🐱
+            - generic [ref=e215]: PRÓXIMAMENTE
+            - heading "Nebu Gato" [level=2] [ref=e216]
+            - paragraph [ref=e217]: ¡El nuevo amigo felino de Nebu está en camino! Suave, adorable y listo para ronronear aventuras.
+            - generic [ref=e218]:
+              - generic [ref=e219]:
+                - img [ref=e220]
+                - generic [ref=e223]: Material ultra suave
+              - generic [ref=e224]:
+                - img [ref=e225]
+                - generic [ref=e228]: Diseño exclusivo
+              - generic [ref=e229]:
+                - img [ref=e230]
+                - generic [ref=e233]: Perfectos para coleccionar
+        - generic [ref=e235]:
+          - heading "¡Sé el primero en saber cuándo esté disponible!" [level=3] [ref=e236]
+          - paragraph [ref=e237]: Únete a la lista de espera y recibe un 10% de descuento en tu pre-orden de Nebu Gato
+          - generic [ref=e238]:
+            - textbox "tu@email.com" [ref=e239]
+            - button "Unirme" [ref=e240] [cursor=pointer]
+          - generic [ref=e241]:
+            - img [ref=e242]
+            - generic [ref=e245]: ¡Gracias por suscribirte! Revisa tu email.
+          - paragraph [ref=e246]: "* Ya estás suscrito a nuestro newsletter? ¡Automáticamente estás en la lista! 🎉"
+    - generic [ref=e249]:
+      - heading "Subscribe for inspiring stories, offers & news." [level=2] [ref=e250]
+      - paragraph [ref=e251]: Stay up to date with Nebu's latest adventures and parenting tips.
+      - generic [ref=e252]:
+        - textbox "E-mail" [ref=e253]
+        - button "Subscribe" [ref=e254] [cursor=pointer]
+      - paragraph [ref=e255]: By signing up, you agree with our privacy policy.
+    - contentinfo [ref=e256]:
+      - generic [ref=e257]:
+        - generic [ref=e258]:
+          - generic [ref=e259]:
+            - link "Flow Telligence Logo" [ref=e260] [cursor=pointer]:
+              - /url: /
+              - img "Flow Telligence Logo" [ref=e261]
+            - paragraph [ref=e262]: Nebu is an emotional and educational support tool that combines generative AI with hardware, adapting to the child's context to offer empathetic and personalized companionship.
+            - paragraph [ref=e263]: Technology with purpose, focused on human well-being
+          - generic [ref=e264]:
+            - heading "Navigation" [level=3] [ref=e265]
+            - list [ref=e266]:
+              - listitem [ref=e267]:
+                - link "Home" [ref=e268] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e269]:
+                - link "Our Story" [ref=e270] [cursor=pointer]:
+                  - /url: /our-story
+              - listitem [ref=e271]:
+                - link "FAQ" [ref=e272] [cursor=pointer]:
+                  - /url: /faq
+              - listitem [ref=e273]:
+                - link "Contact" [ref=e274] [cursor=pointer]:
+                  - /url: /contact
+          - generic [ref=e275]:
+            - heading "Legal" [level=3] [ref=e276]
+            - list [ref=e277]:
+              - listitem [ref=e278]:
+                - link "Terms of service" [ref=e279] [cursor=pointer]:
+                  - /url: /terms
+              - listitem [ref=e280]:
+                - link "Privacy policy" [ref=e281] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=e282]:
+                - link "Return Policy" [ref=e283] [cursor=pointer]:
+                  - /url: /returns
+          - generic [ref=e284]:
+            - heading "Contact" [level=3] [ref=e285]
+            - list [ref=e286]:
+              - listitem [ref=e287]:
+                - link "contacto@flow-telligence.com" [ref=e288] [cursor=pointer]:
+                  - /url: mailto:contacto@flow-telligence.com
+              - listitem [ref=e289]:
+                - link "+51 999 999 999" [ref=e290] [cursor=pointer]:
+                  - /url: https://wa.me/51999999999?text=Hola!%20Estoy%20interesado%20en%20Nebu
+            - heading "Follow Us" [level=4] [ref=e291]
+            - generic [ref=e292]:
+              - link "Visita nuestro TikTok" [ref=e293] [cursor=pointer]:
+                - /url: https://www.tiktok.com/@flow_.ia/video/7563090924025203976
+                - img [ref=e294]
+              - link "Visita nuestro Instagram" [ref=e296] [cursor=pointer]:
+                - /url: https://www.instagram.com/flow_.ia/
+                - img [ref=e297]
+              - link "Visita nuestro LinkedIn" [ref=e300] [cursor=pointer]:
+                - /url: https://pe.linkedin.com/in/galvezc
+                - img [ref=e301]
+              - link "Visita nuestro Facebook" [ref=e305] [cursor=pointer]:
+                - /url: https://www.facebook.com/flowtelligence
+                - img [ref=e306]
+        - generic [ref=e309]:
+          - generic [ref=e310]: © 2025 Flow-telligence. All rights reserved.
+          - generic [ref=e311]: •
+          - generic [ref=e312]: Made with ❤️ by Flow-telligence
+  - generic [ref=e313]:
+    - button "WhatsApp Icon" [ref=e315] [cursor=pointer]:
+      - img "WhatsApp Icon" [ref=e317]
+    - generic: Write us on WhatsApp!
+```
