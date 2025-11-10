@@ -14,7 +14,7 @@ type Props = {
 
 const CTAButton: React.FC<Props> = ({ to, onClick, children, variant = 'primary', ariaLabel, fullWidth = false, showSparkles = true }) => {
   const base =
-    'relative inline-flex items-center justify-center gap-3 font-gochi font-bold text-xl px-8 py-5 rounded-full transition-all duration-400 ease-out group overflow-hidden';
+    'relative inline-flex items-center justify-center gap-3 font-gochi font-bold text-xl px-8 py-5 rounded-full min-w-[220px] md:min-w-[320px] transition-all duration-400 ease-out group overflow-hidden';
 
   const widthClass = fullWidth ? 'w-full' : 'w-auto';
 
