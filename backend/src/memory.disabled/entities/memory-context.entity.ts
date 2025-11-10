@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { VoiceSession } from '../../voice/entities/voice-session.entity';
-import { Agent } from '../../agents/entities/agent.entity';
+// import { Agent } from '../../agents/entities/agent.entity'; // Module disabled
 
 export enum MemoryType {
   EPISODIC = 'episodic',     // Recuerdos de conversaciones pasadas
@@ -59,9 +59,9 @@ export class MemoryContext {
   @Index()
   agentId?: string;
 
-  @ManyToOne(() => Agent, { nullable: true, onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'agentId' })
-  agent?: Agent;
+  // @ManyToOne(() => Agent, { nullable: true, onDelete: 'SET NULL' })
+  // @JoinColumn({ name: 'agentId' })
+  // agent?: Agent;
 
   @Column({
     type: 'enum',

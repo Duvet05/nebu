@@ -11,11 +11,15 @@
  *   delete <id>             - Eliminar un agente
  */
 
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../src/app.module';
-import { AgentsService } from '../src/agents/agents.service';
+// import { NestFactory } from '@nestjs/core';
+// import { AppModule } from '../src/app.module';
+// import { AgentsService } from '../src/agents/agents.service';
 
 async function main() {
+  console.error('⚠️ Este script está temporalmente deshabilitado porque el módulo agents no existe.');
+  process.exit(1);
+
+  /*
   const app = await NestFactory.createApplicationContext(AppModule);
   const agentsService = app.get(AgentsService);
 
@@ -83,8 +87,10 @@ async function main() {
   } finally {
     await app.close();
   }
+  */
 }
 
+/*
 async function listAgents(agentsService: AgentsService) {
   console.log('📋 Listado de Agentes\n');
 
@@ -260,6 +266,8 @@ async function createExampleAgent(agentsService: AgentsService) {
   console.log(`\n💡 Puedes ver los detalles con:`);
   console.log(`   npx ts-node scripts/manage-agents.ts show ${created.id}`);
 }
+
+*/
 
 main().catch(error => {
   console.error('❌ Error fatal:', error);

@@ -10,7 +10,7 @@ import { ChromaService } from './chroma.service';
 import { RedisService } from '../../config/redis.service';
 import { OpenAI } from 'openai';
 import { ConfigService } from '@nestjs/config';
-import { AgentsService } from '../../agents/agents.service';
+// import { AgentsService } from '../../agents/agents.service'; // Module disabled
 
 export interface ConversationMessage {
   role: 'user' | 'assistant' | 'system';
@@ -43,8 +43,8 @@ export class MemoryService {
     private chromaService: ChromaService,
     private redisService: RedisService,
     private configService: ConfigService,
-    @Inject(forwardRef(() => AgentsService))
-    private agentsService: AgentsService,
+    // @Inject(forwardRef(() => AgentsService))
+    // private agentsService: AgentsService,
   ) {
     this.openai = new OpenAI({
       apiKey: this.configService.get<string>('OPENAI_API_KEY'),
@@ -278,12 +278,13 @@ export class MemoryService {
       // 1. Obtener perfil del agente (si existe)
       let agentPersona = null;
       if (agentId) {
-        try {
-          const agent = await this.agentsService.findOne(agentId);
-          agentPersona = agent.persona;
-        } catch {
-          this.logger.warn(`Agent ${agentId} not found, continuing without agent persona`);
-        }
+        // DISABLED: AgentsService not available
+        // try {
+        //   const agent = await this.agentsService.findOne(agentId);
+        //   agentPersona = agent.persona;
+        // } catch {
+        //   this.logger.warn(`Agent ${agentId} not found, continuing without agent persona`);
+        // }
       }
 
       // 2. Obtener memoria de trabajo (conversación actual)

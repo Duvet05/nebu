@@ -9,7 +9,7 @@ import { AiConversation } from '../voice/entities/ai-conversation.entity';
 import { ChromaService } from './services/chroma.service';
 import { MemoryService } from './services/memory.service';
 import { RedisModule } from '../config/redis.module';
-import { AgentsModule } from '../agents/agents.module';
+// import { AgentsModule } from '../agents/agents.module'; // Module disabled
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { AgentsModule } from '../agents/agents.module';
     ]),
     ConfigModule,
     RedisModule,
-    forwardRef(() => AgentsModule), // <-- NUEVO: Para evitar dependencias circulares
+    // forwardRef(() => AgentsModule), // <-- NUEVO: Para evitar dependencias circulares - DISABLED
   ],
   providers: [ChromaService, MemoryService],
   exports: [ChromaService, MemoryService],

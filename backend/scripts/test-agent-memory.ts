@@ -4,13 +4,17 @@
  * Ejecutar con: npx ts-node scripts/test-agent-memory.ts
  */
 
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../src/app.module';
-import { MemoryService } from '../src/memory/services/memory.service';
-import { AgentsService } from '../src/agents/agents.service';
-import { MemoryCategory } from '../src/memory/entities/memory-context.entity';
+// import { NestFactory } from '@nestjs/core';
+// import { AppModule } from '../src/app.module';
+// import { MemoryService } from '../src/memory/services/memory.service';
+// import { AgentsService } from '../src/agents/agents.service';
+// import { MemoryCategory } from '../src/memory/entities/memory-context.entity';
 
 async function bootstrap() {
+  console.log('⚠️ Este script está temporalmente deshabilitado porque los módulos agents y memory no existen.');
+  process.exit(1);
+
+  /*
   console.log('🚀 Iniciando test de memoria contextual por agente...\n');
 
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -222,6 +226,7 @@ async function bootstrap() {
   console.log('\n💡 Nota: Recuerda limpiar los datos de prueba si es necesario.');
 
   await app.close();
+  */
 }
 
 bootstrap().catch((error) => {
