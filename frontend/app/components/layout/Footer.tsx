@@ -95,7 +95,7 @@ export function Footer() {
               </li>
               <li>
                 <Link to="/libro-reclamaciones" className="hover:text-primary transition-colors font-semibold">
-                  📋 Libro de Reclamaciones
+                  {t("footer.links.complaintBook")}
                 </Link>
               </li>
             </ul>
