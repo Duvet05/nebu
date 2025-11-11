@@ -1,4 +1,5 @@
 import { registerAs } from '@nestjs/config';
+import { FLOW_TELLIGENCE_EMAILS } from '../email/constants/email-aliases.constant';
 
 export const emailConfig = registerAs('email', () => {
   // Simplified email configuration using existing SMTP environment variables
@@ -12,19 +13,45 @@ export const emailConfig = registerAs('email', () => {
         auth: { type: 'login' },
         accounts: {
           default: {
-            email: process.env.SMTP_USER || 'noreply@nebu.com',
+            email: process.env.SMTP_USER || FLOW_TELLIGENCE_EMAILS.CONTACTO,
             password: process.env.SMTP_PASSWORD || '',
-            fromName: 'Nebu Mobile',
+            fromName: 'Nebu - Flow Telligence',
             purpose: 'General email communications'
+          },
+          admin: {
+            email: FLOW_TELLIGENCE_EMAILS.ADMIN,
+            password: process.env.SMTP_PASSWORD || '',
+            fromName: 'Nebu Admin',
+            purpose: 'Administrative communications'
+          },
+          ventas: {
+            email: FLOW_TELLIGENCE_EMAILS.VENTAS,
+            password: process.env.SMTP_PASSWORD || '',
+            fromName: 'Nebu Ventas',
+            purpose: 'Sales and orders'
+          },
+          soporte: {
+            email: FLOW_TELLIGENCE_EMAILS.SOPORTE,
+            password: process.env.SMTP_PASSWORD || '',
+            fromName: 'Nebu Soporte',
+            purpose: 'Technical support'
+          },
+          facturacion: {
+            email: FLOW_TELLIGENCE_EMAILS.FACTURACION,
+            password: process.env.SMTP_PASSWORD || '',
+            fromName: 'Nebu Facturación',
+            purpose: 'Billing and payments'
           }
         }
       }
     },
     default: { provider: 'smtp', account: 'default' },
     routing: {
-      notifications: { provider: 'smtp', account: 'default' },
-      support: { provider: 'smtp', account: 'default' },
-      admin: { provider: 'smtp', account: 'default' }
+      notifications: { provider: 'smtp', account: 'admin' },
+      support: { provider: 'smtp', account: 'soporte' },
+      admin: { provider: 'smtp', account: 'admin' },
+      orders: { provider: 'smtp', account: 'ventas' },
+      billing: { provider: 'smtp', account: 'facturacion' }
     }
   };
 

@@ -10,9 +10,20 @@ const getResendClient = () => {
   return resend;
 };
 
+// Flow-Telligence Email Configuration
+// Account: admin@flow-telligence.com (6/50 aliases usados)
+export const EMAIL_CONFIG = {
+  admin: "admin@flow-telligence.com",
+  contacto: "contacto@flow-telligence.com",
+  facturacion: "facturacion@flow-telligence.com",
+  info: "info@flow-telligence.com",
+  soporte: "soporte@flow-telligence.com",
+  ventas: "ventas@flow-telligence.com",
+} as const;
+
 // Email configuration
-const EMAIL_FROM = process.env.EMAIL_FROM || "Nebu <noreply@flow-telligence.com>";
-const EMAIL_TO = process.env.EMAIL_TO || "ordenes@flow-telligence.com";
+const EMAIL_FROM = process.env.EMAIL_FROM || `Nebu <${EMAIL_CONFIG.contacto}>`;
+const EMAIL_TO = process.env.EMAIL_TO || EMAIL_CONFIG.admin;
 
 // Email templates
 export const emailTemplates = {
