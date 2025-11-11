@@ -241,7 +241,7 @@ function generateCustomerConfirmationEmail(data: CheckoutData, orderId: string):
               <h3 style="margin-top: 0; color: #6366f1;">📞 ¿Necesitas Ayuda?</h3>
               <p>Si tienes alguna pregunta sobre tu pedido, no dudes en contactarnos:</p>
               <p>
-                📧 Email: <a href="mailto:pedidos@flow-telligence.com">pedidos@flow-telligence.com</a><br>
+                📧 Email: <a href="mailto:ventas@flow-telligence.com">ventas@flow-telligence.com</a><br>
                 📱 WhatsApp: <a href="https://wa.me/51987654321">+51 987 654 321</a><br>
                 🌐 Web: <a href="https://flow-telligence.com">flow-telligence.com</a>
               </p>

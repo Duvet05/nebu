@@ -224,10 +224,10 @@ export default function OrderConfirmationPage() {
                 </div>
                 <h4 className="font-semibold text-gray-900 mb-1">Email</h4>
                 <a
-                  href="mailto:pedidos@flow-telligence.com"
+                  href="mailto:ventas@flow-telligence.com"
                   className="text-sm text-primary hover:underline"
                 >
-                  pedidos@flow-telligence.com
+                  ventas@flow-telligence.com
                 </a>
               </div>
 
