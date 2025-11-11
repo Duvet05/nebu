@@ -10,7 +10,7 @@ export const smtpConfig = registerAs('smtp', () => ({
   secure: process.env.SMTP_SECURE === 'true',
   user: process.env.SMTP_USER,
   password: process.env.SMTP_PASSWORD,
-  from: process.env.SMTP_FROM || process.env.SMTP_USER || 'noreply@nebu.academy',
+  from: process.env.SMTP_FROM || process.env.SMTP_USER || 'contacto@flow-telligence.com',
 
   // Default configuration settings
   connectionTimeout: 10000,

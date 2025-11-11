@@ -68,7 +68,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Send confirmation email to customer
     const customerEmail = await resend.emails.send({
-      from: "Nebu - Flow Telligence <pedidos@flow-telligence.com>",
+      from: "Nebu - Flow Telligence <ventas@flow-telligence.com>",
       to: data.email,
       subject: `Confirmación de Pre-orden - ${orderId}`,
       html: generateCustomerConfirmationEmail(data, orderId),
@@ -76,8 +76,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Send notification email to company
     const companyEmail = await resend.emails.send({
-      from: "Nebu Orders <noreply@flow-telligence.com>",
-      to: "pedidos@flow-telligence.com",
+      from: "Nebu Orders <ventas@flow-telligence.com>",
+      to: "ventas@flow-telligence.com",
       subject: `Nueva Pre-orden Recibida - ${orderId}`,
       html: generateCompanyNotificationEmail(data, orderId),
     });

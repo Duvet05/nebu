@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class CompanyService {
   async getCompanyInfo() {
     return {
-      email: process.env.COMPANY_EMAIL || 'info@nebu.com',
+      email: process.env.COMPANY_EMAIL || 'info@flow-telligence.com',
       phone: process.env.COMPANY_PHONE || '+51999999999',
       whatsapp: process.env.COMPANY_WHATSAPP || '51999999999',
       calendly: process.env.COMPANY_CALENDLY || 'https://calendly.com/nebu',

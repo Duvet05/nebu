@@ -27,8 +27,8 @@ export async function sendPreOrderEmail(data: PreOrderData) {
 
   // Email al equipo de Flow-telligence
   await transporter.sendMail({
-    from: process.env.SMTP_FROM || '"Nebu - Flow-telligence" <noreply@flow-telligence.com>',
-    to: "ordenes@flow-telligence.com",
+    from: process.env.SMTP_FROM || '"Nebu - Flow-telligence" <contacto@flow-telligence.com>',
+    to: process.env.TO_EMAIL || "ventas@flow-telligence.com",
     subject: `Nueva Pre-orden de Nebu - ${name}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -91,7 +91,7 @@ export async function sendPreOrderEmail(data: PreOrderData) {
 
   // Email de confirmación al cliente
   await transporter.sendMail({
-    from: process.env.EMAIL_FROM || '"Nebu - Flow-telligence" <noreply@flow-telligence.com>',
+    from: process.env.EMAIL_FROM || '"Nebu - Flow-telligence" <contacto@flow-telligence.com>',
     to: email,
     subject: "¡Pre-orden confirmada! - Nebu",
     html: `
@@ -163,7 +163,7 @@ export async function sendContactEmail(data: {
 
   // Email al equipo
   await transporter.sendMail({
-    from: process.env.EMAIL_FROM || '"Nebu - Flow-telligence" <noreply@flow-telligence.com>',
+    from: process.env.EMAIL_FROM || '"Nebu - Flow-telligence" <contacto@flow-telligence.com>',
     to: process.env.EMAIL_TO || "contacto@flow-telligence.com",
     replyTo: email,
     subject: `Contacto Web: ${subject}`,
@@ -200,7 +200,7 @@ export async function sendContactEmail(data: {
 
   // Confirmación al remitente
   await transporter.sendMail({
-    from: process.env.EMAIL_FROM || '"Nebu - Flow-telligence" <noreply@flow-telligence.com>',
+    from: process.env.EMAIL_FROM || '"Nebu - Flow-telligence" <contacto@flow-telligence.com>',
     to: email,
     subject: "Hemos recibido tu mensaje - Nebu",
     html: `

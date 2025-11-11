@@ -18,7 +18,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Email to company
     const companyEmail = await resend.emails.send({
-      from: "Libro de Reclamaciones <noreply@flow-telligence.com>",
+      from: "Libro de Reclamaciones <contacto@flow-telligence.com>",
       to: "contacto@flow-telligence.com",
       subject: `Nuevo ${formData.tipoReclamo === "reclamo" ? "Reclamo" : "Queja"} - ${hojaNumber}`,
       html: generateCompanyEmail(formData, hojaNumber),
@@ -26,7 +26,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Email to customer
     const customerEmail = await resend.emails.send({
-      from: "Flow Telligence <noreply@flow-telligence.com>",
+      from: "Flow Telligence <contacto@flow-telligence.com>",
       to: formData.email,
       subject: `Confirmación de ${formData.tipoReclamo === "reclamo" ? "Reclamo" : "Queja"} - ${hojaNumber}`,
       html: generateCustomerEmail(formData, hojaNumber),

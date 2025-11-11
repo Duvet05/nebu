@@ -7,7 +7,7 @@ export const applicationConfig = registerAs('app', () => {
     name: process.env.APP_NAME || 'Nebu Mobile',
     version: process.env.APP_VERSION || '1.0.0',
     description: process.env.APP_DESCRIPTION || 'AI-Powered IoT & Voice Control Platform',
-    supportEmail: process.env.SUPPORT_EMAIL || 'support@nebu.com',
+    supportEmail: process.env.SUPPORT_EMAIL || 'soporte@flow-telligence.com',
     defaultLocale: process.env.DEFAULT_LOCALE || 'es',
     supportedLocales: process.env.SUPPORTED_LOCALES?.split(',') || ['es', 'en'],
     timezone: process.env.APP_TIMEZONE || 'America/Mexico_City',
