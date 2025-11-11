@@ -85,15 +85,24 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     CacheModule.registerAsync({
       imports: [ConfigModule],
       isGlobal: true,
-      useFactory: async (configService: ConfigService) => ({
-        store: redisStore,
-        socket: {
-          host: configService.get<string>('redis.host'),
-          port: configService.get<number>('redis.port'),
-        },
-        password: configService.get<string>('redis.password'),
-        ttl: configService.get<number>('redis.ttl'),
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const password = configService.get<string>('redis.password');
+        const cacheConfig: any = {
+          store: redisStore,
+          socket: {
+            host: configService.get<string>('redis.host'),
+            port: configService.get<number>('redis.port'),
+          },
+          ttl: configService.get<number>('redis.ttl'),
+        };
+
+        // Only add password if it's not empty
+        if (password && password.trim() !== '') {
+          cacheConfig.password = password;
+        }
+
+        return cacheConfig;
+      },
       inject: [ConfigService],
     }),
 

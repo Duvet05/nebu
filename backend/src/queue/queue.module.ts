@@ -12,14 +12,21 @@ import { EmailProcessor } from './processors/email.processor';
 @Module({
   imports: [
     BullModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
-        redis: {
+      useFactory: (configService: ConfigService) => {
+        const password = configService.get('redis.password');
+        const redisConfig: any = {
           host: configService.get('redis.host'),
           port: configService.get('redis.port'),
-          password: configService.get('redis.password'),
           db: configService.get('redis.db'),
-        },
-      }),
+        };
+
+        // Only add password if it's not empty
+        if (password && password.trim() !== '') {
+          redisConfig.password = password;
+        }
+
+        return { redis: redisConfig };
+      },
       inject: [ConfigService],
     }),
     BullModule.registerQueue({ name: 'video-processing' }, { name: 'email-queue' }),

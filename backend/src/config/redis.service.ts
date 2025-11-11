@@ -14,10 +14,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     const port = this.configService.get<number>('REDIS_PORT', 6379);
     const password = this.configService.get<string>('REDIS_PASSWORD');
 
-    this.client = new Redis({
+    const redisConfig: any = {
       host,
       port,
-      password,
       keyPrefix: this.configService.get<string>('REDIS_KEY_PREFIX', 'nebu:'),
       retryStrategy: (times) => {
         const delay = Math.min(times * 50, 2000);
@@ -26,7 +25,14 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       maxRetriesPerRequest: 3,
       enableReadyCheck: true,
       connectTimeout: 10000,
-    });
+    };
+
+    // Only add password if it's not empty
+    if (password && password.trim() !== '') {
+      redisConfig.password = password;
+    }
+
+    this.client = new Redis(redisConfig);
 
     this.client.on('connect', () => {
       this.logger.log(`Redis connected to ${host}:${port}`);

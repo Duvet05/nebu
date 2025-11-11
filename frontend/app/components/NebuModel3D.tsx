@@ -1,8 +1,7 @@
 import { Suspense, useState, useEffect, useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useTexture, Stage } from '@react-three/drei';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { useLoader } from '@react-three/fiber';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as THREE from 'three';
 
 interface ModelProps {
