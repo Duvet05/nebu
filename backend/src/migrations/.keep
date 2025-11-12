@@ -1,0 +1,10 @@
+# Este directorio está reservado para migraciones TypeORM futuras.
+# 
+# Actualmente el proyecto usa `synchronize: true` en desarrollo.
+# Cuando se desactive synchronize para producción, las migraciones
+# se generarán y almacenarán aquí.
+#
+# Comandos útiles (cuando se configuren):
+#   npm run migration:generate NombreMigracion
+#   npm run migration:run
+#   npm run migration:revert
