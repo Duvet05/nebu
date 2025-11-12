@@ -33,6 +33,10 @@ RUN mkdir -p uploads && chown -R nestjs:nodejs uploads
 # Copy files with correct ownership
 COPY --chown=nestjs:nodejs . .
 
+# Copy docker entrypoint (allows running migrations/seeds before start)
+COPY scripts/docker/backend-entrypoint.sh /entrypoint.sh
+RUN chown nestjs:nodejs /entrypoint.sh && chmod +x /entrypoint.sh
+
 # Switch to non-root user
 USER nestjs
 
@@ -42,4 +46,6 @@ EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
   CMD node -e "fetch('http://localhost:3001/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"
 
+# Use entrypoint script — it will exec the provided CMD. Keep default to start production.
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["npm", "run", "start:prod"]

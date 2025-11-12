@@ -1,0 +1,9 @@
+FROM grafana/loki:2.8.2
+
+# Copy loki config
+COPY loki.yml /etc/loki/local-config.yaml
+
+EXPOSE 3100
+
+# Upstream image handles entrypoint; config file path set via command
+CMD ["-config.file=/etc/loki/local-config.yaml"]

@@ -1,8 +1,10 @@
 # ===========================================
-# NEBU BACKEND - PRODUCCIÓN SEGURA Y OPTIMIZADA
+# NEBU - SERVICIOS CORE DE PRODUCCIÓN
 # ===========================================
-# Version: 2.1 - Sin Docker Secrets, con seguridad mejorada
-# Fecha: Octubre 2025
+# Docker Compose Specification (version field obsoleto desde 2025)
+# Incluye solo servicios core: Traefik, Frontend, Backend, PostgreSQL, Redis, ChromaDB
+# Para monitoreo (Prometheus, Grafana, Loki, Promtail), usar: docker compose -f docker-compose.monitoring.yml up -d
+# Fecha: Enero 2025
 
 networks:
   traefik-network:
@@ -20,6 +22,7 @@ networks:
         - subnet: 172.21.0.0/16
 
 volumes:
+  # Core service volumes
   postgres_data:
     driver: local
   redis_data:
@@ -29,12 +32,6 @@ volumes:
   backend_uploads:
     driver: local
   frontend_uploads:
-    driver: local
-  grafana_data:
-    driver: local
-  prometheus_data:
-    driver: local
-  loki_data:
     driver: local
   traefik_letsencrypt:
     driver: local
@@ -430,118 +427,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-
-  # ==============================================
-  # PROMETHEUS - MONITOREO CON AUTENTICACIÓN
-  # ==============================================
-  prometheus:
-    image: prom/prometheus:v2.47.0
-    container_name: nebu-prometheus
-    restart: on-failure:3
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention.time=30d'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--web.enable-lifecycle'
-    volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus_data:/prometheus
-    networks:
-      - traefik-network
-      - nebu-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=nebu_traefik-network"
-      - "traefik.http.routers.prometheus.rule=Host(`metrics.${DOMAIN}`)"
-      - "traefik.http.routers.prometheus.entrypoints=websecure"
-      - "traefik.http.routers.prometheus.tls=true"
-      - "traefik.http.routers.prometheus.tls.certresolver=letsencrypt"
-      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
-      - "traefik.http.routers.prometheus.middlewares=auth-basic,security-headers"
-    deploy:
-      resources:
-        limits:
-          memory: 1G
-          cpus: '0.5'
-
-  # ==============================================
-  # GRAFANA - CON CONFIGURACIÓN SEGURA
-  # ==============================================
-  grafana:
-    image: grafana/grafana:10.1.2
-    container_name: nebu-grafana
-    restart: on-failure:3
-    environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
-      - GF_SECURITY_SECRET_KEY=${SESSION_SECRET}
-      - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_SECURITY_DISABLE_GRAVATAR=true
-      - GF_ANALYTICS_REPORTING_ENABLED=false
-      - GF_ANALYTICS_CHECK_FOR_UPDATES=false
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
-      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
-    networks:
-      - traefik-network
-      - nebu-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=nebu_traefik-network"
-      - "traefik.http.routers.grafana.rule=Host(`dashboard.${DOMAIN}`)"
-      - "traefik.http.routers.grafana.entrypoints=websecure"
-      - "traefik.http.routers.grafana.tls=true"
-      - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-      - "traefik.http.routers.grafana.middlewares=security-headers"
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: '0.5'
-    depends_on:
-      - prometheus
-
-  # ==============================================
-  # LOKI - LOGS CENTRALIZADOS
-  # ==============================================
-  loki:
-    image: grafana/loki:2.9.0
-    container_name: nebu-loki
-    restart: on-failure:3
-    command: -config.file=/etc/loki/loki.yml
-    volumes:
-      - ./monitoring/loki.yml:/etc/loki/loki.yml:ro
-      - loki_data:/loki
-    networks:
-      - nebu-network
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: '0.25'
-
-  # ==============================================
-  # PROMTAIL - RECOLECCIÓN DE LOGS
-  # ==============================================
-  promtail:
-    image: grafana/promtail:2.9.0
-    container_name: nebu-promtail
-    restart: on-failure:3
-    command: -config.file=/etc/promtail/promtail.yml
-    volumes:
-      - ./monitoring/promtail.yml:/etc/promtail/promtail.yml:ro
-      - /var/log:/var/log:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-    networks:
-      - nebu-network
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-          cpus: '0.25'
-    depends_on:
-      - loki

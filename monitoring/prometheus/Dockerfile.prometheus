@@ -1,0 +1,12 @@
+FROM prom/prometheus:latest
+
+# Copy local prometheus config
+COPY prometheus.yml /etc/prometheus/prometheus.yml
+
+# Copy rules directory if present
+COPY rules /etc/prometheus/rules
+
+# Expose Prometheus default port
+EXPOSE 9090
+
+# Entrypoint is the upstream image's entrypoint; keep it.
