@@ -119,7 +119,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="hover:text-primary transition-colors"
                 >
-                  +51 999 999 999
+                  +51 945 012 824
                 </a>
               </li>
             </ul>

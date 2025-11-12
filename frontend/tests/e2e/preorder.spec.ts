@@ -65,7 +65,7 @@ test.describe('Nebu Dino pre-order flow', () => {
     // Email
     await page.fill('input[type="email"]', 'test@example.com').catch(() => {});
     // Phone
-    await page.fill('input[name="phone"]', '+51 999 999 999').catch(() => {});
+    await page.fill('input[name="phone"]', '+51 945 012 824').catch(() => {});
     // Address
     await page.fill('input[name="address"]', 'Av. Ejemplo 123').catch(() => {});
     // City
