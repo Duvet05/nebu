@@ -1,26 +1,26 @@
 import { registerAs } from '@nestjs/config';
+import { REDIS_CONSTANTS } from './constants/redis.constants';
 
 export const redisConfig = registerAs('redis', () => ({
-  // Connection settings
+  // Connection settings (from environment)
   host: process.env.REDIS_HOST || 'redis',
   port: parseInt(process.env.REDIS_PORT || '6379', 10),
   password: process.env.REDIS_PASSWORD || undefined,
-  db: parseInt(process.env.REDIS_DB || '0', 10),
 
-  // Cache configuration
-  keyPrefix: process.env.REDIS_KEY_PREFIX || 'nebu:',
-  ttl: parseInt(process.env.REDIS_TTL || '300', 10), // 5 minutes default
+  // Database selection (from constants)
+  db: REDIS_CONSTANTS.db, // Always 0
 
-  // Performance settings
-  maxRetriesPerRequest: 3,
-  retryDelayOnFailover: 100,
-  enableOfflineQueue: false,
-  connectTimeout: 10000,
-  commandTimeout: 5000,
-  lazyConnect: true,
-  keepAlive: 30000,
+  // Cache configuration (from constants)
+  keyPrefix: REDIS_CONSTANTS.keyPrefix, // 'nebu:'
+  ttl: REDIS_CONSTANTS.defaultTTL, // 300 seconds (5 minutes)
 
-  // Memory management
-  maxMemory: process.env.REDIS_MAX_MEMORY || '256mb',
-  evictionPolicy: process.env.REDIS_EVICTION_POLICY || 'allkeys-lru',
+  // Performance settings (from constants)
+  ...REDIS_CONSTANTS.performance,
+
+  // Memory management (from constants)
+  maxMemory: REDIS_CONSTANTS.memory.maxMemory,
+  evictionPolicy: REDIS_CONSTANTS.memory.evictionPolicy,
+
+  // Cache TTLs by type (from constants)
+  cacheTTL: REDIS_CONSTANTS.cacheTTL,
 }));

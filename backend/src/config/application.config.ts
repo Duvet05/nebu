@@ -1,118 +1,92 @@
 import { registerAs } from '@nestjs/config';
+import { APPLICATION_CONSTANTS } from './constants/application.constants';
+import { SECURITY_CONSTANTS } from './constants/security.constants';
+import { PAYMENT_CONSTANTS } from './constants/payments.constants';
+import { FEATURES } from './constants/features.constants';
 
 export const applicationConfig = registerAs('app', () => {
 
   return {
-    // Application settings
-    name: process.env.APP_NAME || 'Nebu Mobile',
-    version: process.env.APP_VERSION || '1.0.0',
-    description: process.env.APP_DESCRIPTION || 'AI-Powered IoT & Voice Control Platform',
-    supportEmail: process.env.SUPPORT_EMAIL || 'soporte@flow-telligence.com',
-    defaultLocale: process.env.DEFAULT_LOCALE || 'es',
-    supportedLocales: process.env.SUPPORTED_LOCALES?.split(',') || ['es', 'en'],
-    timezone: process.env.APP_TIMEZONE || 'America/Mexico_City',
+    // Application settings (from constants, no longer configurable)
+    name: APPLICATION_CONSTANTS.name,
+    version: APPLICATION_CONSTANTS.version,
+    description: APPLICATION_CONSTANTS.description,
+    supportEmail: APPLICATION_CONSTANTS.supportEmail,
+    defaultLocale: APPLICATION_CONSTANTS.defaultLocale,
+    supportedLocales: APPLICATION_CONSTANTS.supportedLocales,
+    timezone: APPLICATION_CONSTANTS.timezone,
 
-    // API configuration
+    // API configuration (from constants)
     api: {
-      version: process.env.API_VERSION || 'v1',
-      prefix: process.env.API_PREFIX || '/api/v1',
-      documentation: {
-        enabled: process.env.API_DOCS_ENABLED !== 'false',
-        path: process.env.API_DOCS_PATH || '/api/docs',
-        title: process.env.API_DOCS_TITLE || 'Nebu Mobile API',
-        version: process.env.API_DOCS_VERSION || '1.0.0',
-      },
+      version: APPLICATION_CONSTANTS.api.version,
+      prefix: APPLICATION_CONSTANTS.api.prefix,
+      documentation: APPLICATION_CONSTANTS.api.documentation,
       cors: {
-        enabled: process.env.CORS_ENABLED !== 'false',
-        credentials: process.env.CORS_CREDENTIALS !== 'false',
-        methods: process.env.CORS_METHODS?.split(',') || [
-          'GET',
-          'POST',
-          'PUT',
-          'DELETE',
-          'PATCH',
-          'OPTIONS',
-        ],
-        headers: process.env.CORS_HEADERS?.split(',') || [
-          'Accept',
-          'Authorization',
-          'Content-Type',
-          'X-Requested-With',
-        ],
+        enabled: true,
+        credentials: true,
+        methods: APPLICATION_CONSTANTS.cors.methods,
+        headers: APPLICATION_CONSTANTS.cors.headers,
       },
-      rateLimiting: {
-        short: {
-          windowMs: parseInt(process.env.RATE_LIMIT_SHORT_WINDOW || '1000', 10),
-          max: parseInt(process.env.RATE_LIMIT_SHORT_MAX || '10', 10),
-        },
-        medium: {
-          windowMs: parseInt(process.env.RATE_LIMIT_MEDIUM_WINDOW || '60000', 10),
-          max: parseInt(process.env.RATE_LIMIT_MEDIUM_MAX || '100', 10),
-        },
-        long: {
-          windowMs: parseInt(process.env.RATE_LIMIT_LONG_WINDOW || '3600000', 10),
-          max: parseInt(process.env.RATE_LIMIT_LONG_MAX || '1000', 10),
-        },
-      },
+      rateLimiting: APPLICATION_CONSTANTS.rateLimiting,
     },
 
-    // Features flags (using environment variables)
+    // Features flags (from constants, no longer from env)
     features: {
-      authentication: { 
-        oauthEnabled: process.env.ENABLE_OAUTH !== 'false', 
-        emailVerificationRequired: true 
+      authentication: {
+        oauthEnabled: FEATURES.authentication.oauth,
+        emailVerificationRequired: FEATURES.authentication.emailVerificationRequired,
       },
-      courses: { 
-        videoStreamingEnabled: true, 
-        certificatesEnabled: true 
+      courses: {
+        videoStreamingEnabled: FEATURES.courses.videoStreaming,
+        certificatesEnabled: FEATURES.courses.certificates,
       },
-      payments: { 
-        subscriptionsEnabled: true, 
-        stripeEnabled: process.env.ENABLE_STRIPE !== 'false' 
+      payments: {
+        subscriptionsEnabled: FEATURES.payments.subscriptions,
+        stripeEnabled: FEATURES.payments.stripe,
       },
-      community: { 
-        reviewsEnabled: true, 
-        commentsEnabled: true,
-        chatEnabled: process.env.ENABLE_CHAT !== 'false'
+      community: {
+        reviewsEnabled: FEATURES.community.reviews,
+        commentsEnabled: FEATURES.community.comments,
+        chatEnabled: FEATURES.community.chat,
       },
-      notifications: { 
-        emailNotificationsEnabled: process.env.ENABLE_EMAIL_NOTIFICATIONS !== 'false',
-        notificationsEnabled: process.env.ENABLE_NOTIFICATIONS !== 'false'
+      notifications: {
+        emailNotificationsEnabled: FEATURES.notifications.email,
+        notificationsEnabled: FEATURES.notifications.push,
       },
-      admin: { 
-        analyticsEnabled: process.env.ENABLE_ANALYTICS !== 'false' 
+      admin: {
+        analyticsEnabled: FEATURES.admin.analytics,
       },
-      uploads: { 
-        localStorageEnabled: true 
+      uploads: {
+        localStorageEnabled: FEATURES.uploads.localStorage,
       },
-      monitoring: { 
-        healthChecksEnabled: true 
+      monitoring: {
+        healthChecksEnabled: FEATURES.monitoring.healthChecks,
       },
-      automation: { 
-        enabled: false 
+      automation: {
+        enabled: FEATURES.automation.scheduledTasks,
       },
-      security: { 
-        rateLimitingEnabled: true 
+      security: {
+        rateLimitingEnabled: true,
       },
       websocket: {
-        websocketEnabled: process.env.ENABLE_WEBSOCKET !== 'false'
+        websocketEnabled: FEATURES.realtime.websocket,
       }
     },
 
-    // Limits and constraints (hardcoded sensible defaults)
+    // Limits and constraints (from constants)
     limits: {
-      users: { 
-        maxConcurrentSessions: parseInt(process.env.MAX_CONCURRENT_SESSIONS || '3', 10) 
+      users: {
+        maxConcurrentSessions: SECURITY_CONSTANTS.maxConcurrentSessions,
       },
-      courses: { 
-        maxChaptersPerCourse: parseInt(process.env.MAX_CHAPTERS_PER_COURSE || '50', 10) 
+      courses: {
+        maxChaptersPerCourse: APPLICATION_CONSTANTS.limits.courses.maxChaptersPerCourse,
       },
-      payments: { 
-        minPurchaseAmount: parseFloat(process.env.MIN_PURCHASE_AMOUNT || '5'), 
-        maxPurchaseAmount: parseFloat(process.env.MAX_PURCHASE_AMOUNT || '10000') 
+      payments: {
+        minPurchaseAmount: PAYMENT_CONSTANTS.limits.minPurchaseAmount,
+        maxPurchaseAmount: PAYMENT_CONSTANTS.limits.maxPurchaseAmount,
       },
-      uploads: { 
-        maxFileSize: process.env.MAX_FILE_SIZE || '50MB' 
+      uploads: {
+        maxFileSize: APPLICATION_CONSTANTS.limits.uploads.maxFileSize,
       },
     },
 

@@ -19,19 +19,18 @@ nebu/
 ├── frontend/           # Remix-based frontend
 │   ├── app/           # Remix application
 │   ├── public/        # Static assets
-│   ├── build/         # Production build
 │   └── Dockerfile     # Frontend container
-├── backend/           # NestJS API backend  
+├── backend/           # NestJS API backend
 │   ├── src/           # Backend source code
-│   ├── dist/          # Compiled backend
+│   │   └── config/
+│   │       └── constants/  # Constantes centralizadas ✨
 │   └── Dockerfile     # Backend container
 ├── db/                # Database initialization
-├── monitoring/        # Grafana, Prometheus configs
-├── gateway/           # Traefik configuration
-├── redis/             # Redis configuration
-├── scripts/           # Deployment scripts
-├── docker-compose.prod.yml  # Production setup
-└── deploy-prod.sh     # Production deployment
+├── monitoring/        # Grafana, Prometheus, Loki configs
+├── scripts/           # Deployment & migration scripts
+├── docker-compose.yml # Core services
+├── docker-compose.monitoring.yml  # Monitoring stack
+└── template.env       # Template de configuración (34 vars)
 ```
 
 ##  Quick Start
@@ -83,6 +82,34 @@ cp template.env .env
 -  Resource limits
 -  Production optimization
 
+##  Configuration
+
+### Environment Variables
+
+El proyecto usa una configuración centralizada optimizada (54% menos variables):
+
+```bash
+# Setup environment
+cp template.env .env
+# Editar .env con tus valores (solo 34 variables esenciales)
+```
+
+**Variables esenciales** (34 total):
+- Secretos y credenciales (JWT, Database, APIs)
+- Configuración por entorno (URLs, dominio, puertos)
+- Configuración específica (memoria AI, emails)
+
+**Constantes hardcodeadas** (40+ variables movidas a código):
+- Información de la aplicación → `application.constants.ts`
+- Configuración de seguridad → `security.constants.ts`
+- Reglas de negocio de pagos → `payments.constants.ts`
+- Feature flags → `features.constants.ts`
+- Configuración de Redis → `redis.constants.ts`
+
+Ver documentación completa:
+- [MIGRACION_CONSTANTES.md](MIGRACION_CONSTANTES.md) - Guía de migración
+- [PROPUESTA_CENTRALIZACION.md](PROPUESTA_CENTRALIZACION.md) - Justificación técnica
+
 ## ️ Development
 
 ### Frontend (Remix)
@@ -92,12 +119,26 @@ npm install
 npm run dev
 ```
 
-### Backend (NestJS)  
+### Backend (NestJS)
 ```bash
 cd backend
 npm install
 npm run start:dev
 ```
+
+### Docker Compose
+
+**Servicios Core** (docker-compose.yml):
+```bash
+docker compose up -d
+```
+Incluye: Traefik, Frontend, Backend, PostgreSQL, Redis, ChromaDB
+
+**Stack de Monitoreo** (docker-compose.monitoring.yml):
+```bash
+docker compose -f docker-compose.monitoring.yml up -d
+```
+Incluye: Prometheus, Grafana, Loki, Promtail
 
 ##  Monitoring
 

@@ -1,9 +1,10 @@
 import { registerAs } from '@nestjs/config';
+import { SECURITY_CONSTANTS } from './constants/security.constants';
 
 export const authConfig = registerAs('auth', () => {
 
   return {
-    // JWT Configuration (secrets from environment)
+    // JWT Configuration (secrets from environment, expiration from constants)
     jwtSecret:
       process.env.JWT_SECRET ||
       (() => {
@@ -12,8 +13,8 @@ export const authConfig = registerAs('auth', () => {
         }
         return 'dev-secret-key-change-in-production';
       })(),
-    jwtExpiresIn: process.env.JWT_EXPIRES_IN || '24h',
-    jwtAlgorithm: process.env.JWT_ALGORITHM || 'HS256',
+    jwtExpiresIn: SECURITY_CONSTANTS.tokens.jwt, // From constants: '15m'
+    jwtAlgorithm: 'HS256' as const,
 
     // Refresh Token Configuration
     refreshTokenSecret:
@@ -24,22 +25,22 @@ export const authConfig = registerAs('auth', () => {
         }
         return 'dev-refresh-secret-key-change-in-production';
       })(),
-    refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || '7d',
+    refreshTokenExpiresIn: SECURITY_CONSTANTS.tokens.refresh, // From constants: '7d'
 
-    // Password Reset Configuration
-    passwordResetExpiresIn: process.env.PASSWORD_RESET_EXPIRES_IN || '1h',
+    // Password Reset Configuration (from constants)
+    passwordResetExpiresIn: SECURITY_CONSTANTS.tokens.passwordReset, // '1h'
 
-    // Email Verification Configuration
-    emailVerificationExpiresIn: process.env.EMAIL_VERIFICATION_EXPIRES_IN || '24h',
+    // Email Verification Configuration (from constants)
+    emailVerificationExpiresIn: SECURITY_CONSTANTS.tokens.emailVerification, // '24h'
 
-    // Security Settings (hardcoded sensible defaults)
-    bcryptRounds: parseInt(process.env.BCRYPT_ROUNDS || '12', 10),
-    maxLoginAttempts: parseInt(process.env.MAX_LOGIN_ATTEMPTS || '5', 10),
-    lockoutDuration: process.env.LOCKOUT_DURATION || '15m',
+    // Security Settings (from constants, no longer configurable)
+    bcryptRounds: SECURITY_CONSTANTS.bcryptRounds, // 12
+    maxLoginAttempts: SECURITY_CONSTANTS.maxLoginAttempts, // 5
+    lockoutDuration: SECURITY_CONSTANTS.lockoutDuration, // '15m'
 
-    // Session Configuration (hardcoded sensible defaults)
-    sessionTimeout: process.env.SESSION_TIMEOUT || '30m',
-    maxConcurrentSessions: parseInt(process.env.MAX_CONCURRENT_SESSIONS || '3', 10),
+    // Session Configuration (from constants)
+    sessionTimeout: SECURITY_CONSTANTS.sessionTimeout, // '30m'
+    maxConcurrentSessions: SECURITY_CONSTANTS.maxConcurrentSessions, // 3
 
     // URLs (from environment)
     frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
