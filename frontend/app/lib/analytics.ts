@@ -25,14 +25,14 @@ export const analytics = {
   preOrderStart: (color?: string, quantity?: number) => {
     trackEvent("begin_checkout", {
       currency: "PEN",
-      value: 300 * (quantity || 1),
+      value: 380 * (quantity || 1),
       items: [
         {
           item_id: "nebu-001",
           item_name: "Nebu IoT Companion",
           item_variant: color,
           quantity: quantity || 1,
-          price: 300,
+          price: 380,
         },
       ],
     });
@@ -54,7 +54,7 @@ export const analytics = {
           item_name: "Nebu IoT Companion",
           item_variant: color,
           quantity,
-          price: 300,
+          price: 380,
         },
       ],
     });
@@ -96,12 +96,12 @@ export const analytics = {
   viewProduct: (productId: string, productName: string) => {
     trackEvent("view_item", {
       currency: "PEN",
-      value: 300,
+      value: 380,
       items: [
         {
           item_id: productId,
           item_name: productName,
-          price: 300,
+          price: 380,
         },
       ],
     });
@@ -111,14 +111,14 @@ export const analytics = {
   addToCart: (quantity: number, color: string) => {
     trackEvent("add_to_cart", {
       currency: "PEN",
-      value: 300 * quantity,
+      value: 380 * quantity,
       items: [
         {
           item_id: "nebu-001",
           item_name: "Nebu IoT Companion",
           item_variant: color,
           quantity,
-          price: 300,
+          price: 380,
         },
       ],
     });

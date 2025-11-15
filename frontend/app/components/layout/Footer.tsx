@@ -114,7 +114,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://wa.me/51999999999?text=Hola!%20Estoy%20interesado%20en%20Nebu"
+                  href="https://wa.me/51945012824?text=Hola!%20Estoy%20interesado%20en%20Nebu"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-primary transition-colors"

@@ -5,8 +5,8 @@ export class CompanyService {
   async getCompanyInfo() {
     return {
       email: process.env.COMPANY_EMAIL || 'info@flow-telligence.com',
-      phone: process.env.COMPANY_PHONE || '+51999999999',
-      whatsapp: process.env.COMPANY_WHATSAPP || '51999999999',
+      phone: process.env.COMPANY_PHONE || '+51945012824',
+      whatsapp: process.env.COMPANY_WHATSAPP || '+51945012824',
       calendly: process.env.COMPANY_CALENDLY || 'https://calendly.com/nebu',
       address: process.env.COMPANY_ADDRESS || 'Lima, Perú',
       socialMedia: {
