@@ -4,7 +4,7 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
-import { Mail, MapPin, Calendar, FileText, Shield, Cookie, Scale } from "lucide-react";
+import { Mail, MapPin, Calendar, FileText, Shield, Cookie, Scale, Phone } from "lucide-react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -36,7 +36,7 @@ export default function TermsOfService() {
           <div className="max-w-6xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-primary/30 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Calendar className="w-4 h-4" />
-              {t('legal.lastUpdated')}: Octubre 2025
+              {t('legal.lastUpdated')}: 18 Noviembre 2025
             </div>
             
             <motion.h1 
@@ -291,14 +291,24 @@ export default function TermsOfService() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-3 text-sm">
                         <Mail className="w-4 h-4 text-primary flex-shrink-0" />
-                        <a 
+                        <a
                           href="mailto:legal@flow-telligence.com"
                           className="text-primary hover:text-accent transition-colors"
                         >
                           legal@flow-telligence.com
                         </a>
                       </div>
-                      
+
+                      <div className="flex items-center gap-3 text-sm">
+                        <Phone className="w-4 h-4 text-primary flex-shrink-0" />
+                        <a
+                          href="tel:+51945012824"
+                          className="text-primary hover:text-accent transition-colors"
+                        >
+                          +51 945 012 824
+                        </a>
+                      </div>
+
                       <div className="flex items-center gap-3 text-sm">
                         <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
                         <span className="text-gray-600">
