@@ -24,8 +24,11 @@ export default function CheckoutPage() {
     firstName: "",
     lastName: "",
     phone: "",
+    company: "",
     address: "",
+    apartment: "",
     city: "",
+    region: "",
     postalCode: "",
     agreeTerms: false,
     subscribeNewsletter: true,
@@ -59,6 +62,7 @@ export default function CheckoutPage() {
         shipping: shippingCost,
         total: finalTotal,
         reserveAmount,
+        country: "Perú",
       };
 
       // Send to API
@@ -321,7 +325,29 @@ export default function CheckoutPage() {
                   <div className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Dirección Completa *
+                        País/Región
+                      </label>
+                      <div className="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 text-gray-700">
+                        Perú
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Empresa (opcional)
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.company}
+                        onChange={(e) => handleInputChange("company", e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
+                        placeholder="Nombre de la empresa"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Dirección *
                       </label>
                       <input
                         type="text"
@@ -329,11 +355,24 @@ export default function CheckoutPage() {
                         onChange={(e) => handleInputChange("address", e.target.value)}
                         required
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
-                        placeholder="Av. Principal 123, Miraflores"
+                        placeholder="Av. Principal 123"
                       />
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Apartamento, suite, etc. (opcional)
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.apartment}
+                        onChange={(e) => handleInputChange("apartment", e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
+                        placeholder="Depto. 301"
+                      />
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Ciudad *
@@ -346,6 +385,45 @@ export default function CheckoutPage() {
                           className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
                           placeholder="Lima"
                         />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Departamento *
+                        </label>
+                        <select
+                          value={formData.region}
+                          onChange={(e) => handleInputChange("region", e.target.value)}
+                          required
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
+                        >
+                          <option value="">Seleccionar</option>
+                          <option value="Amazonas">Amazonas</option>
+                          <option value="Áncash">Áncash</option>
+                          <option value="Apurímac">Apurímac</option>
+                          <option value="Arequipa">Arequipa</option>
+                          <option value="Ayacucho">Ayacucho</option>
+                          <option value="Cajamarca">Cajamarca</option>
+                          <option value="Callao">Callao</option>
+                          <option value="Cusco">Cusco</option>
+                          <option value="Huancavelica">Huancavelica</option>
+                          <option value="Huánuco">Huánuco</option>
+                          <option value="Ica">Ica</option>
+                          <option value="Junín">Junín</option>
+                          <option value="La Libertad">La Libertad</option>
+                          <option value="Lambayeque">Lambayeque</option>
+                          <option value="Lima">Lima</option>
+                          <option value="Loreto">Loreto</option>
+                          <option value="Madre de Dios">Madre de Dios</option>
+                          <option value="Moquegua">Moquegua</option>
+                          <option value="Pasco">Pasco</option>
+                          <option value="Piura">Piura</option>
+                          <option value="Puno">Puno</option>
+                          <option value="San Martín">San Martín</option>
+                          <option value="Tacna">Tacna</option>
+                          <option value="Tumbes">Tumbes</option>
+                          <option value="Ucayali">Ucayali</option>
+                        </select>
                       </div>
 
                       <div>

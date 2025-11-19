@@ -51,12 +51,61 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return {
     locale,
     culqiPublicKey: process.env.CULQI_PUBLIC_KEY || "",
+    // Structured data for BuiltWith and search engines
+    organizationData: {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Flow-Telligence",
+      legalName: "FLOW SACS",
+      url: "https://flow-telligence.com",
+      logo: "https://flow-telligence.com/assets/logo.png",
+      foundingDate: "2024",
+      founders: [
+        {
+          "@type": "Person",
+          name: "Flow-Telligence Team"
+        }
+      ],
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Lima",
+        addressLocality: "Lima",
+        addressCountry: "PE"
+      },
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: "+51-945-012-824",
+          contactType: "customer service",
+          areaServed: "PE",
+          availableLanguage: ["Spanish", "English"]
+        },
+        {
+          "@type": "ContactPoint",
+          email: "contacto@flow-telligence.com",
+          contactType: "customer service"
+        }
+      ],
+      sameAs: [
+        "https://www.facebook.com/flowtelligence",
+        "https://www.instagram.com/flowtelligence",
+        "https://www.tiktok.com/@flowtelligence",
+        "https://twitter.com/flowtelligence",
+        "https://www.youtube.com/@flowtelligence"
+      ],
+      taxID: "10703363135",
+      vatID: "10703363135"
+    }
   };
 }
 
 export function Layout({ children }: { children: ReactNode }) {
   // Usar optional chaining y garantizar un valor por defecto
-  const loaderData = useLoaderData<typeof loader>() ?? { locale: "es", culqiPublicKey: "" };
+  const loaderData = useLoaderData<typeof loader>() ?? {
+    locale: "es",
+    culqiPublicKey: "",
+    organizationData: null
+  };
   const locale = loaderData.locale || "es";
 
   useChangeLanguage(locale);
@@ -66,6 +115,35 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {/* Organization Structured Data for SEO and BuiltWith */}
+        {loaderData.organizationData && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(loaderData.organizationData),
+            }}
+          />
+        )}
+
+        {/* Additional meta tags for better indexing */}
+        <meta name="author" content="Flow-Telligence" />
+        <meta name="company" content="FLOW SACS" />
+        <meta name="rating" content="General" />
+        <meta name="distribution" content="Global" />
+        <meta name="revisit-after" content="7 days" />
+        <meta name="classification" content="Business" />
+        <meta name="target" content="all" />
+        <meta name="audience" content="all" />
+        <meta name="coverage" content="Worldwide" />
+
+        {/* Business information */}
+        <meta property="business:contact_data:street_address" content="Lima, Perú" />
+        <meta property="business:contact_data:locality" content="Lima" />
+        <meta property="business:contact_data:country_name" content="Peru" />
+        <meta property="business:contact_data:email" content="contacto@flow-telligence.com" />
+        <meta property="business:contact_data:phone_number" content="+51945012824" />
+
         <Meta />
         <Links />
       </head>
