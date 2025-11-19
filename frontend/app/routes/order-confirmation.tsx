@@ -5,6 +5,8 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { motion } from "framer-motion";
 import { CheckCircle, Package, Truck, Mail, Phone, Home, ArrowRight } from "lucide-react";
+import { useEffect } from "react";
+import { trackPurchase } from "~/lib/facebook-pixel";
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,18 +19,38 @@ export const meta: MetaFunction = () => {
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const orderId = url.searchParams.get("orderId");
+  const total = url.searchParams.get("total");
+  const numItems = url.searchParams.get("numItems");
+  const productIds = url.searchParams.get("productIds");
 
   if (!orderId) {
     throw new Response("Order ID not found", { status: 404 });
   }
 
   // Here you would typically fetch order details from database
-  // For now, we'll return the orderId
-  return json({ orderId });
+  // For now, we'll return the order data from URL params
+  return json({
+    orderId,
+    total: total ? parseFloat(total) : 0,
+    numItems: numItems ? parseInt(numItems) : 0,
+    productIds: productIds ? productIds.split(',') : [],
+  });
 }
 
 export default function OrderConfirmationPage() {
-  const { orderId } = useLoaderData<typeof loader>();
+  const { orderId, total, numItems, productIds } = useLoaderData<typeof loader>();
+
+  // Track Purchase event once on page load
+  useEffect(() => {
+    if (orderId && total > 0) {
+      trackPurchase({
+        value: total,
+        orderId,
+        num_items: numItems,
+        content_ids: productIds,
+      });
+    }
+  }, [orderId, total, numItems, productIds]);
 
   return (
     <div className="min-h-screen bg-nebu-bg">

@@ -8,7 +8,8 @@ import { motion } from "framer-motion";
 import { ShoppingCart, Star, Check, Info, Sparkles } from "lucide-react";
 import { products } from "~/data/products";
 import { useCart } from "~/contexts/CartContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { trackEvent } from "~/lib/facebook-pixel";
 
 export const meta: MetaFunction = () => {
   return [
@@ -35,6 +36,15 @@ export default function ProductosPage() {
   const [selectedColors, setSelectedColors] = useState<Record<string, string>>(
     products.reduce((acc, p) => ({ ...acc, [p.id]: p.colors[0].id }), {})
   );
+
+  // Track page view as a custom event
+  useEffect(() => {
+    trackEvent('ViewContent', {
+      content_type: 'product_catalog',
+      content_name: 'Nebu Product Catalog',
+      num_items: products.length,
+    });
+  }, []);
 
   const handleAddToCart = (productId: string) => {
     const product = products.find(p => p.id === productId);

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import type { Product, ProductColor } from '~/data/products';
+import { trackAddToCart } from '~/lib/facebook-pixel';
 
 export interface CartItem {
   product: Product;
@@ -64,6 +65,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
         // Add new item
         return [...currentItems, { product, color, quantity }];
       }
+    });
+
+    // Track AddToCart event in Facebook Pixel
+    trackAddToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity,
     });
 
     // Show cart briefly when adding item

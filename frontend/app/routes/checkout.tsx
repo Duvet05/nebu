@@ -5,7 +5,8 @@ import { Footer } from "~/components/layout/Footer";
 import { useCart } from "~/contexts/CartContext";
 import { motion } from "framer-motion";
 import { ShoppingBag, Truck, CreditCard, Shield, ArrowLeft, Trash2 } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
+import { trackInitiateCheckout } from "~/lib/facebook-pixel";
 
 export const meta: MetaFunction = () => {
   return [
@@ -37,6 +38,17 @@ export default function CheckoutPage() {
   const reserveAmount = totalPrice * 0.5; // 50% deposit
   const shippingCost = 0; // Free shipping
   const finalTotal = totalPrice + shippingCost;
+
+  // Track InitiateCheckout event when page loads with items
+  useEffect(() => {
+    if (items.length > 0) {
+      trackInitiateCheckout({
+        value: finalTotal,
+        num_items: items.reduce((sum, item) => sum + item.quantity, 0),
+        content_ids: items.map(item => item.product.id),
+      });
+    }
+  }, []); // Only track once on mount
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -75,9 +87,17 @@ export default function CheckoutPage() {
       const data = await response.json();
 
       if (response.ok) {
+        // Prepare order data for confirmation page
+        const orderParams = new URLSearchParams({
+          orderId: data.orderId,
+          total: finalTotal.toString(),
+          numItems: items.reduce((sum, item) => sum + item.quantity, 0).toString(),
+          productIds: items.map(item => item.product.id).join(','),
+        });
+
         // Clear cart and redirect to success
         clearCart();
-        navigate(`/order-confirmation?orderId=${data.orderId}`);
+        navigate(`/order-confirmation?${orderParams.toString()}`);
       } else {
         throw new Error(data.error || "Error processing order");
       }

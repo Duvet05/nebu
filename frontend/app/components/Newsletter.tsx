@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { analytics } from "~/lib/analytics";
 import { CheckCircle, AlertCircle } from "lucide-react";
+import { trackLead } from "~/lib/facebook-pixel";
 
 export function Newsletter() {
   const { t } = useTranslation();
@@ -30,6 +31,12 @@ export function Newsletter() {
       if (response.ok) {
         // Track newsletter signup in GA4
         analytics.newsletterSignup(email, "footer-newsletter");
+
+        // Track Lead event in Facebook Pixel
+        trackLead({
+          content_name: "Newsletter Signup",
+          value: 0,
+        });
 
         setStatus("success");
         setMessage(data.message || "¡Suscripción exitosa!");

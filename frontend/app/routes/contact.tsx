@@ -7,6 +7,8 @@ import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
 import { ArrowRight, MessageCircle, Mail, Clock, Send, Phone, MapPin } from "lucide-react";
 import { sendContactEmail } from "~/lib/email.server";
+import { useEffect } from "react";
+import { trackLead } from "~/lib/facebook-pixel";
 
 export const meta: MetaFunction = () => {
   return [
@@ -72,6 +74,16 @@ export default function ContactPage() {
   const actionData = useActionData<ActionData>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+
+  // Track Lead event when contact form is successfully submitted
+  useEffect(() => {
+    if (actionData && "success" in actionData && actionData.success) {
+      trackLead({
+        content_name: "Contact Form Submission",
+        value: 0,
+      });
+    }
+  }, [actionData]);
 
   if (actionData && "success" in actionData && actionData.success) {
     return (
