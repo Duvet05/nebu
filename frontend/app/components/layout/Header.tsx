@@ -7,7 +7,6 @@ import { useScrollDirection, useScrollPosition } from "~/hooks/useScroll";
 import { motion, AnimatePresence } from "framer-motion";
 import type { NavigationItem } from "~/config/navigation";
 import { navigationConfig } from "~/config/navigation";
-import { Logo } from "~/components/Logo";
 import clsx from "clsx";
 
 interface HeaderProps {
@@ -101,9 +100,10 @@ export function Header({ className, variant = 'default' }: HeaderProps) {
     "fixed top-0 z-50 w-full transition-all duration-300",
     {
       // Base styles by variant
-      'bg-white/95 backdrop-blur-md shadow-lg': variant === 'default' && isScrolled,
+      'bg-white/80 backdrop-blur-lg shadow-lg': variant === 'default' && isScrolled,
+      'bg-white/70 backdrop-blur-md': variant === 'default' && !isScrolled,
       'bg-transparent': variant === 'transparent' && !isScrolled,
-      'bg-white shadow-sm': variant === 'minimal',
+      'bg-white/85 shadow-sm backdrop-blur-sm': variant === 'minimal',
       
       // Scroll behavior
       'translate-y-0': isHeaderVisible,
@@ -137,10 +137,12 @@ export function Header({ className, variant = 'default' }: HeaderProps) {
               className="flex-shrink-0 z-50"
               aria-label="Flow-Telligence Home"
             >
-              <Logo 
+              <img
+                src="/assets/logos/logo-flow-header.svg"
+                alt="Flow-Telligence"
                 className={clsx(
                   "transition-all duration-300",
-                  isScrolled ? "h-8 lg:h-10" : "h-10 lg:h-12"
+                  isScrolled ? "h-6 lg:h-7" : "h-7 lg:h-8"
                 )}
               />
             </Link>
@@ -162,15 +164,6 @@ export function Header({ className, variant = 'default' }: HeaderProps) {
             
             {/* Actions */}
             <div className="flex items-center gap-3 z-50">
-              {/* Search Button (Desktop) */}
-              <button
-                type="button"
-                className="hidden lg:flex p-2 text-gray-600 hover:text-gray-900 transition-colors"
-                aria-label="Search"
-              >
-                <SearchIcon className="w-5 h-5" />
-              </button>
-              
               {/* Cart Button */}
               <CartButton />
               
@@ -259,22 +252,27 @@ interface LanguageSwitcherProps {
 }
 
 function LanguageSwitcher({ currentLang, onToggle }: LanguageSwitcherProps) {
-  const flagIcons = {
-    es: "🇵🇪",
-    en: "🇺🇸"
-  };
-  
   return (
     <button
       onClick={onToggle}
       type="button"
-      className="flex items-center gap-2 px-3 py-1.5 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 rounded-lg transition-all duration-300 hover:shadow-sm"
+      className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-gray-50 border border-gray-200 hover:border-purple-300 rounded-lg transition-all duration-300 hover:shadow-sm group"
       aria-label={`Change language to ${currentLang === 'es' ? 'English' : 'Español'}`}
     >
-      <span className="text-lg" role="img" aria-hidden="true">
-        {flagIcons[currentLang as keyof typeof flagIcons]}
-      </span>
-      <span className="text-sm font-medium text-gray-700">
+      <svg 
+        className="w-5 h-5 text-gray-600 group-hover:text-purple-600 transition-colors" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          strokeWidth={2} 
+          d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" 
+        />
+      </svg>
+      <span className="text-sm font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
         {currentLang.toUpperCase()}
       </span>
     </button>
@@ -381,7 +379,11 @@ const MobileMenu = React.forwardRef<HTMLDivElement, MobileMenuProps>(
               <div className="flex flex-col h-full">
                 {/* Menu Header */}
                 <div className="flex items-center justify-between p-6 border-b">
-                  <Logo className="h-8" />
+                  <img
+                    src="/assets/logos/logo-flow-header.svg"
+                    alt="Flow-Telligence"
+                    className="h-7"
+                  />
                   <button
                     onClick={onClose}
                     className="p-2 text-gray-500 hover:text-gray-700"
@@ -472,14 +474,6 @@ function HeaderSkeleton() {
 }
 
 // Icon Components
-function SearchIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg>
-  );
-}
-
 function XIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">

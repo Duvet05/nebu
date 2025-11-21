@@ -90,6 +90,7 @@ function NebuDinoModel({ color = "#4ECDC4" }: ModelProps) {
 
 export default function NebuModel3D({ color }: ModelProps) {
   const [isClient, setIsClient] = useState(false);
+  const [hasError, setHasError] = useState(false);
   
   // Hook personalizado para lazy loading con Intersection Observer
   const { ref: containerRef, isIntersecting } = useIntersectionObserver<HTMLDivElement>();
@@ -107,6 +108,18 @@ export default function NebuModel3D({ color }: ModelProps) {
     );
   }
 
+  // Si hay error, mostrar fallback
+  if (hasError) {
+    return (
+      <div ref={containerRef} className="w-full h-64 md:h-96 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">Modelo 3D no disponible</p>
+          <p className="text-sm text-gray-500 mt-2">Intenta recargar la página</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div 
       ref={containerRef} 
@@ -114,8 +127,23 @@ export default function NebuModel3D({ color }: ModelProps) {
     >
       <Canvas
         camera={{ position: MODEL_CONFIG.cameraPosition, fov: MODEL_CONFIG.cameraFov }}
-        dpr={[1, 2]} // Limitar resolución en dispositivos de alta densidad
-        performance={{ min: 0.5 }} // Reducir calidad si FPS baja
+        dpr={[1, 1.5]} // Reducir DPR para mejorar rendimiento
+        performance={{ min: 0.5, max: 1 }} // Limitar performance máximo
+        gl={{ 
+          antialias: false, // Desactivar antialiasing para mejor rendimiento
+          powerPreference: 'high-performance',
+          preserveDrawingBuffer: false, // Evitar problemas de contexto
+          failIfMajorPerformanceCaveat: true
+        }}
+        frameloop="demand" // Solo renderizar cuando sea necesario
+        onCreated={({ gl }) => {
+          // Manejar pérdida de contexto WebGL
+          gl.domElement.addEventListener('webglcontextlost', (event) => {
+            event.preventDefault();
+            console.warn('WebGL context lost, attempting recovery...');
+            setHasError(true);
+          }, false);
+        }}
       >
         <Suspense fallback={null}>
           {/* Iluminación reutilizable */}
@@ -132,6 +160,8 @@ export default function NebuModel3D({ color }: ModelProps) {
             minPolarAngle={Math.PI / 3}
             maxPolarAngle={Math.PI / 2}
             target={[0, 0, 0]}
+            enableDamping={false} // Desactivar damping para mejor rendimiento
+            makeDefault
           />
         </Suspense>
       </Canvas>

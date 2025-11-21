@@ -33,7 +33,7 @@ export function useScrollDirection(threshold: number = 10): 'up' | 'down' | null
       }
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -66,7 +66,7 @@ export function useScrollPosition(): number {
     // Set initial position
     setScrollPosition(window.scrollY);
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -169,7 +169,7 @@ export function useScrollPercentage(): number {
       setScrollPercentage(Math.min(100, Math.max(0, scrollPercent)));
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial calculation
     
     return () => {
@@ -203,7 +203,7 @@ export function useIsScrolledToBottom(threshold: number = 10): boolean {
       setIsAtBottom(scrollY + windowHeight >= documentHeight - threshold);
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial check
     
     return () => {
