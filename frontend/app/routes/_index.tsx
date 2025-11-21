@@ -155,17 +155,17 @@ export default function Index() {
   <HeroCTA />
   <ProductDetails />
 
-        <Divider variant="gradient" spacing="xl" />
+        <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
         {/* Conversation Examples Section */}
         <ConversationExamples />
 
-        <Divider variant="gradient" spacing="xl" />
+        <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
         {/* Benefits Carousel Section */}
         <BenefitsCarousel />
 
-        <Divider variant="gradient" spacing="xl" />
+        <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
         <Newsletter />
       </main>

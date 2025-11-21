@@ -126,7 +126,7 @@ export default function ConversationExamples() {
   };
 
   return (
-    <section className="min-h-[80vh] py-24 bg-gradient-to-br from-primary/5 via-white to-accent/5 flex items-center">
+    <section className="min-h-[80vh] py-24 bg-nebu-bg flex items-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={containerVariants}

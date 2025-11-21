@@ -63,10 +63,9 @@ const ProductDetails: React.FC = () => {
   };
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-br from-primary/5 via-nebu-bg to-accent/5">
+    <section className="py-20 px-4 bg-nebu-bg">
       <motion.div {...fadeInUp} className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-3xl p-6 md:p-12 lg:p-16 shadow-2xl border border-gray-200">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center px-6 md:px-12">
             <div className="relative order-2 lg:order-1">
               <motion.div
                 className="relative"
@@ -143,7 +142,6 @@ const ProductDetails: React.FC = () => {
                 })}
               </div>
             </div>
-          </div>
         </div>
       </motion.div>
     </section>
