@@ -1,16 +1,18 @@
 import { Link } from "@remix-run/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useCart } from "~/contexts/CartContext";
 
 export function CartButton() {
+  const { t } = useTranslation('common');
   const { totalItems, toggleCart } = useCart();
 
   return (
     <button
       onClick={toggleCart}
       className="relative p-2.5 bg-nebu-bg/50 hover:bg-primary/10 border border-primary/20 hover:border-primary/40 rounded-lg transition-all duration-300 group"
-      aria-label="Abrir carrito"
+      aria-label={t('cart.open')}
       type="button"
     >
       <ShoppingBag className="w-5 h-5 text-primary/70 group-hover:text-primary transition-colors" strokeWidth={2} />
@@ -27,6 +29,7 @@ export function CartButton() {
 }
 
 export function CartSidebar() {
+  const { t } = useTranslation('common');
   const { items, removeItem, updateQuantity, totalPrice, isOpen, closeCart } = useCart();
 
   return (
@@ -59,13 +62,13 @@ export function CartSidebar() {
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-6 h-6 text-primary" />
                 <h2 className="text-2xl font-bold text-gray-900">
-                  Tu Carrito
+                  {t('cart.title')}
                 </h2>
               </div>
               <button
                 onClick={closeCart}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                aria-label="Cerrar carrito"
+                aria-label={t('cart.close')}
               >
                 <X className="w-6 h-6 text-gray-500" />
               </button>
@@ -77,17 +80,17 @@ export function CartSidebar() {
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <ShoppingBag className="w-16 h-16 text-gray-300 mb-4" />
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    Tu carrito está vacío
+                    {t('cart.empty.title')}
                   </h3>
                   <p className="text-gray-600 mb-6">
-                    Agrega productos para comenzar tu compra
+                    {t('cart.empty.description')}
                   </p>
                   <Link
                     to="/productos"
                     onClick={closeCart}
                     className="bg-gradient-to-r from-primary to-accent text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
                   >
-                    Ver Productos
+                    {t('cart.empty.viewProducts')}
                   </Link>
                 </div>
               ) : (
@@ -145,7 +148,7 @@ export function CartSidebar() {
                               )
                             }
                             className="p-2 bg-white hover:bg-gray-100 rounded-lg border border-gray-300 transition-colors"
-                            aria-label="Disminuir cantidad"
+                            aria-label={t('cart.decreaseQuantity')}
                           >
                             <Minus className="w-4 h-4 text-gray-600" />
                           </button>
@@ -161,7 +164,7 @@ export function CartSidebar() {
                               )
                             }
                             className="p-2 bg-white hover:bg-gray-100 rounded-lg border border-gray-300 transition-colors"
-                            aria-label="Aumentar cantidad"
+                            aria-label={t('cart.increaseQuantity')}
                           >
                             <Plus className="w-4 h-4 text-gray-600" />
                           </button>
@@ -172,7 +175,7 @@ export function CartSidebar() {
                             removeItem(item.product.id, item.color.id)
                           }
                           className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                          aria-label="Eliminar del carrito"
+                          aria-label={t('cart.removeItem')}
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
@@ -181,7 +184,7 @@ export function CartSidebar() {
                       {/* Subtotal */}
                       <div className="mt-3 pt-3 border-t border-gray-200">
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-600">Subtotal:</span>
+                          <span className="text-sm text-gray-600">{t('cart.subtotal')}</span>
                           <span className="font-semibold text-gray-900">
                             S/ {(item.product.price * item.quantity).toFixed(2)}
                           </span>
@@ -199,15 +202,15 @@ export function CartSidebar() {
                 {/* Total */}
                 <div className="space-y-2">
                   <div className="flex justify-between text-gray-600">
-                    <span>Subtotal:</span>
+                    <span>{t('cart.subtotal')}</span>
                     <span>S/ {totalPrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
-                    <span>Envío:</span>
-                    <span className="text-green-600 font-semibold">GRATIS</span>
+                    <span>{t('cart.shipping')}</span>
+                    <span className="text-green-600 font-semibold">{t('cart.free')}</span>
                   </div>
                   <div className="flex justify-between text-xl font-bold text-gray-900 pt-2 border-t border-gray-200">
-                    <span>Total:</span>
+                    <span>{t('cart.total')}</span>
                     <span>S/ {totalPrice.toFixed(2)}</span>
                   </div>
                 </div>
@@ -215,7 +218,7 @@ export function CartSidebar() {
                 {/* Pre-order info */}
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                   <p className="text-xs text-blue-800">
-                    💡 Reserva con solo el <strong>50%</strong> (S/ {(totalPrice * 0.5).toFixed(2)})
+                    {t('cart.reserveInfo')} <strong>50%</strong> (S/ {(totalPrice * 0.5).toFixed(2)})
                   </p>
                 </div>
 
@@ -225,7 +228,7 @@ export function CartSidebar() {
                   onClick={closeCart}
                   className="w-full bg-gradient-to-r from-primary to-accent text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
                 >
-                  Proceder al Checkout
+                  {t('cart.checkout')}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
 
@@ -234,7 +237,7 @@ export function CartSidebar() {
                   onClick={closeCart}
                   className="block text-center text-primary hover:underline text-sm"
                 >
-                  Continuar comprando
+                  {t('cart.continueShopping')}
                 </Link>
               </div>
             )}

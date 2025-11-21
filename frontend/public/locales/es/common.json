@@ -747,6 +747,193 @@
       "fun": "Divertido",
       "daily": "Día a día"
     },
-    "cta": "¡Comienza las conversaciones con Nebu!"
+    "cta": "¡Comienza las conversaciones con Nebu!",
+    "noExamples": "No hay ejemplos disponibles para esta categoría"
+  },
+  "productDetails": {
+    "meet": "Conoce a:",
+    "productActions": "Acciones de producto"
+  },
+  "errors": {
+    "404": {
+      "title": "Página no encontrada",
+      "description": "La página que buscas no existe o ha sido movida."
+    },
+    "401": {
+      "title": "No autorizado",
+      "description": "Necesitas iniciar sesión para acceder a esta página."
+    },
+    "403": {
+      "title": "Acceso denegado",
+      "description": "No tienes permisos para ver este contenido."
+    },
+    "500": {
+      "title": "Error del servidor",
+      "description": "Hubo un problema en nuestros servidores. Por favor, intenta de nuevo."
+    },
+    "default": {
+      "title": "Algo salió mal",
+      "description": "Ha ocurrido un error inesperado. Por favor, intenta de nuevo."
+    },
+    "back": "← Volver atrás",
+    "retry": "↻ Reintentar",
+    "goHome": "Ir al inicio",
+    "needHelp": "¿Necesitas ayuda?",
+    "contactSupport": "Contacta con soporte",
+    "technicalDetails": "Detalles técnicos",
+    "message": "Mensaje:",
+    "stackTrace": "Stack trace:",
+    "notFound": {
+      "title": "¡Oops! Página no encontrada",
+      "description": "Parece que te has perdido. La página que buscas no existe."
+    },
+    "maintenance": {
+      "title": "Estamos en mantenimiento",
+      "description": "Estamos trabajando para mejorar tu experiencia. Volveremos pronto.",
+      "estimatedTime": "Tiempo estimado:",
+      "followUs": "Síguenos en",
+      "forUpdates": "para actualizaciones"
+    }
+  },
+  "loading": {
+    "default": "Cargando...",
+    "processing": "Procesando...",
+    "model3D": "Cargando modelo 3D...",
+    "preparing": "Preparando tu experiencia...",
+    "modelUnavailable": "Modelo 3D no disponible",
+    "reloadPage": "Intenta recargar la página"
+  },
+  "cart": {
+    "open": "Abrir carrito",
+    "close": "Cerrar carrito",
+    "title": "Tu Carrito",
+    "empty": {
+      "title": "Tu carrito está vacío",
+      "description": "Agrega productos para comenzar tu compra",
+      "viewProducts": "Ver Productos"
+    },
+    "decreaseQuantity": "Disminuir cantidad",
+    "increaseQuantity": "Aumentar cantidad",
+    "removeItem": "Eliminar del carrito",
+    "subtotal": "Subtotal:",
+    "shipping": "Envío:",
+    "free": "GRATIS",
+    "total": "Total:",
+    "reserveInfo": "💡 Reserva con solo el",
+    "checkout": "Proceder al Checkout",
+    "continueShopping": "Continuar comprando"
+  },
+  "libroReclamaciones": {
+    "title": "Libro de Reclamaciones",
+    "law": "Conforme a Ley N° 29571",
+    "description": "En cumplimiento del Código de Protección y Defensa del Consumidor, ponemos a tu disposición nuestro Libro de Reclamaciones Virtual.",
+    "reclamo": {
+      "title": "Reclamo",
+      "description": "Disconformidad relacionada con los productos o servicios adquiridos."
+    },
+    "queja": {
+      "title": "Queja",
+      "description": "Disconformidad no relacionada con los productos o servicios, sino con la atención al cliente."
+    },
+    "success": {
+      "title": "Reclamo registrado exitosamente",
+      "code": "Tu reclamo ha sido registrado con el código:",
+      "response": "Responderemos a tu correo electrónico en un plazo máximo de 30 días calendario, conforme a la normativa vigente."
+    },
+    "error": {
+      "title": "Error al enviar el reclamo",
+      "description": "Hubo un problema al procesar tu reclamo. Por favor, intenta nuevamente o contáctanos directamente a: contacto@flow-telligence.com"
+    },
+    "consumerData": {
+      "title": "Datos del Consumidor",
+      "documentType": "Tipo de Documento *",
+      "documentNumber": "Número de Documento *",
+      "firstName": "Nombres *",
+      "lastName": "Apellidos *",
+      "email": "Correo Electrónico *",
+      "phone": "Teléfono *",
+      "address": "Dirección *",
+      "department": "Departamento *",
+      "minorAge": "Soy menor de edad (requiere datos del padre/tutor)",
+      "tutorData": {
+        "title": "Datos del Padre/Tutor",
+        "firstName": "Nombres del Tutor *",
+        "lastName": "Apellidos del Tutor *",
+        "document": "DNI del Tutor *"
+      }
+    },
+    "complaintDetails": {
+      "title": "Detalle del Reclamo o Queja",
+      "type": "Tipo *",
+      "product": "Producto o Servicio *",
+      "selectProduct": "Selecciona un producto",
+      "amount": "Monto Reclamado (S/) *",
+      "orderNumber": "Número de Pedido (opcional)",
+      "description": "Description del Reclamo o Queja *",
+      "descriptionPlaceholder": "Describe detalladamente tu reclamo o queja...",
+      "descriptionHint": "Mínimo 50 caracteres. Incluye detalles como fecha de compra, descripción del problema, y solución esperada."
+    },
+    "legalInfo": {
+      "title": "Plazo de respuesta:",
+      "description": "De acuerdo al Código de Protección y Defensa del Consumidor (Ley N° 29571), responderemos a tu reclamo en un plazo no mayor a 30 días calendario."
+    },
+    "submit": {
+      "sending": "Enviando...",
+      "button": "Enviar Reclamo",
+      "privacy": "Al enviar este formulario, aceptas que tus datos sean procesados conforme a nuestra",
+      "privacyLink": "Política de Privacidad",
+      "andRegulation": "y la normativa vigente."
+    },
+    "companyInfo": {
+      "title": "Información de la Empresa",
+      "businessName": "Razón Social:",
+      "ruc": "RUC:",
+      "address": "Dirección:",
+      "email": "Correo:",
+      "phone": "Teléfono:"
+    },
+    "documentTypes": {
+      "dni": "DNI",
+      "ce": "Carné de Extranjería",
+      "passport": "Pasaporte"
+    },
+    "departments": {
+      "lima": "Lima",
+      "arequipa": "Arequipa",
+      "cusco": "Cusco",
+      "piura": "Piura",
+      "other": "Otro"
+    },
+    "products": {
+      "nebuDino": "Nebu Dino",
+      "nebuGato": "Nebu Gato",
+      "nebuConejo": "Nebu Conejo",
+      "planFamily": "Plan Family",
+      "planPremium": "Plan Premium",
+      "other": "Otro"
+    }
+  },
+  "waitlist": {
+    "title": "¡Sé el primero en saber cuándo esté disponible!",
+    "description": "Únete a la lista de espera y recibe un",
+    "discount": "10% de descuento",
+    "onPreOrder": "en tu pre-orden de Nebu Gato",
+    "emailPlaceholder": "tu@email.com",
+    "join": "Unirme",
+    "joining": "...",
+    "success": "¡Genial! Estás en la lista de espera 🎉",
+    "error": "Error al unirte. Intenta de nuevo.",
+    "connectionError": "Error de conexión. Intenta de nuevo.",
+    "alreadySubscribed": "* Ya estás suscrito a nuestro newsletter? ¡Automáticamente estás en la lista! 🎉"
+  },
+  "root": {
+    "loading": "Cargando...",
+    "error": {
+      "title": "Ha ocurrido un error inesperado",
+      "404": "Página no encontrada",
+      "401": "No autorizado",
+      "403": "Acceso denegado",
+      "appError": "Error de aplicación"
+    }
   }
 }

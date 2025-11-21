@@ -3,6 +3,7 @@ import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useTexture, Stage } from '@react-three/drei';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as THREE from 'three';
+import { useTranslation } from 'react-i18next';
 import LoadingSpinner from './LoadingSpinner';
 import { SceneLights } from './3d/SceneLights';
 
@@ -89,6 +90,7 @@ function NebuDinoModel({ color = "#4ECDC4" }: ModelProps) {
 }
 
 export default function NebuModel3D({ color }: ModelProps) {
+  const { t } = useTranslation('common');
   const [isClient, setIsClient] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
@@ -111,7 +113,7 @@ export default function NebuModel3D({ color }: ModelProps) {
   if (!isClient || (!hasLoaded && !isIntersecting)) {
     return (
       <div ref={containerRef} className="w-full h-64 md:h-96 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 flex items-center justify-center">
-        <LoadingSpinner size="lg" message="Cargando modelo 3D..." />
+        <LoadingSpinner size="lg" message={t('loading.model3D')} />
       </div>
     );
   }
@@ -121,8 +123,8 @@ export default function NebuModel3D({ color }: ModelProps) {
     return (
       <div ref={containerRef} className="w-full h-64 md:h-96 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600">Modelo 3D no disponible</p>
-          <p className="text-sm text-gray-500 mt-2">Intenta recargar la página</p>
+          <p className="text-gray-600">{t('loading.modelUnavailable')}</p>
+          <p className="text-sm text-gray-500 mt-2">{t('loading.reloadPage')}</p>
         </div>
       </div>
     );

@@ -254,7 +254,8 @@ export function ErrorBoundary() {
     // logErrorToService(error);
   }
   
-  // Determinar tipo de error
+  // Note: Can't use useTranslation in ErrorBoundary as it's server-side
+  // Using static fallback messages that match translation keys
   let errorMessage = "Ha ocurrido un error inesperado";
   let errorStatus = 500;
   let errorDetails: string | null = null;

@@ -3,6 +3,7 @@
 
 import { memo } from 'react';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 interface LoadingSpinnerProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -162,13 +163,15 @@ function PulseSpinner({ size }: { size: string }) {
 // Loading overlay component
 export const LoadingOverlay = memo(function LoadingOverlay({
   isLoading,
-  message = 'Cargando...',
+  message,
   blur = true,
 }: {
   isLoading: boolean;
   message?: string;
   blur?: boolean;
 }) {
+  const { t } = useTranslation('common');
+  const defaultMessage = message || t('loading.default');
   if (!isLoading) return null;
   
   return (
@@ -176,7 +179,7 @@ export const LoadingOverlay = memo(function LoadingOverlay({
       'absolute inset-0 z-50 flex items-center justify-center',
       blur ? 'bg-white/60 backdrop-blur-sm' : 'bg-white/90'
     )}>
-      <LoadingSpinner size="lg" variant="primary" message={message} />
+      <LoadingSpinner size="lg" variant="primary" message={defaultMessage} />
     </div>
   );
 });
@@ -187,10 +190,11 @@ export const InlineLoading = memo(function InlineLoading({
 }: {
   className?: string;
 }) {
+  const { t } = useTranslation('common');
   return (
     <span className={clsx('inline-flex items-center gap-2', className)}>
       <LoadingSpinner size="xs" variant="default" />
-      <span className="text-sm text-gray-600">Cargando...</span>
+      <span className="text-sm text-gray-600">{t('loading.default')}</span>
     </span>
   );
 });
@@ -199,7 +203,7 @@ export const InlineLoading = memo(function InlineLoading({
 export const ButtonLoading = memo(function ButtonLoading({
   isLoading,
   children,
-  loadingText = 'Procesando...',
+  loadingText,
   className,
 }: {
   isLoading: boolean;
@@ -207,11 +211,13 @@ export const ButtonLoading = memo(function ButtonLoading({
   loadingText?: string;
   className?: string;
 }) {
+  const { t } = useTranslation('common');
+  const defaultLoadingText = loadingText || t('loading.processing');
   if (isLoading) {
     return (
       <span className={clsx('inline-flex items-center gap-2', className)}>
         <LoadingSpinner size="sm" variant="white" />
-        <span>{loadingText}</span>
+        <span>{defaultLoadingText}</span>
       </span>
     );
   }

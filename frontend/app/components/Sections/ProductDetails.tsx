@@ -63,10 +63,15 @@ const ProductDetails: React.FC = () => {
   };
 
   return (
-    <section className="py-20 px-4 bg-nebu-bg">
+    <section 
+      className="py-20 px-4 bg-nebu-bg"
+      itemScope
+      itemType="https://schema.org/Product"
+      aria-labelledby="product-title"
+    >
       <motion.div {...fadeInUp} className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center px-6 md:px-12">
-            <div className="relative order-2 lg:order-1 h-[500px] md:h-[600px] lg:h-[700px]">
+            <figure className="relative order-2 lg:order-1 h-[500px] md:h-[600px] lg:h-[700px]" itemProp="image">
               <motion.div
                 className="relative h-full"
                 whileHover={{ scale: 1.02 }}
@@ -79,16 +84,16 @@ const ProductDetails: React.FC = () => {
                 <motion.div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-gold to-primary rounded-full shadow-lg" {...floatingAnimation} aria-hidden="true" />
                 <motion.div className="absolute -bottom-4 -left-4 w-12 h-12 bg-gradient-to-br from-accent to-secondary rounded-full shadow-lg" animate={{ y: [10, -10, 10] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' as const, delay: 1.5 }} aria-hidden="true" />
               </motion.div>
-            </div>
+            </figure>
 
-            <div className="space-y-6 order-1 lg:order-2">
-              <div>
-                <h2 className="text-5xl lg:text-6xl font-bold font-heading text-gray-900 mb-6">
-                  <span className="block mb-3 text-xl md:text-2xl font-normal text-nebu-dark/70">Conoce a:</span>
-                  <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-16 lg:h-20 mb-4" />
+            <article className="space-y-6 order-1 lg:order-2">
+              <header>
+                <h2 id="product-title" className="text-5xl lg:text-6xl font-bold font-heading text-gray-900 mb-6">
+                  <span className="block mb-3 text-xl md:text-2xl font-normal text-nebu-dark/70">{t('productDetails.meet')}</span>
+                  <img src="/assets/logos/logo-nebu.svg" alt="Nebu - Peluche inteligente con IA para niños" className="h-16 lg:h-20 mb-4" itemProp="name" />
                 </h2>
 
-                <div className="space-y-4 mb-6">
+                <div className="space-y-4 mb-6" itemProp="description">
                   <p className="text-lg md:text-xl text-gray-600 leading-relaxed text-justify">
                     {t('productCTA.product.description')}
                   </p>
@@ -96,44 +101,48 @@ const ProductDetails: React.FC = () => {
                     {t('productCTA.product.technicalDescription')}
                   </p>
                 </div>
-              </div>
+              </header>
 
-              <div className="grid grid-cols-2 gap-4">
+              <ul className="grid grid-cols-2 gap-4" itemProp="additionalProperty" itemScope itemType="https://schema.org/PropertyValue">
                 {features.map((feature, index) => {
                   const Icon = feature.icon;
                   return (
-                    <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="flex items-center gap-3 group cursor-default">
-                      <div className={`w-10 h-10 ${colorMap[feature.color]} rounded-full flex items-center justify-center transition-colors duration-300 shadow-sm`}>
+                    <motion.li key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="flex items-center gap-3 group cursor-default">
+                      <div className={`w-10 h-10 ${colorMap[feature.color]} rounded-full flex items-center justify-center transition-colors duration-300 shadow-sm`} role="img" aria-label={feature.label}>
                         <Icon className={`w-5 h-5 ${dotColorMap[feature.color].replace('bg-', 'text-')}`} />
                       </div>
                       <span className="text-gray-700 font-medium group-hover:text-gray-900 transition-colors">{feature.label}</span>
-                    </motion.div>
+                    </motion.li>
                   );
                 })}
-              </div>
+              </ul>
 
-              <div className="space-y-4 pt-4">
+              <nav className="space-y-4 pt-4" aria-label={t('productDetails.productActions')}>
                 <CTAButton to="/pre-order" ariaLabel={t('productCTA.product.preOrderButton')} fullWidth>
-                  {t('productCTA.product.preOrderButton')}
+                  <span itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                    <meta itemProp="availability" content="https://schema.org/PreOrder" />
+                    <meta itemProp="priceCurrency" content="PEN" />
+                    {t('productCTA.product.preOrderButton')}
+                  </span>
                 </CTAButton>
 
                 <CTAButton variant="outline" onClick={() => setShowWaitlist(!showWaitlist)} ariaLabel={t('productCTA.product.waitlistButton')} fullWidth showSparkles={false}>
                   <span className="flex items-center gap-2">{t('productCTA.product.waitlistButton')}<ChevronRight className="w-5 h-5" /></span>
                 </CTAButton>
-              </div>
+              </nav>
 
-              <div className="flex flex-wrap items-center justify-center gap-6 pt-6 border-t border-gray-200">
+              <footer className="flex flex-wrap items-center justify-center gap-6 pt-6 border-t border-gray-200">
                 {trustBadges.map((badge, index) => {
                   const Icon = badge.icon;
                   return (
-                    <div key={index} className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-default">
-                      <Icon className="w-5 h-5" />
+                    <div key={index} className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-default" role="note">
+                      <Icon className="w-5 h-5" aria-hidden="true" />
                       <span className="font-medium">{badge.label}</span>
                     </div>
                   );
                 })}
-              </div>
-            </div>
+              </footer>
+            </article>
         </div>
       </motion.div>
     </section>

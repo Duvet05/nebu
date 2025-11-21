@@ -67,6 +67,7 @@ const colorOptions: ColorOption[] = [
 ];
 
 function WaitlistForm() {
+  const { t } = useTranslation('common');
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
@@ -93,19 +94,19 @@ function WaitlistForm() {
         analytics.newsletterSignup(email, "nebu-gato-waitlist");
 
         setStatus("success");
-        setMessage(data.message || "¡Genial! Estás en la lista de espera 🎉");
+        setMessage(data.message || t('waitlist.success'));
         setEmail("");
 
         // Clear success message after 5 seconds
         setTimeout(() => setStatus("idle"), 5000);
       } else {
         setStatus("error");
-        setMessage(data.error || "Error al unirte. Intenta de nuevo.");
+        setMessage(data.error || t('waitlist.error'));
       }
     } catch (error) {
       console.error("Waitlist error:", error);
       setStatus("error");
-      setMessage("Error de conexión. Intenta de nuevo.");
+      setMessage(t('waitlist.connectionError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -114,10 +115,10 @@ function WaitlistForm() {
   return (
     <div className="text-center">
       <h3 className="text-2xl font-bold mb-4 text-gray-900">
-        ¡Sé el primero en saber cuándo esté disponible!
+        {t('waitlist.title')}
       </h3>
       <p className="text-gray-600 mb-6">
-        Únete a la lista de espera y recibe un <span className="font-bold text-purple-600">10% de descuento</span> en tu pre-orden de Nebu Gato
+        {t('waitlist.description')} <span className="font-bold text-purple-600">{t('waitlist.discount')}</span> {t('waitlist.onPreOrder')}
       </p>
 
       <form onSubmit={handleSubmit} className="max-w-md mx-auto flex gap-3">
@@ -125,7 +126,7 @@ function WaitlistForm() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="tu@email.com"
+          placeholder={t('waitlist.emailPlaceholder')}
           required
           className="flex-1 px-4 py-3 border-2 border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
         />
@@ -134,7 +135,7 @@ function WaitlistForm() {
           disabled={isSubmitting}
           className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? "..." : "Unirme"}
+          {isSubmitting ? t('waitlist.joining') : t('waitlist.join')}
         </button>
       </form>
 
@@ -161,7 +162,7 @@ function WaitlistForm() {
       </AnimatePresence>
 
       <p className="text-xs text-gray-500 mt-4">
-        * Ya estás suscrito a nuestro newsletter? ¡Automáticamente estás en la lista! 🎉
+        {t('waitlist.alreadySubscribed')}
       </p>
     </div>
   );

@@ -146,16 +146,15 @@ export default function LibroReclamacionesPage() {
           >
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 text-primary px-6 py-3 rounded-full text-sm font-medium mb-6">
               <FileText className="w-4 h-4" />
-              <span>Conforme a Ley N° 29571</span>
+              <span>{t('libroReclamaciones.law')}</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl font-bold font-heading mb-6 text-gray-900">
-              Libro de Reclamaciones
+              {t('libroReclamaciones.title')}
             </h1>
 
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              En cumplimiento del Código de Protección y Defensa del Consumidor,
-              ponemos a tu disposición nuestro Libro de Reclamaciones Virtual.
+              {t('libroReclamaciones.description')}
             </p>
           </motion.div>
 
@@ -172,9 +171,9 @@ export default function LibroReclamacionesPage() {
                   <AlertCircle className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Reclamo</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t('libroReclamaciones.reclamo.title')}</h3>
                   <p className="text-sm text-gray-600">
-                    Disconformidad relacionada con los productos o servicios adquiridos.
+                    {t('libroReclamaciones.reclamo.description')}
                   </p>
                 </div>
               </div>
@@ -186,9 +185,9 @@ export default function LibroReclamacionesPage() {
                   <FileText className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Queja</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t('libroReclamaciones.queja.title')}</h3>
                   <p className="text-sm text-gray-600">
-                    Disconformidad no relacionada con los productos o servicios, sino con la atención al cliente.
+                    {t('libroReclamaciones.queja.description')}
                   </p>
                 </div>
               </div>
@@ -206,14 +205,13 @@ export default function LibroReclamacionesPage() {
                 <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-green-900 mb-2">
-                    Reclamo registrado exitosamente
+                    {t('libroReclamaciones.success.title')}
                   </h3>
                   <p className="text-sm text-green-700 mb-2">
-                    Tu reclamo ha sido registrado con el código: <strong>{hojaNumber}</strong>
+                    {t('libroReclamaciones.success.code')} <strong>{hojaNumber}</strong>
                   </p>
                   <p className="text-sm text-green-700">
-                    Responderemos a tu correo electrónico en un plazo máximo de 30 días calendario,
-                    conforme a la normativa vigente.
+                    {t('libroReclamaciones.success.response')}
                   </p>
                 </div>
               </div>
@@ -231,11 +229,10 @@ export default function LibroReclamacionesPage() {
                 <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-red-900 mb-2">
-                    Error al enviar el reclamo
+                    {t('libroReclamaciones.error.title')}
                   </h3>
                   <p className="text-sm text-red-700">
-                    Hubo un problema al procesar tu reclamo. Por favor, intenta nuevamente o
-                    contáctanos directamente a: contacto@flow-telligence.com
+                    {t('libroReclamaciones.error.description')}
                   </p>
                 </div>
               </div>
@@ -254,13 +251,13 @@ export default function LibroReclamacionesPage() {
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                   <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
-                  Datos del Consumidor
+                  {t('libroReclamaciones.consumerData.title')}
                 </h2>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tipo de Documento *
+                      {t('libroReclamaciones.consumerData.documentType')}
                     </label>
                     <select
                       name="tipoDocumento"
@@ -269,15 +266,15 @@ export default function LibroReclamacionesPage() {
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
-                      <option value="DNI">DNI</option>
-                      <option value="CE">Carné de Extranjería</option>
-                      <option value="Pasaporte">Pasaporte</option>
+                      <option value="DNI">{t('libroReclamaciones.documentTypes.dni')}</option>
+                      <option value="CE">{t('libroReclamaciones.documentTypes.ce')}</option>
+                      <option value="Pasaporte">{t('libroReclamaciones.documentTypes.passport')}</option>
                     </select>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Número de Documento *
+                      {t('libroReclamaciones.consumerData.documentNumber')}
                     </label>
                     <input
                       type="text"
@@ -292,7 +289,7 @@ export default function LibroReclamacionesPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Nombres *
+                      {t('libroReclamaciones.consumerData.firstName')}
                     </label>
                     <input
                       type="text"
@@ -307,7 +304,7 @@ export default function LibroReclamacionesPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Apellidos *
+                      {t('libroReclamaciones.consumerData.lastName')}
                     </label>
                     <input
                       type="text"
@@ -322,7 +319,7 @@ export default function LibroReclamacionesPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Correo Electrónico *
+                      {t('libroReclamaciones.consumerData.email')}
                     </label>
                     <input
                       type="email"
@@ -337,7 +334,7 @@ export default function LibroReclamacionesPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Teléfono *
+                      {t('libroReclamaciones.consumerData.phone')}
                     </label>
                     <input
                       type="tel"
@@ -352,7 +349,7 @@ export default function LibroReclamacionesPage() {
 
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Dirección *
+                      {t('libroReclamaciones.consumerData.address')}
                     </label>
                     <input
                       type="text"
@@ -367,7 +364,7 @@ export default function LibroReclamacionesPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Departamento *
+                      {t('libroReclamaciones.consumerData.department')}
                     </label>
                     <select
                       name="departamento"
@@ -376,11 +373,11 @@ export default function LibroReclamacionesPage() {
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
-                      <option value="Lima">Lima</option>
-                      <option value="Arequipa">Arequipa</option>
-                      <option value="Cusco">Cusco</option>
-                      <option value="Piura">Piura</option>
-                      <option value="Otro">Otro</option>
+                      <option value="Lima">{t('libroReclamaciones.departments.lima')}</option>
+                      <option value="Arequipa">{t('libroReclamaciones.departments.arequipa')}</option>
+                      <option value="Cusco">{t('libroReclamaciones.departments.cusco')}</option>
+                      <option value="Piura">{t('libroReclamaciones.departments.piura')}</option>
+                      <option value="Otro">{t('libroReclamaciones.departments.other')}</option>
                     </select>
                   </div>
                 </div>
@@ -396,7 +393,7 @@ export default function LibroReclamacionesPage() {
                       className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
                     />
                     <span className="text-sm text-gray-700">
-                      Soy menor de edad (requiere datos del padre/tutor)
+                      {t('libroReclamaciones.consumerData.minorAge')}
                     </span>
                   </label>
                 </div>
@@ -405,13 +402,13 @@ export default function LibroReclamacionesPage() {
                   <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-gray-50 rounded-xl">
                     <div className="md:col-span-2">
                       <h3 className="text-sm font-semibold text-gray-900 mb-4">
-                        Datos del Padre/Tutor
+                        {t('libroReclamaciones.consumerData.tutorData.title')}
                       </h3>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Nombres del Tutor *
+                        {t('libroReclamaciones.consumerData.tutorData.firstName')}
                       </label>
                       <input
                         type="text"
@@ -425,7 +422,7 @@ export default function LibroReclamacionesPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Apellidos del Tutor *
+                        {t('libroReclamaciones.consumerData.tutorData.lastName')}
                       </label>
                       <input
                         type="text"
@@ -439,7 +436,7 @@ export default function LibroReclamacionesPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        DNI del Tutor *
+                        {t('libroReclamaciones.consumerData.tutorData.document')}
                       </label>
                       <input
                         type="text"
@@ -458,13 +455,13 @@ export default function LibroReclamacionesPage() {
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                   <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
-                  Detalle del Reclamo o Queja
+                  {t('libroReclamaciones.complaintDetails.title')}
                 </h2>
 
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tipo *
+                      {t('libroReclamaciones.complaintDetails.type')}
                     </label>
                     <div className="grid grid-cols-2 gap-4">
                       <label className={`flex items-center justify-center gap-2 p-4 border-2 rounded-xl cursor-pointer transition-all ${
@@ -480,7 +477,7 @@ export default function LibroReclamacionesPage() {
                           onChange={handleChange}
                           className="w-5 h-5 text-primary"
                         />
-                        <span className="font-medium">Reclamo</span>
+                        <span className="font-medium">{t('libroReclamaciones.reclamo.title')}</span>
                       </label>
 
                       <label className={`flex items-center justify-center gap-2 p-4 border-2 rounded-xl cursor-pointer transition-all ${
@@ -496,7 +493,7 @@ export default function LibroReclamacionesPage() {
                           onChange={handleChange}
                           className="w-5 h-5 text-primary"
                         />
-                        <span className="font-medium">Queja</span>
+                        <span className="font-medium">{t('libroReclamaciones.queja.title')}</span>
                       </label>
                     </div>
                   </div>
@@ -504,7 +501,7 @@ export default function LibroReclamacionesPage() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Producto o Servicio *
+                        {t('libroReclamaciones.complaintDetails.product')}
                       </label>
                       <select
                         name="producto"
@@ -513,19 +510,19 @@ export default function LibroReclamacionesPage() {
                         required
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent"
                       >
-                        <option value="">Selecciona un producto</option>
-                        <option value="Nebu Dino">Nebu Dino</option>
-                        <option value="Nebu Gato">Nebu Gato</option>
-                        <option value="Nebu Conejo">Nebu Conejo</option>
-                        <option value="Plan Family">Plan Family</option>
-                        <option value="Plan Premium">Plan Premium</option>
-                        <option value="Otro">Otro</option>
+                        <option value="">{t('libroReclamaciones.complaintDetails.selectProduct')}</option>
+                        <option value="Nebu Dino">{t('libroReclamaciones.products.nebuDino')}</option>
+                        <option value="Nebu Gato">{t('libroReclamaciones.products.nebuGato')}</option>
+                        <option value="Nebu Conejo">{t('libroReclamaciones.products.nebuConejo')}</option>
+                        <option value="Plan Family">{t('libroReclamaciones.products.planFamily')}</option>
+                        <option value="Plan Premium">{t('libroReclamaciones.products.planPremium')}</option>
+                        <option value="Otro">{t('libroReclamaciones.products.other')}</option>
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Monto Reclamado (S/) *
+                        {t('libroReclamaciones.complaintDetails.amount')}
                       </label>
                       <input
                         type="number"
@@ -542,7 +539,7 @@ export default function LibroReclamacionesPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Número de Pedido (opcional)
+                        {t('libroReclamaciones.complaintDetails.orderNumber')}
                       </label>
                       <input
                         type="text"
@@ -557,7 +554,7 @@ export default function LibroReclamacionesPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Descripción del Reclamo o Queja *
+                      {t('libroReclamaciones.complaintDetails.description')}
                     </label>
                     <textarea
                       name="descripcion"
@@ -566,11 +563,10 @@ export default function LibroReclamacionesPage() {
                       required
                       rows={6}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
-                      placeholder="Describe detalladamente tu reclamo o queja..."
+                      placeholder={t('libroReclamaciones.complaintDetails.descriptionPlaceholder')}
                     />
                     <p className="text-xs text-gray-500 mt-2">
-                      Mínimo 50 caracteres. Incluye detalles como fecha de compra,
-                      descripción del problema, y solución esperada.
+                      {t('libroReclamaciones.complaintDetails.descriptionHint')}
                     </p>
                   </div>
                 </div>
@@ -581,10 +577,9 @@ export default function LibroReclamacionesPage() {
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-gray-600 flex-shrink-0 mt-1" />
                   <div className="text-sm text-gray-700">
-                    <p className="font-medium mb-2">Plazo de respuesta:</p>
+                    <p className="font-medium mb-2">{t('libroReclamaciones.legalInfo.title')}</p>
                     <p>
-                      De acuerdo al Código de Protección y Defensa del Consumidor (Ley N° 29571),
-                      responderemos a tu reclamo en un plazo no mayor a 30 días calendario.
+                      {t('libroReclamaciones.legalInfo.description')}
                     </p>
                   </div>
                 </div>
@@ -600,23 +595,23 @@ export default function LibroReclamacionesPage() {
                   {isSubmitting ? (
                     <>
                       <LoadingSpinner size="sm" message="" className="!mb-0" />
-                      <span className="ml-2">Enviando...</span>
+                      <span className="ml-2">{t('libroReclamaciones.submit.sending')}</span>
                     </>
                   ) : (
                     <>
                       <Send className="w-5 h-5" />
-                      Enviar Reclamo
+                      {t('libroReclamaciones.submit.button')}
                     </>
                   )}
                 </button>
               </div>
 
               <p className="text-xs text-gray-500 text-center">
-                Al enviar este formulario, aceptas que tus datos sean procesados conforme a nuestra{" "}
+                {t('libroReclamaciones.submit.privacy')}{" "}
                 <a href="/privacy" className="text-primary hover:underline">
-                  Política de Privacidad
+                  {t('libroReclamaciones.submit.privacyLink')}
                 </a>
-                {" "}y la normativa vigente.
+                {" "}{t('libroReclamaciones.submit.andRegulation')}
               </p>
             </form>
           </motion.div>
@@ -629,24 +624,24 @@ export default function LibroReclamacionesPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Información de la Empresa
+              {t('libroReclamaciones.companyInfo.title')}
             </h2>
 
             <div className="space-y-4 text-sm text-gray-700">
               <div>
-                <span className="font-semibold">Razón Social:</span> Flow  S.A.C.S
+                <span className="font-semibold">{t('libroReclamaciones.companyInfo.businessName')}</span> Flow  S.A.C.S
               </div>
               <div>
-                <span className="font-semibold">RUC:</span> 10703363135
+                <span className="font-semibold">{t('libroReclamaciones.companyInfo.ruc')}</span> 10703363135
               </div>
               <div>
-                <span className="font-semibold">Dirección:</span> Lima, Perú
+                <span className="font-semibold">{t('libroReclamaciones.companyInfo.address')}</span> Lima, Perú
               </div>
               <div>
-                <span className="font-semibold">Correo:</span> contacto@flow-telligence.com
+                <span className="font-semibold">{t('libroReclamaciones.companyInfo.email')}</span> contacto@flow-telligence.com
               </div>
               <div>
-                <span className="font-semibold">Teléfono:</span> +51 987 654 321
+                <span className="font-semibold">{t('libroReclamaciones.companyInfo.phone')}</span> +51 987 654 321
               </div>
             </div>
           </motion.div>

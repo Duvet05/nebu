@@ -2,6 +2,7 @@
 // Layout mejorado para manejo de errores
 
 import { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ErrorLayoutProps {
   children: ReactNode;
@@ -39,6 +40,8 @@ export function ErrorContent({
   showDetails = process.env.NODE_ENV === 'development',
   onRetry 
 }: ErrorContentProps) {
+  const { t } = useTranslation('common');
+  
   const getErrorIcon = () => {
     if (statusCode === 404) {
       return (
@@ -60,15 +63,15 @@ export function ErrorContent({
     
     switch (statusCode) {
       case 404:
-        return 'Página no encontrada';
+        return t('errors.404.title');
       case 401:
-        return 'No autorizado';
+        return t('errors.401.title');
       case 403:
-        return 'Acceso denegado';
+        return t('errors.403.title');
       case 500:
-        return 'Error del servidor';
+        return t('errors.500.title');
       default:
-        return 'Algo salió mal';
+        return t('errors.default.title');
     }
   };
   
@@ -77,15 +80,15 @@ export function ErrorContent({
     
     switch (statusCode) {
       case 404:
-        return 'La página que buscas no existe o ha sido movida.';
+        return t('errors.404.description');
       case 401:
-        return 'Necesitas iniciar sesión para acceder a esta página.';
+        return t('errors.401.description');
       case 403:
-        return 'No tienes permisos para ver este contenido.';
+        return t('errors.403.description');
       case 500:
-        return 'Hubo un problema en nuestros servidores. Por favor, intenta de nuevo.';
+        return t('errors.500.description');
       default:
-        return 'Ha ocurrido un error inesperado. Por favor, intenta de nuevo.';
+        return t('errors.default.description');
     }
   };
   
@@ -120,7 +123,7 @@ export function ErrorContent({
           onClick={() => window.history.back()}
           className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
         >
-          ← Volver atrás
+          {t('errors.back')}
         </button>
         
         {onRetry && (
@@ -128,7 +131,7 @@ export function ErrorContent({
             onClick={onRetry}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
-            ↻ Reintentar
+            {t('errors.retry')}
           </button>
         )}
         
@@ -136,15 +139,15 @@ export function ErrorContent({
           href="/"
           className="px-6 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:shadow-lg transition-all"
         >
-          Ir al inicio
+          {t('errors.goHome')}
         </a>
       </div>
       
       {/* Support link */}
       <p className="mt-6 text-sm text-gray-500">
-        ¿Necesitas ayuda? {' '}
+        {t('errors.needHelp')} {' '}
         <a href="mailto:soporte@flow-telligence.com" className="text-primary hover:underline">
-          Contacta con soporte
+          {t('errors.contactSupport')}
         </a>
       </p>
     </div>
@@ -152,24 +155,25 @@ export function ErrorContent({
 }
 
 function ErrorDetails({ error }: { error: Error | any }) {
+  const { t } = useTranslation('common');
   const errorMessage = error?.message || 'Error desconocido';
   const errorStack = error?.stack || '';
   
   return (
     <details className="mb-6 text-left">
       <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
-        Detalles técnicos
+        {t('errors.technicalDetails')}
       </summary>
       <div className="mt-2 space-y-2">
         <div className="p-3 bg-gray-100 rounded">
           <p className="text-xs font-mono text-gray-700">
-            <span className="font-semibold">Mensaje:</span> {errorMessage}
+            <span className="font-semibold">{t('errors.message')}</span> {errorMessage}
           </p>
         </div>
         {errorStack && (
           <div className="p-3 bg-gray-100 rounded">
             <p className="text-xs font-mono text-gray-700 whitespace-pre-wrap break-all">
-              <span className="font-semibold">Stack trace:</span>
+              <span className="font-semibold">{t('errors.stackTrace')}</span>
               {'\n'}
               {errorStack}
             </p>
@@ -195,13 +199,14 @@ export function ErrorBoundaryFallback({ error, resetErrorBoundary }: any) {
 
 // 404 Not Found component
 export function NotFound() {
+  const { t } = useTranslation('common');
   return (
     <ErrorLayout variant="warning">
       <ErrorContent 
         error={null}
         statusCode={404}
-        title="¡Oops! Página no encontrada"
-        description="Parece que te has perdido. La página que buscas no existe."
+        title={t('errors.notFound.title')}
+        description={t('errors.notFound.description')}
       />
     </ErrorLayout>
   );
@@ -209,6 +214,7 @@ export function NotFound() {
 
 // Maintenance component
 export function Maintenance() {
+  const { t } = useTranslation('common');
   return (
     <ErrorLayout variant="info">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
@@ -220,25 +226,25 @@ export function Maintenance() {
         </div>
         
         <h1 className="text-2xl font-semibold text-gray-700 mb-4">
-          Estamos en mantenimiento
+          {t('errors.maintenance.title')}
         </h1>
         
         <p className="text-gray-600 mb-6">
-          Estamos trabajando para mejorar tu experiencia. Volveremos pronto.
+          {t('errors.maintenance.description')}
         </p>
         
         <div className="bg-blue-50 p-4 rounded-lg mb-6">
           <p className="text-sm text-blue-800">
-            Tiempo estimado: <strong>30 minutos</strong>
+            {t('errors.maintenance.estimatedTime')} <strong>30 minutos</strong>
           </p>
         </div>
         
         <p className="text-sm text-gray-500">
-          Síguenos en {' '}
+          {t('errors.maintenance.followUs')} {' '}
           <a href="https://twitter.com/flowtelligence" className="text-blue-600 hover:underline">
             Twitter
           </a>
-          {' '} para actualizaciones
+          {' '} {t('errors.maintenance.forUpdates')}
         </p>
       </div>
     </ErrorLayout>

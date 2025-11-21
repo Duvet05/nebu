@@ -747,6 +747,193 @@
       "fun": "Fun",
       "daily": "Daily Life"
     },
-    "cta": "Start conversations with Nebu!"
+    "cta": "Start conversations with Nebu!",
+    "noExamples": "No examples available for this category"
+  },
+  "productDetails": {
+    "meet": "Meet:",
+    "productActions": "Product actions"
+  },
+  "errors": {
+    "404": {
+      "title": "Page not found",
+      "description": "The page you're looking for doesn't exist or has been moved."
+    },
+    "401": {
+      "title": "Unauthorized",
+      "description": "You need to log in to access this page."
+    },
+    "403": {
+      "title": "Access denied",
+      "description": "You don't have permission to view this content."
+    },
+    "500": {
+      "title": "Server error",
+      "description": "There was a problem with our servers. Please try again."
+    },
+    "default": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred. Please try again."
+    },
+    "back": "← Go back",
+    "retry": "↻ Retry",
+    "goHome": "Go to home",
+    "needHelp": "Need help?",
+    "contactSupport": "Contact support",
+    "technicalDetails": "Technical details",
+    "message": "Message:",
+    "stackTrace": "Stack trace:",
+    "notFound": {
+      "title": "Oops! Page not found",
+      "description": "Looks like you got lost. The page you're looking for doesn't exist."
+    },
+    "maintenance": {
+      "title": "We're under maintenance",
+      "description": "We're working to improve your experience. We'll be back soon.",
+      "estimatedTime": "Estimated time:",
+      "followUs": "Follow us on",
+      "forUpdates": "for updates"
+    }
+  },
+  "loading": {
+    "default": "Loading...",
+    "processing": "Processing...",
+    "model3D": "Loading 3D model...",
+    "preparing": "Preparing your experience...",
+    "modelUnavailable": "3D model unavailable",
+    "reloadPage": "Try reloading the page"
+  },
+  "cart": {
+    "open": "Open cart",
+    "close": "Close cart",
+    "title": "Your Cart",
+    "empty": {
+      "title": "Your cart is empty",
+      "description": "Add products to start your purchase",
+      "viewProducts": "View Products"
+    },
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity",
+    "removeItem": "Remove from cart",
+    "subtotal": "Subtotal:",
+    "shipping": "Shipping:",
+    "free": "FREE",
+    "total": "Total:",
+    "reserveInfo": "💡 Reserve with only",
+    "checkout": "Proceed to Checkout",
+    "continueShopping": "Continue shopping"
+  },
+  "libroReclamaciones": {
+    "title": "Complaints Book",
+    "law": "In accordance with Law N° 29571",
+    "description": "In compliance with the Consumer Protection and Defense Code, we make our Virtual Complaints Book available to you.",
+    "reclamo": {
+      "title": "Complaint",
+      "description": "Disagreement related to products or services purchased."
+    },
+    "queja": {
+      "title": "Claim",
+      "description": "Disagreement not related to products or services, but to customer service."
+    },
+    "success": {
+      "title": "Complaint registered successfully",
+      "code": "Your complaint has been registered with code:",
+      "response": "We will respond to your email within a maximum of 30 calendar days, in accordance with current regulations."
+    },
+    "error": {
+      "title": "Error sending complaint",
+      "description": "There was a problem processing your complaint. Please try again or contact us directly at: contacto@flow-telligence.com"
+    },
+    "consumerData": {
+      "title": "Consumer Data",
+      "documentType": "Document Type *",
+      "documentNumber": "Document Number *",
+      "firstName": "First Name *",
+      "lastName": "Last Name *",
+      "email": "Email *",
+      "phone": "Phone *",
+      "address": "Address *",
+      "department": "Department *",
+      "minorAge": "I am a minor (requires parent/guardian data)",
+      "tutorData": {
+        "title": "Parent/Guardian Data",
+        "firstName": "Guardian First Name *",
+        "lastName": "Guardian Last Name *",
+        "document": "Guardian ID *"
+      }
+    },
+    "complaintDetails": {
+      "title": "Complaint or Claim Details",
+      "type": "Type *",
+      "product": "Product or Service *",
+      "selectProduct": "Select a product",
+      "amount": "Claimed Amount (S/) *",
+      "orderNumber": "Order Number (optional)",
+      "description": "Complaint or Claim Description *",
+      "descriptionPlaceholder": "Describe your complaint or claim in detail...",
+      "descriptionHint": "Minimum 50 characters. Include details such as purchase date, problem description, and expected solution."
+    },
+    "legalInfo": {
+      "title": "Response time:",
+      "description": "In accordance with the Consumer Protection and Defense Code (Law N° 29571), we will respond to your complaint within no more than 30 calendar days."
+    },
+    "submit": {
+      "sending": "Sending...",
+      "button": "Send Complaint",
+      "privacy": "By submitting this form, you agree that your data will be processed in accordance with our",
+      "privacyLink": "Privacy Policy",
+      "andRegulation": "and current regulations."
+    },
+    "companyInfo": {
+      "title": "Company Information",
+      "businessName": "Business Name:",
+      "ruc": "RUC:",
+      "address": "Address:",
+      "email": "Email:",
+      "phone": "Phone:"
+    },
+    "documentTypes": {
+      "dni": "DNI",
+      "ce": "Foreign ID",
+      "passport": "Passport"
+    },
+    "departments": {
+      "lima": "Lima",
+      "arequipa": "Arequipa",
+      "cusco": "Cusco",
+      "piura": "Piura",
+      "other": "Other"
+    },
+    "products": {
+      "nebuDino": "Nebu Dino",
+      "nebuGato": "Nebu Gato",
+      "nebuConejo": "Nebu Conejo",
+      "planFamily": "Family Plan",
+      "planPremium": "Premium Plan",
+      "other": "Other"
+    }
+  },
+  "waitlist": {
+    "title": "Be the first to know when it's available!",
+    "description": "Join the waitlist and receive a",
+    "discount": "10% discount",
+    "onPreOrder": "on your Nebu Gato pre-order",
+    "emailPlaceholder": "your@email.com",
+    "join": "Join",
+    "joining": "...",
+    "success": "Great! You're on the waitlist 🎉",
+    "error": "Error joining. Please try again.",
+    "connectionError": "Connection error. Please try again.",
+    "alreadySubscribed": "* Already subscribed to our newsletter? You're automatically on the list! 🎉"
+  },
+  "root": {
+    "loading": "Loading...",
+    "error": {
+      "title": "An unexpected error occurred",
+      "404": "Page not found",
+      "401": "Unauthorized",
+      "403": "Access denied",
+      "appError": "Application error"
+    }
   }
 }

@@ -76,18 +76,7 @@ export default function ConversationExamples() {
   };
 
   const getCategoryLabel = (category: CategoryKey): string => {
-    try {
-      return t(`conversationExamples.categories.${category}`);
-    } catch {
-      // Fallback labels
-      const fallbackLabels = {
-        educational: "Educativo",
-        creative: "Creativo", 
-        fun: "Divertido",
-        daily: "Día a día"
-      };
-      return fallbackLabels[category];
-    }
+    return t(`conversationExamples.categories.${category}`);
   };
 
   const containerVariants = {
@@ -243,7 +232,7 @@ export default function ConversationExamples() {
               )
             )) : (
               <div className="col-span-2 text-center py-12">
-                <p className="text-gray-500 text-lg">No hay ejemplos disponibles para esta categoría</p>
+                <p className="text-gray-500 text-lg">{t('conversationExamples.noExamples')}</p>
               </div>
             )}
           </motion.div>
