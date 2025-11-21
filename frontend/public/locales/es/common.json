@@ -74,7 +74,7 @@
   },
   "productCTA": {
     "hero": {
-      "badge": "Disponible en pre-orden",
+      "badge": "Preventa Activa",
       "title": "Conoce a Nebu Dino",
       "subtitle": "Reserva ahora: edición limitada — envío estimado en 6-8 semanas, reserva con 50%",
       "price": "Precio especial de lanzamiento:",
@@ -82,7 +82,7 @@
       "ctaButton": "Pre-ordenar ahora"
     },
     "product": {
-      "badge": "Pre-orden (solo 20 unidades)",
+      "badge": "Solo 20 unidades disponibles",
       "name": "Nebu Dino",
       "price": "S/ 190",
       "originalPrice": "S/ 380",

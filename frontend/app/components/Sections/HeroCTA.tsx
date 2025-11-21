@@ -31,20 +31,9 @@ const HeroCTA: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           {/* Contenido */}
           <motion.div className="order-2 md:order-1 text-center md:text-left" {...fadeInUp}>
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 bg-primary/10 px-5 py-2.5 rounded-full mb-6 border border-primary/20"
-            >
-              <span className="w-2 h-2 bg-primary rounded-full animate-pulse" aria-hidden="true"></span>
-              <span className="font-semibold text-sm text-primary">{t('productCTA.hero.badge')}</span>
-            </motion.div>
-
             {/* Title */}
             <h2 id="product-cta-title" className="text-3xl md:text-5xl lg:text-6xl font-bold font-gochi mb-6 leading-tight text-nebu-dark">
-              <span className="block mb-3 text-xl md:text-2xl font-normal text-nebu-dark/70">Conoce a</span>
+              <span className="block mb-3 text-xl md:text-2xl font-normal text-nebu-dark/70">Conoce a:</span>
               <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-16 md:h-20 lg:h-24 mb-4" />
             </h2>
 

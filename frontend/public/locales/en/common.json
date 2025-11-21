@@ -74,7 +74,7 @@
   },
   "productCTA": {
     "hero": {
-      "badge": "Available for pre-order",
+      "badge": "Pre-sale Active",
       "title": "Meet Nebu",
       "subtitle": "Reserve now — limited edition. Estimated shipping in 6-8 weeks; secure yours with a 50% reservation.",
       "price": "Special launch price:",
@@ -82,7 +82,7 @@
       "ctaButton": "Pre-order now"
     },
     "product": {
-      "badge": "Pre-order (only 20 units)",
+      "badge": "Only 20 units available",
       "name": "Nebu Dino",
       "price": "S/ 190",
       "originalPrice": "S/ 380",

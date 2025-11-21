@@ -81,15 +81,10 @@ const ProductDetails: React.FC = () => {
               </motion.div>
             </div>
 
-            <div className="space-y-8 order-1 lg:order-2">
-              <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="inline-flex items-center gap-2 bg-accent/10 text-accent font-medium px-4 py-2 rounded-full border border-accent/20">
-                <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
-                {t('productCTA.product.badge')}
-              </motion.div>
-
+            <div className="space-y-6 order-1 lg:order-2">
               <div>
-                <h2 className="text-5xl lg:text-6xl font-bold font-heading text-gray-900 mb-4">
-                  <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-16 lg:h-20" />
+                <h2 className="text-5xl lg:text-6xl font-bold font-heading text-gray-900 mb-6">
+                  <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-16 lg:h-20 mb-4" />
                 </h2>
 
                 <div className="space-y-3 mb-6">
