@@ -9,14 +9,14 @@ export function CartButton() {
   return (
     <button
       onClick={toggleCart}
-      className="relative p-2.5 bg-white hover:bg-gray-50 border border-gray-200 hover:border-purple-300 rounded-lg transition-all duration-300 group"
+      className="relative p-2.5 bg-nebu-bg/50 hover:bg-primary/10 border border-primary/20 hover:border-primary/40 rounded-lg transition-all duration-300 group"
       aria-label="Abrir carrito"
       type="button"
     >
-      <ShoppingBag className="w-5 h-5 text-gray-600 group-hover:text-purple-600 transition-colors" strokeWidth={2} />
+      <ShoppingBag className="w-5 h-5 text-primary/70 group-hover:text-primary transition-colors" strokeWidth={2} />
       {totalItems > 0 && (
         <span 
-          className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-bold rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center shadow-md"
+          className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-primary to-accent text-white text-xs font-bold rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center shadow-md"
           suppressHydrationWarning
         >
           {totalItems}

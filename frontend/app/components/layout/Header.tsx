@@ -256,11 +256,11 @@ function LanguageSwitcher({ currentLang, onToggle }: LanguageSwitcherProps) {
     <button
       onClick={onToggle}
       type="button"
-      className="flex items-center gap-2 px-3 py-2 bg-white hover:bg-gray-50 border border-gray-200 hover:border-purple-300 rounded-lg transition-all duration-300 hover:shadow-sm group"
+      className="flex items-center gap-2 px-3 py-2 bg-nebu-bg/50 hover:bg-accent/10 border border-accent/20 hover:border-accent/40 rounded-lg transition-all duration-300 hover:shadow-sm group"
       aria-label={`Change language to ${currentLang === 'es' ? 'English' : 'Español'}`}
     >
       <svg 
-        className="w-5 h-5 text-gray-600 group-hover:text-purple-600 transition-colors" 
+        className="w-5 h-5 text-accent/70 group-hover:text-accent transition-colors" 
         fill="none" 
         viewBox="0 0 24 24" 
         stroke="currentColor"
@@ -272,7 +272,7 @@ function LanguageSwitcher({ currentLang, onToggle }: LanguageSwitcherProps) {
           d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" 
         />
       </svg>
-      <span className="text-sm font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
+      <span className="text-sm font-medium text-accent/70 group-hover:text-accent transition-colors">
         {currentLang.toUpperCase()}
       </span>
     </button>
