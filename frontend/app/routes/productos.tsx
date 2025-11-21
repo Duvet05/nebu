@@ -10,6 +10,7 @@ import { products } from "~/data/products";
 import { useCart } from "~/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { trackEvent } from "~/lib/facebook-pixel";
+import { BackInStockNotify } from "~/components/BackInStockNotify";
 
 export const meta: MetaFunction = () => {
   return [
@@ -225,13 +226,10 @@ export default function ProductosPage() {
                           </Link>
                         </>
                       ) : (
-                        <Link
-                          to="/waitlist"
-                          className="w-full bg-gray-100 text-gray-900 py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:bg-gray-200 hover:scale-[1.02] flex items-center justify-center gap-2"
-                        >
-                          <ShoppingCart className="w-5 h-5" />
-                          Unirse a Lista de Espera
-                        </Link>
+                        <BackInStockNotify
+                          productId={product.id}
+                          productName={product.name}
+                        />
                       )}
                     </div>
 
