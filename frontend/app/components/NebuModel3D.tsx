@@ -1,11 +1,31 @@
-import { Suspense, useState, useEffect, useMemo } from 'react';
+import { Suspense, useState, useEffect, useMemo, useRef } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useTexture, Stage } from '@react-three/drei';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as THREE from 'three';
-import { LoadingPlaceholder3D } from './LoadingSpinner';
-import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
+import LoadingSpinner from './LoadingSpinner';
 import { SceneLights } from './3d/SceneLights';
+
+// Hook simple para intersection observer
+function useIntersectionObserver<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [isIntersecting, setIsIntersecting] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsIntersecting(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, isIntersecting };
+}
 
 interface ModelProps {
   color?: string;
@@ -72,11 +92,7 @@ export default function NebuModel3D({ color }: ModelProps) {
   const [isClient, setIsClient] = useState(false);
   
   // Hook personalizado para lazy loading con Intersection Observer
-  const { ref: containerRef, isIntersecting } = useIntersectionObserver<HTMLDivElement>({
-    rootMargin: '50px',
-    threshold: 0.1,
-    triggerOnce: true,
-  });
+  const { ref: containerRef, isIntersecting } = useIntersectionObserver<HTMLDivElement>();
 
   useEffect(() => {
     setIsClient(true);
@@ -85,8 +101,8 @@ export default function NebuModel3D({ color }: ModelProps) {
   // Mostrar placeholder hasta que sea visible y el cliente esté listo
   if (!isClient || !isIntersecting) {
     return (
-      <div ref={containerRef}>
-        <LoadingPlaceholder3D />
+      <div ref={containerRef} className="w-full h-64 md:h-96 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 flex items-center justify-center">
+        <LoadingSpinner size="lg" message="Cargando modelo 3D..." />
       </div>
     );
   }

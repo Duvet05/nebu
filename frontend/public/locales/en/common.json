@@ -1,10 +1,32 @@
 {
   "nav": {
     "home": "Home",
+    "products": "Products",
     "ourStory": "Our Story",
     "faq": "FAQ",
     "contact": "Contact",
-    "preOrder": "Pre-order"
+    "preOrder": "Pre-order",
+    "products.nebu": "Nebu",
+    "products.accessories": "Accessories",
+    "products.bundles": "Bundles"
+  },
+  "auth": {
+    "login": "Log In",
+    "signup": "Sign Up",
+    "logout": "Log Out"
+  },
+  "user": {
+    "account": "My Account",
+    "orders": "My Orders",
+    "wishlist": "Wishlist",
+    "settings": "Settings"
+  },
+  "social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "twitter": "Twitter",
+    "youtube": "YouTube"
   },
   "hero": {
     "badge": "Launch Special - Free shipping on all pre-orders!",

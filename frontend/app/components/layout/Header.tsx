@@ -1,182 +1,492 @@
-import { Link } from "@remix-run/react";
+// app/components/Header.tsx - Versión Optimizada
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { Link, useLocation } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
 import { CartButton } from "~/components/Cart";
+import { useScrollDirection, useScrollPosition } from "~/hooks/useScroll";
+import { motion, AnimatePresence } from "framer-motion";
+import type { NavigationItem } from "~/config/navigation";
+import { navigationConfig } from "~/config/navigation";
+import { Logo } from "~/components/Logo";
+import clsx from "clsx";
 
-export function Header() {
+interface HeaderProps {
+  className?: string;
+  variant?: 'default' | 'transparent' | 'minimal';
+}
+
+export function Header({ className, variant = 'default' }: HeaderProps) {
   const { t, i18n, ready } = useTranslation("common");
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-
-  // Evitar hydration mismatch
+  const scrollDirection = useScrollDirection();
+  const scrollPosition = useScrollPosition();
+  const menuRef = useRef<HTMLDivElement>(null);
+  
+  // Header visibility based on scroll
+  const isHeaderVisible = scrollDirection === 'up' || scrollPosition < 100;
+  const isScrolled = scrollPosition > 20;
+  
+  // Effect for mounting state
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  const toggleLanguage = () => {
+  
+  // Close menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
+  
+  // Close menu on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMenuOpen(false);
+      }
+    };
+    
+    if (isMenuOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+  
+  // Click outside to close menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+  
+  // Memoized toggle language function
+  const toggleLanguage = useCallback(() => {
     const newLang = i18n.language === "es" ? "en" : "es";
     i18n.changeLanguage(newLang);
-  };
-
-  // Evitar error de hidratación mostrando fallback hasta que las traducciones estén listas
+  }, [i18n]);
+  
+  // Memoized navigation items
+  const navigationItems = useMemo(() => navigationConfig.mainNav, []);
+  
+  // Check if link is active
+  const isLinkActive = useCallback((path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
+  }, [location.pathname]);
+  
+  // Loading state
   if (!ready) {
-    return (
-      <header className="sticky top-0 z-50 w-full border-b border-accent/20 bg-gradient-to-r from-accent/90 to-accent/80 backdrop-blur-md shadow-lg shadow-accent/10">
-        <nav className="container mx-auto px-6 py-4">
-          <div className="h-10" /> {/* Placeholder para evitar layout shift */}
+    return <HeaderSkeleton />;
+  }
+  
+  // Header classes based on state
+  const headerClasses = clsx(
+    "fixed top-0 z-50 w-full transition-all duration-300",
+    {
+      // Base styles by variant
+      'bg-white/95 backdrop-blur-md shadow-lg': variant === 'default' && isScrolled,
+      'bg-transparent': variant === 'transparent' && !isScrolled,
+      'bg-white shadow-sm': variant === 'minimal',
+      
+      // Scroll behavior
+      'translate-y-0': isHeaderVisible,
+      '-translate-y-full': !isHeaderVisible && scrollPosition > 200,
+      
+      // Custom className
+      [className || '']: className,
+    }
+  );
+  
+  return (
+    <>
+      <motion.header 
+        className={headerClasses}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <nav 
+          className="container mx-auto px-4 sm:px-6 lg:px-8"
+          role="navigation"
+          aria-label="Main navigation"
+        >
+          <div className={clsx(
+            "flex items-center justify-between transition-all duration-300",
+            isScrolled ? "py-3" : "py-4 lg:py-6"
+          )}>
+            {/* Logo */}
+            <Link 
+              to="/" 
+              className="flex-shrink-0 z-50"
+              aria-label="Flow-Telligence Home"
+            >
+              <Logo 
+                className={clsx(
+                  "transition-all duration-300",
+                  isScrolled ? "h-8 lg:h-10" : "h-10 lg:h-12"
+                )}
+              />
+            </Link>
+            
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-8">
+              <ul className="flex items-center gap-6">
+                {navigationItems.map((item) => (
+                  <li key={item.path}>
+                    <NavLink
+                      item={item}
+                      isActive={isLinkActive(item.path)}
+                      t={t}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            {/* Actions */}
+            <div className="flex items-center gap-3 z-50">
+              {/* Search Button (Desktop) */}
+              <button
+                type="button"
+                className="hidden lg:flex p-2 text-gray-600 hover:text-gray-900 transition-colors"
+                aria-label="Search"
+              >
+                <SearchIcon className="w-5 h-5" />
+              </button>
+              
+              {/* Cart Button */}
+              <CartButton />
+              
+              {/* Language Switcher */}
+              <LanguageSwitcher 
+                currentLang={i18n.language}
+                onToggle={toggleLanguage}
+              />
+              
+              {/* Mobile Menu Button */}
+              <MobileMenuButton
+                isOpen={isMenuOpen}
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              />
+            </div>
+          </div>
         </nav>
-      </header>
+      </motion.header>
+      
+      {/* Mobile Menu */}
+      <MobileMenu
+        ref={menuRef}
+        isOpen={isMenuOpen}
+        isMounted={isMounted}
+        navigationItems={navigationItems}
+        currentPath={location.pathname}
+        isLinkActive={isLinkActive}
+        onClose={() => setIsMenuOpen(false)}
+        t={t}
+      />
+      
+      {/* Spacer for fixed header */}
+      <div className={clsx(
+        "transition-all duration-300",
+        isScrolled ? "h-14 lg:h-16" : "h-16 lg:h-20"
+      )} />
+    </>
+  );
+}
+
+// Navigation Link Component
+interface NavLinkProps {
+  item: NavigationItem;
+  isActive: boolean;
+  t: (key: string) => string;
+  onClick?: () => void;
+  className?: string;
+}
+
+function NavLink({ item, isActive, t, onClick, className }: NavLinkProps) {
+  const baseClasses = "relative font-medium transition-all duration-300 py-2";
+  const stateClasses = isActive
+    ? "text-purple-600"
+    : "text-gray-700 hover:text-purple-600";
+  
+  return (
+    <Link
+      to={item.path}
+      onClick={onClick}
+      className={clsx(baseClasses, stateClasses, className)}
+      aria-current={isActive ? 'page' : undefined}
+    >
+      <span className="relative">
+        {t(item.labelKey)}
+        {isActive && (
+          <motion.div
+            layoutId="activeNavIndicator"
+            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-purple-600"
+            initial={false}
+            transition={{
+              type: "spring",
+              stiffness: 380,
+              damping: 30,
+            }}
+          />
+        )}
+      </span>
+    </Link>
+  );
+}
+
+// Language Switcher Component
+interface LanguageSwitcherProps {
+  currentLang: string;
+  onToggle: () => void;
+}
+
+function LanguageSwitcher({ currentLang, onToggle }: LanguageSwitcherProps) {
+  const flagIcons = {
+    es: "🇵🇪",
+    en: "🇺🇸"
+  };
+  
+  return (
+    <button
+      onClick={onToggle}
+      type="button"
+      className="flex items-center gap-2 px-3 py-1.5 bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 rounded-lg transition-all duration-300 hover:shadow-sm"
+      aria-label={`Change language to ${currentLang === 'es' ? 'English' : 'Español'}`}
+    >
+      <span className="text-lg" role="img" aria-hidden="true">
+        {flagIcons[currentLang as keyof typeof flagIcons]}
+      </span>
+      <span className="text-sm font-medium text-gray-700">
+        {currentLang.toUpperCase()}
+      </span>
+    </button>
+  );
+}
+
+// Mobile Menu Button Component
+interface MobileMenuButtonProps {
+  isOpen: boolean;
+  onClick: () => void;
+}
+
+function MobileMenuButton({ isOpen, onClick }: MobileMenuButtonProps) {
+  return (
+    <button
+      onClick={onClick}
+      className="lg:hidden p-2 text-gray-700 hover:text-gray-900 transition-colors"
+      aria-label={isOpen ? "Close menu" : "Open menu"}
+      aria-expanded={isOpen}
+      type="button"
+    >
+      <svg
+        className="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <AnimatePresence mode="wait">
+          {isOpen ? (
+            <motion.path
+              key="close"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+              initial={{ opacity: 0, rotate: -90 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: 90 }}
+              transition={{ duration: 0.2 }}
+            />
+          ) : (
+            <motion.path
+              key="menu"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16M4 18h16"
+              initial={{ opacity: 0, rotate: 90 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: -90 }}
+              transition={{ duration: 0.2 }}
+            />
+          )}
+        </AnimatePresence>
+      </svg>
+    </button>
+  );
+}
+
+// Mobile Menu Component
+interface MobileMenuProps {
+  isOpen: boolean;
+  isMounted: boolean;
+  navigationItems: NavigationItem[];
+  currentPath: string;
+  isLinkActive: (path: string) => boolean;
+  onClose: () => void;
+  t: (key: string) => string;
+}
+
+const MobileMenu = React.forwardRef<HTMLDivElement, MobileMenuProps>(
+  ({ isOpen, isMounted, navigationItems, isLinkActive, onClose, t }, ref) => {
+    return (
+      <>
+        {/* Backdrop */}
+        <AnimatePresence>
+          {isOpen && isMounted && (
+            <motion.div
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={onClose}
+            />
+          )}
+        </AnimatePresence>
+        
+        {/* Menu Panel */}
+        <AnimatePresence>
+          {isOpen && isMounted && (
+            <motion.div
+              ref={ref}
+              className="fixed top-0 right-0 bottom-0 w-full max-w-sm bg-white shadow-2xl z-40 lg:hidden"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ 
+                type: "spring", 
+                damping: 30, 
+                stiffness: 300 
+              }}
+            >
+              <div className="flex flex-col h-full">
+                {/* Menu Header */}
+                <div className="flex items-center justify-between p-6 border-b">
+                  <Logo className="h-8" />
+                  <button
+                    onClick={onClose}
+                    className="p-2 text-gray-500 hover:text-gray-700"
+                    aria-label="Close menu"
+                  >
+                    <XIcon className="w-6 h-6" />
+                  </button>
+                </div>
+                
+                {/* Navigation Links */}
+                <nav className="flex-1 overflow-y-auto py-6">
+                  <ul className="px-6 space-y-1">
+                    {navigationItems.map((item, index) => (
+                      <motion.li
+                        key={item.path}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                      >
+                        <Link
+                          to={item.path}
+                          onClick={onClose}
+                          className={clsx(
+                            "block px-4 py-3 rounded-lg font-medium transition-all",
+                            isLinkActive(item.path)
+                              ? "bg-purple-50 text-purple-600"
+                              : "text-gray-700 hover:bg-gray-50"
+                          )}
+                          aria-current={isLinkActive(item.path) ? 'page' : undefined}
+                        >
+                          {t(item.labelKey)}
+                        </Link>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </nav>
+                
+                {/* Menu Footer */}
+                <div className="p-6 border-t bg-gray-50">
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link
+                      to="/login"
+                      className="px-4 py-2 text-center text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      onClick={onClose}
+                    >
+                      {t("auth.login")}
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="px-4 py-2 text-center text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors"
+                      onClick={onClose}
+                    >
+                      {t("auth.signup")}
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </>
     );
   }
+);
 
+MobileMenu.displayName = 'MobileMenu';
+
+// Header Skeleton Component
+function HeaderSkeleton() {
   return (
-    <header
-      className="sticky top-0 z-50 w-full border-b border-accent/20 bg-gradient-to-r from-accent/90 to-accent/80 backdrop-blur-md shadow-lg shadow-accent/10 transition-opacity duration-300"
-      style={{ opacity: 1 }}
-    >
-      <nav className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          {/* Navigation Links - Desktop */}
-          <div className="hidden md:flex items-center gap-8 flex-1 justify-center">
-            <Link
-              to="/"
-              className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all duration-300 font-medium"
-            >
-              {t("nav.home")}
-            </Link>
-            <Link
-              to="/productos"
-              className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all duration-300 font-medium"
-            >
-              Productos
-            </Link>
-            <Link
-              to="/our-story"
-              className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all duration-300 font-medium"
-            >
-              {t("nav.ourStory")}
-            </Link>
-            <Link
-              to="/pre-order"
-              className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all duration-300 font-medium"
-            >
-              {t("nav.preOrder")}
-            </Link>
-            <Link
-              to="/faq"
-              className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all duration-300 font-medium"
-            >
-              {t("nav.faq")}
-            </Link>
-            <Link
-              to="/contact"
-              className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all duration-300 font-medium"
-            >
-              {t("nav.contact")}
-            </Link>
+    <header className="fixed top-0 z-50 w-full bg-white shadow-sm">
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between py-4">
+          <div className="w-32 h-10 bg-gray-200 rounded animate-pulse" />
+          <div className="hidden lg:flex items-center gap-6">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="w-20 h-4 bg-gray-200 rounded animate-pulse" />
+            ))}
           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-gray-700 hover:text-gray-900 p-2"
-            aria-label="Toggle menu"
-            type="button"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {isMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
-
-          {/* Cart & Language Switcher */}
-          <div className="flex items-center gap-4">
-            <CartButton />
-            <button
-              onClick={toggleLanguage}
-              type="button"
-              aria-label={i18n.language === "es" ? "Cambiar idioma a English" : "Cambiar idioma a Español"}
-              className="flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-gray-800 hover:text-gray-900 font-medium px-4 py-2 rounded-xl border border-white/30 hover:border-white/50 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md"
-            >
-              <img
-                src={i18n.language === "es" ? "/assets/icons/flags/peru-flag-icon.svg" : "/assets/icons/flags/united-states-flag-icon.svg"}
-                alt=""
-                className="w-5 h-4 rounded-sm object-cover border border-gray-300/50"
-                aria-hidden="true"
-              />
-              <span className="text-sm font-semibold">
-                {i18n.language === "es" ? "ES" : "EN"}
-              </span>
-            </button>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gray-200 rounded-lg animate-pulse" />
+            <div className="w-20 h-10 bg-gray-200 rounded-lg animate-pulse" />
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        {isMounted && isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-3">
-            <Link
-              to="/"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-gray-700 hover:text-gray-900 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
-            >
-              {t("nav.home")}
-            </Link>
-            <Link
-              to="/productos"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-gray-700 hover:text-gray-900 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
-            >
-              Productos
-            </Link>
-            <Link
-              to="/our-story"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-gray-700 hover:text-gray-900 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
-            >
-              {t("nav.ourStory")}
-            </Link>
-            <Link
-              to="/pre-order"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-gray-700 hover:text-gray-900 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
-            >
-              {t("nav.preOrder")}
-            </Link>
-            <Link
-              to="/faq"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-gray-700 hover:text-gray-900 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
-            >
-              {t("nav.faq")}
-            </Link>
-            <Link
-              to="/contact"
-              onClick={() => setIsMenuOpen(false)}
-              className="block text-gray-700 hover:text-gray-900 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 font-medium"
-            >
-              {t("nav.contact")}
-            </Link>
-          </div>
-        )}
       </nav>
     </header>
   );
 }
+
+// Icon Components
+function SearchIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+  );
+}
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
+
+// Re-export for convenience
+export default Header;

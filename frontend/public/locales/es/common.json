@@ -1,10 +1,32 @@
 {
   "nav": {
     "home": "Inicio",
+    "products": "Productos",
     "ourStory": "Nuestra Historia",
     "faq": "Preguntas Frecuentes",
     "contact": "Contacto",
-    "preOrder": "Pre-ordenar"
+    "preOrder": "Pre-ordenar",
+    "products.nebu": "Nebu",
+    "products.accessories": "Accesorios",
+    "products.bundles": "Paquetes"
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar Sesión"
+  },
+  "user": {
+    "account": "Mi Cuenta",
+    "orders": "Mis Pedidos",
+    "wishlist": "Lista de Deseos",
+    "settings": "Configuración"
+  },
+  "social": {
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "twitter": "Twitter",
+    "youtube": "YouTube"
   },
   "hero": {
     "badge": "Por lanzamiento - Envío gratis en todas las preordenes!",
