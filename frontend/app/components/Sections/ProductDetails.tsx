@@ -89,13 +89,13 @@ const ProductDetails: React.FC = () => {
                 </h2>
 
                 <div className="space-y-4 mb-6">
-                  <div className="flex flex-wrap items-baseline gap-4">
-                    <span className="text-5xl md:text-6xl font-bold text-primary">{t('productCTA.product.price')}</span>
-                    <span className="text-2xl md:text-3xl text-gray-400 line-through font-medium">{t('productCTA.product.originalPrice')}</span>
-                  </div>
+                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed text-justify">
+                    {t('productCTA.product.description')}
+                  </p>
+                  <p className="text-base md:text-lg text-gray-600 leading-relaxed text-justify">
+                    {t('productCTA.product.technicalDescription')}
+                  </p>
                 </div>
-
-                <p className="text-lg md:text-xl text-gray-600 leading-relaxed mb-6">{t('productCTA.product.description')}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
