@@ -91,6 +91,7 @@ function NebuDinoModel({ color = "#4ECDC4" }: ModelProps) {
 export default function NebuModel3D({ color }: ModelProps) {
   const [isClient, setIsClient] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
   
   // Hook personalizado para lazy loading con Intersection Observer
   const { ref: containerRef, isIntersecting } = useIntersectionObserver<HTMLDivElement>();
@@ -99,8 +100,15 @@ export default function NebuModel3D({ color }: ModelProps) {
     setIsClient(true);
   }, []);
 
-  // Mostrar placeholder hasta que sea visible y el cliente esté listo
-  if (!isClient || !isIntersecting) {
+  // Una vez que se carga, marcar como cargado
+  useEffect(() => {
+    if (isIntersecting && isClient) {
+      setHasLoaded(true);
+    }
+  }, [isIntersecting, isClient]);
+
+  // Mostrar placeholder solo la primera vez antes de cargar
+  if (!isClient || (!hasLoaded && !isIntersecting)) {
     return (
       <div ref={containerRef} className="w-full h-64 md:h-96 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 flex items-center justify-center">
         <LoadingSpinner size="lg" message="Cargando modelo 3D..." />
@@ -133,16 +141,17 @@ export default function NebuModel3D({ color }: ModelProps) {
           antialias: false, // Desactivar antialiasing para mejor rendimiento
           powerPreference: 'high-performance',
           preserveDrawingBuffer: false, // Evitar problemas de contexto
-          failIfMajorPerformanceCaveat: true
         }}
         frameloop="demand" // Solo renderizar cuando sea necesario
         onCreated={({ gl }) => {
           // Manejar pérdida de contexto WebGL
-          gl.domElement.addEventListener('webglcontextlost', (event) => {
+          const handleContextLost = (event: Event) => {
             event.preventDefault();
             console.warn('WebGL context lost, attempting recovery...');
             setHasError(true);
-          }, false);
+          };
+          
+          gl.domElement.addEventListener('webglcontextlost', handleContextLost, false);
         }}
       >
         <Suspense fallback={null}>

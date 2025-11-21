@@ -8,6 +8,7 @@ import BenefitsCarousel from "~/components/Sections/BenefitsCarousel";
 import HeroCTA from "~/components/Sections/HeroCTA";
 import ProductDetails from "~/components/Sections/ProductDetails";
 import { HeroSection } from "~/components/Sections/HeroSection";
+import { Divider } from "~/components/Divider";
 import { useEffect } from "react";
 import { analytics } from "~/lib/analytics";
 import { useAnalytics } from "~/components/AnalyticsProvider";
@@ -154,11 +155,17 @@ export default function Index() {
   <HeroCTA />
   <ProductDetails />
 
+        <Divider variant="gradient" spacing="xl" />
+
         {/* Conversation Examples Section */}
         <ConversationExamples />
 
+        <Divider variant="gradient" spacing="xl" />
+
         {/* Benefits Carousel Section */}
         <BenefitsCarousel />
+
+        <Divider variant="gradient" spacing="xl" />
 
         <Newsletter />
       </main>
