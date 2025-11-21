@@ -37,7 +37,7 @@ export const LoadingSpinner = memo(function LoadingSpinner({
   
   const colorClasses = {
     default: 'border-gray-200 border-t-gray-600',
-    primary: 'border-purple-200 border-t-purple-600',
+    primary: 'border-primary/20 border-t-primary',
     white: 'border-white/20 border-t-white',
     dots: '',
     pulse: '',
@@ -124,7 +124,7 @@ function DotsSpinner({ size }: { size: string }) {
           key={i}
           className={clsx(
             dotSizes[size as keyof typeof dotSizes],
-            'bg-purple-600 rounded-full animate-bounce'
+            'bg-primary rounded-full animate-bounce'
           )}
           style={{
             animationDelay: `${i * 0.1}s`,
@@ -149,11 +149,11 @@ function PulseSpinner({ size }: { size: string }) {
     <div className="relative">
       <div className={clsx(
         pulseSizes[size as keyof typeof pulseSizes],
-        'bg-purple-600 rounded-full animate-ping absolute'
+        'bg-primary rounded-full animate-ping absolute'
       )} />
       <div className={clsx(
         pulseSizes[size as keyof typeof pulseSizes],
-        'bg-purple-600 rounded-full relative'
+        'bg-primary rounded-full relative'
       )} />
     </div>
   );

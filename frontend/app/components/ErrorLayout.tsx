@@ -134,7 +134,7 @@ export function ErrorContent({
         
         <a
           href="/"
-          className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          className="px-6 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:shadow-lg transition-all"
         >
           Ir al inicio
         </a>
@@ -143,7 +143,7 @@ export function ErrorContent({
       {/* Support link */}
       <p className="mt-6 text-sm text-gray-500">
         ¿Necesitas ayuda? {' '}
-        <a href="mailto:soporte@flow-telligence.com" className="text-purple-600 hover:underline">
+        <a href="mailto:soporte@flow-telligence.com" className="text-primary hover:underline">
           Contacta con soporte
         </a>
       </p>

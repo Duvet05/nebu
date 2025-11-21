@@ -97,7 +97,7 @@ export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
   
   return (
     <div className="flex justify-center items-center">
-      <div className={`${sizeClasses[size]} border-purple-200 rounded-full animate-spin border-t-purple-600`} />
+      <div className={`${sizeClasses[size]} border-primary/20 rounded-full animate-spin border-t-primary`} />
     </div>
   );
 }
@@ -107,7 +107,7 @@ export function ProgressBar({ progress = 60 }: { progress?: number }) {
   return (
     <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
       <div 
-        className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full transition-all duration-300"
+        className="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-300"
         style={{ width: `${progress}%` }}
       />
     </div>

@@ -216,8 +216,8 @@ interface NavLinkProps {
 function NavLink({ item, isActive, t, onClick, className }: NavLinkProps) {
   const baseClasses = "relative font-medium transition-all duration-300 py-2";
   const stateClasses = isActive
-    ? "text-purple-600"
-    : "text-gray-700 hover:text-purple-600";
+    ? "text-primary"
+    : "text-nebu-dark/80 hover:text-primary";
   
   return (
     <Link
@@ -231,7 +231,7 @@ function NavLink({ item, isActive, t, onClick, className }: NavLinkProps) {
         {isActive && (
           <motion.div
             layoutId="activeNavIndicator"
-            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-purple-600"
+            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
             initial={false}
             transition={{
               type: "spring",
@@ -289,7 +289,7 @@ function MobileMenuButton({ isOpen, onClick }: MobileMenuButtonProps) {
   return (
     <button
       onClick={onClick}
-      className="lg:hidden p-2 text-gray-700 hover:text-gray-900 transition-colors"
+      className="lg:hidden p-2 text-nebu-dark/80 hover:text-primary transition-colors"
       aria-label={isOpen ? "Close menu" : "Open menu"}
       aria-expanded={isOpen}
       type="button"
@@ -409,8 +409,8 @@ const MobileMenu = React.forwardRef<HTMLDivElement, MobileMenuProps>(
                           className={clsx(
                             "block px-4 py-3 rounded-lg font-medium transition-all",
                             isLinkActive(item.path)
-                              ? "bg-purple-50 text-purple-600"
-                              : "text-gray-700 hover:bg-gray-50"
+                              ? "bg-primary/10 text-primary"
+                              : "text-nebu-dark/80 hover:bg-nebu-bg"
                           )}
                           aria-current={isLinkActive(item.path) ? 'page' : undefined}
                         >
@@ -422,18 +422,18 @@ const MobileMenu = React.forwardRef<HTMLDivElement, MobileMenuProps>(
                 </nav>
                 
                 {/* Menu Footer */}
-                <div className="p-6 border-t bg-gray-50">
+                <div className="p-6 border-t bg-nebu-bg/50">
                   <div className="grid grid-cols-2 gap-3">
                     <Link
                       to="/login"
-                      className="px-4 py-2 text-center text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="px-4 py-2 text-center text-nebu-dark bg-white border border-primary/30 rounded-lg hover:bg-nebu-bg transition-colors"
                       onClick={onClose}
                     >
                       {t("auth.login")}
                     </Link>
                     <Link
                       to="/signup"
-                      className="px-4 py-2 text-center text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors"
+                      className="px-4 py-2 text-center text-white bg-gradient-to-r from-primary to-accent rounded-lg hover:shadow-lg transition-all"
                       onClick={onClose}
                     >
                       {t("auth.signup")}

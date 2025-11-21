@@ -213,14 +213,14 @@ export function HydrateFallback() {
         <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
           <div className="flex flex-col items-center justify-center min-h-screen px-4">
             {/* Logo skeleton */}
-            <div className="w-32 h-32 mb-8 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full animate-pulse"></div>
+            <div className="w-32 h-32 mb-8 bg-gradient-to-r from-primary to-accent rounded-full animate-pulse"></div>
             
             {/* Loading spinner */}
             <LoadingSpinner size="lg" message="Preparando tu experiencia..." />
             
             {/* Progress bar */}
             <div className="w-64 h-2 mt-4 bg-gray-200 rounded-full overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full animate-loading-bar"></div>
+              <div className="h-full bg-gradient-to-r from-primary to-accent rounded-full animate-loading-bar"></div>
             </div>
           </div>
         </div>
@@ -330,7 +330,7 @@ export function ErrorBoundary() {
               </button>
               <a
                 href="/"
-                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                className="px-6 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:shadow-lg transition-all"
               >
                 Ir al inicio
               </a>
@@ -339,7 +339,7 @@ export function ErrorBoundary() {
             {/* Support link */}
             <p className="mt-6 text-sm text-gray-500">
               ¿Necesitas ayuda? {' '}
-              <a href="mailto:soporte@flow-telligence.com" className="text-purple-600 hover:underline">
+              <a href="mailto:soporte@flow-telligence.com" className="text-primary hover:underline">
                 Contacta con soporte
               </a>
             </p>

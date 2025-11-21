@@ -134,8 +134,8 @@
   :root {
     /* Nebu color palette - Juguetona y vibrante */
     --color-text: rgb(47, 77, 92);
-    --color-primary: #FF6B35;
-    --color-accent: #2cc0f4;
+    --color-primary: #FFB54A;
+    --color-accent: #60BFB2;
     --color-gold: #b4ec1c;
     --color-secondary: #e4145c;
     --color-purple: #8404dc;
@@ -175,8 +175,8 @@
   /* Dark theme variables */
   .dark {
     --color-text: #F7FAFC;
-    --color-primary: #FF8A5B;
-    --color-accent: #2cc0f4;
+    --color-primary: #FFB54A;
+    --color-accent: #60BFB2;
     --color-gold: #b4ec1c;
     --color-secondary: #e4145c;
     --color-purple: #8404dc;
