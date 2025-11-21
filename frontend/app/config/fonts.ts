@@ -1,9 +1,9 @@
-interface FontLink {
-  rel: string;
-  href?: string;
-  as?: string;
+export interface FontLink {
+  rel: "preconnect" | "preload" | "stylesheet";
+  href: string;
+  as?: "style" | "font";
   type?: string;
-  crossOrigin?: string;
+  crossOrigin?: "anonymous" | "use-credentials";
 }
 
 export function getFontLinks(): FontLink[] {

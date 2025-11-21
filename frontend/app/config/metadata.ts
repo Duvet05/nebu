@@ -79,44 +79,38 @@ export function getStructuredData(): OrganizationSchema {
 export function getMetaTags(locale: string = 'es') {
   const isSpanish = locale === 'es';
   
-  return (
-    <>
-      {/* Core Meta Tags */}
-      <meta name="author" content="Flow-Telligence" />
-      <meta name="company" content="FLOW SACS" />
-      <meta name="rating" content="General" />
-      <meta name="distribution" content="Global" />
-      <meta name="revisit-after" content="7 days" />
-      <meta name="classification" content="Business" />
-      <meta name="target" content="all" />
-      <meta name="audience" content="all" />
-      <meta name="coverage" content="Worldwide" />
-      
-      {/* Open Graph Tags */}
-      <meta property="og:site_name" content="Flow-Telligence" />
-      <meta property="og:type" content="website" />
-      <meta property="og:locale" content={isSpanish ? "es_PE" : "en_US"} />
-      
-      {/* Twitter Card Tags */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@flowtelligence" />
-      <meta name="twitter:creator" content="@flowtelligence" />
-      
-      {/* Business information */}
-      <meta property="business:contact_data:street_address" content="Lima, Perú" />
-      <meta property="business:contact_data:locality" content="Lima" />
-      <meta property="business:contact_data:country_name" content="Peru" />
-      <meta property="business:contact_data:email" content="contacto@flow-telligence.com" />
-      <meta property="business:contact_data:phone_number" content="+51945012824" />
-      
-      {/* Additional SEO Tags */}
-      <meta name="robots" content="index, follow, max-image-preview:large" />
-      <meta name="googlebot" content="index, follow" />
-      <meta name="bingbot" content="index, follow" />
-      
-      {/* Verification Tags (añadir cuando tengas los códigos) */}
-      {/* <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE" /> */}
-      {/* <meta name="facebook-domain-verification" content="YOUR_FACEBOOK_VERIFICATION_CODE" /> */}
-    </>
-  );
+  return [
+    // Core Meta Tags
+    { name: "author", content: "Flow-Telligence" },
+    { name: "company", content: "FLOW SACS" },
+    { name: "rating", content: "General" },
+    { name: "distribution", content: "Global" },
+    { name: "revisit-after", content: "7 days" },
+    { name: "classification", content: "Business" },
+    { name: "target", content: "all" },
+    { name: "audience", content: "all" },
+    { name: "coverage", content: "Worldwide" },
+    
+    // Open Graph Tags
+    { property: "og:site_name", content: "Flow-Telligence" },
+    { property: "og:type", content: "website" },
+    { property: "og:locale", content: isSpanish ? "es_PE" : "en_US" },
+    
+    // Twitter Card Tags
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:site", content: "@flowtelligence" },
+    { name: "twitter:creator", content: "@flowtelligence" },
+    
+    // Business information
+    { property: "business:contact_data:street_address", content: "Lima, Perú" },
+    { property: "business:contact_data:locality", content: "Lima" },
+    { property: "business:contact_data:country_name", content: "Peru" },
+    { property: "business:contact_data:email", content: "contacto@flow-telligence.com" },
+    { property: "business:contact_data:phone_number", content: "+51945012824" },
+    
+    // Additional SEO Tags
+    { name: "robots", content: "index, follow, max-image-preview:large" },
+    { name: "googlebot", content: "index, follow" },
+    { name: "bingbot", content: "index, follow" },
+  ];
 }

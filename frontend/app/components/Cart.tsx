@@ -240,3 +240,5 @@ export function CartSidebar() {
     </>
   );
 }
+
+export default CartSidebar;

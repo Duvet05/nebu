@@ -141,20 +141,6 @@ export function CulqiScript({ publicKey }: { publicKey: string }) {
   );
 }
 
-// Type declarations for window object
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-    fbq: (...args: any[]) => void;
-    Culqi: {
-      publicKey: string;
-      [key: string]: any;
-    };
-    CULQI_PUBLIC_KEY: string;
-    dataLayer: any[];
-  }
-}
-
 /**
  * Analytics event tracker utility
  */

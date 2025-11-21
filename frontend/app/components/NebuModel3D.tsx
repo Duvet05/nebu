@@ -97,7 +97,13 @@ export default function NebuModel3D({ color }: ModelProps) {
         performance={{ min: 0.5 }} // Reducir calidad si FPS baja
       >
         <Suspense fallback={null}>
-          <Stage environment="city" intensity={0.6}>
+          {/* Iluminación manual en lugar de HDR */}
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
+          <directionalLight position={[-10, -10, -5]} intensity={0.5} />
+          <pointLight position={[0, 5, 0]} intensity={0.3} />
+          
+          <Stage environment={null} intensity={0.6}>
             <NebuDinoModel color={color} />
           </Stage>
           <OrbitControls

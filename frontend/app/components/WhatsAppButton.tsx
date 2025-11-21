@@ -8,7 +8,7 @@ interface WhatsAppButtonProps {
   message?: string;
 }
 
-export function WhatsAppButton({
+export default function WhatsAppButton({
   className = "",
   phoneNumber = "+51970116770", // Número de Flow-telligence Peru
   message

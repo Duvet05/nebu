@@ -1,17 +1,6 @@
 import { useEffect, type ReactNode } from "react";
 import { useLocation } from "@remix-run/react";
 
-declare global {
-  interface Window {
-    gtag?: (
-      command: string,
-      targetId: string,
-      config?: Record<string, any>
-    ) => void;
-    dataLayer?: any[];
-  }
-}
-
 export function AnalyticsProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
 
@@ -104,3 +93,5 @@ export function useAnalytics() {
     trackConversion
   };
 }
+
+export default AnalyticsProvider;

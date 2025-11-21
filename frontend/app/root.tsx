@@ -27,7 +27,6 @@ import { getMetaTags, getStructuredData } from "~/config/metadata";
 import { getFontLinks } from "~/config/fonts";
 import { validatePublicKey, sanitizeId } from "~/utils/security";
 import { GoogleAnalytics, FacebookPixel, CulqiScript } from "~/components/Analytics";
-import { ErrorLayout } from "~/components/ErrorLayout";
 import { LoadingSkeleton } from "~/components/LoadingSkeleton";
 import stylesheet from "~/styles/tailwind.css?url";
 
@@ -138,9 +137,12 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
         
-        {/* Meta tags dinámicos */}
-        {getMetaTags(locale)}
+        {/* Meta tags adicionales */}
+        {getMetaTags(locale).map((tag: any, index: number) => (
+          <meta key={index} {...tag} />
+        ))}
         
         {/* Structured Data for SEO */}
         {loaderData?.organizationData && (
