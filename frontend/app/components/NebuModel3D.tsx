@@ -35,7 +35,7 @@ interface ModelProps {
 const MODEL_CONFIG = {
   scale: 0.65,
   position: [0, -1.8, 0] as [number, number, number],
-  cameraPosition: [0, 0, 10] as [number, number, number],
+  cameraPosition: [0, 0, 14] as [number, number, number],
   cameraFov: 38,
   autoRotateSpeed: 2,
 } as const;

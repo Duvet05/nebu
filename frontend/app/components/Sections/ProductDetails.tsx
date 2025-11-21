@@ -65,14 +65,14 @@ const ProductDetails: React.FC = () => {
   return (
     <section className="py-20 px-4 bg-nebu-bg">
       <motion.div {...fadeInUp} className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center px-6 md:px-12">
-            <div className="relative order-2 lg:order-1">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center px-6 md:px-12">
+            <div className="relative order-2 lg:order-1 h-[500px] md:h-[600px] lg:h-[700px]">
               <motion.div
-                className="relative"
+                className="relative h-full"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="aspect-square rounded-3xl shadow-xl relative">
+                <div className="h-full rounded-3xl shadow-xl relative">
                   <NebuModel3D color="#4ECDC4" />
                 </div>
 
