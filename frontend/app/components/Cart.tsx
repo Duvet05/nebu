@@ -78,7 +78,7 @@ export function CartSidebar() {
             <div className="flex-1 overflow-y-auto p-6">
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
-                  <ShoppingBag className="w-16 h-16 text-gray-300 mb-4" />
+                  <ShoppingBag className="w-16 h-16 text-primary/30 mb-4" />
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
                     {t('cart.empty.title')}
                   </h3>
@@ -88,9 +88,11 @@ export function CartSidebar() {
                   <Link
                     to="/productos"
                     onClick={closeCart}
-                    className="bg-gradient-to-r from-primary to-accent text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
+                    className="relative inline-flex items-center justify-center gap-3 font-gochi font-bold text-lg px-8 py-4 rounded-3xl bg-primary text-white shadow-[0_8px_30px_rgba(255,107,53,0.3)] hover:shadow-[0_12px_40px_rgba(255,107,53,0.5)] transition-all duration-300 ease-out group overflow-hidden hover:scale-105"
+                    aria-label={t('cart.empty.viewProducts')}
                   >
-                    {t('cart.empty.viewProducts')}
+                    <span className="relative z-10">{t('cart.empty.viewProducts')}</span>
+                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                   </Link>
                 </div>
               ) : (
@@ -98,14 +100,14 @@ export function CartSidebar() {
                   {items.map((item) => (
                     <motion.div
                       key={`${item.product.id}-${item.color.id}`}
-                      className="bg-gray-50 rounded-xl p-4"
+                      className="bg-nebu-bg rounded-xl p-4 border border-primary/10"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                     >
                       <div className="flex gap-4">
                         {/* Product Image Placeholder */}
-                        <div className="w-20 h-20 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg flex items-center justify-center flex-shrink-0 border border-primary/20">
                           <span className="text-3xl">
                             {item.product.id === "nebu-dino" && "🦕"}
                             {item.product.id === "nebu-gato" && "🐱"}
@@ -147,12 +149,12 @@ export function CartSidebar() {
                                 item.quantity - 1
                               )
                             }
-                            className="p-2 bg-white hover:bg-gray-100 rounded-lg border border-gray-300 transition-colors"
+                            className="p-2 bg-white hover:bg-primary/5 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors"
                             aria-label={t('cart.decreaseQuantity')}
                           >
-                            <Minus className="w-4 h-4 text-gray-600" />
+                            <Minus className="w-4 h-4 text-primary" />
                           </button>
-                          <span className="w-12 text-center font-semibold">
+                          <span className="w-12 text-center font-semibold text-gray-900">
                             {item.quantity}
                           </span>
                           <button
@@ -163,10 +165,10 @@ export function CartSidebar() {
                                 item.quantity + 1
                               )
                             }
-                            className="p-2 bg-white hover:bg-gray-100 rounded-lg border border-gray-300 transition-colors"
+                            className="p-2 bg-white hover:bg-primary/5 rounded-lg border border-primary/20 hover:border-primary/40 transition-colors"
                             aria-label={t('cart.increaseQuantity')}
                           >
-                            <Plus className="w-4 h-4 text-gray-600" />
+                            <Plus className="w-4 h-4 text-primary" />
                           </button>
                         </div>
 
@@ -174,7 +176,7 @@ export function CartSidebar() {
                           onClick={() =>
                             removeItem(item.product.id, item.color.id)
                           }
-                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-2 text-accent hover:bg-accent/10 rounded-lg transition-colors"
                           aria-label={t('cart.removeItem')}
                         >
                           <Trash2 className="w-5 h-5" />
@@ -207,7 +209,7 @@ export function CartSidebar() {
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>{t('cart.shipping')}</span>
-                    <span className="text-green-600 font-semibold">{t('cart.free')}</span>
+                    <span className="text-accent font-semibold">{t('cart.free')}</span>
                   </div>
                   <div className="flex justify-between text-xl font-bold text-gray-900 pt-2 border-t border-gray-200">
                     <span>{t('cart.total')}</span>
@@ -216,8 +218,8 @@ export function CartSidebar() {
                 </div>
 
                 {/* Pre-order info */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                  <p className="text-xs text-blue-800">
+                <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
+                  <p className="text-xs text-primary/90">
                     {t('cart.reserveInfo')} <strong>50%</strong> (S/ {(totalPrice * 0.5).toFixed(2)})
                   </p>
                 </div>

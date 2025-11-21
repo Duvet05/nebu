@@ -18,10 +18,10 @@ const categoryIcons = {
 };
 
 const categoryColors = {
-  educational: 'from-primary to-accent',
-  creative: 'from-accent to-secondary', 
-  fun: 'from-gold to-primary',
-  daily: 'from-secondary to-accent',
+  educational: 'bg-primary',
+  creative: 'bg-accent', 
+  fun: 'bg-gold',
+  daily: 'bg-secondary',
 };
 
 // Static data as fallback
@@ -115,35 +115,41 @@ export default function ConversationExamples() {
   };
 
   return (
-    <section className="min-h-[80vh] py-24 bg-nebu-bg flex items-center">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="min-h-[80vh] py-24 bg-nebu-bg relative overflow-hidden">
+      {/* Subtle background decoration */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
           <motion.h2 
             variants={itemVariants}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary"
+            className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary leading-tight"
           >
             {t("conversations.title")}
           </motion.h2>
           
           <motion.p 
             variants={itemVariants}
-            className="text-xl text-gray-600 max-w-3xl mx-auto"
+            className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
           >
             {t("conversations.subtitle")}
           </motion.p>
         </motion.div>
 
-        {/* Category Filter */}
+        {/* Category Filter - Redesigned */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-wrap justify-center gap-4 mb-12"
+          className="flex flex-wrap justify-center gap-3 mb-16"
         >
           {categories.map((category) => {
             const IconComponent = categoryIcons[category];
@@ -155,23 +161,31 @@ export default function ConversationExamples() {
                 variants={itemVariants}
                 onClick={() => setSelectedCategory(category)}
                 className={`
-                  flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-300
+                  relative flex items-center gap-2.5 px-8 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-300 overflow-hidden
                   ${isSelected 
-                    ? `bg-gradient-to-r ${categoryColors[category]} text-white shadow-lg transform scale-105` 
-                    : 'bg-white text-gray-600 hover:bg-primary/5 shadow-md hover:shadow-lg border border-primary/20 hover:border-primary/30'
+                    ? `${categoryColors[category]} text-white shadow-xl` 
+                    : 'bg-white/80 backdrop-blur-sm text-gray-700 hover:text-primary shadow-lg hover:shadow-xl border-2 border-gray-200 hover:border-primary/40'
                   }
                 `}
-                whileHover={{ scale: isSelected ? 1.05 : 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
               >
-                <IconComponent className="w-5 h-5" />
-                <span>{getCategoryLabel(category)}</span>
+                {isSelected && (
+                  <motion.div
+                    className="absolute inset-0 bg-white/10"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+                <IconComponent className={`w-5 h-5 relative z-10 ${isSelected ? 'text-white' : 'text-primary'}`} />
+                <span className="relative z-10">{getCategoryLabel(category)}</span>
               </motion.button>
             );
           })}
         </motion.div>
 
-        {/* Conversation Examples Grid */}
+        {/* Conversation Examples Grid - Premium Design */}
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedCategory}
@@ -179,7 +193,7 @@ export default function ConversationExamples() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="grid md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-4xl mx-auto"
+            className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto min-h-[450px]"
           >
             {getExamples(selectedCategory).length > 0 ? (
               getExamples(selectedCategory).map(
@@ -187,45 +201,26 @@ export default function ConversationExamples() {
                 <motion.div
                   key={`${selectedCategory}-${index}`}
                   variants={cardVariants}
-                  className="group"
+                  className="group h-full"
                 >
-                  <div className={`
-                    relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300
-                    border-l-4 bg-gradient-to-r ${categoryColors[selectedCategory]} 
-                    hover:transform hover:-translate-y-1
-                  `}>
-                    <div className="bg-white rounded-xl p-6 ml-1">
-                      <div className="flex items-start gap-4">
-                        <div className={`
-                          flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-r ${categoryColors[selectedCategory]}
-                          flex items-center justify-center
-                        `}>
-                          <MessageSquare className="w-6 h-6 text-white" />
-                        </div>
-                        
-                        <div className="flex-1">
-                          <div className="bg-gray-50 rounded-lg p-3 mb-3">
-                            <p className="text-gray-800 font-medium">
-                              "{example.question}"
-                            </p>
-                          </div>
-                          
-                          <div className="flex items-center justify-between">
-                            <span className={`
-                              inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                              bg-gradient-to-r ${categoryColors[selectedCategory]} text-white
-                            `}>
-                              {example.category}
-                            </span>
-                            
-                            <div className="flex items-center gap-1 text-accent">
-                              <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-                              <div className="w-2 h-2 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                              <div className="w-2 h-2 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                  <div className="relative h-full bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-gray-300">
+                    {/* Question - Clean layout */}
+                    <div className="mb-5 flex-1">
+                      <p className="text-gray-800 font-medium text-[15px] leading-relaxed">
+                        "{example.question}"
+                      </p>
+                    </div>
+                    
+                    {/* Footer - Simple and clean */}
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                      <span className={`
+                        inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wide
+                        ${categoryColors[selectedCategory]} text-white
+                      `}>
+                        {example.category}
+                      </span>
+                      
+                      <MessageSquare className={`w-4 h-4 ${categoryColors[selectedCategory]} opacity-30`} />
                     </div>
                   </div>
                 </motion.div>
@@ -238,21 +233,36 @@ export default function ConversationExamples() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Call to Action */}
+        {/* Call to Action - Premium Design */}
         <motion.div
           variants={itemVariants}
           initial="hidden"
           animate="visible"
-          className="text-center mt-16"
+          className="text-center mt-20"
         >
-          <motion.div
-            className="inline-flex items-center gap-4 bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <motion.button
+            className="group relative inline-flex items-center gap-4 bg-primary text-white px-10 py-5 rounded-3xl font-gochi font-bold text-xl shadow-2xl hover:shadow-[0_20px_50px_rgba(255,107,53,0.4)] transition-all duration-500 overflow-hidden"
+            whileHover={{ scale: 1.05, y: -3 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <MessageSquare className="w-6 h-6" />
-            <span>{t("conversationExamples.cta")}</span>
-          </motion.div>
+            {/* Shine effect */}
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
+            
+            {/* Icon with animation */}
+            <motion.div
+              className="relative z-10"
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+            >
+              <MessageSquare className="w-6 h-6" />
+            </motion.div>
+            
+            <span className="relative z-10">{t("conversationExamples.cta")}</span>
+            
+            {/* Decorative dots */}
+            <div className="absolute -top-2 -right-2 w-3 h-3 bg-white/30 rounded-full blur-sm"></div>
+            <div className="absolute -bottom-2 -left-2 w-2 h-2 bg-white/20 rounded-full blur-sm"></div>
+          </motion.button>
         </motion.div>
       </div>
     </section>
