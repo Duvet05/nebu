@@ -5,6 +5,7 @@ import { Footer } from "~/components/layout/Footer";
 import { motion } from "framer-motion";
 import { FileText, AlertCircle, Send, Clock, CheckCircle } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 export const meta: MetaFunction = () => {
   return [
@@ -598,8 +599,8 @@ export default function LibroReclamacionesPage() {
                 >
                   {isSubmitting ? (
                     <>
-                      <span className="animate-spin">⏳</span>
-                      Enviando...
+                      <LoadingSpinner size="sm" message="" className="!mb-0" />
+                      <span className="ml-2">Enviando...</span>
                     </>
                   ) : (
                     <>

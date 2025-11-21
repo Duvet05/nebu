@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, CheckCircle, AlertCircle, X } from "lucide-react";
 import { trackLead } from "~/lib/facebook-pixel";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface BackInStockNotifyProps {
   productId: string;
@@ -116,8 +117,8 @@ export function BackInStockNotify({ productId, productName }: BackInStockNotifyP
             >
               {isSubmitting ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Enviando...
+                  <LoadingSpinner size="sm" message="" className="!mb-0" />
+                  <span className="ml-2">Enviando...</span>
                 </>
               ) : status === "success" ? (
                 <>

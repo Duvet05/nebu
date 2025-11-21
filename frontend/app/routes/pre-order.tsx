@@ -21,6 +21,7 @@ import { Newsletter } from "~/components/Newsletter";
 import { analytics } from "~/lib/analytics";
 import NebuModel3D from "~/components/NebuModel3D";
 import { products, getProductBySlug, type Product } from "~/data/products";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 export const meta: MetaFunction = () => {
   return [
@@ -743,8 +744,8 @@ export default function PreOrder() {
                   >
                     {loading ? (
                       <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        {t("preOrder.form.submitting")}
+                        <LoadingSpinner size="sm" message="" className="!mb-0" />
+                        <span className="ml-2">{t("preOrder.form.submitting")}</span>
                       </>
                     ) : soldOut ? (
                       <>¡Agotado!</>

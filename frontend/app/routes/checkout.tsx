@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { ShoppingBag, Truck, CreditCard, Shield, ArrowLeft, Trash2 } from "lucide-react";
 import { useState, useEffect, type FormEvent } from "react";
 import { trackInitiateCheckout } from "~/lib/facebook-pixel";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 
 export const meta: MetaFunction = () => {
   return [
@@ -507,8 +508,8 @@ export default function CheckoutPage() {
                   >
                     {loading ? (
                       <>
-                        <span className="animate-spin">⏳</span>
-                        Procesando...
+                        <LoadingSpinner size="sm" message="" className="!mb-0" />
+                        <span className="ml-2">Procesando...</span>
                       </>
                     ) : (
                       <>

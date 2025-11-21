@@ -1,115 +1,118 @@
-import { Suspense, useState, useEffect, useRef } from 'react';
+import { Suspense, useState, useEffect, useMemo } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, useTexture, Stage } from '@react-three/drei';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import * as THREE from 'three';
+import { LoadingPlaceholder3D } from './LoadingSpinner';
+import { useIntersectionObserver } from '~/hooks/useIntersectionObserver';
+import { SceneLights } from './3d/SceneLights';
 
 interface ModelProps {
   color?: string;
 }
+
+// Constantes de configuración
+const MODEL_CONFIG = {
+  scale: 0.65,
+  position: [0, -1.8, 0] as [number, number, number],
+  cameraPosition: [0, 0, 10] as [number, number, number],
+  cameraFov: 38,
+  autoRotateSpeed: 2,
+} as const;
+
+const TEXTURE_PATHS = {
+  diffuse: '/models/nebu-dino/texture_diffuse_00.png',
+  normal: '/models/nebu-dino/texture_normal_00.png',
+  roughness: '/models/nebu-dino/texture_roughness_00.png',
+  metallic: '/models/nebu-dino/texture_metallic_00.png',
+} as const;
 
 function NebuDinoModel({ color = "#4ECDC4" }: ModelProps) {
   // Cargar el modelo OBJ
   const obj = useLoader(OBJLoader, '/models/nebu-dino/base.obj');
 
   // Cargar texturas
-  const diffuseMap = useTexture('/models/nebu-dino/texture_diffuse_00.png');
-  const normalMap = useTexture('/models/nebu-dino/texture_normal_00.png');
-  const roughnessMap = useTexture('/models/nebu-dino/texture_roughness_00.png');
-  const metallicMap = useTexture('/models/nebu-dino/texture_metallic_00.png');
+  const diffuseMap = useTexture(TEXTURE_PATHS.diffuse);
+  const normalMap = useTexture(TEXTURE_PATHS.normal);
+  const roughnessMap = useTexture(TEXTURE_PATHS.roughness);
+  const metallicMap = useTexture(TEXTURE_PATHS.metallic);
 
-  // Aplicar materiales con texturas al modelo
-  obj.traverse((child) => {
-    if (child instanceof THREE.Mesh) {
-      child.material = new THREE.MeshStandardMaterial({
-        map: diffuseMap,
-        normalMap: normalMap,
-        roughnessMap: roughnessMap,
-        metalnessMap: metallicMap,
-        color: new THREE.Color(color),
-      });
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
+  // Memoizar el material para evitar recrearlo en cada render
+  const material = useMemo(() => {
+    return new THREE.MeshStandardMaterial({
+      map: diffuseMap,
+      normalMap: normalMap,
+      roughnessMap: roughnessMap,
+      metalnessMap: metallicMap,
+      color: new THREE.Color(color),
+    });
+  }, [diffuseMap, normalMap, roughnessMap, metallicMap, color]);
 
-  return <primitive object={obj} scale={0.65} position={[0, -1.8, 0]} />;
-}
+  // Aplicar material al modelo (solo una vez)
+  useEffect(() => {
+    obj.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.material = material;
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+  }, [obj, material]);
 
-function LoadingPlaceholder() {
   return (
-    <div className="w-full h-64 md:h-96 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 flex items-center justify-center">
-      <div className="text-center">
-        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-500">Cargando modelo 3D...</p>
-      </div>
-    </div>
+    <primitive 
+      object={obj} 
+      scale={MODEL_CONFIG.scale} 
+      position={MODEL_CONFIG.position} 
+    />
   );
 }
 
 export default function NebuModel3D({ color }: ModelProps) {
   const [isClient, setIsClient] = useState(false);
-  const [shouldLoad, setShouldLoad] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Hook personalizado para lazy loading con Intersection Observer
+  const { ref: containerRef, isIntersecting } = useIntersectionObserver<HTMLDivElement>({
+    rootMargin: '50px',
+    threshold: 0.1,
+    triggerOnce: true,
+  });
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Intersection Observer para lazy loading
-  useEffect(() => {
-    if (!isClient || !containerRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Solo cargar cuando el elemento es visible
-            setShouldLoad(true);
-            observer.disconnect();
-          }
-        });
-      },
-      {
-        rootMargin: '50px', // Empezar a cargar 50px antes de ser visible
-        threshold: 0.1,
-      }
-    );
-
-    observer.observe(containerRef.current);
-
-    return () => observer.disconnect();
-  }, [isClient]);
-
-  if (!isClient || !shouldLoad) {
+  // Mostrar placeholder hasta que sea visible y el cliente esté listo
+  if (!isClient || !isIntersecting) {
     return (
       <div ref={containerRef}>
-        <LoadingPlaceholder />
+        <LoadingPlaceholder3D />
       </div>
     );
   }
 
   return (
-    <div ref={containerRef} className="w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 via-nebu-bg to-accent/10 shadow-inner">
+    <div 
+      ref={containerRef} 
+      className="w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 via-nebu-bg to-accent/10 shadow-inner"
+    >
       <Canvas
-        camera={{ position: [0, 0, 10], fov: 38 }}
+        camera={{ position: MODEL_CONFIG.cameraPosition, fov: MODEL_CONFIG.cameraFov }}
         dpr={[1, 2]} // Limitar resolución en dispositivos de alta densidad
         performance={{ min: 0.5 }} // Reducir calidad si FPS baja
       >
         <Suspense fallback={null}>
-          {/* Iluminación manual en lugar de HDR */}
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
-          <directionalLight position={[-10, -10, -5]} intensity={0.5} />
-          <pointLight position={[0, 5, 0]} intensity={0.3} />
+          {/* Iluminación reutilizable */}
+          <SceneLights preset="default" />
           
           <Stage environment={null} intensity={0.6}>
             <NebuDinoModel color={color} />
           </Stage>
+          
           <OrbitControls
             enableZoom={false}
             autoRotate
-            autoRotateSpeed={2}
+            autoRotateSpeed={MODEL_CONFIG.autoRotateSpeed}
             minPolarAngle={Math.PI / 3}
             maxPolarAngle={Math.PI / 2}
             target={[0, 0, 0]}

@@ -28,6 +28,7 @@ import { getFontLinks } from "~/config/fonts";
 import { validatePublicKey, sanitizeId } from "~/utils/security";
 import { GoogleAnalytics, FacebookPixel, CulqiScript } from "~/components/Analytics";
 import { LoadingSkeleton } from "~/components/LoadingSkeleton";
+import { LoadingSpinner } from "~/components/LoadingSpinner";
 import stylesheet from "~/styles/tailwind.css?url";
 
 // Tipos estrictos
@@ -223,15 +224,7 @@ export function HydrateFallback() {
             <div className="w-32 h-32 mb-8 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full animate-pulse"></div>
             
             {/* Loading spinner */}
-            <div className="relative">
-              <div className="w-16 h-16 border-4 border-purple-200 rounded-full"></div>
-              <div className="absolute top-0 left-0 w-16 h-16 border-4 border-purple-600 rounded-full animate-spin border-t-transparent"></div>
-            </div>
-            
-            {/* Loading text */}
-            <p className="mt-6 text-lg font-medium text-gray-700 animate-pulse">
-              Preparando tu experiencia...
-            </p>
+            <LoadingSpinner size="lg" message="Preparando tu experiencia..." />
             
             {/* Progress bar */}
             <div className="w-64 h-2 mt-4 bg-gray-200 rounded-full overflow-hidden">
