@@ -151,8 +151,7 @@ export default function Index() {
       <main id="main-content">
         <HeroSection onCTAClick={handleCTAClick} />
 
-  {/* Product CTA Section split into Hero + Details */}
-  <HeroCTA />
+  {/* Product Details Section */}
   <ProductDetails />
 
         <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />

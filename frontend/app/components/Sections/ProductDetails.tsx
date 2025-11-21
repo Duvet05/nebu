@@ -84,21 +84,18 @@ const ProductDetails: React.FC = () => {
             <div className="space-y-6 order-1 lg:order-2">
               <div>
                 <h2 className="text-5xl lg:text-6xl font-bold font-heading text-gray-900 mb-6">
+                  <span className="block mb-3 text-xl md:text-2xl font-normal text-nebu-dark/70">Conoce a:</span>
                   <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-16 lg:h-20 mb-4" />
                 </h2>
 
-                <div className="space-y-3 mb-6">
-                  <div className="flex flex-wrap items-baseline gap-3">
+                <div className="space-y-4 mb-6">
+                  <div className="flex flex-wrap items-baseline gap-4">
                     <span className="text-5xl md:text-6xl font-bold text-primary">{t('productCTA.product.price')}</span>
                     <span className="text-2xl md:text-3xl text-gray-400 line-through font-medium">{t('productCTA.product.originalPrice')}</span>
                   </div>
-                  <div className="inline-flex items-center gap-2">
-                    <span className="bg-gradient-to-r from-primary via-accent to-gold text-white px-6 py-2.5 rounded-full text-lg font-bold shadow-xl animate-pulse">{t('productCTA.product.discount')}</span>
-                    <span className="text-sm text-gray-600 font-medium">Precio especial de preventa</span>
-                  </div>
                 </div>
 
-                <p className="text-lg md:text-xl text-gray-600 leading-relaxed">{t('productCTA.product.description')}</p>
+                <p className="text-lg md:text-xl text-gray-600 leading-relaxed mb-6">{t('productCTA.product.description')}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
