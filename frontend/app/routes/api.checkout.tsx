@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { data } from "@remix-run/node";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -34,23 +34,23 @@ interface CheckoutData {
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return data({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
-    const data: CheckoutData = await request.json();
+    const checkoutData: CheckoutData = await request.json();
 
     // Validate required fields
-    if (!data.email || !data.firstName || !data.lastName || !data.phone || !data.address || !data.city) {
-      return json({ error: "Faltan campos requeridos" }, { status: 400 });
+    if (!checkoutData.email || !checkoutData.firstName || !checkoutData.lastName || !checkoutData.phone || !checkoutData.address || !checkoutData.city) {
+      return data({ error: "Faltan campos requeridos" }, { status: 400 });
     }
 
-    if (!data.agreeTerms) {
-      return json({ error: "Debes aceptar los términos y condiciones" }, { status: 400 });
+    if (!checkoutData.agreeTerms) {
+      return data({ error: "Debes aceptar los términos y condiciones" }, { status: 400 });
     }
 
-    if (!data.items || data.items.length === 0) {
-      return json({ error: "El carrito está vacío" }, { status: 400 });
+    if (!checkoutData.items || checkoutData.items.length === 0) {
+      return data({ error: "El carrito está vacío" }, { status: 400 });
     }
 
     // Generate order ID
@@ -59,7 +59,7 @@ export async function action({ request }: ActionFunctionArgs) {
     // Create Culqi Order (for payment link)
     let culqiOrderId = null;
     try {
-      const culqiOrder = await createCulqiOrder(data, orderId);
+      const culqiOrder = await createCulqiOrder(checkoutData, orderId);
       culqiOrderId = culqiOrder.id;
     } catch (error) {
       console.error("Error creating Culqi order:", error);
@@ -69,9 +69,9 @@ export async function action({ request }: ActionFunctionArgs) {
     // Send confirmation email to customer
     const customerEmail = await resend.emails.send({
       from: "Nebu - Flow Telligence <ventas@flow-telligence.com>",
-      to: data.email,
+      to: checkoutData.email,
       subject: `Confirmación de Pre-orden - ${orderId}`,
-      html: generateCustomerConfirmationEmail(data, orderId),
+      html: generateCustomerConfirmationEmail(checkoutData, orderId),
     });
 
     // Send notification email to company
@@ -79,7 +79,7 @@ export async function action({ request }: ActionFunctionArgs) {
       from: "Nebu Orders <ventas@flow-telligence.com>",
       to: "ventas@flow-telligence.com",
       subject: `Nueva Pre-orden Recibida - ${orderId}`,
-      html: generateCompanyNotificationEmail(data, orderId),
+      html: generateCompanyNotificationEmail(checkoutData, orderId),
     });
 
     console.log("Order emails sent:", { customerEmail, companyEmail });
@@ -89,7 +89,7 @@ export async function action({ request }: ActionFunctionArgs) {
     // 2. Update inventory
     // 3. Send to fulfillment system
 
-    return json({
+    return data({
       success: true,
       orderId,
       culqiOrderId,
@@ -97,7 +97,7 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   } catch (error) {
     console.error("Error processing checkout:", error);
-    return json(
+    return data(
       { error: "Error al procesar la pre-orden" },
       { status: 500 }
     );

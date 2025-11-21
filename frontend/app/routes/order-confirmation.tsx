@@ -1,5 +1,4 @@
 import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
@@ -29,12 +28,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   // Here you would typically fetch order details from database
   // For now, we'll return the order data from URL params
-  return json({
+  return {
     orderId,
     total: total ? parseFloat(total) : 0,
     numItems: numItems ? parseInt(numItems) : 0,
     productIds: productIds ? productIds.split(',') : [],
-  });
+  };
 }
 
 export default function OrderConfirmationPage() {

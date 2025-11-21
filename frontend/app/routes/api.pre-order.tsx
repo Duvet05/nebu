@@ -1,4 +1,4 @@
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { data, type ActionFunctionArgs } from "@remix-run/node";
 import {
   sendPreOrderConfirmation,
   sendPreOrderNotification,
@@ -8,7 +8,7 @@ const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:4000";
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return data({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -29,7 +29,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Validate required fields
     if (!email || !firstName || !lastName || !phone || !address || !city) {
-      return json({ error: "Faltan campos requeridos" }, { status: 400 });
+      return data({ error: "Faltan campos requeridos" }, { status: 400 });
     }
 
     // Save order to backend database
@@ -106,14 +106,14 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     // Return success even if emails fail (don't block the order)
-    return json({
+    return data({
       success: true,
       message: "Pre-orden realizada exitosamente",
       orderId,
     });
   } catch (error) {
     console.error("Pre-order error:", error);
-    return json(
+    return data(
       { error: "Error al procesar la pre-orden" },
       { status: 500 }
     );

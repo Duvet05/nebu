@@ -1,9 +1,9 @@
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { data, type ActionFunctionArgs } from "@remix-run/node";
 import { sendNewsletterWelcome } from "~/lib/resend.server";
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return data({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -11,7 +11,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const email = formData.get("email") as string;
 
     if (!email || !email.includes("@")) {
-      return json(
+      return data(
         { error: "Email inválido" },
         { status: 400 }
       );
@@ -22,19 +22,19 @@ export async function action({ request }: ActionFunctionArgs) {
 
     if (!result.success) {
       console.error("Failed to send email:", result.error);
-      return json(
+      return data(
         { error: "Error al enviar email" },
         { status: 500 }
       );
     }
 
-    return json({
+    return data({
       success: true,
       message: "¡Gracias por suscribirte! Revisa tu email.",
     });
   } catch (error) {
     console.error("Newsletter signup error:", error);
-    return json(
+    return data(
       { error: "Error al procesar la solicitud" },
       { status: 500 }
     );

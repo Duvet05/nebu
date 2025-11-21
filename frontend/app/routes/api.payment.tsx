@@ -1,4 +1,4 @@
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { data, type ActionFunctionArgs } from "@remix-run/node";
 import { createCharge } from "~/lib/culqi.server";
 import {
   sendPreOrderConfirmation,
@@ -7,7 +7,7 @@ import {
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return data({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -30,7 +30,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Validate required fields
     if (!culqiToken || !email || !firstName || !lastName || !phone || !address || !city) {
-      return json({ error: "Faltan campos requeridos" }, { status: 400 });
+      return data({ error: "Faltan campos requeridos" }, { status: 400 });
     }
 
     // Create Culqi charge
@@ -48,7 +48,7 @@ export async function action({ request }: ActionFunctionArgs) {
     });
 
     if (!chargeResult.success) {
-      return json(
+      return data(
         { error: chargeResult.error || "Error al procesar el pago" },
         { status: 400 }
       );
@@ -81,14 +81,14 @@ export async function action({ request }: ActionFunctionArgs) {
       paymentMethod: "Culqi - Tarjeta",
     });
 
-    return json({
+    return data({
       success: true,
       chargeId: charge.id,
       message: "Pago procesado exitosamente",
     });
   } catch (error) {
     console.error("Payment error:", error);
-    return json(
+    return data(
       { error: "Error al procesar el pago" },
       { status: 500 }
     );

@@ -1,4 +1,4 @@
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "@remix-run/node";
+import { data, type LoaderFunctionArgs, type ActionFunctionArgs } from "@remix-run/node";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:4000";
 
@@ -10,12 +10,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const response = await fetch(`${BACKEND_URL}/inventory/${encodeURIComponent(product)}`);
 
     if (!response.ok) {
-      return json({ availableUnits: 20 }, { status: 200 }); // Fallback
+      return data({ availableUnits: 20 }, { status: 200 }); // Fallback
     }
 
     const inventory = await response.json();
 
-    return json({
+    return data({
       product: inventory.product,
       availableUnits: inventory.availableUnits,
       totalUnits: inventory.totalUnits,
@@ -25,13 +25,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   } catch (error) {
     console.error("Inventory fetch error:", error);
     // Return fallback data if backend is down
-    return json({ availableUnits: 20 }, { status: 200 });
+    return data({ availableUnits: 20 }, { status: 200 });
   }
 }
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return data({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -41,13 +41,13 @@ export async function action({ request }: ActionFunctionArgs) {
     const productName = formData.get("productName") as string;
 
     if (!email || !productId || !productName) {
-      return json({ error: "Faltan campos requeridos" }, { status: 400 });
+      return data({ error: "Faltan campos requeridos" }, { status: 400 });
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return json({ error: "Email inválido" }, { status: 400 });
+      return data({ error: "Email inválido" }, { status: 400 });
     }
 
     // Send to backend
@@ -69,13 +69,13 @@ export async function action({ request }: ActionFunctionArgs) {
       // Still return success to user - we'll handle it manually if needed
     }
 
-    return json({
+    return data({
       success: true,
       message: `¡Perfecto! Te notificaremos a ${email} cuando ${productName} esté disponible.`,
     });
   } catch (error) {
     console.error("Back in stock notification error:", error);
-    return json(
+    return data(
       { error: "Error al registrar la notificación. Por favor intenta de nuevo." },
       { status: 500 }
     );

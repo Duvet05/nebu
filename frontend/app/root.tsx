@@ -10,7 +10,6 @@ import {
   isRouteErrorResponse,
 } from "@remix-run/react";
 import type { LinksFunction, LoaderFunctionArgs, HeadersFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { useChangeLanguage } from "remix-i18next/react";
 import type { ReactNode } from "react";
 import { Suspense, lazy } from "react";
@@ -106,7 +105,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     ? getStructuredData()
     : null;
   
-  return json<LoaderData>({
+  // Retornar objeto directamente (nueva API de Remix)
+  return {
     locale,
     culqiPublicKey,
     facebookPixelId,
@@ -115,7 +115,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       NODE_ENV: process.env.NODE_ENV || 'development',
       PUBLIC_URL: process.env.PUBLIC_URL || 'https://flow-telligence.com',
     },
-  });
+  };
 }
 
 // Layout component optimizado

@@ -1,5 +1,4 @@
 import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
@@ -68,10 +67,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
   };
 
-  return json({
+  // Retornar objeto directamente (nueva API de Remix)
+  return {
     productsStructuredData,
     websiteStructuredData
-  });
+  };
 }
 
 export const meta: MetaFunction = () => {

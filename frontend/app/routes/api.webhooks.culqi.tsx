@@ -1,9 +1,9 @@
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { data, type ActionFunctionArgs } from "@remix-run/node";
 import { processWebhook } from "~/lib/culqi.server";
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return data({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -16,7 +16,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     if (!result.success) {
       console.error("Webhook processing failed:", result.error);
-      return json({ error: "Webhook processing failed" }, { status: 500 });
+      return data({ error: "Webhook processing failed" }, { status: 500 });
     }
 
     // Handle different event types
@@ -41,9 +41,9 @@ export async function action({ request }: ActionFunctionArgs) {
         break;
     }
 
-    return json({ received: true });
+    return data({ received: true });
   } catch (error) {
     console.error("Webhook error:", error);
-    return json({ error: "Webhook error" }, { status: 500 });
+    return data({ error: "Webhook error" }, { status: 500 });
   }
 }

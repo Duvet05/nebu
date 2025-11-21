@@ -1,12 +1,12 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { data } from "@remix-run/node";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return data({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -34,14 +34,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
     console.log("Complaint emails sent:", { companyEmail, customerEmail });
 
-    return json({
+    return data({
       success: true,
       hojaNumber,
       message: "Reclamo registrado exitosamente",
     });
   } catch (error) {
     console.error("Error processing complaint:", error);
-    return json(
+    return data(
       { error: "Error al procesar el reclamo" },
       { status: 500 }
     );
