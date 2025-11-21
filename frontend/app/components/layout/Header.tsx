@@ -1,11 +1,17 @@
 import { Link } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CartButton } from "~/components/Cart";
 
 export function Header() {
   const { t, i18n, ready } = useTranslation("common");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Evitar hydration mismatch
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const toggleLanguage = () => {
     const newLang = i18n.language === "es" ? "en" : "es";
@@ -110,14 +116,12 @@ export function Header() {
               aria-label={i18n.language === "es" ? "Cambiar idioma a English" : "Cambiar idioma a Español"}
               className="flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-gray-800 hover:text-gray-900 font-medium px-4 py-2 rounded-xl border border-white/30 hover:border-white/50 transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md"
             >
-              <div className="relative">
-                <img
-                  src={i18n.language === "es" ? "/assets/icons/flags/peru-flag-icon.svg" : "/assets/icons/flags/united-states-flag-icon.svg"}
-                  alt=""
-                   className="w-5 h-4 rounded-sm object-cover border border-gray-300/50"
-                   aria-hidden="true"
-                />
-              </div>
+              <img
+                src={i18n.language === "es" ? "/assets/icons/flags/peru-flag-icon.svg" : "/assets/icons/flags/united-states-flag-icon.svg"}
+                alt=""
+                className="w-5 h-4 rounded-sm object-cover border border-gray-300/50"
+                aria-hidden="true"
+              />
               <span className="text-sm font-semibold">
                 {i18n.language === "es" ? "ES" : "EN"}
               </span>
@@ -126,7 +130,7 @@ export function Header() {
         </div>
 
         {/* Mobile Menu */}
-        {isMenuOpen && (
+        {isMounted && isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-3">
             <Link
               to="/"

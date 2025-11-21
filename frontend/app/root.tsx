@@ -91,14 +91,6 @@ export const links: LinksFunction = () => [
   },
   { rel: "dns-prefetch", href: "https://www.googletagmanager.com" },
   { rel: "dns-prefetch", href: "https://connect.facebook.net" },
-  
-  // Preload critical assets
-  {
-    rel: "preload",
-    as: "image",
-    href: "/assets/logo.webp",
-    type: "image/webp",
-  },
 ];
 
 // Loader optimizado con validación

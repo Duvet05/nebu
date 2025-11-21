@@ -11,10 +11,14 @@ export function CartButton() {
       onClick={toggleCart}
       className="relative p-3 bg-white hover:bg-gray-50 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
       aria-label="Abrir carrito"
+      type="button"
     >
       <ShoppingBag className="w-6 h-6 text-gray-700" />
       {totalItems > 0 && (
-        <span className="absolute -top-2 -right-2 bg-gradient-to-r from-primary to-accent text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center animate-pulse">
+        <span 
+          className="absolute -top-2 -right-2 bg-gradient-to-r from-primary to-accent text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center animate-pulse"
+          suppressHydrationWarning
+        >
           {totalItems}
         </span>
       )}
