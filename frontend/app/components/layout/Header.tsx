@@ -100,10 +100,10 @@ export function Header({ className, variant = 'default' }: HeaderProps) {
     "fixed top-0 z-50 w-full transition-all duration-300",
     {
       // Base styles by variant
-      'bg-white/80 backdrop-blur-lg shadow-lg': variant === 'default' && isScrolled,
-      'bg-white/70 backdrop-blur-md': variant === 'default' && !isScrolled,
+      'bg-nebu-bg/80 backdrop-blur-lg shadow-lg': variant === 'default' && isScrolled,
+      'bg-nebu-bg/70 backdrop-blur-md': variant === 'default' && !isScrolled,
       'bg-transparent': variant === 'transparent' && !isScrolled,
-      'bg-white/85 shadow-sm backdrop-blur-sm': variant === 'minimal',
+      'bg-nebu-bg/85 shadow-sm backdrop-blur-sm': variant === 'minimal',
       
       // Scroll behavior
       'translate-y-0': isHeaderVisible,

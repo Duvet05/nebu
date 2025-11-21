@@ -30,12 +30,13 @@
   },
   "hero": {
     "badge": "Launch Special - Free shipping on all pre-orders!",
+    "introducing": "Introducing Nebu",
     "title": "Your emotional and educational support companion.",
     "subtitle": "Intelligent companionship that grows with your child.",
-    "line1": "Emotional and",
-    "line2": "educational support",
-    "line3": "An intelligent",
-    "line4": "companion",
+    "line1": "Your AI-powered",
+    "line2": "plush toy",
+    "line3": "Learning through play",
+    "line4": "screen-free",
     "description": "Nebu combines artificial intelligence with natural interaction to offer empathetic conversations, learning support, and companionship in relaxation and emotional containment processes.",
     "scrollToDiscover": "Scroll to discover",
     "cta": {

@@ -30,12 +30,13 @@
   },
   "hero": {
     "badge": "Por lanzamiento - Envío gratis en todas las preordenes!",
+    "introducing": "Presentamos Nebu",
     "title": "Tu juguete de apoyo emocional y educativo.",
     "subtitle": "Acompañamiento inteligente que crece con tu hijo.",
-    "line1": "Apoyo emocional",
-    "line2": "y educativo",
-    "line3": "Un compañero",
-    "line4": "inteligente",
+    "line1": "Tu peluche",
+    "line2": "con IA",
+    "line3": "Aprende jugando",
+    "line4": "sin pantallas",
     "description": "Nebu combina inteligencia artificial con interacción natural para ofrecer conversaciones empáticas, apoyo en el aprendizaje y acompañamiento en procesos de relajación y contención emocional.",
     "scrollToDiscover": "Scroll para descubrir",
     "cta": {

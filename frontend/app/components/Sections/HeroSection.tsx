@@ -60,6 +60,9 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
+            <span className="inline-block px-6 py-2 mb-6 text-sm md:text-base font-medium text-primary bg-primary/10 rounded-full border border-primary/20">
+              {t("hero.introducing")}
+            </span>
             <img
               src="/assets/logos/logo-nebu.svg"
               alt="Nebu"
