@@ -9,9 +9,6 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     const event = await request.json();
 
-    // Development log - remove in production
-    // console.log("Culqi webhook received:", event);
-
     const result = await processWebhook(event);
 
     if (!result.success) {
@@ -23,21 +20,17 @@ export async function action({ request }: ActionFunctionArgs) {
     switch (result.type) {
       case "charge_succeeded":
         // TODO: Update database, send notification, etc.
-        // console.log("Payment successful:", result.data);
         break;
 
       case "charge_failed":
         // TODO: Send failure notification
-        // console.log("Payment failed:", result.data);
         break;
 
       case "order_expired":
         // TODO: Update order status
-        // console.log("Order expired:", result.data);
         break;
 
       default:
-        // console.log("Unknown event type:", result.type);
         break;
     }
 
