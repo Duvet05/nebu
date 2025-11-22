@@ -8,6 +8,7 @@ import { ShoppingBag, Truck, CreditCard, Shield, ArrowLeft, Trash2 } from "lucid
 import { useState, useEffect, type FormEvent } from "react";
 import { trackInitiateCheckout } from "~/lib/facebook-pixel";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
+import { InfoBox } from "~/components/ui/InfoBox";
 
 export const meta: MetaFunction = () => {
   return [
@@ -229,14 +230,11 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Pre-order Info */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h3 className="font-semibold text-blue-900 mb-2 text-sm">
-                    Modalidad de Pre-orden
-                  </h3>
-                  <p className="text-xs text-blue-800 mb-2">
+                <InfoBox variant="info" title="Modalidad de Pre-orden" size="sm">
+                  <p className="text-xs mb-2">
                     Reserva tu pedido con solo el 50% ahora
                   </p>
-                  <div className="bg-white rounded-lg p-3">
+                  <div className="bg-white rounded-lg p-3 mb-2">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-600">A pagar hoy:</span>
                       <span className="text-xl font-bold text-primary">
@@ -244,10 +242,10 @@ export default function CheckoutPage() {
                       </span>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-600 mt-2">
+                  <p className="text-xs text-gray-600">
                     El 50% restante se pagará al momento de la entrega
                   </p>
-                </div>
+                </InfoBox>
 
                 {/* Trust Badges */}
                 <div className="mt-6 grid grid-cols-2 gap-3 text-center">

@@ -5,6 +5,7 @@ import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
 import { Mail, Calendar, FileText, Shield, Cookie } from "lucide-react";
+import { ContentDivider } from "~/components/Divider";
 
 export const meta: MetaFunction = () => {
   return [
@@ -85,8 +86,8 @@ export default function PrivacyPolicy() {
                     <p className="text-gray-600 leading-relaxed">
                       {t('legal.sections.privacy.content.intro')}
                     </p>
-                    
-                    <hr className="border-gray-200" />
+
+                    <ContentDivider />
                     
                     <div className="space-y-6">
                       <div>

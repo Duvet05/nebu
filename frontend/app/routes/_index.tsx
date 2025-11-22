@@ -75,6 +75,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export const meta: MetaFunction = () => {
+  const siteUrl = "https://flow-telligence.com";
+  const ogImageUrl = `${siteUrl}/assets/images/nebu-og-image.jpg`;
+  
   return [
     { title: "Nebu - Aventuras infinitas sin pantallas | Flow-telligence" },
     {
@@ -83,12 +86,40 @@ export const meta: MetaFunction = () => {
         "Nebu: el compañero IoT que enseña sin pantallas. Historias interactivas, IA personalizada y aventuras infinitas para niños de 4-9 años.",
     },
     { name: "keywords", content: "nebu, iot, educación, niños, juguete inteligente, sin pantallas, inteligencia artificial, aprendizaje" },
-    { property: "og:title", content: "Nebu - Aventuras infinitas sin pantallas" },
+    
+    // Canonical URL
+    { tagName: "link", rel: "canonical", href: siteUrl },
+    
+    // Open Graph Tags (Facebook, LinkedIn, WhatsApp)
+    { property: "og:title", content: "Nebu - Tu compañero inteligente sin pantallas" },
+    { property: "og:description", content: "Más que un peluche. Nebu transforma cada conversación en una aventura educativa. IA personalizada, multiidioma y sin pantallas para niños de 4-12 años." },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://flow-telligence.com" },
+    { property: "og:url", content: siteUrl },
     { property: "og:site_name", content: "Flow-Telligence" },
+    { property: "og:image", content: ogImageUrl },
+    { property: "og:image:secure_url", content: ogImageUrl },
+    { property: "og:image:width", content: "1200" },
+    { property: "og:image:height", content: "630" },
+    { property: "og:image:alt", content: "Nebu - Peluche inteligente con IA para niños" },
+    { property: "og:locale", content: "es_PE" },
+    { property: "og:locale:alternate", content: "en_US" },
+    
+    // Twitter Card Tags
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:site", content: "@flowtelligence" },
+    { name: "twitter:creator", content: "@flowtelligence" },
+    { name: "twitter:title", content: "Nebu - Tu compañero inteligente sin pantallas" },
+    { name: "twitter:description", content: "Peluche con IA que convierte cada conversación en una aventura educativa. Sin pantallas, multiidioma y seguro para niños de 4-12 años." },
+    { name: "twitter:image", content: ogImageUrl },
+    { name: "twitter:image:alt", content: "Nebu - Peluche inteligente con IA para niños" },
+    
+    // Product specific (para e-commerce)
     { property: "product:price:currency", content: "PEN" },
-    { property: "product:price:amount", content: "380.00" },
+    { property: "product:price:amount", content: "190.00" },
+    { property: "product:availability", content: "preorder" },
+    { property: "product:condition", content: "new" },
+    { property: "product:brand", content: "Nebu" },
+    { property: "product:category", content: "Educational Toys" },
   ];
 };
 

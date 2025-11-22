@@ -28,6 +28,9 @@
     "twitter": "Twitter",
     "youtube": "YouTube"
   },
+  "common": {
+    "close": "Close"
+  },
   "hero": {
     "badge": "Launch Special - Free shipping on all pre-orders!",
     "introducing": "Introducing Nebu",

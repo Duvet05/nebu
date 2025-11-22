@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { FileText, AlertCircle, Send, Clock, CheckCircle } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
+import { InfoBox } from "~/components/ui/InfoBox";
 
 export const meta: MetaFunction = () => {
   return [
@@ -165,33 +166,25 @@ export default function LibroReclamacionesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-              <div className="flex items-start gap-4">
-                <div className="bg-blue-500 text-white p-3 rounded-lg">
-                  <AlertCircle className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{t('libroReclamaciones.reclamo.title')}</h3>
-                  <p className="text-sm text-gray-600">
-                    {t('libroReclamaciones.reclamo.description')}
-                  </p>
-                </div>
-              </div>
-            </div>
+            <InfoBox
+              variant="info"
+              title={t('libroReclamaciones.reclamo.title')}
+              icon={<AlertCircle className="w-6 h-6" />}
+            >
+              <p className="text-sm">
+                {t('libroReclamaciones.reclamo.description')}
+              </p>
+            </InfoBox>
 
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
-              <div className="flex items-start gap-4">
-                <div className="bg-amber-500 text-white p-3 rounded-lg">
-                  <FileText className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{t('libroReclamaciones.queja.title')}</h3>
-                  <p className="text-sm text-gray-600">
-                    {t('libroReclamaciones.queja.description')}
-                  </p>
-                </div>
-              </div>
-            </div>
+            <InfoBox
+              variant="warning"
+              title={t('libroReclamaciones.queja.title')}
+              icon={<FileText className="w-6 h-6" />}
+            >
+              <p className="text-sm">
+                {t('libroReclamaciones.queja.description')}
+              </p>
+            </InfoBox>
           </motion.div>
 
           {/* Success Message */}

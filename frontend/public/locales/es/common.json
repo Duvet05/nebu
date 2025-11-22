@@ -28,6 +28,9 @@
     "twitter": "Twitter",
     "youtube": "YouTube"
   },
+  "common": {
+    "close": "Cerrar"
+  },
   "hero": {
     "badge": "Por lanzamiento - Envío gratis en todas las preordenes!",
     "introducing": "Presentamos Nebu",

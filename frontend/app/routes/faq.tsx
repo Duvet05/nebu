@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
+import { FAQSchema } from "~/components/FAQSection";
+import { Breadcrumbs } from "~/components/Breadcrumbs";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
@@ -90,32 +92,39 @@ export default function FAQ() {
 
   return (
     <div className="min-h-screen bg-nebu-bg">
+      <FAQSchema faqs={faqs} />
       <Header />
 
       <section className="pt-32 pb-16 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-primary/30 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <HelpCircle className="w-4 h-4" />
-            {t("faq.badge", "Respuestas a tus Preguntas")}
+        <div className="max-w-6xl mx-auto">
+          <Breadcrumbs 
+            items={[{ label: 'Preguntas Frecuentes', href: '/faq' }]} 
+            className="mb-8"
+          />
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-primary/30 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <HelpCircle className="w-4 h-4" />
+              {t("faq.badge", "Respuestas a tus Preguntas")}
+            </div>
+
+            <motion.h1
+              className="text-4xl md:text-6xl font-bold font-gochi mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {t("faq.title")}
+            </motion.h1>
+
+            <motion.p
+              className="text-xl text-gray-600 max-w-2xl mx-auto mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              {t("faq.subtitle")}
+            </motion.p>
           </div>
-
-          <motion.h1
-            className="text-4xl md:text-6xl font-bold font-gochi mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {t("faq.title")}
-          </motion.h1>
-
-          <motion.p
-            className="text-xl text-gray-600 max-w-2xl mx-auto mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            {t("faq.subtitle")}
-          </motion.p>
         </div>
 
         <div className="max-w-3xl mx-auto px-4">

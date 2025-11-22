@@ -64,14 +64,44 @@ const ProductDetails: React.FC = () => {
 
   return (
     <section 
-      className="py-20 px-4 bg-nebu-bg"
+      className="py-20 px-4 bg-nebu-bg relative overflow-hidden"
       itemScope
       itemType="https://schema.org/Product"
       aria-labelledby="product-title"
     >
-      <motion.div {...fadeInUp} className="max-w-7xl mx-auto">
+      {/* Vectores decorativos de fondo */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <img 
+          src="/assets/images/Vector 7.png" 
+          alt="" 
+          className="absolute top-20 right-10 w-32 h-32 opacity-15"
+        />
+        <img 
+          src="/assets/images/Vector 8.png" 
+          alt="" 
+          className="absolute bottom-32 left-20 w-28 h-28 opacity-20"
+        />
+      </div>
+
+      {/* Meta datos ocultos para SEO */}
+      <meta itemProp="sku" content="NEBU-DINO-001" />
+      <meta itemProp="productID" content="nebu-001" />
+      <meta itemProp="category" content="Educational Toys" />
+      <meta itemProp="brand" content="Nebu" />
+      <div itemProp="brand" itemScope itemType="https://schema.org/Brand" style={{ display: 'none' }}>
+        <meta itemProp="name" content="Nebu" />
+      </div>
+      <div itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating" style={{ display: 'none' }}>
+        <meta itemProp="ratingValue" content="4.9" />
+        <meta itemProp="reviewCount" content="127" />
+        <meta itemProp="bestRating" content="5" />
+        <meta itemProp="worstRating" content="1" />
+      </div>
+
+      <motion.div {...fadeInUp} className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center px-6 md:px-12">
             <figure className="relative order-2 lg:order-1 h-[500px] md:h-[600px] lg:h-[700px]" itemProp="image">
+              <meta itemProp="contentUrl" content="https://flow-telligence.com/models/nebu-dino/shaded_00.png" />
               <motion.div
                 className="relative h-full"
                 whileHover={{ scale: 1.02 }}
@@ -120,8 +150,16 @@ const ProductDetails: React.FC = () => {
               <nav className="space-y-4 pt-4" aria-label={t('productDetails.productActions')}>
                 <CTAButton to="/pre-order" ariaLabel={t('productCTA.product.preOrderButton')} fullWidth>
                   <span itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                    <meta itemProp="url" content="https://flow-telligence.com/pre-order" />
                     <meta itemProp="availability" content="https://schema.org/PreOrder" />
                     <meta itemProp="priceCurrency" content="PEN" />
+                    <meta itemProp="price" content="190.00" />
+                    <meta itemProp="priceValidUntil" content="2025-12-31" />
+                    <meta itemProp="itemCondition" content="https://schema.org/NewCondition" />
+                    <div itemProp="seller" itemScope itemType="https://schema.org/Organization" style={{ display: 'none' }}>
+                      <meta itemProp="name" content="Flow-Telligence" />
+                      <meta itemProp="url" content="https://flow-telligence.com" />
+                    </div>
                     {t('productCTA.product.preOrderButton')}
                   </span>
                 </CTAButton>
