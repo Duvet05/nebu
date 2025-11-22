@@ -69,16 +69,16 @@ const ProductDetails: React.FC = () => {
       itemType="https://schema.org/Product"
       aria-labelledby="product-title"
     >
-      {/* Vectores decorativos de fondo */}
+      {/* Decorative background elements */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <img 
-          src="/assets/images/Vector 7.png" 
-          alt="" 
+        <img
+          src="/assets/images/decoration-top-right.png"
+          alt=""
           className="absolute top-20 right-10 w-32 h-32 opacity-15"
         />
-        <img 
-          src="/assets/images/Vector 8.png" 
-          alt="" 
+        <img
+          src="/assets/images/decoration-bottom-left.png"
+          alt=""
           className="absolute bottom-32 left-20 w-28 h-28 opacity-20"
         />
       </div>
