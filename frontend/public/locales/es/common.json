@@ -353,8 +353,12 @@
   },
   "about": {
     "hero": {
-      "title": "Un vínculo.\nMás que un juguete.",
-      "subtitle": "Nuestra misión es construir conexiones significativas sin pantallas a través del juego, combinando diseño inteligente con simplicidad llena de corazón para apoyar el viaje de cada niño, una conversación a la vez."
+      "title": "Conoce más sobre Nebu",
+      "subtitle": "Nuestra misión es construir conexiones significativas sin pantallas a través del juego, combinando diseño inteligente con simplicidad llena de corazón para apoyar el viaje de cada niño, una conversación a la vez.",
+      "badge": "Más que un Juguete, una Conexión"
+    },
+    "videos": {
+      "title": "Conoce más sobre Nebu"
     },
     "values": {
       "play": {

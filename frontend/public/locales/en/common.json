@@ -353,8 +353,12 @@
   },
   "about": {
     "hero": {
-      "title": "A bond.\nMore than a toy.",
-      "subtitle": "Our mission is to build meaningful, screen-free connections through play, blending intelligent design with heartfelt simplicity to support every child's journey, one conversation at a time."
+      "title": "Learn more about Nebu",
+      "subtitle": "Our mission is to build meaningful, screen-free connections through play, blending intelligent design with heartfelt simplicity to support every child's journey, one conversation at a time.",
+      "badge": "More than a Toy, a Connection"
+    },
+    "videos": {
+      "title": "Learn more about Nebu"
     },
     "values": {
       "play": {

@@ -86,7 +86,7 @@ export function Newsletter() {
 
           <motion.form 
             onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto"
+            className="flex flex-col gap-4 max-w-lg mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -102,7 +102,8 @@ export function Newsletter() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-primary px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-disabled={isSubmitting}
+              className="relative inline-flex items-center justify-center gap-2 font-gochi font-bold text-lg px-6 py-4 rounded-full w-auto self-center min-w-[200px] md:min-w-[240px] bg-primary text-white shadow-[0_6px_20px_rgba(255,181,74,0.3)] hover:shadow-[0_10px_30px_rgba(255,181,74,0.45)] transition-all duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? t("newsletter.subscribing") : t("newsletter.subscribe")}
             </button>

@@ -48,22 +48,22 @@ export default function OurStory() {
     {
       title: t("about.values.play.title"),
       description: t("about.values.play.description"),
-      icon: <Sparkles className="w-6 h-6 text-white" />
+      icon: <Sparkles className="w-6 h-6 text-primary" />
     },
     {
       title: t("about.values.purpose.title"),
       description: t("about.values.purpose.description"),
-      icon: <Star className="w-6 h-6 text-white" />
+      icon: <Star className="w-6 h-6 text-primary" />
     },
     {
       title: t("about.values.trust.title"),
       description: t("about.values.trust.description"),
-      icon: <ShieldCheck className="w-6 h-6 text-white" />
+      icon: <ShieldCheck className="w-6 h-6 text-primary" />
     },
     {
       title: t("about.values.design.title"),
       description: t("about.values.design.description"),
-      icon: <Award className="w-6 h-6 text-white" />
+      icon: <Award className="w-6 h-6 text-primary" />
     }
   ];
 
@@ -75,14 +75,15 @@ export default function OurStory() {
         {/* Hero Section */}
         <section className="pt-32 pb-16 px-4">
           <div className="max-w-6xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-primary/30 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Sparkles className="w-4 h-4" />
-              {t("about.hero.badge", "Más que un Juguete, una Conexión")}
+            {/* Badge: simplify, remove gradients/blur */}
+            <div className="inline-flex items-center gap-2 bg-white border border-nebu-dark/10 text-nebu-dark px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <Sparkles className="w-4 h-4 text-primary" />
+              {t("about.hero.badge")}
             </div>
 
-            {/* Hero */}
+            {/* Hero: remove gradient, use solid color */}
             <motion.h1
-              className="text-4xl md:text-6xl font-bold font-gochi mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+              className="text-4xl md:text-6xl font-bold font-gochi mb-6 text-nebu-dark"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -114,10 +115,14 @@ export default function OurStory() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">
-                    {value.icon}
+                  {/* Icons: remove gradient shape, keep simple icon */}
+                  <div className="mx-auto mb-4 flex items-center justify-center">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-nebu-dark/10 bg-white">
+                      {/* ensure icon uses brand color */}
+                      {value.icon}
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{value.title}</h3>
+                  <h3 className="text-xl font-bold mb-2 text-nebu-dark">{value.title}</h3>
                   <p className="text-gray-600">{value.description}</p>
                 </motion.div>
               ))}
@@ -130,8 +135,8 @@ export default function OurStory() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              <h2 className="text-3xl font-bold text-center mb-8 font-gochi">
-                {t("about.videos.title", "Conoce más sobre Nebu")}
+              <h2 className="text-3xl font-bold text-center mb-8 font-gochi text-nebu-dark">
+                {t("about.videos.title")}
               </h2>
 
               <div className="flex justify-center">
