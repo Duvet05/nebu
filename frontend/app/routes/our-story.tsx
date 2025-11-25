@@ -174,7 +174,7 @@ export default function OurStory() {
                 {t("about.safety.description")}
               </p>
 
-              <button className="btn btn-primary">
+              <button className="relative inline-flex items-center justify-center gap-2 font-gochi font-bold text-lg px-6 py-4 rounded-full w-auto self-center min-w-[200px] md:min-w-[240px] bg-primary text-white shadow-[0_6px_20px_rgba(255,181,74,0.3)] hover:shadow-[0_10px_30px_rgba(255,181,74,0.45)] transition-all duration-200 ease-out">
                 {t("about.safety.learnMore")}
               </button>
             </motion.div>

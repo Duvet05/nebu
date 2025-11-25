@@ -241,27 +241,12 @@ export default function ConversationExamples() {
           className="text-center mt-20"
         >
           <motion.button
-            className="group relative inline-flex items-center gap-4 bg-primary text-white px-10 py-5 rounded-3xl font-gochi font-bold text-xl shadow-2xl hover:shadow-[0_20px_50px_rgba(255,107,53,0.4)] transition-all duration-500 overflow-hidden"
+            className="relative inline-flex items-center justify-center gap-3 font-gochi font-bold text-lg px-6 py-4 rounded-full min-w-[280px] md:min-w-[320px] bg-primary text-white shadow-[0_6px_20px_rgba(255,181,74,0.3)] hover:shadow-[0_10px_30px_rgba(255,181,74,0.45)] transition-all duration-200 ease-out"
             whileHover={{ scale: 1.05, y: -3 }}
             whileTap={{ scale: 0.98 }}
           >
-            {/* Shine effect */}
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
-            
-            {/* Icon with animation */}
-            <motion.div
-              className="relative z-10"
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-            >
-              <MessageSquare className="w-6 h-6" />
-            </motion.div>
-            
-            <span className="relative z-10">{t("conversationExamples.cta")}</span>
-            
-            {/* Decorative dots */}
-            <div className="absolute -top-2 -right-2 w-3 h-3 bg-white/30 rounded-full blur-sm"></div>
-            <div className="absolute -bottom-2 -left-2 w-2 h-2 bg-white/20 rounded-full blur-sm"></div>
+            <MessageSquare className="w-5 h-5" />
+            <span>{t("conversationExamples.cta")}</span>
           </motion.button>
         </motion.div>
       </div>
