@@ -13,7 +13,7 @@ import { analytics } from "~/lib/analytics";
 import { useAnalytics } from "~/components/AnalyticsProvider";
 import { products } from "~/data/products";
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader() {
   // Generar datos estructurados para los productos
   const productsStructuredData = {
     "@context": "https://schema.org",
