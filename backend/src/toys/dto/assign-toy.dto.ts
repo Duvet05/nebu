@@ -46,7 +46,8 @@ export class AssignToyResponseDto {
   toy?: {
     id: string;
     name: string;
-    macAddress: string;
+    macAddress?: string;
+    deviceId?: string;
     userId?: string;
   };
 }

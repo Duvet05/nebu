@@ -14,11 +14,17 @@ export class ToyResponseDto {
   })
   iotDeviceId?: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'MAC address del dispositivo IoT (obtenido de la relación)',
     example: '00:1B:44:11:3A:B7',
   })
-  macAddress: string;
+  macAddress?: string;
+
+  @ApiPropertyOptional({
+    description: 'Device ID del ESP32 (obtenido de la relación)',
+    example: 'ESP32_8CBFEA877D0C',
+  })
+  deviceId?: string;
 
   @ApiProperty({
     description: 'Nombre del juguete',

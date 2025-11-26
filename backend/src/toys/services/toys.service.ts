@@ -421,6 +421,7 @@ export class ToysService {
     return {
       ...toy,
       macAddress: toy.iotDevice?.macAddress || toy.getMacAddress(),
+      deviceId: toy.iotDevice?.deviceId || undefined,
       statusText: toy.getStatusText(),
       statusColor: toy.getStatusColor(),
       isActive: toy.isActive,
