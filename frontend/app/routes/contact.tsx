@@ -9,6 +9,7 @@ import { ArrowRight, MessageCircle, Mail, Clock, Send, Phone, MapPin } from "luc
 import { sendContactEmail } from "~/lib/email.server";
 import { useEffect } from "react";
 import { trackLead } from "~/lib/facebook-pixel";
+import { BUSINESS } from "~/config/constants";
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,14 +27,14 @@ export const meta: MetaFunction = () => {
     { property: "og:title", content: "Contacto - Nebu | Compañero IoT Educativo" },
     { property: "og:description", content: "Ponte en contacto con el equipo de Nebu. Respondemos en menos de 24 horas." },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://flow-telligence.com/contact" },
-    { property: "og:image", content: "https://flow-telligence.com/og-contact.jpg" },
+    { property: "og:url", content: `${BUSINESS.website}/contact` },
+    { property: "og:image", content: `${BUSINESS.website}/og-contact.jpg` },
 
     // Twitter
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: "Contacto - Nebu" },
     { name: "twitter:description", content: "Ponte en contacto con el equipo de Nebu. Respondemos en menos de 24 horas." },
-    { name: "twitter:image", content: "https://flow-telligence.com/og-contact.jpg" },
+    { name: "twitter:image", content: `${BUSINESS.website}/og-contact.jpg` },
   ];
 };
 

@@ -4,7 +4,7 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
-import { CONTACT } from "~/config/constants";
+import { CONTACT, BUSINESS } from "~/config/constants";
 import { 
   Mail, Calendar, FileText, Shield, Scale, Phone, 
   AlertCircle, Check, Clock, Package, RefreshCw, Users, Heart, Lock,
@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 export const meta: MetaFunction = () => {
+  const url = `${BUSINESS.website}/terms`;
   return [
     { title: "Términos y Condiciones - Nebu | Flow-telligence" },
     {
@@ -24,7 +25,7 @@ export const meta: MetaFunction = () => {
     { property: "og:title", content: "Términos y Condiciones - Nebu" },
     { property: "og:description", content: "Términos y condiciones de uso de Nebu y Flow-telligence." },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://flow-telligence.com/terms" },
+    { property: "og:url", content: url },
   ];
 };
 
@@ -170,11 +171,11 @@ export default function TermsOfService() {
                           </div>
                           <div>
                             <p className="text-sm text-gray-500 mb-1">RUC</p>
-                            <p className="font-semibold text-gray-900">10703363135</p>
+                            <p className="font-semibold text-gray-900">{BUSINESS.ruc}</p>
                           </div>
                           <div>
                             <p className="text-sm text-gray-500 mb-1">Nombre Comercial</p>
-                            <p className="font-semibold text-gray-900">Flow-Telligence</p>
+                            <p className="font-semibold text-gray-900">{BUSINESS.name}</p>
                           </div>
                           <div>
                             <p className="text-sm text-gray-500 mb-1">Dirección</p>
@@ -549,7 +550,7 @@ export default function TermsOfService() {
                           <ol className="space-y-2">
                             <li className="flex items-start gap-2">
                               <span className="font-semibold text-primary">1.</span>
-                              <span className="text-gray-600 text-sm">Contacta a soporte@flow-telligence.com</span>
+                              <span className="text-gray-600 text-sm">Contacta a {CONTACT.email.support}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="font-semibold text-primary">2.</span>
@@ -785,7 +786,7 @@ export default function TermsOfService() {
                             </div>
                           </div>
                           <p className="text-sm text-gray-600 mt-3">
-                            Para ejercer estos derechos: <a href="mailto:privacidad@flow-telligence.com" className="text-primary hover:underline">privacidad@flow-telligence.com</a>
+                            Para ejercer estos derechos: <a href={`mailto:${CONTACT.email.privacy}`} className="text-primary hover:underline">{CONTACT.email.privacy}</a>
                           </p>
                         </div>
                       </div>

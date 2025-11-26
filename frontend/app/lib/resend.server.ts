@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { BUSINESS } from "~/config/constants";
 
 // Initialize Resend client lazily
 let resend: Resend | null = null;
@@ -69,7 +70,7 @@ export const emailTemplates = {
               </ul>
 
               <p style="text-align: center;">
-                <a href="https://flow-telligence.com/pre-order" class="button">
+                <a href="${BUSINESS.website}/pre-order" class="button">
                   Pre-ordena tu Nebu con descuento
                 </a>
               </p>
@@ -80,8 +81,8 @@ export const emailTemplates = {
               <strong>El equipo de Nebu</strong></p>
             </div>
             <div class="footer">
-              <p>Flow-telligence | Lima, Perú</p>
-              <p>Has recibido este email porque te suscribiste en flow-telligence.com</p>
+              <p>${BUSINESS.name} | ${BUSINESS.address.full}</p>
+              <p>Has recibido este email porque te suscribiste en ${BUSINESS.website.replace('https://', '')}</p>
             </div>
           </div>
         </body>
@@ -168,8 +169,8 @@ export const emailTemplates = {
               <strong>El equipo de Nebu</strong></p>
             </div>
             <div class="footer">
-              <p>Flow-telligence | Lima, Perú</p>
-              <p>Pre-orden realizada en flow-telligence.com</p>
+              <p>${BUSINESS.name} | ${BUSINESS.address.full}</p>
+              <p>Pre-orden realizada en ${BUSINESS.website.replace('https://', '')}</p>
             </div>
           </div>
         </body>

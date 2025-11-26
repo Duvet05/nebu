@@ -25,6 +25,7 @@ const CartSidebar = lazy(() => import("~/components/Cart"));
 import { getMetaTags, getStructuredData } from "~/config/metadata";
 import { getFontLinks } from "~/config/fonts";
 import { validatePublicKey, sanitizeId } from "~/utils/security";
+import { BUSINESS } from "~/config/constants";
 import { GoogleAnalytics, FacebookPixel, CulqiScript } from "~/components/Analytics";
 import { LoadingSkeleton } from "~/components/LoadingSkeleton";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
@@ -114,7 +115,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     organizationData,
     env: {
       NODE_ENV: process.env.NODE_ENV || 'development',
-      PUBLIC_URL: process.env.PUBLIC_URL || 'https://flow-telligence.com',
+      PUBLIC_URL: process.env.PUBLIC_URL || BUSINESS.website,
     },
   };
 }

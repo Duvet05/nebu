@@ -14,6 +14,7 @@ import {
   Crown,
   Sparkles
 } from "lucide-react";
+import { BUSINESS } from "~/config/constants";
 
 export const meta: MetaFunction = () => {
   return [
@@ -31,14 +32,14 @@ export const meta: MetaFunction = () => {
     { property: "og:title", content: "Precios y Planes - Nebu | Desde Gratis" },
     { property: "og:description", content: "Planes desde gratis hasta premium. Pre-orden con descuento especial de lanzamiento." },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://flow-telligence.com/pricing" },
-    { property: "og:image", content: "https://flow-telligence.com/og-pricing.jpg" },
+    { property: "og:url", content: `${BUSINESS.website}/pricing` },
+    { property: "og:image", content: `${BUSINESS.website}/og-pricing.jpg` },
 
     // Twitter
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: "Precios - Nebu" },
     { name: "twitter:description", content: "Planes desde gratis hasta premium. Pre-orden con descuento de lanzamiento." },
-    { name: "twitter:image", content: "https://flow-telligence.com/og-pricing.jpg" },
+    { name: "twitter:image", content: `${BUSINESS.website}/og-pricing.jpg` },
   ];
 };
 

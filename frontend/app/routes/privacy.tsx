@@ -6,6 +6,7 @@ import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
 import { Mail, Calendar, FileText, Shield, Cookie } from "lucide-react";
 import { ContentDivider } from "~/components/Divider";
+import { BUSINESS } from "~/config/constants";
 
 export const meta: MetaFunction = () => {
   return [
@@ -20,7 +21,7 @@ export const meta: MetaFunction = () => {
     { property: "og:title", content: "Política de Privacidad - Nebu" },
     { property: "og:description", content: "Protección de datos y privacidad infantil. kidSAFE certified." },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://flow-telligence.com/privacy" },
+    { property: "og:url", content: `${BUSINESS.website}/privacy` },
   ];
 };
 

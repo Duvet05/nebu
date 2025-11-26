@@ -8,6 +8,7 @@ import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import i18next from "~/lib/i18next.server";
+import { BUSINESS } from "~/config/constants";
 
 export const meta: MetaFunction = () => {
   return [
@@ -25,14 +26,14 @@ export const meta: MetaFunction = () => {
     { property: "og:title", content: "Preguntas Frecuentes - Nebu | Chatbot Educativo" },
     { property: "og:description", content: "Respuestas a tus preguntas sobre Nebu: funcionamiento, seguridad, edades, envío y más." },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://flow-telligence.com/faq" },
-    { property: "og:image", content: "https://flow-telligence.com/og-faq.jpg" },
+    { property: "og:url", content: `${BUSINESS.website}/faq` },
+    { property: "og:image", content: `${BUSINESS.website}/og-faq.jpg` },
 
     // Twitter
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: "FAQ - Nebu" },
     { name: "twitter:description", content: "Respuestas a tus preguntas sobre Nebu: funcionamiento, seguridad, edades y más." },
-    { name: "twitter:image", content: "https://flow-telligence.com/og-faq.jpg" },
+    { name: "twitter:image", content: `${BUSINESS.website}/og-faq.jpg` },
   ];
 };
 

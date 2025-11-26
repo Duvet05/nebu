@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { BUSINESS } from '~/config/constants';
 import {
   MonitorOff,
   Bot,
@@ -101,7 +102,7 @@ const ProductDetails: React.FC = () => {
       <motion.div {...fadeInUp} className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center px-6 md:px-12">
             <figure className="relative order-2 lg:order-1 h-[500px] md:h-[600px] lg:h-[700px]" itemProp="image">
-              <meta itemProp="contentUrl" content="https://flow-telligence.com/models/nebu-dino/shaded_00.png" />
+              <meta itemProp="contentUrl" content={`${BUSINESS.website}/models/nebu-dino/shaded_00.png`} />
               <motion.div
                 className="relative h-full"
                 whileHover={{ scale: 1.02 }}
@@ -150,15 +151,15 @@ const ProductDetails: React.FC = () => {
               <nav className="space-y-4 pt-4" aria-label={t('productDetails.productActions')}>
                 <CTAButton to="/pre-order" ariaLabel={t('productCTA.product.preOrderButton')} fullWidth>
                   <span itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                    <meta itemProp="url" content="https://flow-telligence.com/pre-order" />
+                    <meta itemProp="url" content={`${BUSINESS.website}/pre-order`} />
                     <meta itemProp="availability" content="https://schema.org/PreOrder" />
                     <meta itemProp="priceCurrency" content="PEN" />
                     <meta itemProp="price" content="190.00" />
                     <meta itemProp="priceValidUntil" content="2025-12-31" />
                     <meta itemProp="itemCondition" content="https://schema.org/NewCondition" />
                     <div itemProp="seller" itemScope itemType="https://schema.org/Organization" style={{ display: 'none' }}>
-                      <meta itemProp="name" content="Flow-Telligence" />
-                      <meta itemProp="url" content="https://flow-telligence.com" />
+                      <meta itemProp="name" content={BUSINESS.name} />
+                      <meta itemProp="url" content={BUSINESS.website} />
                     </div>
                     {t('productCTA.product.preOrderButton')}
                   </span>

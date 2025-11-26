@@ -7,6 +7,7 @@ import { FileText, AlertCircle, Send, Clock, CheckCircle } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { InfoBox } from "~/components/ui/InfoBox";
+import { BUSINESS, CONTACT } from "~/config/constants";
 
 export const meta: MetaFunction = () => {
   return [
@@ -23,7 +24,7 @@ export const meta: MetaFunction = () => {
     { property: "og:title", content: "Libro de Reclamaciones - Flow Telligence" },
     { property: "og:description", content: "Presenta tu reclamo o queja de forma virtual." },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://flow-telligence.com/libro-reclamaciones" },
+    { property: "og:url", content: `${BUSINESS.website}/libro-reclamaciones` },
   ];
 };
 
@@ -622,16 +623,16 @@ export default function LibroReclamacionesPage() {
 
             <div className="space-y-4 text-sm text-gray-700">
               <div>
-                <span className="font-semibold">{t('libroReclamaciones.companyInfo.businessName')}</span> Flow  S.A.C.S
+                <span className="font-semibold">{t('libroReclamaciones.companyInfo.businessName')}</span> {BUSINESS.legalName}
               </div>
               <div>
-                <span className="font-semibold">{t('libroReclamaciones.companyInfo.ruc')}</span> 10703363135
+                <span className="font-semibold">{t('libroReclamaciones.companyInfo.ruc')}</span> {BUSINESS.ruc}
               </div>
               <div>
-                <span className="font-semibold">{t('libroReclamaciones.companyInfo.address')}</span> Lima, Perú
+                <span className="font-semibold">{t('libroReclamaciones.companyInfo.address')}</span> {BUSINESS.address.full}
               </div>
               <div>
-                <span className="font-semibold">{t('libroReclamaciones.companyInfo.email')}</span> contacto@flow-telligence.com
+                <span className="font-semibold">{t('libroReclamaciones.companyInfo.email')}</span> {CONTACT.email.main}
               </div>
               <div>
                 <span className="font-semibold">{t('libroReclamaciones.companyInfo.phone')}</span> +51 987 654 321

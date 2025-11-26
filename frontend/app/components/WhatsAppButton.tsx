@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { analytics } from "~/lib/analytics";
+import { CONTACT } from "~/config/constants";
 
 interface WhatsAppButtonProps {
   className?: string;
@@ -10,7 +11,7 @@ interface WhatsAppButtonProps {
 
 export default function WhatsAppButton({
   className = "",
-  phoneNumber = "+51970116770", // Número de Flow-telligence Peru
+  phoneNumber = CONTACT.phoneAlt, // Número de Flow-telligence Peru
   message
 }: WhatsAppButtonProps) {
   const { t } = useTranslation("common");

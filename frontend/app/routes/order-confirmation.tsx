@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { CheckCircle, Package, Truck, Mail, Phone, Home, ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { trackPurchase } from "~/lib/facebook-pixel";
+import { CONTACT } from "~/config/constants";
 
 export const meta: MetaFunction = () => {
   return [
@@ -245,10 +246,10 @@ export default function OrderConfirmationPage() {
                 </div>
                 <h4 className="font-semibold text-gray-900 mb-1">Email</h4>
                 <a
-                  href="mailto:ventas@flow-telligence.com"
+                  href={`mailto:${CONTACT.email.sales}`}
                   className="text-sm text-primary hover:underline"
                 >
-                  ventas@flow-telligence.com
+                  {CONTACT.email.sales}
                 </a>
               </div>
 

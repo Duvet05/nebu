@@ -1,6 +1,7 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { data } from "@remix-run/node";
 import { Resend } from "resend";
+import { CONTACT, BUSINESS } from "~/config/constants";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const CULQI_SECRET_KEY = process.env.CULQI_SECRET_KEY || "";
@@ -68,7 +69,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Send confirmation email to customer
     const customerEmail = await resend.emails.send({
-      from: "Nebu - Flow Telligence <ventas@flow-telligence.com>",
+      from: `Nebu - ${BUSINESS.name} <${CONTACT.email.sales}>`,
       to: checkoutData.email,
       subject: `Confirmación de Pre-orden - ${orderId}`,
       html: generateCustomerConfirmationEmail(checkoutData, orderId),
@@ -76,13 +77,12 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Send notification email to company
     const companyEmail = await resend.emails.send({
-      from: "Nebu Orders <ventas@flow-telligence.com>",
-      to: "ventas@flow-telligence.com",
+      from: `Nebu Orders <${CONTACT.email.sales}>`,
+      to: CONTACT.email.sales,
       subject: `Nueva Pre-orden Recibida - ${orderId}`,
       html: generateCompanyNotificationEmail(checkoutData, orderId),
     });
 
-    console.log("Order emails sent:", { customerEmail, companyEmail });
 
     // Here you would typically:
     // 1. Save order to database
@@ -232,7 +232,7 @@ function generateCustomerConfirmationEmail(data: CheckoutData, orderId: string):
             </div>
 
             <div style="text-align: center; margin: 30px 0;">
-              <a href="https://flow-telligence.com/productos" class="button">
+              <a href="${BUSINESS.website}/productos" class="button">
                 Ver Más Productos
               </a>
             </div>
@@ -241,9 +241,9 @@ function generateCustomerConfirmationEmail(data: CheckoutData, orderId: string):
               <h3 style="margin-top: 0; color: #6366f1;">📞 ¿Necesitas Ayuda?</h3>
               <p>Si tienes alguna pregunta sobre tu pedido, no dudes en contactarnos:</p>
               <p>
-                📧 Email: <a href="mailto:ventas@flow-telligence.com">ventas@flow-telligence.com</a><br>
-                📱 WhatsApp: <a href="https://wa.me/51987654321">+51 987 654 321</a><br>
-                🌐 Web: <a href="https://flow-telligence.com">flow-telligence.com</a>
+                📧 Email: <a href="mailto:${CONTACT.email.sales}">${CONTACT.email.sales}</a><br>
+                📱 WhatsApp: <a href="${CONTACT.whatsapp.url}">${CONTACT.phone}</a><br>
+                🌐 Web: <a href="${BUSINESS.website}">${BUSINESS.name}</a>
               </p>
             </div>
 
@@ -252,10 +252,10 @@ function generateCustomerConfirmationEmail(data: CheckoutData, orderId: string):
             </p>
 
             <div class="footer">
-              <p><strong>Flow Telligence S.A.C.</strong></p>
-              <p>RUC: 10703363135</p>
-              <p>Lima, Perú</p>
-              <p>© ${new Date().getFullYear()} Flow Telligence. Todos los derechos reservados.</p>
+              <p><strong>${BUSINESS.legalName}</strong></p>
+              <p>RUC: ${BUSINESS.ruc}</p>
+              <p>${BUSINESS.address.full}</p>
+              <p>© ${new Date().getFullYear()} ${BUSINESS.name}. Todos los derechos reservados.</p>
             </div>
           </div>
         </div>

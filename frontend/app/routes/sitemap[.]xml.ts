@@ -1,4 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
+import { BUSINESS } from "~/config/constants";
 
 interface SitemapEntry {
   url: string;
@@ -12,7 +13,7 @@ interface SitemapEntry {
 }
 
 export async function loader({ request: _request }: LoaderFunctionArgs) {
-  const baseUrl = 'https://flow-telligence.com';
+  const baseUrl = BUSINESS.website;
   const currentDate = new Date().toISOString().split('T')[0];
 
   // Helper para crear alternates multiidioma

@@ -11,6 +11,7 @@ import { useCart } from "~/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { trackEvent } from "~/lib/facebook-pixel";
 import { BackInStockNotify } from "~/components/BackInStockNotify";
+import { BUSINESS } from "~/config/constants";
 
 export const meta: MetaFunction = () => {
   return [
@@ -27,7 +28,7 @@ export const meta: MetaFunction = () => {
     { property: "og:title", content: "Productos Nebu - Peluches Inteligentes" },
     { property: "og:description", content: "5 modelos de peluches con IA. Desde S/380 con envío gratis." },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://flow-telligence.com/productos" },
+    { property: "og:url", content: `${BUSINESS.website}/productos` },
   ];
 };
 

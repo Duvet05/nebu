@@ -146,7 +146,7 @@ export async function sendPreOrderEmail(data: PreOrderData) {
         <div style="padding: 20px; text-align: center; color: #6b7280; font-size: 12px;">
           <p>Flow-telligence © 2025 - Educación sin pantallas para el futuro</p>
           <p>
-            <a href="https://flow-telligence.com" style="color: #FF6B35;">flow-telligence.com</a>
+            <a href="${BUSINESS.website}" style="color: #FF6B35;">${BUSINESS.name}</a>
           </p>
         </div>
       </div>

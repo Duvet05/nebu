@@ -22,6 +22,7 @@ import { analytics } from "~/lib/analytics";
 import NebuModel3D from "~/components/NebuModel3D";
 import { products, getProductBySlug, type Product } from "~/data/products";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
+import { BUSINESS } from "~/config/constants";
 
 export const meta: MetaFunction = () => {
   return [
@@ -39,8 +40,8 @@ export const meta: MetaFunction = () => {
     { property: "og:title", content: "Pre-orden Nebu S/380 - Reserva con 50%" },
     { property: "og:description", content: "Asegura tu Nebu con envío gratis. Reserva con solo S/190. Solo 20 unidades." },
     { property: "og:type", content: "product" },
-    { property: "og:url", content: "https://flow-telligence.com/pre-order" },
-    { property: "og:image", content: "https://flow-telligence.com/og-product.jpg" },
+    { property: "og:url", content: `${BUSINESS.website}/pre-order` },
+    { property: "og:image", content: `${BUSINESS.website}/og-product.jpg` },
     { property: "product:price:amount", content: "380" },
     { property: "product:price:currency", content: "PEN" },
 
@@ -48,7 +49,7 @@ export const meta: MetaFunction = () => {
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: "Pre-orden Nebu - Reserva con 50%" },
     { name: "twitter:description", content: "S/380 con envío gratis. Reserva con S/190. Solo 20 unidades." },
-    { name: "twitter:image", content: "https://flow-telligence.com/og-product.jpg" },
+    { name: "twitter:image", content: `${BUSINESS.website}/og-product.jpg` },
   ];
 };
 

@@ -1,3 +1,5 @@
+import { BUSINESS } from "~/config/constants";
+
 export async function loader() {
   const robotText = `
 # Robots.txt for Flow-Telligence / Nebu
@@ -5,7 +7,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://flow-telligence.com/sitemap.xml
+Sitemap: ${BUSINESS.website}/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1

@@ -6,6 +6,7 @@ import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
 import { Star, Sparkles, ShieldCheck, Award } from 'lucide-react';
 import i18next from "~/lib/i18next.server";
+import { BUSINESS } from "~/config/constants";
 
 export const meta: MetaFunction = () => {
   return [
@@ -23,14 +24,14 @@ export const meta: MetaFunction = () => {
     { property: "og:title", content: "Nuestra Historia - Nebu | Flow-telligence" },
     { property: "og:description", content: "Conexiones significativas sin pantallas. Descubre la misión detrás de Nebu." },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://flow-telligence.com/our-story" },
-    { property: "og:image", content: "https://flow-telligence.com/og-story.jpg" },
+    { property: "og:url", content: `${BUSINESS.website}/our-story` },
+    { property: "og:image", content: `${BUSINESS.website}/og-story.jpg` },
 
     // Twitter
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: "Nuestra Historia - Nebu" },
     { name: "twitter:description", content: "Construyendo conexiones significativas sin pantallas a través del juego." },
-    { name: "twitter:image", content: "https://flow-telligence.com/og-story.jpg" },
+    { name: "twitter:image", content: `${BUSINESS.website}/og-story.jpg` },
   ];
 };
 

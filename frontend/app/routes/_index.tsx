@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { analytics } from "~/lib/analytics";
 import { useAnalytics } from "~/components/AnalyticsProvider";
 import { products } from "~/data/products";
+import { BUSINESS } from "~/config/constants";
 
 export async function loader() {
   // Generar datos estructurados para los productos
@@ -32,7 +33,7 @@ export async function loader() {
         },
         "offers": {
           "@type": "Offer",
-          "url": `https://flow-telligence.com/productos/${product.slug}`,
+          "url": `${BUSINESS.website}/productos/${product.slug}`,
           "priceCurrency": "PEN",
           "price": product.price.toString(),
           "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/PreOrder",
@@ -59,10 +60,10 @@ export async function loader() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Nebu - Flow-Telligence",
-    "url": "https://flow-telligence.com",
+    "url": BUSINESS.website,
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://flow-telligence.com/productos?search={search_term_string}",
+      "target": `${BUSINESS.website}/productos?search={search_term_string}`,
       "query-input": "required name=search_term_string"
     }
   };
@@ -75,7 +76,7 @@ export async function loader() {
 }
 
 export const meta: MetaFunction = () => {
-  const siteUrl = "https://flow-telligence.com";
+  const siteUrl = BUSINESS.website;
   const ogImageUrl = `${siteUrl}/assets/images/nebu-og-image.jpg`;
   
   return [
