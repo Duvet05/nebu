@@ -150,10 +150,15 @@ export default function NebuModel3D({ color }: ModelProps) {
           const handleContextLost = (event: Event) => {
             event.preventDefault();
             console.warn('WebGL context lost, attempting recovery...');
-            setHasError(true);
           };
-          
+
+          const handleContextRestored = () => {
+            console.log('WebGL context restored successfully');
+            setHasError(false);
+          };
+
           gl.domElement.addEventListener('webglcontextlost', handleContextLost, false);
+          gl.domElement.addEventListener('webglcontextrestored', handleContextRestored, false);
         }}
       >
         <Suspense fallback={null}>
