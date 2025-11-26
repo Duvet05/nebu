@@ -41,12 +41,12 @@ export default function PrivacyPolicy() {
             </div>
             
             <motion.h1 
-              className="text-4xl md:text-6xl font-bold font-heading mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+              className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              {t('legal.sections.privacy.title')}
+              {t("legal.title")}
             </motion.h1>
             
             <motion.p 

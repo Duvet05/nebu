@@ -327,12 +327,12 @@ export default function PreOrder() {
             </div>
 
             <motion.h1
-              className="text-4xl md:text-6xl font-bold font-gochi mb-6 flex items-center justify-center gap-3"
+              className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 flex items-center justify-center gap-3 text-primary leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Peluche</span>
+              <span>Peluche</span>
               <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-12 md:h-16" />
             </motion.h1>
 

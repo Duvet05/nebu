@@ -79,13 +79,8 @@ export default function ProductosPage() {
         <section className="pt-32 pb-20 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="text-center max-w-4xl mx-auto mb-16">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-accent/20 backdrop-blur-sm border border-primary/30 text-primary px-6 py-3 rounded-full text-sm font-medium mb-6">
-                <Sparkles className="w-4 h-4" />
-                <span className="font-mono">5 Modelos Disponibles</span>
-              </div>
-
               <motion.h1
-                className="text-4xl md:text-6xl font-bold font-heading mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}

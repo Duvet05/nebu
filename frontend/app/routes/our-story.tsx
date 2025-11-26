@@ -75,15 +75,8 @@ export default function OurStory() {
         {/* Hero Section */}
         <section className="pt-32 pb-16 px-4">
           <div className="max-w-6xl mx-auto text-center">
-            {/* Badge: simplify, remove gradients/blur */}
-            <div className="inline-flex items-center gap-2 bg-white border border-nebu-dark/10 text-nebu-dark px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Sparkles className="w-4 h-4 text-primary" />
-              {t("about.hero.badge")}
-            </div>
-
-            {/* Hero: remove gradient, use solid color */}
             <motion.h1
-              className="text-4xl md:text-6xl font-bold font-gochi mb-6 text-nebu-dark"
+              className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 flex items-center justify-center gap-3 text-primary leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}

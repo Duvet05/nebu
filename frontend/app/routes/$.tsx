@@ -32,7 +32,7 @@ export default function NotFound() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-9xl md:text-[12rem] font-bold font-heading bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-none">
+              <h1 className="text-9xl md:text-[12rem] font-bold font-gochi text-primary leading-none">
                 404
               </h1>
             </motion.div>

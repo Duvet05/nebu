@@ -106,7 +106,7 @@ export default function ContactPage() {
                 />
               </svg>
             </div>
-            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary leading-tight">
               {t('contact.success.title')}
             </h1>
             <p className="text-xl text-gray-600 mb-8">
@@ -146,13 +146,8 @@ export default function ContactPage() {
         <section className="pt-32 pb-16 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center max-w-4xl mx-auto">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-accent/20 backdrop-blur-sm border border-primary/30 text-primary dark:text-primary px-6 py-3 rounded-full text-sm font-medium mb-6">
-                <div className="w-2 h-2 bg-primary dark:bg-primary rounded-full animate-pulse"></div>
-                <span className="font-mono">{t('contact.badge')}</span>
-              </div>
-              
               <motion.h1 
-                className="text-4xl md:text-6xl font-bold font-gochi mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
