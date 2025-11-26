@@ -11,6 +11,7 @@ import { useCart } from "~/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { trackEvent } from "~/lib/facebook-pixel";
 import { BackInStockNotify } from "~/components/BackInStockNotify";
+import { ProductComparison } from "~/components/ProductComparison";
 import { BUSINESS } from "~/config/constants";
 
 export const meta: MetaFunction = () => {
@@ -288,57 +289,7 @@ export default function ProductosPage() {
         </section>
 
         {/* Comparison Section */}
-        <section className="pb-20 px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-                {t("products.comparison.title")}
-              </h2>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="text-center group">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:bg-green-200 group-hover:scale-110">
-                    <Check className="w-8 h-8 text-green-600" />
-                  </div>
-                  <h3 className="font-bold text-gray-900 mb-2">{t("products.comparison.features.sameAI.title")}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {t("products.comparison.features.sameAI.description")}
-                  </p>
-                </div>
-
-                <div className="text-center group">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:bg-blue-200 group-hover:scale-110">
-                    <Check className="w-8 h-8 text-blue-600" />
-                  </div>
-                  <h3 className="font-bold text-gray-900 mb-2">{t("products.comparison.features.parentalControl.title")}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {t("products.comparison.features.parentalControl.description")}
-                  </p>
-                </div>
-
-                <div className="text-center group">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:bg-purple-200 group-hover:scale-110">
-                    <Check className="w-8 h-8 text-purple-600" />
-                  </div>
-                  <h3 className="font-bold text-gray-900 mb-2">{t("products.comparison.features.freeUpdates.title")}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {t("products.comparison.features.freeUpdates.description")}
-                  </p>
-                </div>
-
-                <div className="text-center group">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:bg-orange-200 group-hover:scale-110">
-                    <Check className="w-8 h-8 text-orange-600" />
-                  </div>
-                  <h3 className="font-bold text-gray-900 mb-2">{t("products.comparison.features.warranty.title")}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {t("products.comparison.features.warranty.description")}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ProductComparison />
 
       </div>
 

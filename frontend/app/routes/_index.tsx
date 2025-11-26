@@ -175,11 +175,25 @@ export default function Index() {
         }}
       />
 
-      <div className="min-h-screen bg-nebu-bg">
+      <div className="min-h-screen bg-nebu-bg relative">
         <Header />
 
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+          <img
+            src="/assets/images/decoration-top-right.png"
+            alt=""
+            className="absolute top-20 right-10 w-32 h-32 opacity-15"
+          />
+          <img
+            src="/assets/images/decoration-bottom-left.png"
+            alt=""
+            className="absolute bottom-32 left-20 w-28 h-28 opacity-20"
+          />
+        </div>
+
       {/* Hero Section - 95% Screen Height */}
-      <main id="main-content">
+      <main id="main-content" className="relative z-10">
         <HeroSection onCTAClick={handleCTAClick} />
 
   {/* Product Details Section */}
