@@ -180,6 +180,7 @@
     "selectColor": "Selecciona tu color:",
     "quantity": "Cantidad:",
     "maxQuantity": "Máximo 5 unidades por pedido",
+    "soldOut": "¡Agotado! Únete a la lista de espera.",
     "reviews": "reseñas",
     "features": {
       "aiConversations": "Conversaciones IA personalizadas",
@@ -1024,6 +1025,35 @@
       "buyNow": "Comprar Nebu Ahora",
       "moreInfo": "Más Información",
       "rating": "⭐⭐⭐⭐⭐ 4.9/5 basado en 500+ reseñas"
+    },
+    "faqs": {
+      "title": "Preguntas Frecuentes sobre Devoluciones",
+      "items": {
+        "timeLimit": {
+          "question": "¿Cuánto tiempo tengo para devolver Nebu?",
+          "answer": "Tienes 30 días calendario desde que recibes el producto para solicitar una devolución. Este período te permite probar Nebu con tu familia y asegurarte de que es perfecto para tu hijo."
+        },
+        "freeShipping": {
+          "question": "¿El envío de devolución es gratuito?",
+          "answer": "¡Sí! Nosotros cubrimos el 100% del costo de envío de devolución. Te enviaremos una etiqueta prepagada y coordinaremos la recolección en tu domicilio."
+        },
+        "condition": {
+          "question": "¿En qué condición debe estar el producto?",
+          "answer": "Nebu debe estar en condición funcional con todos sus accesorios originales. Entendemos que los niños lo habrán usado, por lo que el desgaste normal está bien. Solo pedimos que no tenga daños mayores."
+        },
+        "refundTime": {
+          "question": "¿Cuánto tarda el reembolso?",
+          "answer": "Una vez que recibamos y verifiquemos el producto (1-2 días), procesaremos tu reembolso inmediatamente. Verás el dinero en tu cuenta en 5-10 días hábiles según tu banco."
+        },
+        "gift": {
+          "question": "¿Puedo devolver Nebu si fue un regalo?",
+          "answer": "Sí, aceptamos devoluciones de regalos. El reembolso se puede hacer al comprador original o como crédito de tienda para el receptor del regalo."
+        },
+        "damaged": {
+          "question": "¿Qué pasa si Nebu llega dañado?",
+          "answer": "Si Nebu llega dañado, contáctanos inmediatamente con fotos del daño. Te enviaremos un reemplazo express sin costo adicional o un reembolso completo, lo que prefieras."
+        }
+      }
     }
   }
 }

@@ -472,7 +472,7 @@ export default function PreOrder() {
                       </button>
                     </div>
                     <p className="text-sm text-gray-500 mt-2">
-                      {soldOut ? "¡Agotado! Únete a la lista de espera." : t("preOrder.maxQuantity")}
+                      {soldOut ? t("preOrder.soldOut") : t("preOrder.maxQuantity")}
                     </p>
                   </div>
 
