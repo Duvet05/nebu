@@ -5,6 +5,7 @@ import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import ConversationExamples from "~/components/Sections/ConversationExamples";
 import BenefitsCarousel from "~/components/Sections/BenefitsCarousel";
+import HeroQuote from "~/components/Sections/HeroQuote";
 import ProductDetails from "~/components/Sections/ProductDetails";
 import { HeroSection } from "~/components/Sections/HeroSection";
 import { Divider } from "~/components/Divider";
@@ -208,6 +209,11 @@ export default function Index() {
 
         {/* Benefits Carousel Section */}
         <BenefitsCarousel />
+        
+        <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
+
+        {/* Hero Quote Section */}
+        <HeroQuote />
 
         <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 

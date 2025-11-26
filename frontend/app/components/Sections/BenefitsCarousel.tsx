@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 // Memoized card component to prevent unnecessary re-renders
 const BenefitCard = memo(function BenefitCard({ 
   benefit, 
-  index 
+  index: _index 
 }: { 
   benefit: Benefit; 
   index: number;
@@ -17,10 +17,10 @@ const BenefitCard = memo(function BenefitCard({
     <div
       className={`
         benefit-card
-        flex-shrink-0 w-96 lg:w-[420px] 
+        flex-shrink-0 w-80 lg:w-[360px] 
         bg-gradient-to-br ${benefit.bgGradient} 
         border-2 ${benefit.borderColor} 
-        rounded-[2.5rem] p-8 
+        rounded-[2rem] p-6 
         shadow-lg
         relative overflow-hidden
       `}
@@ -28,7 +28,7 @@ const BenefitCard = memo(function BenefitCard({
       {/* Simplified decorative background - removed blur for performance */}
       <div 
         className={`
-          absolute -top-10 -right-10 w-40 h-40 
+          absolute -top-10 -right-10 w-32 h-32 
           bg-gradient-to-br ${benefit.gradient} 
           rounded-full opacity-15
         `} 
@@ -37,31 +37,31 @@ const BenefitCard = memo(function BenefitCard({
       {/* Icon container */}
       <div
         className={`
-          relative w-20 h-20 
+          relative w-16 h-16 
           bg-gradient-to-br ${benefit.gradient} 
-          rounded-3xl flex items-center justify-center 
-          mb-6 shadow-lg rotate-3
+          rounded-2xl flex items-center justify-center 
+          mb-4 shadow-lg rotate-3
         `}
       >
         {benefit.iconType === 'svg' ? (
           <img
             src={benefit.iconPath}
             alt=""
-            className="w-10 h-10 relative z-10"
+            className="w-8 h-8 relative z-10"
             aria-hidden="true"
             loading="lazy"
           />
         ) : (
-          IconComponent && <IconComponent className="w-10 h-10 text-white relative z-10" />
+          IconComponent && <IconComponent className="w-8 h-8 text-white relative z-10" />
         )}
-        <div className="absolute inset-0 bg-white/20 rounded-3xl" />
+        <div className="absolute inset-0 bg-white/20 rounded-2xl" />
       </div>
 
-      <h3 className="text-2xl font-bold text-gray-900 mb-4 font-heading relative z-10">
+      <h3 className="text-xl font-bold text-gray-900 mb-3 font-heading relative z-10">
         {benefit.title}
       </h3>
 
-      <p className="text-gray-700 text-base leading-relaxed mb-6 relative z-10">
+      <p className="text-gray-700 text-sm leading-relaxed mb-4 relative z-10">
         {benefit.description}
       </p>
 
@@ -216,7 +216,7 @@ export default function BenefitsCarousel() {
       `}</style>
 
       <section
-        className="min-h-[80vh] py-24 overflow-hidden flex items-center"
+        className="py-16 overflow-hidden"
         style={{ backgroundColor: '#FFF7F0' }}
         aria-labelledby="benefits-title"
       >
@@ -226,15 +226,15 @@ export default function BenefitsCarousel() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16 max-w-7xl mx-auto"
+            className="text-center mb-8 max-w-7xl mx-auto"
           >
             <h2 
               id="benefits-title" 
-              className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary"
+              className="text-4xl md:text-5xl font-bold font-gochi mb-3 text-primary"
             >
               {t("benefits.title")}
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
               {t("benefits.subtitle")}
             </p>
           </motion.div>
@@ -246,7 +246,7 @@ export default function BenefitsCarousel() {
           >
             <div className="overflow-hidden">
               <div 
-                className="carousel-track flex gap-8"
+                className="carousel-track flex gap-5"
                 aria-live="polite"
               >
                 {extendedBenefits.map((benefit, index) => (
@@ -269,17 +269,6 @@ export default function BenefitsCarousel() {
               style={{ background: 'linear-gradient(to left, #FFF7F0, transparent)' }} 
             />
           </div>
-
-          {/* Quote - keeping motion here is fine, it only runs once */}
-          <motion.blockquote
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="mt-20 text-center italic text-3xl md:text-4xl lg:text-5xl text-gray-700 max-w-5xl mx-auto leading-relaxed font-gochi px-4"
-          >
-            "{t("hero.description")}"
-          </motion.blockquote>
         </div>
       </section>
     </>
