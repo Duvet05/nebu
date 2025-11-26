@@ -97,7 +97,7 @@ export function Newsletter() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("newsletter.emailPlaceholder")}
               required
-              className="flex-1 px-6 py-4 rounded-full border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 text-gray-900 placeholder-gray-500 transition-colors"
+              className="flex-1 px-6 py-4 rounded-full border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 text-gray-900 text-center placeholder-gray-500 placeholder:text-center transition-colors"
             />
             <button
               type="submit"
@@ -137,7 +137,13 @@ export function Newsletter() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            {t("newsletter.privacy")}
+            {t("newsletter.privacy")}{" "}
+            <a 
+              href="/privacy" 
+              className="text-primary hover:text-primary/80 underline transition-colors"
+            >
+              {t("newsletter.privacyLink")}
+            </a>.
           </motion.p>
         </div>
       </div>

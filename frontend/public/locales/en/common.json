@@ -458,10 +458,11 @@
   "newsletter": {
     "title": "Subscribe for inspiring stories, offers & news.",
     "description": "Stay up to date with Nebu's latest adventures and parenting tips.",
-    "emailPlaceholder": "E-mail",
+    "emailPlaceholder": "yourmail@example.com",
     "subscribe": "Subscribe",
     "subscribing": "Subscribing...",
-    "privacy": "By signing up, you agree with our privacy policy."
+    "privacy": "By signing up, you agree with our",
+    "privacyLink": "privacy policy"
   },
   "whatsapp": {
     "tooltip": "Write us on WhatsApp!",

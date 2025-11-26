@@ -458,10 +458,11 @@
   "newsletter": {
     "title": "Suscríbete para historias inspiradoras, ofertas y noticias.",
     "description": "Mantente al día con las últimas aventuras de Nebu y consejos para padres.",
-    "emailPlaceholder": "Correo electrónico",
+    "emailPlaceholder": "tucorreo@ejemplo.com",
     "subscribe": "Suscribirse",
     "subscribing": "Suscribiendo...",
-    "privacy": "Al registrarte, aceptas nuestra política de privacidad."
+    "privacy": "Al registrarte, aceptas nuestra",
+    "privacyLink": "política de privacidad"
   },
   "whatsapp": {
     "tooltip": "¡Escríbenos por WhatsApp!",
