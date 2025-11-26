@@ -4,8 +4,9 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
+import { CONTACT } from "~/config/constants";
 import { 
-  Mail, MapPin, Calendar, FileText, Shield, Cookie, Scale, Phone, 
+  Mail, Calendar, FileText, Shield, Scale, Phone, 
   AlertCircle, Check, Clock, Package, RefreshCw, Users, Heart, Lock,
   Smartphone, Wifi, Award
 } from "lucide-react";
@@ -28,7 +29,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function TermsOfService() {
-  const { t } = useTranslation();
+  const _t = useTranslation();
 
   // Tabla de contenidos para navegación rápida
   const sections = [
@@ -184,14 +185,14 @@ export default function TermsOfService() {
                           <div className="grid md:grid-cols-2 gap-4">
                             <div>
                               <p className="text-sm text-gray-500 mb-1">Teléfono de Contacto</p>
-                              <a href="tel:+51945012824" className="font-semibold text-primary hover:text-accent transition-colors">
-                                +51 945 012 824
+                              <a href={`tel:${CONTACT.phone}`} className="font-semibold text-primary hover:text-accent transition-colors">
+                                {CONTACT.whatsapp.display}
                               </a>
                             </div>
                             <div>
                               <p className="text-sm text-gray-500 mb-1">Correo Electrónico</p>
-                              <a href="mailto:contacto@flow-telligence.com" className="font-semibold text-primary hover:text-accent transition-colors">
-                                contacto@flow-telligence.com
+                              <a href={`mailto:${CONTACT.email.main}`} className="font-semibold text-primary hover:text-accent transition-colors">
+                                {CONTACT.email.main}
                               </a>
                             </div>
                           </div>
@@ -1024,15 +1025,15 @@ export default function TermsOfService() {
                         <div>
                           <p className="font-semibold text-gray-900 mb-3">Canales de Atención:</p>
                           <div className="space-y-2">
-                            <a href="mailto:contacto@flow-telligence.com" className="flex items-center gap-2 text-primary hover:text-accent transition-colors">
+                            <a href={`mailto:${CONTACT.email.main}`} className="flex items-center gap-2 text-primary hover:text-accent transition-colors">
                               <Mail className="w-4 h-4" />
-                              <span className="text-sm">contacto@flow-telligence.com</span>
+                              <span className="text-sm">{CONTACT.email.main}</span>
                             </a>
-                            <a href="tel:+51945012824" className="flex items-center gap-2 text-primary hover:text-accent transition-colors">
+                            <a href={`tel:${CONTACT.phone}`} className="flex items-center gap-2 text-primary hover:text-accent transition-colors">
                               <Phone className="w-4 h-4" />
-                              <span className="text-sm">+51 945 012 824</span>
+                              <span className="text-sm">{CONTACT.whatsapp.display}</span>
                             </a>
-                            <a href="#" className="flex items-center gap-2 text-primary hover:text-accent transition-colors">
+                            <a href={CONTACT.whatsapp.url} className="flex items-center gap-2 text-primary hover:text-accent transition-colors">
                               <MessageCircle className="w-4 h-4" />
                               <span className="text-sm">WhatsApp Business</span>
                             </a>

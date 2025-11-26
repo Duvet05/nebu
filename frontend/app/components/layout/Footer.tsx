@@ -1,6 +1,7 @@
 import { Link } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { CONTACT } from "~/config/constants";
 
 // TikTok SVG icon component (lucide-react no tiene TikTok nativo)
 const TikTokIcon = ({ size = 20 }: { size?: number }) => (
@@ -108,18 +109,18 @@ export function Footer() {
             </h3>
             <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-300 mb-4">
               <li>
-                <a href="mailto:contacto@flow-telligence.com" className="hover:text-primary transition-colors">
-                  contacto@flow-telligence.com
+                <a href={`mailto:${CONTACT.email.main}`} className="hover:text-primary transition-colors">
+                  {CONTACT.email.main}
                 </a>
               </li>
               <li>
                 <a
-                  href="https://wa.me/51945012824?text=Hola!%20Estoy%20interesado%20en%20Nebu"
+                  href={CONTACT.whatsapp.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-primary transition-colors"
                 >
-                  +51 945 012 824
+                  {CONTACT.whatsapp.display}
                 </a>
               </li>
             </ul>
@@ -129,7 +130,7 @@ export function Footer() {
             </h4>
             <div className="flex gap-4">
               <a
-                href="https://www.tiktok.com/@flow_.ia/video/7563090924025203976"
+                href={CONTACT.social.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
@@ -138,7 +139,7 @@ export function Footer() {
                 <TikTokIcon size={20} />
               </a>
               <a
-                href="https://www.instagram.com/flow_.ia/"
+                href={CONTACT.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
@@ -147,7 +148,7 @@ export function Footer() {
                 <Instagram size={20} aria-hidden="true" />
               </a>
               <a
-                href="https://pe.linkedin.com/in/galvezc"
+                href={CONTACT.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"
@@ -156,7 +157,7 @@ export function Footer() {
                 <Linkedin size={20} aria-hidden="true" />
               </a>
               <a
-                href="https://www.facebook.com/flowtelligence"
+                href={CONTACT.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-400 hover:text-primary transition-colors"

@@ -1,3 +1,5 @@
+import { CONTACT, BUSINESS } from './constants';
+
 export interface OrganizationSchema {
   "@context": string;
   "@type": string;
@@ -33,46 +35,46 @@ export function getStructuredData(): OrganizationSchema {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Flow-Telligence",
-    legalName: "FLOW SACS",
-    url: "https://flow-telligence.com",
-    logo: "https://flow-telligence.com/assets/logo.png",
+    name: BUSINESS.name,
+    legalName: BUSINESS.legalName,
+    url: BUSINESS.website,
+    logo: `${BUSINESS.website}/assets/logo.png`,
     foundingDate: "2024",
     founders: [
       {
         "@type": "Person",
-        name: "Flow-Telligence Team"
+        name: `${BUSINESS.name} Team`
       }
     ],
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Lima",
-      addressLocality: "Lima",
-      addressCountry: "PE"
+      streetAddress: BUSINESS.address.full,
+      addressLocality: BUSINESS.address.city,
+      addressCountry: BUSINESS.address.country
     },
     contactPoint: [
       {
         "@type": "ContactPoint",
-        telephone: "+51-945-012-824",
+        telephone: CONTACT.phone,
         contactType: "customer service",
         areaServed: "PE",
         availableLanguage: ["Spanish", "English"]
       },
       {
         "@type": "ContactPoint",
-        email: "contacto@flow-telligence.com",
+        email: CONTACT.email.main,
         contactType: "customer service"
       }
     ],
     sameAs: [
-      "https://www.facebook.com/flowtelligence",
-      "https://www.instagram.com/flowtelligence",
-      "https://www.tiktok.com/@flowtelligence",
-      "https://twitter.com/flowtelligence",
-      "https://www.youtube.com/@flowtelligence"
+      CONTACT.social.facebook,
+      CONTACT.social.instagram,
+      CONTACT.social.tiktok,
+      CONTACT.social.twitter,
+      CONTACT.social.youtube
     ],
-    taxID: "10703363135",
-    vatID: "10703363135"
+    taxID: BUSINESS.ruc,
+    vatID: BUSINESS.ruc
   };
 }
 
@@ -81,8 +83,8 @@ export function getMetaTags(locale: string = 'es') {
   
   return [
     // Core Meta Tags
-    { name: "author", content: "Flow-Telligence" },
-    { name: "company", content: "FLOW SACS" },
+    { name: "author", content: BUSINESS.name },
+    { name: "company", content: BUSINESS.legalName },
     { name: "rating", content: "General" },
     { name: "distribution", content: "Global" },
     { name: "revisit-after", content: "7 days" },
@@ -92,7 +94,7 @@ export function getMetaTags(locale: string = 'es') {
     { name: "coverage", content: "Worldwide" },
     
     // Open Graph Tags
-    { property: "og:site_name", content: "Flow-Telligence" },
+    { property: "og:site_name", content: BUSINESS.name },
     { property: "og:type", content: "website" },
     { property: "og:locale", content: isSpanish ? "es_PE" : "en_US" },
     
@@ -102,11 +104,11 @@ export function getMetaTags(locale: string = 'es') {
     { name: "twitter:creator", content: "@flowtelligence" },
     
     // Business information
-    { property: "business:contact_data:street_address", content: "Lima, Perú" },
-    { property: "business:contact_data:locality", content: "Lima" },
-    { property: "business:contact_data:country_name", content: "Peru" },
-    { property: "business:contact_data:email", content: "contacto@flow-telligence.com" },
-    { property: "business:contact_data:phone_number", content: "+51945012824" },
+    { property: "business:contact_data:street_address", content: BUSINESS.address.full },
+    { property: "business:contact_data:locality", content: BUSINESS.address.city },
+    { property: "business:contact_data:country_name", content: BUSINESS.address.countryName },
+    { property: "business:contact_data:email", content: CONTACT.email.main },
+    { property: "business:contact_data:phone_number", content: CONTACT.phone },
     
     // Additional SEO Tags
     { name: "robots", content: "index, follow, max-image-preview:large" },

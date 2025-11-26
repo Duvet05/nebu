@@ -3,6 +3,7 @@
 
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CONTACT } from '~/config/constants';
 
 interface ErrorLayoutProps {
   children: ReactNode;
@@ -115,9 +116,10 @@ export function ErrorContent({
       {/* Error code */}
       <div className="text-7xl md:text-8xl font-bold font-gochi text-primary mb-4">{statusCode}</div>
       
-      {/* Error message */}
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+      {/* Error message with Nebu logo */}
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
         {getErrorTitle()}
+        <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-8 md:h-10" />
       </h1>
       
       {/* Error description */}
@@ -160,7 +162,7 @@ export function ErrorContent({
       <div className="pt-6 border-t border-gray-200">
         <p className="text-sm text-gray-600">
           {t('errors.needHelp')} {' '}
-          <a href="mailto:contacto@flow-telligence.com" className="text-primary font-semibold hover:underline transition-colors">
+          <a href={`mailto:${CONTACT.email.support}`} className="text-primary font-semibold hover:underline transition-colors">
             {t('errors.contactSupport')}
           </a>
         </p>
@@ -242,8 +244,9 @@ export function Maintenance() {
           </svg>
         </div>
         
-        <h1 className="text-3xl md:text-4xl font-bold font-gochi text-primary mb-4">
+        <h1 className="text-3xl md:text-4xl font-bold font-gochi text-primary mb-4 flex items-center justify-center gap-3">
           {t('errors.maintenance.title')}
+          <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-8 md:h-10" />
         </h1>
         
         <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">

@@ -530,83 +530,6 @@
     "quote": "Even when we get lost, there's always a new adventure waiting. That's what makes exploring so much fun!",
     "quoteAuthor": "Nebu"
   },
-  "returns": {
-    "title": "Return Policy",
-    "subtitle": "Satisfaction guarantee and return process for Nebu",
-    "mainContent": {
-      "title": "Return and Refund Policy",
-      "intro": "At Flow-telligence, we want you to be completely satisfied with your Nebu purchase. We offer a flexible and transparent return policy.",
-      "guarantee": {
-        "title": "30-Day Satisfaction Guarantee",
-        "description": "You have 30 days from receiving your Nebu to decide if you're completely satisfied. If for any reason it doesn't meet your expectations, you can return it for a full refund."
-      },
-      "process": {
-        "title": "Return Process",
-        "step1": "Contact our team within 30 days",
-        "step2": "Receive a prepaid shipping label via email",
-        "step3": "Pack Nebu in its original box with all accessories",
-        "step4": "Ship the package using the prepaid label",
-        "step5": "Receive your full refund in 5-7 business days"
-      },
-      "conditions": {
-        "title": "Return Conditions",
-        "condition1": "Nebu in its original packaging",
-        "condition2": "Includes all accessories and documentation",
-        "condition3": "No significant physical damage caused by misuse",
-        "condition4": "Within 30 days from receipt"
-      },
-      "warranty": {
-        "title": "Extended Technical Warranty",
-        "hardware": "Hardware Warranty (12 months):",
-        "hardwareItems": {
-          "defects": "Manufacturing defects",
-          "components": "Defective components",
-          "connectivity": "Connectivity issues"
-        },
-        "software": "Software Warranty (24 months):",
-        "softwareItems": {
-          "updates": "Free updates",
-          "bugs": "Bug fixes",
-          "support": "Priority technical support"
-        }
-      },
-      "refundMethods": {
-        "title": "Refund Methods",
-        "original": "Refund to original payment method",
-        "transfer": "Bank transfer (for cash payments)",
-        "credit": "Credit for future purchases (optional)"
-      },
-      "specialCases": {
-        "title": "Special Cases",
-        "damaged": "Product damaged in shipping: Immediate replacement at no cost",
-        "defective": "Defective product: Replacement or full refund",
-        "missing": "Missing parts: Immediate shipment of missing components"
-      },
-      "contact": {
-        "title": "Start a Return",
-        "description": "To start the return process or ask questions:"
-      }
-    },
-    "sidebar": {
-      "shipping": {
-        "title": "Shipping Information",
-        "free": "Free return shipping",
-        "fast": "Fast processing in 1-2 days",
-        "tracking": "Full tracking included",
-        "peru": "Coverage throughout Peru"
-      },
-      "support": {
-        "title": "Customer Support",
-        "available": "Available Monday to Friday",
-        "hours": "9:00 AM - 6:00 PM (Lima)",
-        "response": "Response guaranteed within 24 hours",
-        "satisfaction": "Commitment to your satisfaction"
-      },
-      "contact": {
-        "title": "Contact Information"
-      }
-    }
-  },
   "chat": {
     "title": "Chat with Nebu",
     "subtitle": "Always here to help",
@@ -987,6 +910,120 @@
       "401": "Unauthorized",
       "403": "Access denied",
       "appError": "Application error"
+    }
+  },
+  "returns": {
+    "meta": {
+      "title": "Returns & Warranty - Nebu | 30-Day Satisfaction Guarantee",
+      "description": "30-day satisfaction guarantee. Free return shipping, full refund. Simple and transparent process. 12-month hardware warranty. 24/7 support.",
+      "keywords": "nebu returns, nebu warranty, nebu refund, return policy, 30-day guarantee, nebu exchanges"
+    },
+    "hero": {
+      "badge": "Total Satisfaction Guarantee",
+      "title": "30-Day Guarantee",
+      "subtitle": "Try Nebu risk-free. If you're not 100% satisfied, we'll give you your money back. No questions, no fine print.",
+      "benefits": {
+        "days": {
+          "label": "30 Days",
+          "description": "To return"
+        },
+        "shipping": {
+          "label": "Free Shipping",
+          "description": "For returns"
+        },
+        "refund": {
+          "label": "100% Refund",
+          "description": "Guaranteed"
+        },
+        "warranty": {
+          "label": "1 Year",
+          "description": "Warranty"
+        }
+      }
+    },
+    "process": {
+      "title": "Super Simple Return Process",
+      "subtitle": "Just 4 steps for your total peace of mind",
+      "steps": {
+        "contact": {
+          "title": "Contact Us",
+          "description": "Send an email or call us",
+          "time": "2 minutes"
+        },
+        "pack": {
+          "title": "Pack Nebu",
+          "description": "We'll send you a prepaid label",
+          "time": "5 minutes"
+        },
+        "pickup": {
+          "title": "Pickup",
+          "description": "We pick up from your home",
+          "time": "Free"
+        },
+        "refund": {
+          "title": "Refund",
+          "description": "100% of your money back",
+          "time": "5-10 days"
+        }
+      },
+      "cta": "Start Return Now",
+      "note": "No hassles • No questions"
+    },
+    "form": {
+      "title": "Start Return",
+      "orderNumber": "Order Number",
+      "orderPlaceholder": "Ex: #NEBU-2024-001",
+      "email": "Purchase Email",
+      "emailPlaceholder": "your@email.com",
+      "reason": "Reason (Optional)",
+      "reasonPlaceholder": "Select a reason",
+      "reasons": {
+        "notMeet": "Doesn't meet expectations",
+        "notInterested": "My child wasn't interested",
+        "technical": "Technical issues",
+        "duplicate": "Duplicate gift",
+        "changeOfMind": "Change of mind",
+        "other": "Other reason"
+      },
+      "submit": "Request Return",
+      "responseTime": "We'll respond in less than 2 hours"
+    },
+    "contact": {
+      "title": "Prefer to talk to us?",
+      "phone": {
+        "label": "Phone",
+        "hours": "Mon-Sun 8AM-8PM"
+      },
+      "whatsapp": {
+        "label": "WhatsApp",
+        "time": "Response in minutes"
+      },
+      "email": {
+        "label": "Email",
+        "time": "24-hour response"
+      }
+    },
+    "testimonials": {
+      "title": "What parents say",
+      "items": {
+        "maria": {
+          "text": "The return process was incredibly easy. Although in the end we decided to keep Nebu because my son loves it.",
+          "author": "María G.",
+          "location": "Lima"
+        },
+        "carlos": {
+          "text": "Excellent service. I had to exchange due to a technical issue and in 3 days I had the new Nebu working perfectly.",
+          "author": "Carlos P.",
+          "location": "Arequipa"
+        }
+      }
+    },
+    "cta": {
+      "title": "Try Nebu Risk-Free for 30 Days",
+      "subtitle": "Thousands of happy families. Join them with complete peace of mind.",
+      "buyNow": "Buy Nebu Now",
+      "moreInfo": "More Information",
+      "rating": "⭐⭐⭐⭐⭐ 4.9/5 based on 500+ reviews"
     }
   }
 }

@@ -34,7 +34,7 @@ export const meta: MetaFunction = () => {
 export default function ProductosPage() {
   const { t } = useTranslation("common");
   const { addItem } = useCart();
-  const [selectedColors, setSelectedColors] = useState<Record<string, string>>(
+  const [selectedColors, _setSelectedColors] = useState<Record<string, string>>(
     products.reduce((acc, p) => ({ ...acc, [p.id]: p.colors[0].id }), {})
   );
 

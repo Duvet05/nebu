@@ -59,7 +59,7 @@ interface ColorOption {
   gradient: string;
 }
 
-const colorOptions: ColorOption[] = [
+const _colorOptions: ColorOption[] = [
   { id: "aqua", name: "Aqua", color: "#4ECDC4", gradient: "from-teal-400 to-cyan-500" },
   { id: "dusk", name: "Anochecer", color: "#6366F1", gradient: "from-indigo-500 to-purple-600" },
   { id: "quartz", name: "Cuarzo", color: "#EC4899", gradient: "from-pink-500 to-rose-600" },
@@ -332,7 +332,6 @@ export default function PreOrder() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span>Peluche</span>
               <img src="/assets/logos/logo-nebu.svg" alt="Nebu" className="h-12 md:h-16" />
             </motion.h1>
 

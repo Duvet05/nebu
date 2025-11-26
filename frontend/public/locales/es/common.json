@@ -530,83 +530,6 @@
     "quote": "Incluso cuando nos perdemos, siempre hay una nueva aventura esperando. ¡Eso es lo que hace que explorar sea tan divertido!",
     "quoteAuthor": "Nebu"
   },
-  "returns": {
-    "title": "Política de Devoluciones",
-    "subtitle": "Garantía de satisfacción y proceso de devoluciones para Nebu",
-    "mainContent": {
-      "title": "Política de Devoluciones y Reembolsos",
-      "intro": "En Flow-telligence, queremos que estés completamente satisfecho con tu compra de Nebu. Ofrecemos una política de devoluciones flexible y transparente.",
-      "guarantee": {
-        "title": "Garantía de Satisfacción de 30 Días",
-        "description": "Tienes 30 días desde la recepción de tu Nebu para decidir si estás completamente satisfecho. Si por cualquier razón no cumple con tus expectativas, puedes devolverlo para un reembolso completo."
-      },
-      "process": {
-        "title": "Proceso de Devolución",
-        "step1": "Contacta a nuestro equipo dentro de los 30 días",
-        "step2": "Recibe una etiqueta de envío prepagada por email",
-        "step3": "Empaca Nebu en su caja original con todos los accesorios",
-        "step4": "Envía el paquete usando la etiqueta prepagada",
-        "step5": "Recibe tu reembolso completo en 5-7 días hábiles"
-      },
-      "conditions": {
-        "title": "Condiciones para Devolución",
-        "condition1": "Nebu en su empaque original",
-        "condition2": "Incluye todos los accesorios y documentación",
-        "condition3": "Sin daños físicos significativos causados por mal uso",
-        "condition4": "Dentro del periodo de 30 días desde la recepción"
-      },
-      "warranty": {
-        "title": "Garantía Técnica Extendida",
-        "hardware": "Garantía de Hardware (12 meses):",
-        "hardwareItems": {
-          "defects": "Defectos de fabricación",
-          "components": "Componentes defectuosos",
-          "connectivity": "Problemas de conectividad"
-        },
-        "software": "Garantía de Software (24 meses):",
-        "softwareItems": {
-          "updates": "Actualizaciones gratuitas",
-          "bugs": "Corrección de errores",
-          "support": "Soporte técnico prioritario"
-        }
-      },
-      "refundMethods": {
-        "title": "Métodos de Reembolso",
-        "original": "Reembolso a método de pago original",
-        "transfer": "Transferencia bancaria (para pagos en efectivo)",
-        "credit": "Crédito para futuras compras (opcional)"
-      },
-      "specialCases": {
-        "title": "Casos Especiales",
-        "damaged": "Producto dañado en envío: Reemplazo inmediato sin costo",
-        "defective": "Producto defectuoso: Reemplazo o reembolso completo",
-        "missing": "Partes faltantes: Envío inmediato de componentes faltantes"
-      },
-      "contact": {
-        "title": "Iniciar una Devolución",
-        "description": "Para iniciar el proceso de devolución o hacer preguntas:"
-      }
-    },
-    "sidebar": {
-      "shipping": {
-        "title": "Información de Envío",
-        "free": "Envío gratuito en devoluciones",
-        "fast": "Procesamiento rápido en 1-2 días",
-        "tracking": "Seguimiento completo incluido",
-        "peru": "Cobertura en todo Perú"
-      },
-      "support": {
-        "title": "Soporte al Cliente",
-        "available": "Disponible de lunes a viernes",
-        "hours": "9:00 AM - 6:00 PM (Lima)",
-        "response": "Respuesta garantizada en 24 horas",
-        "satisfaction": "Compromiso con tu satisfacción"
-      },
-      "contact": {
-        "title": "Información de Contacto"
-      }
-    }
-  },
   "chat": {
     "title": "Chat con Nebu",
     "subtitle": "Siempre aquí para ayudarte",
@@ -987,6 +910,120 @@
       "401": "No autorizado",
       "403": "Acceso denegado",
       "appError": "Error de aplicación"
+    }
+  },
+  "returns": {
+    "meta": {
+      "title": "Devoluciones y Garantía - Nebu | 30 Días Garantía de Satisfacción",
+      "description": "Garantía de satisfacción de 30 días. Devolución gratis, reembolso completo. Proceso simple y transparente. 12 meses garantía de hardware. Soporte 24/7.",
+      "keywords": "devoluciones nebu, garantía nebu, reembolso nebu, política de devolución, garantía 30 días, cambios nebu"
+    },
+    "hero": {
+      "badge": "Garantía de Satisfacción Total",
+      "title": "30 Días de Garantía",
+      "subtitle": "Prueba Nebu sin riesgo. Si no estás 100% satisfecho, te devolvemos tu dinero completo. Sin preguntas, sin letra pequeña.",
+      "benefits": {
+        "days": {
+          "label": "30 Días",
+          "description": "Para devolver"
+        },
+        "shipping": {
+          "label": "Envío Gratis",
+          "description": "De devolución"
+        },
+        "refund": {
+          "label": "100% Reembolso",
+          "description": "Garantizado"
+        },
+        "warranty": {
+          "label": "1 Año",
+          "description": "De garantía"
+        }
+      }
+    },
+    "process": {
+      "title": "Proceso de Devolución Super Simple",
+      "subtitle": "Solo 4 pasos para tu tranquilidad total",
+      "steps": {
+        "contact": {
+          "title": "Contáctanos",
+          "description": "Envía un email o llámanos",
+          "time": "2 minutos"
+        },
+        "pack": {
+          "title": "Empaca Nebu",
+          "description": "Te enviamos etiqueta prepagada",
+          "time": "5 minutos"
+        },
+        "pickup": {
+          "title": "Recolección",
+          "description": "Recogemos en tu domicilio",
+          "time": "Sin costo"
+        },
+        "refund": {
+          "title": "Reembolso",
+          "description": "100% de tu dinero de vuelta",
+          "time": "5-10 días"
+        }
+      },
+      "cta": "Iniciar Devolución Ahora",
+      "note": "Sin complicaciones • Sin preguntas"
+    },
+    "form": {
+      "title": "Iniciar Devolución",
+      "orderNumber": "Número de Pedido",
+      "orderPlaceholder": "Ej: #NEBU-2024-001",
+      "email": "Email de Compra",
+      "emailPlaceholder": "tu@email.com",
+      "reason": "Motivo (Opcional)",
+      "reasonPlaceholder": "Selecciona un motivo",
+      "reasons": {
+        "notMeet": "No cumple expectativas",
+        "notInterested": "Mi hijo no se interesó",
+        "technical": "Problemas técnicos",
+        "duplicate": "Regalo duplicado",
+        "changeOfMind": "Cambio de opinión",
+        "other": "Otro motivo"
+      },
+      "submit": "Solicitar Devolución",
+      "responseTime": "Responderemos en menos de 2 horas"
+    },
+    "contact": {
+      "title": "¿Prefieres hablar con nosotros?",
+      "phone": {
+        "label": "Teléfono",
+        "hours": "Lun-Dom 8AM-8PM"
+      },
+      "whatsapp": {
+        "label": "WhatsApp",
+        "time": "Respuesta en minutos"
+      },
+      "email": {
+        "label": "Email",
+        "time": "24 horas respuesta"
+      }
+    },
+    "testimonials": {
+      "title": "Lo que dicen los padres",
+      "items": {
+        "maria": {
+          "text": "El proceso de devolución fue increíblemente fácil. Aunque al final decidimos quedarnos con Nebu porque mi hijo lo adora.",
+          "author": "María G.",
+          "location": "Lima"
+        },
+        "carlos": {
+          "text": "Excelente servicio. Tuve que cambiar por un problema técnico y en 3 días tenía el nuevo Nebu funcionando perfectamente.",
+          "author": "Carlos P.",
+          "location": "Arequipa"
+        }
+      }
+    },
+    "cta": {
+      "title": "Prueba Nebu Sin Riesgo Durante 30 Días",
+      "subtitle": "Miles de familias felices. Únete a ellas con total tranquilidad.",
+      "buyNow": "Comprar Nebu Ahora",
+      "moreInfo": "Más Información",
+      "rating": "⭐⭐⭐⭐⭐ 4.9/5 basado en 500+ reseñas"
     }
   }
 }

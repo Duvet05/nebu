@@ -2,13 +2,12 @@ import type { MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { CONTACT } from "~/config/constants";
+import { BUSINESS } from "~/config/constants";
 import {
-  Calendar,
   Mail,
-  MapPin,
   Truck,
   Shield,
-  Clock,
   CheckCircle,
   RefreshCw,
   Package,
@@ -22,11 +21,8 @@ import {
   MessageCircle,
   ChevronDown,
   ChevronUp,
-  Box,
   CreditCard,
   Send,
-  Check,
-  X,
   Info,
   Gift,
   Zap,
@@ -37,24 +33,27 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction = ({ params }) => {
+  const locale = params.lang || 'es';
+  const isSpanish = locale === 'es';
+  
   return [
-    { title: "Devoluciones y Garantía - Nebu | 30 Días Garantía de Satisfacción" },
+    { title: isSpanish ? "Devoluciones y Garantía - Nebu | 30 Días Garantía de Satisfacción" : "Returns & Warranty - Nebu | 30-Day Satisfaction Guarantee" },
     {
       name: "description",
-      content: "Garantía de satisfacción de 30 días. Devolución gratis, reembolso completo. Proceso simple y transparente. 12 meses garantía de hardware. Soporte 24/7."
+      content: isSpanish ? "Garantía de satisfacción de 30 días. Devolución gratis, reembolso completo. Proceso simple y transparente. 12 meses garantía de hardware. Soporte 24/7." : "30-day satisfaction guarantee. Free return shipping, full refund. Simple and transparent process. 12-month hardware warranty. 24/7 support."
     },
     {
       name: "keywords",
-      content: "devoluciones nebu, garantía nebu, reembolso nebu, política de devolución, garantía 30 días, cambios nebu"
+      content: isSpanish ? "devoluciones nebu, garantía nebu, reembolso nebu, política de devolución, garantía 30 días, cambios nebu" : "nebu returns, nebu warranty, nebu refund, return policy, 30-day guarantee, nebu exchanges"
     },
 
     // Open Graph
-    { property: "og:title", content: "Devoluciones y Garantía - Nebu | 30 Días Satisfacción" },
-    { property: "og:description", content: "30 días garantía de satisfacción. Devolución gratis y reembolso completo. Sin preguntas." },
+    { property: "og:title", content: isSpanish ? "Devoluciones y Garantía - Nebu | 30 Días Satisfacción" : "Returns & Warranty - Nebu | 30-Day Satisfaction" },
+    { property: "og:description", content: isSpanish ? "30 días garantía de satisfacción. Devolución gratis y reembolso completo. Sin preguntas." : "30-day satisfaction guarantee. Free return shipping and full refund. No questions." },
     { property: "og:type", content: "website" },
-    { property: "og:url", content: "https://flow-telligence.com/returns" },
-    { property: "og:image", content: "https://flow-telligence.com/images/returns-hero.jpg" },
+    { property: "og:url", content: `${BUSINESS.website}/returns` },
+    { property: "og:image", content: `${BUSINESS.website}/images/returns-hero.jpg` },
   ];
 };
 
@@ -66,7 +65,6 @@ interface FAQItem {
 export default function ReturnsPolicy() {
   const { t } = useTranslation("common");
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
-  const [selectedReason, setSelectedReason] = useState<string>("");
 
   // FAQs sobre devoluciones
   const faqs: FAQItem[] = [
@@ -98,12 +96,12 @@ export default function ReturnsPolicy() {
 
   // Razones comunes de devolución
   const returnReasons = [
-    "No cumple expectativas",
-    "Mi hijo no se interesó",
-    "Problemas técnicos",
-    "Regalo duplicado",
-    "Cambio de opinión",
-    "Otro motivo"
+    t("returns.form.reasons.notMeet"),
+    t("returns.form.reasons.notInterested"),
+    t("returns.form.reasons.technical"),
+    t("returns.form.reasons.duplicate"),
+    t("returns.form.reasons.changeOfMind"),
+    t("returns.form.reasons.other")
   ];
 
   const toggleFAQ = (index: number) => {
@@ -125,7 +123,7 @@ export default function ReturnsPolicy() {
               transition={{ duration: 0.6 }}
             >
               <Shield className="w-4 h-4" />
-              Garantía de Satisfacción Total
+              {t("returns.hero.badge")}
             </motion.div>
             
             <motion.h1 
@@ -134,7 +132,7 @@ export default function ReturnsPolicy() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              30 Días de Garantía
+              {t("returns.hero.title")}
             </motion.h1>
             
             <motion.p 
@@ -143,8 +141,7 @@ export default function ReturnsPolicy() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Prueba Nebu sin riesgo. Si no estás 100% satisfecho, 
-              te devolvemos tu dinero completo. Sin preguntas, sin letra pequeña.
+              {t("returns.hero.subtitle")}
             </motion.p>
 
             {/* Beneficios destacados */}
@@ -156,23 +153,23 @@ export default function ReturnsPolicy() {
             >
               <div className="bg-white rounded-xl p-4 shadow-md">
                 <RefreshCw className="w-8 h-8 text-primary mx-auto mb-2" />
-                <p className="text-sm font-semibold text-gray-900">30 Días</p>
-                <p className="text-xs text-gray-600">Para devolver</p>
+                <p className="text-sm font-semibold text-gray-900">{t("returns.hero.benefits.days.label")}</p>
+                <p className="text-xs text-gray-600">{t("returns.hero.benefits.days.description")}</p>
               </div>
               <div className="bg-white rounded-xl p-4 shadow-md">
                 <Truck className="w-8 h-8 text-green-500 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-gray-900">Envío Gratis</p>
-                <p className="text-xs text-gray-600">De devolución</p>
+                <p className="text-sm font-semibold text-gray-900">{t("returns.hero.benefits.shipping.label")}</p>
+                <p className="text-xs text-gray-600">{t("returns.hero.benefits.shipping.description")}</p>
               </div>
               <div className="bg-white rounded-xl p-4 shadow-md">
                 <CreditCard className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-gray-900">100% Reembolso</p>
-                <p className="text-xs text-gray-600">Garantizado</p>
+                <p className="text-sm font-semibold text-gray-900">{t("returns.hero.benefits.refund.label")}</p>
+                <p className="text-xs text-gray-600">{t("returns.hero.benefits.refund.description")}</p>
               </div>
               <div className="bg-white rounded-xl p-4 shadow-md">
                 <Award className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-gray-900">1 Año</p>
-                <p className="text-xs text-gray-600">De garantía</p>
+                <p className="text-sm font-semibold text-gray-900">{t("returns.hero.benefits.warranty.label")}</p>
+                <p className="text-xs text-gray-600">{t("returns.hero.benefits.warranty.description")}</p>
               </div>
             </motion.div>
           </div>
@@ -190,10 +187,10 @@ export default function ReturnsPolicy() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <h2 className="text-3xl font-bold text-center mb-2 text-gray-900">
-                Proceso de Devolución Super Simple
+                {t("returns.process.title")}
               </h2>
               <p className="text-center text-gray-600 mb-10">
-                Solo 4 pasos para tu tranquilidad total
+                {t("returns.process.subtitle")}
               </p>
 
               <div className="grid md:grid-cols-4 gap-6">
@@ -261,9 +258,9 @@ export default function ReturnsPolicy() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <RefreshCw className="w-5 h-5" />
-                  Iniciar Devolución Ahora
+                  {t("returns.process.cta")}
                 </motion.button>
-                <p className="text-xs text-gray-500 mt-2">Sin complicaciones • Sin preguntas</p>
+                <p className="text-xs text-gray-500 mt-2">{t("returns.process.note")}</p>
               </div>
             </motion.div>
 
@@ -473,42 +470,40 @@ export default function ReturnsPolicy() {
                 >
                   <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                     <RefreshCw className="w-5 h-5 text-primary" />
-                    Iniciar Devolución
+                    {t("returns.form.title")}
                   </h3>
                   
                   <form className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Número de Pedido
+                        {t("returns.form.orderNumber")}
                       </label>
                       <input 
                         type="text" 
-                        placeholder="Ej: #NEBU-2024-001"
+                        placeholder={t("returns.form.orderPlaceholder")}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                     
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Email de Compra
+                        {t("returns.form.email")}
                       </label>
                       <input 
                         type="email" 
-                        placeholder="tu@email.com"
+                        placeholder={t("returns.form.emailPlaceholder")}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                     
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Motivo (Opcional)
+                        {t("returns.form.reason")}
                       </label>
                       <select 
-                        value={selectedReason}
-                        onChange={(e) => setSelectedReason(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       >
-                        <option value="">Selecciona un motivo</option>
+                        <option value="">{t("returns.form.reasonPlaceholder")}</option>
                         {returnReasons.map((reason) => (
                           <option key={reason} value={reason}>{reason}</option>
                         ))}
@@ -522,11 +517,11 @@ export default function ReturnsPolicy() {
                       whileTap={{ scale: 0.98 }}
                     >
                       <Send className="w-4 h-4" />
-                      Solicitar Devolución
+                      {t("returns.form.submit")}
                     </motion.button>
                     
                     <p className="text-xs text-gray-500 text-center">
-                      Responderemos en menos de 2 horas
+                      {t("returns.form.responseTime")}
                     </p>
                   </form>
                 </motion.div>
@@ -540,31 +535,31 @@ export default function ReturnsPolicy() {
                 >
                   <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                     <MessageCircle className="w-5 h-5" />
-                    ¿Prefieres hablar con nosotros?
+                    {t("returns.contact.title")}
                   </h3>
                   
                   <div className="space-y-3">
-                    <a href="tel:+51945012824" className="flex items-center gap-3 bg-white/20 rounded-lg p-3 hover:bg-white/30 transition-colors">
+                    <a href={`tel:${CONTACT.phone}`} className="flex items-center gap-3 bg-white/20 rounded-lg p-3 hover:bg-white/30 transition-colors">
                       <Phone className="w-5 h-5" />
                       <div>
-                        <p className="font-semibold">+51 945 012 824</p>
-                        <p className="text-xs opacity-90">Lun-Dom 8AM-8PM</p>
+                        <p className="font-semibold">{CONTACT.whatsapp.display}</p>
+                        <p className="text-xs opacity-90">{t("returns.contact.phone.hours")}</p>
                       </div>
                     </a>
                     
-                    <a href="https://wa.me/51945012824" className="flex items-center gap-3 bg-white/20 rounded-lg p-3 hover:bg-white/30 transition-colors">
+                    <a href={CONTACT.whatsapp.url} className="flex items-center gap-3 bg-white/20 rounded-lg p-3 hover:bg-white/30 transition-colors">
                       <MessageCircle className="w-5 h-5" />
                       <div>
-                        <p className="font-semibold">WhatsApp</p>
-                        <p className="text-xs opacity-90">Respuesta en minutos</p>
+                        <p className="font-semibold">{t("returns.contact.whatsapp.label")}</p>
+                        <p className="text-xs opacity-90">{t("returns.contact.whatsapp.time")}</p>
                       </div>
                     </a>
                     
-                    <a href="mailto:devoluciones@flow-telligence.com" className="flex items-center gap-3 bg-white/20 rounded-lg p-3 hover:bg-white/30 transition-colors">
+                    <a href={`mailto:${CONTACT.email.returns}`} className="flex items-center gap-3 bg-white/20 rounded-lg p-3 hover:bg-white/30 transition-colors">
                       <Mail className="w-5 h-5" />
                       <div>
-                        <p className="font-semibold">Email</p>
-                        <p className="text-xs opacity-90">24 horas respuesta</p>
+                        <p className="font-semibold">{t("returns.contact.email.label")}</p>
+                        <p className="text-xs opacity-90">{t("returns.contact.email.time")}</p>
                       </div>
                     </a>
                   </div>
@@ -579,24 +574,22 @@ export default function ReturnsPolicy() {
                 >
                   <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                     <Star className="w-5 h-5 text-yellow-500" />
-                    Lo que dicen los padres
+                    {t("returns.testimonials.title")}
                   </h3>
                   
                   <div className="space-y-4">
                     <div className="border-l-4 border-yellow-400 pl-4">
                       <p className="text-sm text-gray-600 italic mb-2">
-                        "El proceso de devolución fue increíblemente fácil. Aunque al final 
-                        decidimos quedarnos con Nebu porque mi hijo lo adora."
+                        "{t("returns.testimonials.items.maria.text")}"
                       </p>
-                      <p className="text-xs font-semibold text-gray-900">María G. - Lima</p>
+                      <p className="text-xs font-semibold text-gray-900">{t("returns.testimonials.items.maria.author")} - {t("returns.testimonials.items.maria.location")}</p>
                     </div>
                     
                     <div className="border-l-4 border-yellow-400 pl-4">
                       <p className="text-sm text-gray-600 italic mb-2">
-                        "Excelente servicio. Tuve que cambiar por un problema técnico y 
-                        en 3 días tenía el nuevo Nebu funcionando perfectamente."
+                        "{t("returns.testimonials.items.carlos.text")}"
                       </p>
-                      <p className="text-xs font-semibold text-gray-900">Carlos P. - Arequipa</p>
+                      <p className="text-xs font-semibold text-gray-900">{t("returns.testimonials.items.carlos.author")} - {t("returns.testimonials.items.carlos.location")}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -671,10 +664,10 @@ export default function ReturnsPolicy() {
               transition={{ duration: 0.6, delay: 1.1 }}
             >
               <h2 className="text-3xl font-bold mb-4">
-                Prueba Nebu Sin Riesgo Durante 30 Días
+                {t("returns.cta.title")}
               </h2>
               <p className="text-xl mb-6 opacity-90">
-                Miles de familias felices. Únete a ellas con total tranquilidad.
+                {t("returns.cta.subtitle")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <motion.button 
@@ -683,7 +676,7 @@ export default function ReturnsPolicy() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Gift className="w-5 h-5" />
-                  Comprar Nebu Ahora
+                  {t("returns.cta.buyNow")}
                 </motion.button>
                 <motion.button 
                   className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-primary font-bold py-3 px-8 rounded-full transition-colors inline-flex items-center gap-2"
@@ -691,11 +684,11 @@ export default function ReturnsPolicy() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Info className="w-5 h-5" />
-                  Más Información
+                  {t("returns.cta.moreInfo")}
                 </motion.button>
               </div>
               <p className="text-sm mt-4 opacity-75">
-                ⭐⭐⭐⭐⭐ 4.9/5 basado en 500+ reseñas
+                {t("returns.cta.rating")}
               </p>
             </motion.div>
 

@@ -1,6 +1,7 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { data } from "@remix-run/node";
 import { Resend } from "resend";
+import { CONTACT, BUSINESS } from "~/config/constants";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -18,21 +19,25 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Email to company
     const companyEmail = await resend.emails.send({
-      from: "Libro de Reclamaciones <contacto@flow-telligence.com>",
-      to: "contacto@flow-telligence.com",
+      from: `Libro de Reclamaciones <${CONTACT.email.main}>`,
+      to: CONTACT.email.main,
       subject: `Nuevo ${formData.tipoReclamo === "reclamo" ? "Reclamo" : "Queja"} - ${hojaNumber}`,
       html: generateCompanyEmail(formData, hojaNumber),
     });
 
     // Email to customer
     const customerEmail = await resend.emails.send({
-      from: "Flow Telligence <contacto@flow-telligence.com>",
+      from: `${BUSINESS.name} <${CONTACT.email.main}>`,
       to: formData.email,
       subject: `Confirmación de ${formData.tipoReclamo === "reclamo" ? "Reclamo" : "Queja"} - ${hojaNumber}`,
       html: generateCustomerEmail(formData, hojaNumber),
     });
 
-    console.log("Complaint emails sent:", { companyEmail, customerEmail });
+    // Log emails sent for debugging
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.log("Complaint emails sent:", { companyEmail, customerEmail });
+    }
 
     return data({
       success: true,
@@ -218,9 +223,9 @@ function generateCustomerEmail(data: any, hojaNumber: string): string {
               <h3 style="margin-top: 0; color: #6366f1;">📞 ¿Necesitas más ayuda?</h3>
               <p>Si tienes alguna consulta adicional, puedes contactarnos:</p>
               <p>
-                📧 Email: <a href="mailto:contacto@flow-telligence.com">contacto@flow-telligence.com</a><br>
-                📱 WhatsApp: +51 987 654 321<br>
-                🌐 Web: <a href="https://flow-telligence.com">flow-telligence.com</a>
+                📧 Email: <a href="mailto:${CONTACT.email.main}">${CONTACT.email.main}</a><br>
+                📱 WhatsApp: ${CONTACT.whatsapp.display}<br>
+                🌐 Web: <a href="${BUSINESS.website}">${BUSINESS.website}</a>
               </p>
             </div>
 
