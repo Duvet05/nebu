@@ -68,7 +68,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     // Send confirmation email to customer
-    const customerEmail = await resend.emails.send({
+    const _customerEmail = await resend.emails.send({
       from: `Nebu - ${BUSINESS.name} <${CONTACT.email.sales}>`,
       to: checkoutData.email,
       subject: `Confirmación de Pre-orden - ${orderId}`,
@@ -76,13 +76,12 @@ export async function action({ request }: ActionFunctionArgs) {
     });
 
     // Send notification email to company
-    const companyEmail = await resend.emails.send({
+    const _companyEmail = await resend.emails.send({
       from: `Nebu Orders <${CONTACT.email.sales}>`,
       to: CONTACT.email.sales,
       subject: `Nueva Pre-orden Recibida - ${orderId}`,
       html: generateCompanyNotificationEmail(checkoutData, orderId),
     });
-
 
     // Here you would typically:
     // 1. Save order to database
