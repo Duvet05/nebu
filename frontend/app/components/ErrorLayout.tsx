@@ -1,24 +1,32 @@
 // app/components/ErrorLayout.tsx
-// Layout mejorado para manejo de errores
+// Layout mejorado para manejo de errores con diseño consistente
 
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ErrorLayoutProps {
   children: ReactNode;
-  variant?: 'error' | 'warning' | 'info';
 }
 
-export function ErrorLayout({ children, variant = 'error' }: ErrorLayoutProps) {
-  const backgroundColors = {
-    error: 'from-red-50 to-pink-100',
-    warning: 'from-yellow-50 to-orange-100',
-    info: 'from-blue-50 to-indigo-100'
-  };
-  
+export function ErrorLayout({ children }: ErrorLayoutProps) {
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${backgroundColors[variant]} flex items-center justify-center px-4`}>
-      {children}
+    <div className="min-h-screen bg-nebu-bg relative flex items-center justify-center px-4">
+      {/* Background Effects - Subtle and consistent */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            radial-gradient(circle at 20% 20%, #6366f115 1px, transparent 1px),
+            radial-gradient(circle at 80% 20%, #6366f110 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px, 90px 90px',
+          backgroundPosition: '0 0, 40px 40px'
+        }}></div>
+      </div>
+      
+      <div className="relative z-10">
+        {children}
+      </div>
     </div>
   );
 }
@@ -45,17 +53,22 @@ export function ErrorContent({
   const getErrorIcon = () => {
     if (statusCode === 404) {
       return (
-        <svg className="w-10 h-10 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       );
     }
     
     return (
-      <svg className="w-10 h-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <svg className="w-10 h-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
       </svg>
     );
+  };
+  
+  const getIconBackground = () => {
+    if (statusCode === 404) return 'bg-primary/10 border-primary/20';
+    return 'bg-red-50 border-red-100';
   };
   
   const getErrorTitle = () => {
@@ -93,22 +106,22 @@ export function ErrorContent({
   };
   
   return (
-    <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
+    <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl border border-gray-200 p-8 md:p-12 text-center">
       {/* Error icon */}
-      <div className="w-20 h-20 mx-auto mb-6 bg-red-100 rounded-full flex items-center justify-center">
+      <div className={`w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center border-2 ${getIconBackground()}`}>
         {getErrorIcon()}
       </div>
       
       {/* Error code */}
-      <div className="text-6xl font-bold text-gray-800 mb-2">{statusCode}</div>
+      <div className="text-7xl md:text-8xl font-bold font-gochi text-primary mb-4">{statusCode}</div>
       
       {/* Error message */}
-      <h1 className="text-2xl font-semibold text-gray-700 mb-4">
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
         {getErrorTitle()}
       </h1>
       
       {/* Error description */}
-      <p className="text-gray-600 mb-6">
+      <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
         {getErrorDescription()}
       </p>
       
@@ -118,18 +131,18 @@ export function ErrorContent({
       )}
       
       {/* Action buttons */}
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+      <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
         <button
           onClick={() => window.history.back()}
-          className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-gray-700 border-2 border-gray-300 rounded-xl font-semibold hover:border-primary hover:text-primary hover:shadow-md transition-all duration-300"
         >
-          {t('errors.back')}
+          ← {t('errors.back')}
         </button>
         
         {onRetry && (
           <button
             onClick={onRetry}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-white rounded-xl font-semibold hover:bg-accent/90 hover:shadow-lg hover:scale-105 transition-all duration-300"
           >
             {t('errors.retry')}
           </button>
@@ -137,19 +150,21 @@ export function ErrorContent({
         
         <a
           href="/"
-          className="px-6 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:shadow-lg transition-all"
+          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg hover:scale-105 transition-all duration-300"
         >
           {t('errors.goHome')}
         </a>
       </div>
       
       {/* Support link */}
-      <p className="mt-6 text-sm text-gray-500">
-        {t('errors.needHelp')} {' '}
-        <a href="mailto:soporte@flow-telligence.com" className="text-primary hover:underline">
-          {t('errors.contactSupport')}
-        </a>
-      </p>
+      <div className="pt-6 border-t border-gray-200">
+        <p className="text-sm text-gray-600">
+          {t('errors.needHelp')} {' '}
+          <a href="mailto:contacto@flow-telligence.com" className="text-primary font-semibold hover:underline transition-colors">
+            {t('errors.contactSupport')}
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
@@ -160,20 +175,22 @@ function ErrorDetails({ error }: { error: Error | any }) {
   const errorStack = error?.stack || '';
   
   return (
-    <details className="mb-6 text-left">
-      <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
-        {t('errors.technicalDetails')}
+    <details className="mb-8 text-left bg-gray-50 rounded-xl p-4 border border-gray-200">
+      <summary className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-primary transition-colors">
+        ▶ {t('errors.technicalDetails')}
       </summary>
-      <div className="mt-2 space-y-2">
-        <div className="p-3 bg-gray-100 rounded">
-          <p className="text-xs font-mono text-gray-700">
-            <span className="font-semibold">{t('errors.message')}</span> {errorMessage}
+      <div className="mt-3 space-y-3">
+        <div className="p-4 bg-white rounded-lg border border-gray-200">
+          <p className="text-xs font-mono text-gray-800">
+            <span className="font-semibold text-gray-900">{t('errors.message')}:</span>
+            <br />
+            {errorMessage}
           </p>
         </div>
         {errorStack && (
-          <div className="p-3 bg-gray-100 rounded">
-            <p className="text-xs font-mono text-gray-700 whitespace-pre-wrap break-all">
-              <span className="font-semibold">{t('errors.stackTrace')}</span>
+          <div className="p-4 bg-white rounded-lg border border-gray-200 max-h-64 overflow-auto">
+            <p className="text-xs font-mono text-gray-800 whitespace-pre-wrap break-all">
+              <span className="font-semibold text-gray-900">{t('errors.stackTrace')}:</span>
               {'\n'}
               {errorStack}
             </p>
@@ -187,7 +204,7 @@ function ErrorDetails({ error }: { error: Error | any }) {
 // Error boundary fallback component
 export function ErrorBoundaryFallback({ error, resetErrorBoundary }: any) {
   return (
-    <ErrorLayout variant="error">
+    <ErrorLayout>
       <ErrorContent 
         error={error}
         onRetry={resetErrorBoundary}
@@ -201,7 +218,7 @@ export function ErrorBoundaryFallback({ error, resetErrorBoundary }: any) {
 export function NotFound() {
   const { t } = useTranslation('common');
   return (
-    <ErrorLayout variant="warning">
+    <ErrorLayout>
       <ErrorContent 
         error={null}
         statusCode={404}
@@ -216,36 +233,38 @@ export function NotFound() {
 export function Maintenance() {
   const { t } = useTranslation('common');
   return (
-    <ErrorLayout variant="info">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
-        <div className="w-20 h-20 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center">
-          <svg className="w-10 h-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <ErrorLayout>
+      <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl border border-gray-200 p-8 md:p-12 text-center">
+        <div className="w-20 h-20 mx-auto mb-6 bg-accent/10 border-2 border-accent/20 rounded-full flex items-center justify-center">
+          <svg className="w-10 h-10 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </div>
         
-        <h1 className="text-2xl font-semibold text-gray-700 mb-4">
+        <h1 className="text-3xl md:text-4xl font-bold font-gochi text-primary mb-4">
           {t('errors.maintenance.title')}
         </h1>
         
-        <p className="text-gray-600 mb-6">
+        <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto">
           {t('errors.maintenance.description')}
         </p>
         
-        <div className="bg-blue-50 p-4 rounded-lg mb-6">
-          <p className="text-sm text-blue-800">
-            {t('errors.maintenance.estimatedTime')} <strong>30 minutos</strong>
+        <div className="bg-accent/10 border border-accent/20 p-6 rounded-xl mb-8">
+          <p className="text-sm text-gray-800">
+            <span className="font-semibold">{t('errors.maintenance.estimatedTime')}</span> <strong className="text-accent">30 minutos</strong>
           </p>
         </div>
         
-        <p className="text-sm text-gray-500">
-          {t('errors.maintenance.followUs')} {' '}
-          <a href="https://twitter.com/flowtelligence" className="text-blue-600 hover:underline">
-            Twitter
-          </a>
-          {' '} {t('errors.maintenance.forUpdates')}
-        </p>
+        <div className="pt-6 border-t border-gray-200">
+          <p className="text-sm text-gray-600">
+            {t('errors.maintenance.followUs')} {' '}
+            <a href="https://twitter.com/flowtelligence" className="text-primary font-semibold hover:underline transition-colors">
+              Twitter
+            </a>
+            {' '} {t('errors.maintenance.forUpdates')}
+          </p>
+        </div>
       </div>
     </ErrorLayout>
   );

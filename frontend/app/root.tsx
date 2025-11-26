@@ -28,6 +28,7 @@ import { validatePublicKey, sanitizeId } from "~/utils/security";
 import { GoogleAnalytics, FacebookPixel, CulqiScript } from "~/components/Analytics";
 import { LoadingSkeleton } from "~/components/LoadingSkeleton";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
+import { ErrorLayout, ErrorContent } from "~/components/ErrorLayout";
 import stylesheet from "~/styles/tailwind.css?url";
 
 // Tipos estrictos
@@ -242,7 +243,7 @@ export function HydrateFallback() {
   );
 }
 
-// ErrorBoundary mejorado con logging y mejor UX
+// ErrorBoundary mejorado - usa ErrorLayout component
 export function ErrorBoundary() {
   const error = useRouteError();
   const isDev = process.env.NODE_ENV === 'development';
@@ -254,26 +255,11 @@ export function ErrorBoundary() {
     // logErrorToService(error);
   }
   
-  // Note: Can't use useTranslation in ErrorBoundary as it's server-side
-  // Using static fallback messages that match translation keys
-  let errorMessage = "Ha ocurrido un error inesperado";
+  // Determine error status and details
   let errorStatus = 500;
-  let errorDetails: string | null = null;
   
   if (isRouteErrorResponse(error)) {
     errorStatus = error.status;
-    errorMessage = error.statusText || errorMessage;
-    
-    if (errorStatus === 404) {
-      errorMessage = "Página no encontrada";
-    } else if (errorStatus === 401) {
-      errorMessage = "No autorizado";
-    } else if (errorStatus === 403) {
-      errorMessage = "Acceso denegado";
-    }
-  } else if (error instanceof Error) {
-    errorMessage = "Error de aplicación";
-    errorDetails = isDev ? error.stack || error.message : null;
   }
   
   return (
@@ -286,66 +272,13 @@ export function ErrorBoundary() {
         <Links />
       </head>
       <body>
-        <div className="min-h-screen bg-gradient-to-br from-red-50 to-pink-100 flex items-center justify-center px-4">
-          <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
-            {/* Error icon */}
-            <div className="w-20 h-20 mx-auto mb-6 bg-red-100 rounded-full flex items-center justify-center">
-              <svg className="w-10 h-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            
-            {/* Error code */}
-            <div className="text-6xl font-bold text-gray-800 mb-2">{errorStatus}</div>
-            
-            {/* Error message */}
-            <h1 className="text-2xl font-semibold text-gray-700 mb-4">
-              {errorMessage}
-            </h1>
-            
-            {/* Error description */}
-            <p className="text-gray-600 mb-6">
-              Lo sentimos, pero algo no salió como esperábamos. 
-              Por favor, intenta de nuevo o contacta con soporte si el problema persiste.
-            </p>
-            
-            {/* Error details for development */}
-            {errorDetails && (
-              <details className="mb-6 text-left">
-                <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
-                  Detalles técnicos
-                </summary>
-                <pre className="mt-2 p-3 bg-gray-100 rounded text-xs overflow-x-auto">
-                  {errorDetails}
-                </pre>
-              </details>
-            )}
-            
-            {/* Action buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <button
-                onClick={() => window.history.back()}
-                className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                ← Volver atrás
-              </button>
-              <a
-                href="/"
-                className="px-6 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:shadow-lg transition-all"
-              >
-                Ir al inicio
-              </a>
-            </div>
-            
-            {/* Support link */}
-            <p className="mt-6 text-sm text-gray-500">
-              ¿Necesitas ayuda? {' '}
-              <a href="mailto:soporte@flow-telligence.com" className="text-primary hover:underline">
-                Contacta con soporte
-              </a>
-            </p>
-          </div>
-        </div>
+        <ErrorLayout>
+          <ErrorContent 
+            error={error}
+            statusCode={errorStatus}
+            showDetails={isDev}
+          />
+        </ErrorLayout>
         <Scripts />
       </body>
     </html>
