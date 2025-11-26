@@ -12,7 +12,7 @@ import {
 import type { LinksFunction, LoaderFunctionArgs, HeadersFunction } from "@remix-run/node";
 import { useChangeLanguage } from "remix-i18next/react";
 import type { ReactNode } from "react";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState, useEffect } from "react";
 import i18next from "~/lib/i18next.server";
 
 // Lazy load components para mejor performance
@@ -48,12 +48,12 @@ interface LoaderData {
 export const headers: HeadersFunction = () => ({
   "Content-Security-Policy": [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://checkout.culqi.com",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://checkout.culqi.com https://static.cloudflareinsights.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: https: blob:",
-    "connect-src 'self' https://www.google-analytics.com https://api.culqi.com https://graph.facebook.com",
-    "frame-src 'self' https://checkout.culqi.com",
+    "connect-src 'self' https://www.google-analytics.com https://api.culqi.com https://graph.facebook.com https://cloudflareinsights.com",
+    "frame-src 'self' https://checkout.culqi.com https://www.facebook.com",
   ].join("; "),
   "X-Frame-Options": "SAMEORIGIN",
   "X-Content-Type-Options": "nosniff",
@@ -187,13 +187,23 @@ export function Layout({ children }: { children: ReactNode }) {
 
 // App component con Suspense boundaries
 export default function App() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <Suspense fallback={<LoadingSkeleton />}>
       <AnalyticsProvider>
         <CartProvider>
           <Outlet />
-          <CartSidebar />
-          <WhatsAppButton />
+          {isClient && (
+            <>
+              <CartSidebar />
+              <WhatsAppButton />
+            </>
+          )}
         </CartProvider>
       </AnalyticsProvider>
     </Suspense>
