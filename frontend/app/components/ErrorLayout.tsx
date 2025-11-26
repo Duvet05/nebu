@@ -134,28 +134,37 @@ export function ErrorContent({
       
       {/* Action buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+        <a
+          href="/"
+          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          {t('errors.goHome')}
+        </a>
+
         <button
           onClick={() => window.history.back()}
-          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-gray-700 border-2 border-gray-300 rounded-xl font-semibold hover:border-primary hover:text-primary hover:shadow-md transition-all duration-300"
+          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-gray-900 border-2 border-gray-300 rounded-xl font-semibold hover:border-primary hover:text-primary transition-all duration-300"
         >
-          ← {t('errors.back')}
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          {t('errors.back')}
         </button>
-        
+
         {onRetry && (
           <button
             onClick={onRetry}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-white rounded-xl font-semibold hover:bg-accent/90 hover:shadow-lg hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
           >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
             {t('errors.retry')}
           </button>
         )}
-        
-        <a
-          href="/"
-          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg hover:scale-105 transition-all duration-300"
-        >
-          {t('errors.goHome')}
-        </a>
       </div>
       
       {/* Support link */}
@@ -179,7 +188,7 @@ function ErrorDetails({ error }: { error: Error | any }) {
   return (
     <details className="mb-8 text-left bg-gray-50 rounded-xl p-4 border border-gray-200">
       <summary className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-primary transition-colors">
-        ▶ {t('errors.technicalDetails')}
+        {t('errors.technicalDetails')}
       </summary>
       <div className="mt-3 space-y-3">
         <div className="p-4 bg-white rounded-lg border border-gray-200">

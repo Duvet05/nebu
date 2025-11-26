@@ -101,6 +101,7 @@ export default function ProductosPage() {
 
             {/* Products Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Regular Products */}
               {products.map((product, index) => (
                 <motion.div
                   key={product.id}
@@ -113,11 +114,11 @@ export default function ProductosPage() {
                   {product.badge && (
                     <div className="absolute top-4 right-4 z-10">
                       <div className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                        product.badge === "Más Popular"
+                        product.badge === "mostPopular"
                           ? "bg-gradient-to-r from-primary to-accent text-white"
                           : "bg-gray-900 text-white"
                       }`}>
-                        {product.badge === "Más Popular" ? t("products.badges.mostPopular") : product.badge}
+                        {t(`products.badges.${product.badge}`)}
                       </div>
                     </div>
                   )}
@@ -238,6 +239,50 @@ export default function ProductosPage() {
                   </div>
                 </motion.div>
               ))}
+
+              {/* Special Help Card - At the end */}
+              <motion.div
+                className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex flex-col"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: products.length * 0.1 }}
+              >
+                {/* Header with gradient background */}
+                <div className="relative h-64 bg-gradient-to-br from-primary/10 via-accent/10 to-purple/10 overflow-hidden flex items-center justify-center">
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-10 left-10 w-32 h-32 bg-primary rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-10 right-10 w-40 h-40 bg-accent rounded-full blur-3xl"></div>
+                  </div>
+
+                  <div className="relative z-10 text-center px-6">
+                    <div className="w-20 h-20 mx-auto mb-4 bg-primary/10 rounded-2xl flex items-center justify-center">
+                      <Star className="w-10 h-10 text-primary" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      {t("products.helpSection.title")}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      {t("products.helpSection.description")}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Buttons Section */}
+                <div className="p-6 flex flex-col gap-3 mt-auto">
+                  <Link
+                    to="/contact"
+                    className="w-full bg-primary text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex items-center justify-center gap-2"
+                  >
+                    {t("products.helpSection.talkToAdvisor")}
+                  </Link>
+                  <Link
+                    to="/faq"
+                    className="w-full bg-white border-2 border-gray-300 text-gray-900 py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:border-primary hover:text-primary flex items-center justify-center gap-2"
+                  >
+                    {t("products.helpSection.viewFAQ")}
+                  </Link>
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -250,43 +295,43 @@ export default function ProductosPage() {
                 {t("products.comparison.title")}
               </h2>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center text-white">
-                    <Check className="w-8 h-8" />
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="text-center group">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:bg-green-200 group-hover:scale-110">
+                    <Check className="w-8 h-8 text-green-600" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{t("products.comparison.features.sameAI.title")}</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-bold text-gray-900 mb-2">{t("products.comparison.features.sameAI.title")}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
                     {t("products.comparison.features.sameAI.description")}
                   </p>
                 </div>
 
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center text-white">
-                    <Check className="w-8 h-8" />
+                <div className="text-center group">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:bg-blue-200 group-hover:scale-110">
+                    <Check className="w-8 h-8 text-blue-600" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{t("products.comparison.features.parentalControl.title")}</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-bold text-gray-900 mb-2">{t("products.comparison.features.parentalControl.title")}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
                     {t("products.comparison.features.parentalControl.description")}
                   </p>
                 </div>
 
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center text-white">
-                    <Check className="w-8 h-8" />
+                <div className="text-center group">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:bg-purple-200 group-hover:scale-110">
+                    <Check className="w-8 h-8 text-purple-600" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{t("products.comparison.features.freeUpdates.title")}</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-bold text-gray-900 mb-2">{t("products.comparison.features.freeUpdates.title")}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
                     {t("products.comparison.features.freeUpdates.description")}
                   </p>
                 </div>
 
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center text-white">
-                    <Check className="w-8 h-8" />
+                <div className="text-center group">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-orange-100 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:bg-orange-200 group-hover:scale-110">
+                    <Check className="w-8 h-8 text-orange-600" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{t("products.comparison.features.warranty.title")}</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-bold text-gray-900 mb-2">{t("products.comparison.features.warranty.title")}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
                     {t("products.comparison.features.warranty.description")}
                   </p>
                 </div>
@@ -295,39 +340,6 @@ export default function ProductosPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="pb-20 px-4">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              className="bg-gradient-to-br from-primary to-accent rounded-3xl p-12 text-center text-white"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              <Star className="w-16 h-16 mx-auto mb-6 text-white/80" />
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                {t("products.helpSection.title")}
-              </h2>
-              <p className="text-lg mb-8 text-white/90">
-                {t("products.helpSection.description")}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  to="/contact"
-                  className="bg-white text-primary px-8 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105"
-                >
-                  {t("products.helpSection.talkToAdvisor")}
-                </Link>
-                <Link
-                  to="/faq"
-                  className="bg-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/30 transition-all duration-300"
-                >
-                  {t("products.helpSection.viewFAQ")}
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-        </section>
       </div>
 
       <Newsletter />
