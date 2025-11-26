@@ -4,9 +4,8 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { FAQSchema } from "~/components/FAQSection";
-import { Breadcrumbs } from "~/components/Breadcrumbs";
 import * as Accordion from "@radix-ui/react-accordion";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import i18next from "~/lib/i18next.server";
 
@@ -91,70 +90,96 @@ export default function FAQ() {
   ];
 
   return (
-    <div className="min-h-screen bg-nebu-bg">
+    <div className="min-h-screen bg-nebu-bg relative">
       <FAQSchema faqs={faqs} />
       <Header />
 
-      <section className="pt-32 pb-16 px-4">
-          <div className="max-w-6xl mx-auto">
-              <motion.h1 
-                className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary leading-tight"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                {t("faq.title")}
-              </motion.h1>            <motion.p
-                className="text-xl text-gray-600 max-w-2xl mx-auto mb-12"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                {t("faq.subtitle")}
-              </motion.p>
+      {/* Background Effects */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
+        <div className="absolute inset-0" style={{
+          backgroundImage: `
+            radial-gradient(circle at 20% 20%, #6366f115 1px, transparent 1px),
+            radial-gradient(circle at 80% 20%, #6366f110 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px, 90px 90px',
+          backgroundPosition: '0 0, 40px 40px'
+        }}></div>
+      </div>
+
+      <div className="relative z-10">
+        {/* Hero Section */}
+        <section className="pt-32 pb-20 px-4">
+          <div className="max-w-4xl mx-auto text-center mb-16">
+            <motion.h1 
+              className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {t("faq.title")}
+            </motion.h1>
+            
+            <motion.p
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              {t("faq.subtitle")}
+            </motion.p>
           </div>
 
-        <div className="max-w-3xl mx-auto px-4">
-          <div>
+          <div className="max-w-3xl mx-auto">
+            <div>
 
-            <Accordion.Root type="single" collapsible className="space-y-4">
-              {faqs.map((faq, index) => (
-                <Accordion.Item
-                  key={index}
-                  value={`item-${index}`}
-                  className="card overflow-hidden"
+              <Accordion.Root type="single" collapsible className="space-y-4">
+                {faqs.map((faq, index) => (
+                  <Accordion.Item
+                    key={index}
+                    value={`item-${index}`}
+                    className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300"
+                  >
+                    <Accordion.Header>
+                      <Accordion.Trigger className="flex items-center justify-between w-full p-6 text-left group hover:bg-gray-50 transition-colors">
+                        <span className="text-lg font-semibold pr-4 text-gray-900">
+                          {faq.question}
+                        </span>
+                        <ChevronDown className="w-5 h-5 text-gray-500 transition-transform group-data-[state=open]:rotate-180 flex-shrink-0" />
+                      </Accordion.Trigger>
+                    </Accordion.Header>
+                    <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+                      <div className="px-6 pb-6 text-gray-600">
+                        {faq.answer}
+                      </div>
+                    </Accordion.Content>
+                  </Accordion.Item>
+                ))}
+              </Accordion.Root>
+
+              <motion.div 
+                className="mt-12 text-center p-8 bg-gradient-to-br from-primary to-accent rounded-2xl text-white shadow-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                <h3 className="text-2xl font-bold mb-2">
+                  {t("faq.stillHaveQuestions")}
+                </h3>
+                <p className="text-white/90 mb-6">
+                  {t("faq.hereToHelp")}
+                </p>
+                <a 
+                  href="/contact" 
+                  className="inline-block bg-white text-primary px-8 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105"
                 >
-                  <Accordion.Header>
-                    <Accordion.Trigger className="flex items-center justify-between w-full p-6 text-left group hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                      <span className="text-lg font-semibold pr-4">
-                        {faq.question}
-                      </span>
-                      <ChevronDown className="w-5 h-5 text-gray-500 transition-transform group-data-[state=open]:rotate-180" />
-                    </Accordion.Trigger>
-                  </Accordion.Header>
-                  <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-                    <div className="px-6 pb-6 text-gray-600 dark:text-gray-400">
-                      {faq.answer}
-                    </div>
-                  </Accordion.Content>
-                </Accordion.Item>
-              ))}
-            </Accordion.Root>
-
-            <div className="mt-12 text-center p-8 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl">
-              <h3 className="text-2xl font-bold mb-2">
-                {t("faq.stillHaveQuestions")}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                {t("faq.hereToHelp")}
-              </p>
-              <a href="/contact" className="btn-primary">
-                {t("faq.contactUs")}
-              </a>
+                  {t("faq.contactUs")}
+                </a>
+              </motion.div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <Newsletter />
       <Footer />

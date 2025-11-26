@@ -5,7 +5,7 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
-import { ShoppingCart, Star, Check, Info, Sparkles } from "lucide-react";
+import { ShoppingCart, Star, Check, Info } from "lucide-react";
 import { products } from "~/data/products";
 import { useCart } from "~/contexts/CartContext";
 import { useState, useEffect } from "react";
@@ -85,7 +85,7 @@ export default function ProductosPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                La Familia Nebu
+                {t("products.title")}
               </motion.h1>
 
               <motion.p
@@ -94,8 +94,7 @@ export default function ProductosPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                Elige el compañero perfecto para tu hijo. Cada Nebu tiene su propia personalidad,
-                pero todos comparten la misma tecnología educativa avanzada.
+                {t("products.subtitle")}
               </motion.p>
             </div>
 
@@ -117,7 +116,7 @@ export default function ProductosPage() {
                           ? "bg-gradient-to-r from-primary to-accent text-white"
                           : "bg-gray-900 text-white"
                       }`}>
-                        {product.badge}
+                        {product.badge === "Más Popular" ? t("products.badges.mostPopular") : product.badge}
                       </div>
                     </div>
                   )}
@@ -140,7 +139,7 @@ export default function ProductosPage() {
                     {!product.inStock && (
                       <div className="absolute bottom-4 left-4">
                         <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-700">
-                          Pre-orden
+                          {t("products.badges.preOrder")}
                         </div>
                       </div>
                     )}
@@ -189,7 +188,7 @@ export default function ProductosPage() {
                         S/ {product.price}
                       </span>
                       <span className="text-sm text-gray-500">
-                        + envío gratis
+                        {t("products.pricing.freeShipping")}
                       </span>
                     </div>
 
@@ -197,7 +196,7 @@ export default function ProductosPage() {
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
                         <p className="text-xs text-blue-800">
                           <Info className="w-3 h-3 inline mr-1" />
-                          Reserva con solo <strong>S/ {product.depositAmount}</strong> (50%)
+                          {t("products.pricing.reserveWith")} <strong>S/ {product.depositAmount}</strong> {t("products.pricing.reservePercentage")}
                         </p>
                       </div>
                     )}
@@ -211,13 +210,13 @@ export default function ProductosPage() {
                             className="w-full bg-gradient-to-r from-primary to-accent text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex items-center justify-center gap-2"
                           >
                             <ShoppingCart className="w-5 h-5" />
-                            Agregar al Carrito
+                            {t("products.cta.addToCart")}
                           </button>
                           <Link
                             to={`/pre-order?product=${product.slug}`}
                             className="block w-full bg-gray-100 text-gray-900 py-2 px-6 rounded-xl font-medium transition-all duration-300 hover:bg-gray-200 text-center"
                           >
-                            Pre-ordenar Directo
+                            {t("products.cta.preOrderDirect")}
                           </Link>
                         </>
                       ) : (
@@ -233,7 +232,7 @@ export default function ProductosPage() {
                       to={`/productos/${product.slug}`}
                       className="block text-center mt-3 text-sm text-primary hover:underline"
                     >
-                      Ver detalles completos →
+                      {t("products.cta.viewDetails")}
                     </Link>
                   </div>
                 </motion.div>
@@ -247,7 +246,7 @@ export default function ProductosPage() {
           <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-                Todos los Nebu Incluyen
+                {t("products.comparison.title")}
               </h2>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -255,9 +254,9 @@ export default function ProductosPage() {
                   <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center text-white">
                     <Check className="w-8 h-8" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Misma IA Avanzada</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t("products.comparison.features.sameAI.title")}</h3>
                   <p className="text-sm text-gray-600">
-                    Todos comparten la misma tecnología educativa de última generación
+                    {t("products.comparison.features.sameAI.description")}
                   </p>
                 </div>
 
@@ -265,9 +264,9 @@ export default function ProductosPage() {
                   <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center text-white">
                     <Check className="w-8 h-8" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Control Parental</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t("products.comparison.features.parentalControl.title")}</h3>
                   <p className="text-sm text-gray-600">
-                    Monitoreo completo y configuración personalizada
+                    {t("products.comparison.features.parentalControl.description")}
                   </p>
                 </div>
 
@@ -275,9 +274,9 @@ export default function ProductosPage() {
                   <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center text-white">
                     <Check className="w-8 h-8" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Actualizaciones Gratis</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t("products.comparison.features.freeUpdates.title")}</h3>
                   <p className="text-sm text-gray-600">
-                    Software siempre actualizado con nuevas funciones
+                    {t("products.comparison.features.freeUpdates.description")}
                   </p>
                 </div>
 
@@ -285,9 +284,9 @@ export default function ProductosPage() {
                   <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center text-white">
                     <Check className="w-8 h-8" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Garantía 12 Meses</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{t("products.comparison.features.warranty.title")}</h3>
                   <p className="text-sm text-gray-600">
-                    Cobertura completa y soporte técnico dedicado
+                    {t("products.comparison.features.warranty.description")}
                   </p>
                 </div>
               </div>
@@ -306,23 +305,23 @@ export default function ProductosPage() {
             >
               <Star className="w-16 h-16 mx-auto mb-6 text-white/80" />
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                ¿No sabes cuál elegir?
+                {t("products.helpSection.title")}
               </h2>
               <p className="text-lg mb-8 text-white/90">
-                Contáctanos y te ayudaremos a encontrar el Nebu perfecto para tu familia
+                {t("products.helpSection.description")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/contact"
                   className="bg-white text-primary px-8 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105"
                 >
-                  Hablar con un Asesor
+                  {t("products.helpSection.talkToAdvisor")}
                 </Link>
                 <Link
                   to="/faq"
                   className="bg-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/30 transition-all duration-300"
                 >
-                  Ver Preguntas Frecuentes
+                  {t("products.helpSection.viewFAQ")}
                 </Link>
               </div>
             </motion.div>

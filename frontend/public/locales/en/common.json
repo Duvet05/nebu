@@ -302,6 +302,51 @@
       "backHome": "Back to home"
     }
   },
+  "products": {
+    "title": "The Nebu Family",
+    "subtitle": "Choose the perfect companion for your child. Each Nebu has its own personality, but they all share the same advanced educational technology.",
+    "badges": {
+      "mostPopular": "Most Popular",
+      "preOrder": "Pre-order"
+    },
+    "pricing": {
+      "freeShipping": "+ free shipping",
+      "reserveWith": "Reserve with only",
+      "reservePercentage": "(50%)"
+    },
+    "cta": {
+      "addToCart": "Add to Cart",
+      "preOrderDirect": "Pre-order Direct",
+      "viewDetails": "View full details →"
+    },
+    "comparison": {
+      "title": "All Nebus Include",
+      "features": {
+        "sameAI": {
+          "title": "Same Advanced AI",
+          "description": "All share the same cutting-edge educational technology"
+        },
+        "parentalControl": {
+          "title": "Parental Control",
+          "description": "Complete monitoring and custom configuration"
+        },
+        "freeUpdates": {
+          "title": "Free Updates",
+          "description": "Always updated software with new features"
+        },
+        "warranty": {
+          "title": "12-Month Warranty",
+          "description": "Full coverage and dedicated technical support"
+        }
+      }
+    },
+    "helpSection": {
+      "title": "Don't know which one to choose?",
+      "description": "Contact us and we'll help you find the perfect Nebu for your family",
+      "talkToAdvisor": "Talk to an Advisor",
+      "viewFAQ": "View FAQ"
+    }
+  },
   "faq": {
     "title": "Frequently Asked Questions",
     "subtitle": "Find answers to the most common questions about Nebu",
