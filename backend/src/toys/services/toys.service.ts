@@ -21,28 +21,54 @@ export class ToysService {
   ) {}
 
   /**
-   * Crear un nuevo juguete con macAddress
-   * @param createToyDto - Datos del juguete con macAddress
+   * Crear un nuevo juguete con macAddress o deviceId
+   * @param createToyDto - Datos del juguete con macAddress o deviceId
    * @param userId - ID del usuario (opcional, se obtiene del JWT en el controller)
    */
   async create(createToyDto: CreateToyDto, userId?: string): Promise<ToyResponseDto> {
-    const normalizedMacAddress = this.normalizeMacAddress(createToyDto.macAddress);
+    // Validar que venga al menos uno
+    if (!createToyDto.macAddress && !createToyDto.deviceId) {
+      throw new BadRequestException('Debe proporcionar macAddress o deviceId');
+    }
 
-    // 1. Buscar o crear IoTDevice por MAC address
-    let iotDevice = await this.iotDeviceRepository.findOne({
-      where: { macAddress: normalizedMacAddress },
-    });
-
-    if (!iotDevice) {
-      // Crear nuevo IoTDevice si no existe
-      iotDevice = this.iotDeviceRepository.create({
-        name: createToyDto.name,
-        macAddress: normalizedMacAddress,
-        deviceType: 'controller',  // Tipo por defecto para juguetes
-        status: 'offline',
-        userId: userId || null,
+    // 1. Buscar o crear IoTDevice por MAC address o Device ID
+    let iotDevice: IoTDevice;
+    
+    if (createToyDto.deviceId) {
+      // Buscar por Device ID (ESP32 BLE)
+      iotDevice = await this.iotDeviceRepository.findOne({
+        where: { deviceId: createToyDto.deviceId },
       });
-      iotDevice = await this.iotDeviceRepository.save(iotDevice);
+
+      if (!iotDevice) {
+        // Crear nuevo IoTDevice con Device ID
+        iotDevice = this.iotDeviceRepository.create({
+          name: createToyDto.name,
+          deviceId: createToyDto.deviceId,
+          deviceType: 'controller',
+          status: 'offline',
+          userId: userId || null,
+        });
+        iotDevice = await this.iotDeviceRepository.save(iotDevice);
+      }
+    } else {
+      // Buscar por MAC address (flujo legacy)
+      const normalizedMacAddress = this.normalizeMacAddress(createToyDto.macAddress);
+      iotDevice = await this.iotDeviceRepository.findOne({
+        where: { macAddress: normalizedMacAddress },
+      });
+
+      if (!iotDevice) {
+        // Crear nuevo IoTDevice con MAC address
+        iotDevice = this.iotDeviceRepository.create({
+          name: createToyDto.name,
+          macAddress: normalizedMacAddress,
+          deviceType: 'controller',
+          status: 'offline',
+          userId: userId || null,
+        });
+        iotDevice = await this.iotDeviceRepository.save(iotDevice);
+      }
     }
 
     // 2. Verificar si ya existe un toy con este IoTDevice
@@ -51,8 +77,9 @@ export class ToysService {
     });
 
     if (existingToy) {
+      const identifier = iotDevice.deviceId || iotDevice.macAddress;
       throw new ConflictException(
-        `Ya existe un juguete registrado con MAC address ${normalizedMacAddress}`
+        `Ya existe un juguete registrado con el dispositivo ${identifier}`
       );
     }
 

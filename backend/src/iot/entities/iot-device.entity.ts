@@ -25,9 +25,13 @@ export class IoTDevice {
   })
   deviceType: DeviceType;
 
-  @Column({ length: 32, unique: true })
+  @Column({ length: 32, unique: true, nullable: true })
   @Index()
-  macAddress: string;
+  macAddress?: string;
+
+  @Column({ length: 64, unique: true, nullable: true })
+  @Index()
+  deviceId?: string; // Device ID para ESP32 BLE (ej: "ESP32_8CBFEA877D0C")
 
   @Column({ type: 'inet', nullable: true })
   ipAddress?: string;

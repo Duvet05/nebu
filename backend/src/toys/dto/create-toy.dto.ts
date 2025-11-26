@@ -1,18 +1,31 @@
-import { IsString, IsOptional, IsEnum, IsObject, IsNotEmpty, Length, Matches } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsObject, IsNotEmpty, Length, Matches, ValidateIf } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ToyStatus } from '../entities/toy.entity';
 
 export class CreateToyDto {
-  @ApiProperty({
-    description: 'MAC address del dispositivo IoT',
+  @ApiPropertyOptional({
+    description: 'MAC address del dispositivo IoT (requerido si no se proporciona deviceId)',
     example: 'AA:BB:CC:DD:EE:FF',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @Matches(/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/, {
     message: 'MAC address debe tener formato XX:XX:XX:XX:XX:XX o XX-XX-XX-XX-XX-XX',
   })
-  macAddress: string;
+  @ValidateIf(o => !o.deviceId)
+  @IsNotEmpty({ message: 'Debe proporcionar macAddress o deviceId' })
+  macAddress?: string;
+
+  @ApiPropertyOptional({
+    description: 'Device ID del ESP32 obtenido vía BLE (requerido si no se proporciona macAddress)',
+    example: 'ESP32_8CBFEA877D0C',
+  })
+  @IsOptional()
+  @IsString()
+  @Length(1, 64)
+  @ValidateIf(o => !o.macAddress)
+  @IsNotEmpty({ message: 'Debe proporcionar macAddress o deviceId' })
+  deviceId?: string;
 
   @ApiProperty({
     description: 'Nombre del juguete',
