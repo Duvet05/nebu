@@ -752,8 +752,8 @@
       "title": "Algo salió mal",
       "description": "Ha ocurrido un error inesperado. Por favor, intenta de nuevo."
     },
-    "back": "← Volver atrás",
-    "retry": "↻ Reintentar",
+    "back": "Volver atrás",
+    "retry": "Reintentar",
     "goHome": "Ir al inicio",
     "needHelp": "¿Necesitas ayuda?",
     "contactSupport": "Contacta con soporte",

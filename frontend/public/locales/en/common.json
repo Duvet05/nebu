@@ -752,8 +752,8 @@
       "title": "Something went wrong",
       "description": "An unexpected error occurred. Please try again."
     },
-    "back": "← Go back",
-    "retry": "↻ Retry",
+    "back": "Go back",
+    "retry": "Retry",
     "goHome": "Go to home",
     "needHelp": "Need help?",
     "contactSupport": "Contact support",

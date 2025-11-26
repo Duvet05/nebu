@@ -115,7 +115,7 @@ export default function ConversationExamples() {
   };
 
   return (
-    <section className="min-h-[80vh] py-24 bg-nebu-bg relative overflow-hidden">
+    <section className="py-16 bg-nebu-bg relative overflow-hidden">
       {/* Subtle background decoration */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
@@ -127,18 +127,18 @@ export default function ConversationExamples() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-center mb-20"
+          className="text-center mb-8"
         >
           <motion.h2 
             variants={itemVariants}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold font-gochi mb-6 text-primary leading-tight"
+            className="text-4xl md:text-5xl font-bold font-gochi mb-3 text-primary leading-tight"
           >
             {t("conversations.title")}
           </motion.h2>
           
           <motion.p 
             variants={itemVariants}
-            className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
           >
             {t("conversations.subtitle")}
           </motion.p>
@@ -149,7 +149,7 @@ export default function ConversationExamples() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-wrap justify-center gap-3 mb-16"
+          className="flex flex-wrap justify-center gap-2 mb-8"
         >
           {categories.map((category) => {
             const IconComponent = categoryIcons[category];
@@ -161,10 +161,10 @@ export default function ConversationExamples() {
                 variants={itemVariants}
                 onClick={() => setSelectedCategory(category)}
                 className={`
-                  relative flex items-center gap-2.5 px-8 py-3.5 rounded-2xl font-semibold text-sm transition-all duration-300 overflow-hidden
+                  relative flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 overflow-hidden
                   ${isSelected 
-                    ? `${categoryColors[category]} text-white shadow-xl` 
-                    : 'bg-white/80 backdrop-blur-sm text-gray-700 hover:text-primary shadow-lg hover:shadow-xl border-2 border-gray-200 hover:border-primary/40'
+                    ? `${categoryColors[category]} text-white shadow-lg` 
+                    : 'bg-white/80 backdrop-blur-sm text-gray-700 hover:text-primary shadow-md hover:shadow-lg border-2 border-gray-200 hover:border-primary/40'
                   }
                 `}
                 whileHover={{ scale: 1.03, y: -2 }}
@@ -193,7 +193,7 @@ export default function ConversationExamples() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto min-h-[450px]"
+            className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto min-h-[320px]"
           >
             {getExamples(selectedCategory).length > 0 ? (
               getExamples(selectedCategory).map(
@@ -203,16 +203,16 @@ export default function ConversationExamples() {
                   variants={cardVariants}
                   className="group h-full"
                 >
-                  <div className="relative h-full bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-gray-300">
+                  <div className="relative h-full bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-gray-300">
                     {/* Question - Clean layout */}
-                    <div className="mb-5 flex-1">
-                      <p className="text-gray-800 font-medium text-[15px] leading-relaxed">
+                    <div className="mb-3 flex-1">
+                      <p className="text-gray-800 font-medium text-sm leading-relaxed">
                         "{example.question}"
                       </p>
                     </div>
                     
                     {/* Footer - Simple and clean */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                       <span className={`
                         inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wide
                         ${categoryColors[selectedCategory]} text-white
@@ -238,10 +238,10 @@ export default function ConversationExamples() {
           variants={itemVariants}
           initial="hidden"
           animate="visible"
-          className="text-center mt-20"
+          className="text-center mt-10"
         >
           <motion.button
-            className="relative inline-flex items-center justify-center gap-3 font-gochi font-bold text-lg px-6 py-4 rounded-full min-w-[280px] md:min-w-[320px] bg-primary text-white shadow-[0_6px_20px_rgba(255,181,74,0.3)] hover:shadow-[0_10px_30px_rgba(255,181,74,0.45)] transition-all duration-200 ease-out"
+            className="relative inline-flex items-center justify-center gap-2.5 font-gochi font-bold text-base px-6 py-3 rounded-full min-w-[240px] md:min-w-[280px] bg-primary text-white shadow-[0_6px_20px_rgba(255,181,74,0.3)] hover:shadow-[0_10px_30px_rgba(255,181,74,0.45)] transition-all duration-200 ease-out"
             whileHover={{ scale: 1.05, y: -3 }}
             whileTap={{ scale: 0.98 }}
           >
