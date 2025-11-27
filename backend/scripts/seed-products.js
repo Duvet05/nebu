@@ -47,13 +47,15 @@ async function seed() {
         if (char === '"') {
           inQuotes = !inQuotes;
         } else if (char === ',' && !inQuotes) {
-          values.push(current);
+          // Reemplazar comillas dobles escapadas ("") con comillas simples (")
+          values.push(current.replace(/""/g, '"'));
           current = '';
         } else {
           current += char;
         }
       }
-      values.push(current);
+      // Reemplazar comillas dobles escapadas en el último valor
+      values.push(current.replace(/""/g, '"'));
       
       // Mapear valores
       const slug = values[0];
@@ -65,9 +67,13 @@ async function seed() {
       const depositAmount = parseFloat(values[6]);
       const inStock = values[7] === 'true';
       const preOrder = values[8] === 'true';
-      const images = values[9] || '[]';
-      const colors = values[10] || '[]';
-      const features = values[11] || '[]';
+      const images = values[9] || null;
+      // Parsear colors desde formato pipe-separated (|)
+      const colorsStr = values[10];
+      const colors = colorsStr && colorsStr !== '[]' ? JSON.stringify(colorsStr.split('|')) : null;
+      // Parsear features desde formato pipe-separated (|)
+      const featuresStr = values[11];
+      const features = featuresStr ? JSON.stringify(featuresStr.split('|')) : null;
       const category = values[12];
       const badge = values[13];
       const active = values[14] === 'true';
