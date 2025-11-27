@@ -1,43 +1,3 @@
-#!/bin/sh#!/bin/sh
-
-# Script para cargar productos desde CSV a PostgreSQL usando Node.js# Script para cargar productos desde CSV a PostgreSQL usando Node.js
-
-# Uso: ./seed-products.sh# Uso: ./seed-products.sh
-
-
-
-set -eset -e
-
-
-
-# Ruta del script JS# Ruta del script JS
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-SEED_SCRIPT="${SCRIPT_DIR}/seed-products.js"SEED_SCRIPT="${SCRIPT_DIR}/seed-products.js"
-
-
-
-echo "🌱 Iniciando seed de productos desde CSV..."echo "🌱 Iniciando seed de productos desde CSV..."
-
-
-
-# Verificar que el archivo JS existe# Verificar que el archivo JS existe
-
-if [ ! -f "$SEED_SCRIPT" ]; thenif [ ! -f "$SEED_SCRIPT" ]; then
-
-    echo "❌ Error: No se encuentra el script: ${SEED_SCRIPT}"    echo "❌ Error: No se encuentra el script: ${SEED_SCRIPT}"
-
-    exit 1    exit 1
-
-fifi
-
-
-
-# Ejecutar el seed usando Node.js# Ejecutar el seed usando Node.js
-
-node "${SEED_SCRIPT}"node "${SEED_SCRIPT}"
-
 const fs = require('fs');
 const { Client } = require('pg');
 
@@ -59,17 +19,18 @@ async function seed() {
     const existingCount = parseInt(countResult.rows[0].count);
     
     if (existingCount > 0) {
-      console.log('⚠️  Ya existen ' + existingCount + ' productos, saltando seed');
+      console.log(`⚠️  Ya existen ${existingCount} productos, saltando seed`);
       await client.end();
       process.exit(0);
     }
     
     // Leer CSV
-    const csvContent = fs.readFileSync('$CSV_FILE', 'utf-8');
+    const csvPath = __dirname + '/products-seed.csv';
+    const csvContent = fs.readFileSync(csvPath, 'utf-8');
     const lines = csvContent.split('\n').filter(line => line.trim());
     const headers = lines[0].split(',');
     
-    console.log('📊 CSV encontrado con ' + (lines.length - 1) + ' productos');
+    console.log(`📊 CSV encontrado con ${lines.length - 1} productos`);
     console.log('💾 Insertando productos...');
     
     let inserted = 0;
@@ -83,7 +44,7 @@ async function seed() {
       let inQuotes = false;
       
       for (let char of line) {
-        if (char === '\"') {
+        if (char === '"') {
           inQuotes = !inQuotes;
         } else if (char === ',' && !inQuotes) {
           values.push(current);
@@ -111,14 +72,14 @@ async function seed() {
       const badge = values[13];
       const active = values[14] === 'true';
       
-      // Insertar producto
-      await client.query(\`
+      // Insertar producto (usando comillas dobles para columnas camelCase)
+      await client.query(`
         INSERT INTO product_catalog (
-          slug, name, concept, \\"originalCharacter\\", description,
-          price, \\"depositAmount\\", \\"inStock\\", \\"preOrder\\",
+          slug, name, concept, "originalCharacter", description,
+          price, "depositAmount", "inStock", "preOrder",
           images, colors, features, category, badge, active
-        ) VALUES (\$1, \$2, \$3, \$4, \$5, \$6, \$7, \$8, \$9, \$10, \$11, \$12, \$13, \$14, \$15)
-      \`, [
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+      `, [
         slug, name, concept, originalCharacter, description,
         price, depositAmount, inStock, preOrder,
         images, colors, features, category, badge, active
@@ -127,16 +88,15 @@ async function seed() {
       inserted++;
     }
     
-    console.log('✅ Seed completado: ' + inserted + ' productos insertados');
+    console.log(`✅ Seed completado: ${inserted} productos insertados`);
     await client.end();
     process.exit(0);
     
   } catch (error) {
-    console.error('❌ Error durante el seed:', error.message);
+    console.error(`❌ Error durante el seed: ${error.message}`);
     await client.end();
     process.exit(1);
   }
 }
 
 seed();
-"
