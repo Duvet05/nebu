@@ -93,12 +93,30 @@ curl -X POST http://localhost:3001/internal/revert-migration
 
 ### InitialProductCatalog (1732741000000)
 
-Migration unificada que incluye TODO:
+Migration **híbrida** que combina lo mejor de TypeORM y SQL manual:
 
-1. **Creación de Tabla** con 22 columnas
-2. **8 Índices** para optimización de queries
-3. **5 Constraints** para validación de datos
-4. **13 Productos** iniciales con shortDescriptions
+**1. CREATE TABLE (generado style de TypeORM)**
+- Estructura basada exactamente en [ProductCatalog entity](src/toys/entities/product-catalog.entity.ts)
+- 22 columnas con tipos que mapean 1:1 con la entidad
+- Si modificas la entidad, puedes regenerar con `npm run migration:generate`
+
+**2. Índices Automáticos (desde decorators @Index)**
+- `@Index(['slug'], { unique: true })` → `CREATE UNIQUE INDEX`
+- `@Index(['active'])` → `CREATE INDEX`
+- `@Index(['inStock'])` → `CREATE INDEX`
+
+**3. Índices Custom de Performance (manual)**
+- 5 índices parciales optimizados para queries específicas
+- `WHERE active = true` para filtros comunes
+
+**4. Constraints de Validación (manual)**
+- 5 constraints CHECK para integridad de datos
+- Validaciones a nivel de base de datos
+
+**5. Seed de 13 Productos (manual)**
+- Datos estructurados en TypeScript
+- Prepared statements para seguridad
+- shortDescriptions incluidas
 
 **Categorías de productos**:
 - space-adventure (3)
@@ -108,12 +126,71 @@ Migration unificada que incluye TODO:
 - ocean-buddies (1)
 - gaming-heroes (1)
 
-**Ventajas del enfoque unificado**:
-- ✅ Una sola fuente de verdad
-- ✅ Rollback completo con un comando (`DROP TABLE CASCADE`)
-- ✅ Sin dependencias entre migrations
-- ✅ Más fácil de mantener y entender
-- ✅ Usa prepared statements (seguro contra SQL injection)
+**Ventajas del enfoque híbrido**:
+- ✅ Entidad es la fuente de verdad para estructura
+- ✅ TypeORM puede regenerar DDL si cambias la entidad
+- ✅ Control manual de optimizaciones (índices, constraints)
+- ✅ Rollback completo con `DROP TABLE CASCADE`
+- ✅ Prepared statements previenen SQL injection
+
+## Entidad vs Migration: ¿Quién Crea la Tabla?
+
+### TL;DR: La Migration Crea, la Entidad Consulta
+
+```typescript
+// ❌ INCORRECTO: synchronize: true en producción
+{
+  synchronize: true,  // TypeORM crea/modifica tablas automáticamente
+  entities: ['src/**/*.entity.ts'],
+}
+
+// ✅ CORRECTO: Migrations en producción
+{
+  synchronize: false,  // Migrations crean las tablas
+  entities: ['src/**/*.entity.ts'],  // Solo para queries/inserts
+  migrations: ['src/database/migrations/*.ts'],
+}
+```
+
+### Flujo de Trabajo
+
+1. **Defines la estructura en la Entidad** (fuente de verdad)
+   ```typescript
+   @Entity('product_catalog')
+   export class ProductCatalog {
+     @Column({ length: 100 })
+     slug: string;
+   }
+   ```
+
+2. **TypeORM puede generar la migration automáticamente**
+   ```bash
+   npm run migration:generate src/database/migrations/AddNewField
+   # TypeORM compara entity vs DB actual y genera SQL
+   ```
+
+3. **O escribes la migration manualmente** (para optimizaciones)
+   ```typescript
+   // Incluye CREATE TABLE + índices custom + constraints + seed
+   await queryRunner.query(`CREATE TABLE ...`);
+   ```
+
+4. **La entidad NO crea nada, solo mapea para queries**
+   ```typescript
+   // En runtime, TypeORM usa la entidad para queries:
+   await repository.find({ where: { slug: 'star-hunters' } });
+   // Genera: SELECT * FROM product_catalog WHERE slug = 'star-hunters'
+   ```
+
+### ¿Por qué este enfoque?
+
+| Aspecto | `synchronize: true` | Migrations |
+|---------|---------------------|------------|
+| Desarrollo | ✅ Rápido | ⚠️ Manual |
+| Producción | ❌ Peligroso | ✅ Seguro |
+| Rollback | ❌ No | ✅ Sí |
+| Historial | ❌ No | ✅ Sí |
+| Control | ❌ Automático | ✅ Total |
 
 ## Flujo de Deployment
 

@@ -13,6 +13,6 @@ export default new DataSource({
   entities: ['src/**/*.entity.ts'],
   migrations: ['src/database/migrations/*.ts'],
   migrationsTableName: 'migrations_history',
-  synchronize: false, // IMPORTANTE: siempre false en producción
+  synchronize: true, // TypeORM crea/actualiza tablas automáticamente desde entities
   logging: process.env.NODE_ENV === 'development',
 });

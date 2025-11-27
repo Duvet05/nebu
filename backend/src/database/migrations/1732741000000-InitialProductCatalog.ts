@@ -1,17 +1,16 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 /**
- * Migration: Creación completa del catálogo de productos
+ * Migration: Creación inicial del catálogo de productos
  *
- * Esta migration incluye:
- * 1. Creación de la tabla product_catalog con todas sus columnas
- * 2. Índices para optimización de queries
- * 3. Constraints para validación de datos
- * 4. Seed de 13 productos iniciales con shortDescriptions
+ * ESTRUCTURA:
+ * 1. Creación de tabla (auto-generado style de TypeORM desde entity)
+ * 2. Índices automáticos (desde decorators @Index)
+ * 3. Índices custom de performance
+ * 4. Constraints de validación
+ * 5. Seed de datos iniciales
  *
- * Nota: Esta es la migration inicial. Se ejecuta una sola vez por ambiente.
- *
- * Author: Claude
+ * Author: TypeORM + Custom enhancements
  * Date: 2025-11-27
  */
 export class InitialProductCatalog1732741000000 implements MigrationInterface {
@@ -19,10 +18,10 @@ export class InitialProductCatalog1732741000000 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     // ============================================
-    // 1. CREAR TABLA
+    // 1. CREAR TABLA (Generado automáticamente desde ProductCatalog entity)
     // ============================================
-    await queryRunner.query(`
-      CREATE TABLE "product_catalog" (
+    await queryRunner.query(
+      `CREATE TABLE "product_catalog" (
         "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
         "slug" character varying(100) NOT NULL,
         "name" character varying(200) NOT NULL,
@@ -35,7 +34,7 @@ export class InitialProductCatalog1732741000000 implements MigrationInterface {
         "depositAmount" numeric(10,2),
         "preOrder" boolean NOT NULL DEFAULT false,
         "inStock" boolean NOT NULL DEFAULT false,
-        "stockCount" integer NOT NULL DEFAULT 0,
+        "stockCount" integer NOT NULL DEFAULT '0',
         "images" text,
         "colors" jsonb,
         "ageRange" character varying(50),
@@ -43,110 +42,107 @@ export class InitialProductCatalog1732741000000 implements MigrationInterface {
         "category" character varying(50) NOT NULL DEFAULT 'plushie',
         "badge" character varying(50),
         "active" boolean NOT NULL DEFAULT true,
-        "viewCount" integer NOT NULL DEFAULT 0,
-        "orderCount" integer NOT NULL DEFAULT 0,
+        "viewCount" integer NOT NULL DEFAULT '0',
+        "orderCount" integer NOT NULL DEFAULT '0',
         "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
         "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
-        CONSTRAINT "PK_product_catalog" PRIMARY KEY ("id"),
-        CONSTRAINT "UQ_product_catalog_slug" UNIQUE ("slug")
-      );
-    `);
+        CONSTRAINT "PK_product_catalog" PRIMARY KEY ("id")
+      )`,
+    );
 
     // ============================================
-    // 2. ÍNDICES DE PERFORMANCE
+    // 2. ÍNDICES AUTOMÁTICOS (desde @Index decorators en entity)
+    // ============================================
+    await queryRunner.query(
+      `CREATE UNIQUE INDEX "IDX_product_catalog_slug" ON "product_catalog" ("slug")`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "IDX_product_catalog_active" ON "product_catalog" ("active")`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX "IDX_product_catalog_inStock" ON "product_catalog" ("inStock")`,
+    );
+
+    // ============================================
+    // 3. ÍNDICES CUSTOM DE PERFORMANCE
     // ============================================
 
-    // Índice para slug (único, ya incluido en UNIQUE constraint)
-    await queryRunner.query(`
-      CREATE INDEX "idx_product_catalog_slug" ON "product_catalog" ("slug");
-    `);
+    // Índice parcial para filtrar por categoría (solo productos activos)
+    await queryRunner.query(
+      `CREATE INDEX "idx_product_catalog_category_active"
+       ON "product_catalog" ("category")
+       WHERE "active" = true`,
+    );
 
-    // Índice para active
-    await queryRunner.query(`
-      CREATE INDEX "idx_product_catalog_active" ON "product_catalog" ("active");
-    `);
+    // Índice parcial para filtrar por badge (solo productos activos)
+    await queryRunner.query(
+      `CREATE INDEX "idx_product_catalog_badge_active"
+       ON "product_catalog" ("badge")
+       WHERE "active" = true AND "badge" IS NOT NULL`,
+    );
 
-    // Índice para inStock
-    await queryRunner.query(`
-      CREATE INDEX "idx_product_catalog_instock" ON "product_catalog" ("inStock");
-    `);
-
-    // Índice para filtrar por categoría (solo productos activos)
-    await queryRunner.query(`
-      CREATE INDEX "idx_product_catalog_category_active"
-      ON "product_catalog" ("category")
-      WHERE "active" = true;
-    `);
-
-    // Índice para filtrar por badge (solo productos activos)
-    await queryRunner.query(`
-      CREATE INDEX "idx_product_catalog_badge_active"
-      ON "product_catalog" ("badge")
-      WHERE "active" = true;
-    `);
-
-    // Índice para filtrar pre-órdenes (solo productos activos)
-    await queryRunner.query(`
-      CREATE INDEX "idx_product_catalog_preorder_active"
-      ON "product_catalog" ("preOrder")
-      WHERE "active" = true;
-    `);
+    // Índice parcial para filtrar pre-órdenes (solo productos activos)
+    await queryRunner.query(
+      `CREATE INDEX "idx_product_catalog_preorder_active"
+       ON "product_catalog" ("preOrder")
+       WHERE "active" = true AND "preOrder" = true`,
+    );
 
     // Índice para ordenar/filtrar por precio
-    await queryRunner.query(`
-      CREATE INDEX "idx_product_catalog_price" ON "product_catalog" ("price");
-    `);
+    await queryRunner.query(
+      `CREATE INDEX "idx_product_catalog_price" ON "product_catalog" ("price")`,
+    );
 
     // Índice compuesto para queries comunes (activos por categoría y fecha)
-    await queryRunner.query(`
-      CREATE INDEX "idx_product_catalog_active_category_created"
-      ON "product_catalog" ("active", "category", "createdAt");
-    `);
+    await queryRunner.query(
+      `CREATE INDEX "idx_product_catalog_active_category_created"
+       ON "product_catalog" ("active", "category", "createdAt" DESC)`,
+    );
 
     // ============================================
-    // 3. CONSTRAINTS DE VALIDACIÓN
+    // 4. CONSTRAINTS DE VALIDACIÓN
     // ============================================
 
     // Validar que el precio sea positivo
-    await queryRunner.query(`
-      ALTER TABLE "product_catalog"
-      ADD CONSTRAINT "chk_product_catalog_price_positive"
-      CHECK ("price" > 0);
-    `);
+    await queryRunner.query(
+      `ALTER TABLE "product_catalog"
+       ADD CONSTRAINT "chk_product_catalog_price_positive"
+       CHECK ("price" > 0)`,
+    );
 
     // Validar que el depósito sea no negativo
-    await queryRunner.query(`
-      ALTER TABLE "product_catalog"
-      ADD CONSTRAINT "chk_product_catalog_deposit_positive"
-      CHECK ("depositAmount" >= 0);
-    `);
+    await queryRunner.query(
+      `ALTER TABLE "product_catalog"
+       ADD CONSTRAINT "chk_product_catalog_deposit_positive"
+       CHECK ("depositAmount" >= 0)`,
+    );
 
     // Validar que el depósito no sea mayor que el precio
-    await queryRunner.query(`
-      ALTER TABLE "product_catalog"
-      ADD CONSTRAINT "chk_product_catalog_deposit_le_price"
-      CHECK ("depositAmount" <= "price" OR "depositAmount" IS NULL);
-    `);
+    await queryRunner.query(
+      `ALTER TABLE "product_catalog"
+       ADD CONSTRAINT "chk_product_catalog_deposit_le_price"
+       CHECK ("depositAmount" <= "price" OR "depositAmount" IS NULL)`,
+    );
 
     // Validar que stockCount sea no negativo
-    await queryRunner.query(`
-      ALTER TABLE "product_catalog"
-      ADD CONSTRAINT "chk_product_catalog_stock_positive"
-      CHECK ("stockCount" >= 0);
-    `);
+    await queryRunner.query(
+      `ALTER TABLE "product_catalog"
+       ADD CONSTRAINT "chk_product_catalog_stock_positive"
+       CHECK ("stockCount" >= 0)`,
+    );
 
     // Validar que viewCount y orderCount sean no negativos
-    await queryRunner.query(`
-      ALTER TABLE "product_catalog"
-      ADD CONSTRAINT "chk_product_catalog_counts_positive"
-      CHECK ("viewCount" >= 0 AND "orderCount" >= 0);
-    `);
+    await queryRunner.query(
+      `ALTER TABLE "product_catalog"
+       ADD CONSTRAINT "chk_product_catalog_counts_positive"
+       CHECK ("viewCount" >= 0 AND "orderCount" >= 0)`,
+    );
 
     // ============================================
-    // 4. SEED DE DATOS INICIALES
+    // 5. SEED DE DATOS INICIALES
     // ============================================
 
-    console.log('🌱 Insertando 13 productos iniciales...');
+    console.log('🌱 Insertando 13 productos iniciales con shortDescriptions...');
 
     const products = [
       {
@@ -182,7 +178,8 @@ export class InitialProductCatalog1732741000000 implements MigrationInterface {
         preOrder: true,
         images: '',
         colors: JSON.stringify(['#9B59B6', '#E74C3C', '#F39C12']),
-        features: 'Pelaje suave con detalles holográficos,Ojos con brillo nocturno',
+        features:
+          'Pelaje suave con detalles holográficos,Ojos con brillo nocturno',
         category: 'fantasy-creatures',
         badge: 'hot',
         active: true,
@@ -398,16 +395,14 @@ export class InitialProductCatalog1732741000000 implements MigrationInterface {
       },
     ];
 
-    // Insertar productos usando prepared statements para seguridad
+    // Insertar productos usando prepared statements
     for (const product of products) {
       await queryRunner.query(
-        `
-        INSERT INTO "product_catalog" (
+        `INSERT INTO "product_catalog" (
           slug, name, concept, "originalCharacter", description, "shortDescription",
           price, "depositAmount", "inStock", "preOrder",
           images, colors, features, category, badge, active
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
-      `,
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
         [
           product.slug,
           product.name,
@@ -433,8 +428,8 @@ export class InitialProductCatalog1732741000000 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // Eliminar tabla (cascade elimina índices y constraints automáticamente)
-    await queryRunner.query(`DROP TABLE IF EXISTS "product_catalog" CASCADE;`);
+    // Eliminar tabla (CASCADE elimina índices y constraints automáticamente)
+    await queryRunner.query(`DROP TABLE IF EXISTS "product_catalog" CASCADE`);
 
     console.log('✅ Tabla product_catalog eliminada (rollback completo)');
   }
