@@ -26,12 +26,36 @@ export class ProductCatalogController {
   constructor(private readonly productCatalogService: ProductCatalogService) {}
 
   // Public endpoints
+  @Get('health')
+  @ApiOperation({ summary: 'Health check for product catalog' })
+  @ApiResponse({ status: 200, description: 'Returns catalog health status' })
+  async health() {
+    return await this.productCatalogService.getHealth();
+  }
+
   @Get()
   @ApiOperation({ summary: 'Get all active products' })
   @ApiResponse({ status: 200, description: 'Returns all active products' })
-  async findAll(@Query('includeInactive') includeInactive?: string) {
+  async findAll(
+    @Query('includeInactive') includeInactive?: string,
+    @Query('category') category?: string,
+    @Query('badge') badge?: string,
+    @Query('maxPrice') maxPrice?: string,
+    @Query('minPrice') minPrice?: string,
+    @Query('inStock') inStock?: string,
+    @Query('preOrder') preOrder?: string,
+  ) {
     const include = includeInactive === 'true';
-    return await this.productCatalogService.findAll(include);
+    const filters = {
+      category,
+      badge,
+      maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
+      minPrice: minPrice ? parseFloat(minPrice) : undefined,
+      inStock: inStock === 'true' ? true : inStock === 'false' ? false : undefined,
+      preOrder: preOrder === 'true' ? true : preOrder === 'false' ? false : undefined,
+    };
+
+    return await this.productCatalogService.findAll(include, filters);
   }
 
   @Get('in-stock')

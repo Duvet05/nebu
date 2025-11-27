@@ -1,14 +1,19 @@
-# Scripts de Gestión de Productos
+# Scripts de Gestión de Base de Datos
 
-Scripts SQL para gestionar el catálogo de productos en la base de datos PostgreSQL.
+Scripts para gestionar el catálogo de productos y migrations en la base de datos PostgreSQL.
 
-## Archivos
+## Archivos SQL
 
 - **`seed-products.sql`** - Limpia y carga los 13 productos iniciales
 - **`verify-products.sql`** - Verifica y muestra estadísticas de los productos
-- **`README.md`** - Este archivo
 
-## Comandos
+## Scripts Shell
+
+- **`backup-db.sh`** - Crear backups de la base de datos
+- **`run-migrations.sh`** - Ejecutar migrations de TypeORM
+- **`rollback-migration.sh`** - Revertir última migration
+
+## Comandos Rápidos
 
 ### Cargar/Recargar Datos
 Limpia la tabla y carga los 13 productos iniciales:
@@ -22,6 +27,32 @@ Muestra estadísticas y validaciones:
 
 ```bash
 docker exec -i nebu-postgres-prod psql -U nebu_user -d nebu_db < backend/scripts/verify-products.sql
+```
+
+### Crear Backup
+
+```bash
+# Backup completo
+./backend/scripts/backup-db.sh
+
+# Solo productos
+./backend/scripts/backup-db.sh products
+
+# Tabla específica
+./backend/scripts/backup-db.sh nombre_tabla
+```
+
+### Ejecutar Migrations (Estilo Liquibase)
+
+```bash
+# Ver migrations pendientes
+npm run migration:show
+
+# Ejecutar migrations
+./backend/scripts/run-migrations.sh
+
+# Revertir última migration
+./backend/scripts/rollback-migration.sh
 ```
 
 ## Formato de Datos
@@ -72,3 +103,7 @@ INSERT INTO product_catalog (
 - **gaming-heroes** (1): Pixel Jester
 
 Badges: `new` (5), `hot` (5), `exclusive` (3)
+
+## Ver También
+
+- [MIGRATIONS.md](../MIGRATIONS.md) - Guía completa de migrations (estilo Liquibase)

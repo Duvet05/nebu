@@ -25,16 +25,79 @@ export class ProductCatalogService {
     return await this.productRepository.save(product);
   }
 
-  async findAll(includeInactive = false): Promise<ProductCatalog[]> {
+  async findAll(
+    includeInactive = false,
+    filters?: {
+      category?: string;
+      badge?: string;
+      maxPrice?: number;
+      minPrice?: number;
+      inStock?: boolean;
+      preOrder?: boolean;
+    },
+  ): Promise<ProductCatalog[]> {
     const query = this.productRepository.createQueryBuilder('product');
-    
+
     if (!includeInactive) {
       query.where('product.active = :active', { active: true });
     }
-    
+
+    // Aplicar filtros opcionales
+    if (filters?.category) {
+      query.andWhere('product.category = :category', { category: filters.category });
+    }
+
+    if (filters?.badge) {
+      query.andWhere('product.badge = :badge', { badge: filters.badge });
+    }
+
+    if (filters?.maxPrice !== undefined) {
+      query.andWhere('product.price <= :maxPrice', { maxPrice: filters.maxPrice });
+    }
+
+    if (filters?.minPrice !== undefined) {
+      query.andWhere('product.price >= :minPrice', { minPrice: filters.minPrice });
+    }
+
+    if (filters?.inStock !== undefined) {
+      query.andWhere('product.inStock = :inStock', { inStock: filters.inStock });
+    }
+
+    if (filters?.preOrder !== undefined) {
+      query.andWhere('product.preOrder = :preOrder', { preOrder: filters.preOrder });
+    }
+
     query.orderBy('product.createdAt', 'DESC');
-    
+
     return await query.getMany();
+  }
+
+  /**
+   * Health check para el catálogo de productos
+   */
+  async getHealth(): Promise<{
+    status: string;
+    productsCount: number;
+    activeProducts: number;
+    inStockProducts: number;
+    preOrderProducts: number;
+    timestamp: Date;
+  }> {
+    const [total, active, inStock, preOrder] = await Promise.all([
+      this.productRepository.count(),
+      this.productRepository.count({ where: { active: true } }),
+      this.productRepository.count({ where: { inStock: true, active: true } }),
+      this.productRepository.count({ where: { preOrder: true, active: true } }),
+    ]);
+
+    return {
+      status: 'ok',
+      productsCount: total,
+      activeProducts: active,
+      inStockProducts: inStock,
+      preOrderProducts: preOrder,
+      timestamp: new Date(),
+    };
   }
 
   async findOne(id: string): Promise<ProductCatalog> {
