@@ -1,5 +1,8 @@
 FROM node:18-alpine AS base
 
+# Install curl para el startup script
+RUN apk add --no-cache curl
+
 WORKDIR /app
 
 # Copy package files
@@ -8,7 +11,7 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci
 
-# Copy source code
+# Copy source code  
 COPY . .
 
 # Development stage
@@ -33,9 +36,9 @@ RUN mkdir -p uploads && chown -R nestjs:nodejs uploads
 # Copy files with correct ownership
 COPY --chown=nestjs:nodejs . .
 
-# Copy docker entrypoint (allows running migrations/seeds before start)
-COPY scripts/docker/backend-entrypoint.sh /entrypoint.sh
-RUN chown nestjs:nodejs /entrypoint.sh && chmod +x /entrypoint.sh
+# Copy startup script
+COPY startup.sh /usr/local/bin/startup.sh
+RUN chmod +x /usr/local/bin/startup.sh
 
 # Switch to non-root user
 USER nestjs
@@ -46,6 +49,6 @@ EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
   CMD node -e "fetch('http://localhost:3001/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"
 
-# Use entrypoint script — it will exec the provided CMD. Keep default to start production.
-ENTRYPOINT ["/entrypoint.sh"]
+# Use startup script — it will exec the provided CMD. Keep default to start production.
+ENTRYPOINT ["/usr/local/bin/startup.sh"]
 CMD ["npm", "run", "start:prod"]

@@ -1,18 +1,19 @@
-import type { MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
 import { ShoppingCart, Star, Check, Info } from "lucide-react";
-import { products } from "~/data/products";
 import { useCart } from "~/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { trackEvent } from "~/lib/facebook-pixel";
 import { BackInStockNotify } from "~/components/BackInStockNotify";
 import { ProductComparison } from "~/components/ProductComparison";
 import { BUSINESS } from "~/config/constants";
+import { fetchProducts, enrichProduct } from "~/lib/api/products";
+import { json } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
   return [
@@ -33,30 +34,89 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+/**
+ * Loader to fetch products from backend API
+ */
+export async function loader(_args: LoaderFunctionArgs) {
+  try {
+    const products = await fetchProducts(false);
+    const enrichedProducts = products.map(enrichProduct);
+    
+    return json({ 
+      products: enrichedProducts,
+      error: null 
+    });
+  } catch (error) {
+    console.error('Error loading products:', error);
+    // Return empty array on error - fallback to client-side handling
+    return json({ 
+      products: [],
+      error: 'Failed to load products' 
+    });
+  }
+}
+
 export default function ProductosPage() {
   const { t } = useTranslation("common");
   const { addItem } = useCart();
-  const [selectedColors, _setSelectedColors] = useState<Record<string, string>>(
-    products.reduce((acc, p) => ({ ...acc, [p.id]: p.colors[0].id }), {})
-  );
+  const { products } = useLoaderData<typeof loader>();
+  const [selectedColors, _setSelectedColors] = useState<Record<string, string>>({});
+
+  // Initialize selected colors when products load
+  useEffect(() => {
+    if (products.length > 0) {
+      _setSelectedColors(
+        products.reduce((acc, p) => {
+          const colors = p?.colors || [];
+          return { ...acc, [p?.id || '']: colors[0]?.id || 'default' };
+        }, {} as Record<string, string>)
+      );
+    }
+  }, [products]);
 
   // Track page view as a custom event
   useEffect(() => {
-    trackEvent('ViewContent', {
-      content_type: 'product_catalog',
-      content_name: 'Nebu Product Catalog',
-      num_items: products.length,
-    });
-  }, []);
+    if (products.length > 0) {
+      trackEvent('ViewContent', {
+        content_type: 'product_catalog',
+        content_name: 'Nebu Product Catalog',
+        num_items: products.length,
+      });
+    }
+  }, [products]);
 
   const handleAddToCart = (productId: string) => {
-    const product = products.find(p => p.id === productId);
+    const product = products.find(p => p?.id === productId);
     if (!product) return;
 
     const colorId = selectedColors[productId];
-    const color = product.colors.find(c => c.id === colorId) || product.colors[0];
+    const colors = product.colors || [];
+    const color = colors.find(c => c?.id === colorId) || colors[0];
+    
+    if (!color) return;
 
-    addItem(product, color, 1);
+    // Convert API product to cart product format
+    const cartProduct = {
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      description: product.description,
+      shortDescription: product.shortDescription || '',
+      price: product.price,
+      originalPrice: product.originalPrice,
+      images: product.images,
+      colors: product.colors || [],
+      category: product.category as "plushie" | "subscription" | "accessory",
+      ageRange: product.ageRange || '',
+      features: product.features,
+      inStock: product.inStock,
+      stockCount: product.stockCount,
+      badge: product.badge,
+      preOrder: product.preOrder,
+      depositAmount: product.depositAmount,
+    };
+
+    addItem(cartProduct, color, 1);
   };
 
   return (
@@ -103,7 +163,9 @@ export default function ProductosPage() {
             {/* Products Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Regular Products */}
-              {products.map((product, index) => (
+              {products.filter(p => p != null).map((product, index) => {
+                const colors = product.colors || [];
+                return (
                 <motion.div
                   key={product.id}
                   className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
@@ -125,20 +187,28 @@ export default function ProductosPage() {
                   )}
 
                   {/* Product Image */}
-                  <div className="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                    <div className="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                     <div className="absolute inset-0 flex items-center justify-center">
                       {/* Placeholder - Replace with actual image */}
-                      <div className={`w-48 h-48 rounded-full bg-gradient-to-br ${product.colors[0].gradient} opacity-50`}></div>
+                      <div className={`w-48 h-48 rounded-full bg-gradient-to-br ${colors[0]?.gradient || 'from-gray-200 to-gray-300'} opacity-50`}></div>
                       <div className="absolute text-6xl">
-                        {product.id === "nebu-dino" && "🦕"}
-                        {product.id === "nebu-gato" && "🐱"}
-                        {product.id === "nebu-conejo" && "🐰"}
-                        {product.id === "nebu-oso" && "🐻"}
-                        {product.id === "nebu-dragon" && "🐉"}
+                        {product.slug.includes('dino') && "🦕"}
+                        {product.slug.includes('gato') && "🐱"}
+                        {product.slug.includes('conejo') && "🐰"}
+                        {product.slug.includes('oso') && "�"}
+                        {product.slug.includes('dragon') && "🐉"}
+                        {product.slug.includes('star') && "⭐"}
+                        {product.slug.includes('chaos') && "�"}
+                        {product.slug.includes('kosmik') && "👾"}
+                        {product.slug.includes('pup') && "🐶"}
+                        {product.slug.includes('gruñon') && "👹"}
+                        {product.slug.includes('arms') && "🤗"}
+                        {product.slug.includes('kitty') && "😺"}
+                        {product.slug.includes('bunny') && "🐰"}
+                        {product.slug.includes('jester') && "🤡"}
+                        {product.slug.includes('sawbite') && "🪚"}
                       </div>
-                    </div>
-
-                    {/* Stock indicator */}
+                    </div>                    {/* Stock indicator */}
                     {!product.inStock && (
                       <div className="absolute bottom-4 left-4">
                         <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-700">
@@ -160,17 +230,17 @@ export default function ProductosPage() {
 
                     {/* Colors */}
                     <div className="flex gap-2 mb-4">
-                      {product.colors.slice(0, 4).map((color) => (
+                      {colors.slice(0, 4).map((color) => (
                         <div
-                          key={color.id}
+                          key={color?.id || Math.random()}
                           className="w-8 h-8 rounded-full border-2 border-gray-300"
-                          style={{ backgroundColor: color.hex }}
-                          title={color.name}
+                          style={{ backgroundColor: color?.hex || '#ccc' }}
+                          title={color?.name || ''}
                         />
                       ))}
-                      {product.colors.length > 4 && (
+                      {colors.length > 4 && (
                         <div className="w-8 h-8 rounded-full border-2 border-gray-300 bg-gray-100 flex items-center justify-center text-xs text-gray-600">
-                          +{product.colors.length - 4}
+                          +{colors.length - 4}
                         </div>
                       )}
                     </div>
@@ -239,7 +309,8 @@ export default function ProductosPage() {
                     </Link>
                   </div>
                 </motion.div>
-              ))}
+              );
+              })}
 
               {/* Special Help Card - At the end */}
               <motion.div
