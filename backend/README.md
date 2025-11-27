@@ -4,7 +4,7 @@ Backend NestJS para Nebu Mobile - IoT y Voice Agent Platform con sistema de migr
 
 ## Arquitectura de Base de Datos
 
-Este proyecto usa **TypeORM Migrations** para gestionar tanto la estructura (DDL) como los datos iniciales (DML).
+Este proyecto usa **TypeORM Migrations** para gestionar tanto la estructura (DDL) como los datos iniciales (DML) en una sola migration unificada.
 
 ```
 backend/
@@ -12,7 +12,8 @@ backend/
 ├── startup.sh                      # Script de inicio (ejecuta migrations)
 ├── src/
 │   ├── database/
-│   │   └── migrations/            # Migrations versionadas
+│   │   └── migrations/
+│   │       └── 1732741000000-InitialProductCatalog.ts  # Migration unificada
 │   └── toys/
 │       ├── entities/
 │       │   └── product-catalog.entity.ts
@@ -88,94 +89,129 @@ curl -X POST http://localhost:3001/internal/migrations-status
 curl -X POST http://localhost:3001/internal/revert-migration
 ```
 
-## Migrations Actuales
+## Migration Actual
 
-### 1. AddProductCatalogIndexesAndConstraints (1732741200000)
-- **Índices**: 5 índices para optimizar queries
-- **Constraints**: 7 validaciones de datos
+### InitialProductCatalog (1732741000000)
 
-### 2. PopulateShortDescriptions (1732741300000)
-- Agrega descripciones cortas a productos existentes
+Migration unificada que incluye TODO:
 
-### 3. SeedInitialProducts (1732741400000)
-- Carga inicial de 13 productos del catálogo
-- Previene duplicados
-- Rollback completo disponible
+1. **Creación de Tabla** con 22 columnas
+2. **8 Índices** para optimización de queries
+3. **5 Constraints** para validación de datos
+4. **13 Productos** iniciales con shortDescriptions
 
-Ver [MIGRATIONS.md](./MIGRATIONS.md) para documentación completa.
+**Categorías de productos**:
+- space-adventure (3)
+- fantasy-creatures (3)
+- cute-companions (3)
+- funny-friends (2)
+- ocean-buddies (1)
+- gaming-heroes (1)
+
+**Ventajas del enfoque unificado**:
+- ✅ Una sola fuente de verdad
+- ✅ Rollback completo con un comando (`DROP TABLE CASCADE`)
+- ✅ Sin dependencias entre migrations
+- ✅ Más fácil de mantener y entender
+- ✅ Usa prepared statements (seguro contra SQL injection)
 
 ## Flujo de Deployment
 
-### Cambios en la Base de Datos
+### 1. Deployment Inicial (Primera vez)
 
-1. **Modificar entidades**
-   ```typescript
-   // src/toys/entities/product-catalog.entity.ts
-   @Column({ nullable: true })
-   newField: string;
-   ```
+```bash
+# Deployment automático
+docker-compose up -d --build
 
-2. **Generar migration**
-   ```bash
-   npm run migration:generate src/database/migrations/AddNewField
-   ```
+# Las migrations se ejecutan automáticamente
+# Verifica los logs
+docker logs nebu-backend -f
+```
 
-3. **Revisar migration generada**
-   ```typescript
-   // src/database/migrations/TIMESTAMP-AddNewField.ts
-   public async up(queryRunner: QueryRunner): Promise<void> {
-     // Revisar cambios
-   }
+### 2. Agregar Nuevos Productos (Después de deployment inicial)
 
-   public async down(queryRunner: QueryRunner): Promise<void> {
-     // Implementar rollback
-   }
-   ```
+```bash
+# Crear nueva migration de datos
+npm run migration:create src/database/migrations/AddNewProducts
 
-4. **Commit y push**
-   ```bash
-   git add src/database/migrations/
-   git commit -m "feat: add new field to products"
-   git push
-   ```
+# Editar el archivo generado
+# Implementar usando prepared statements:
+await queryRunner.query(
+  `INSERT INTO product_catalog (...) VALUES ($1, $2, ...)`,
+  [value1, value2, ...]
+);
 
-5. **Deploy**
-   ```bash
-   docker-compose down
-   docker-compose up -d --build
-   # Migrations se ejecutan automáticamente
-   ```
+# Commit y deploy
+git add src/database/migrations/
+git commit -m "feat: add new products"
+docker-compose up -d --build
+```
 
-### Agregar Datos Iniciales
+### 3. Modificar Estructura de Tabla
 
-1. **Crear data migration**
-   ```bash
-   npm run migration:create src/database/migrations/SeedNewProducts
-   ```
+```bash
+# 1. Modificar entidad
+# src/toys/entities/product-catalog.entity.ts
+@Column({ nullable: true })
+newField: string;
 
-2. **Implementar insert con prevención de duplicados**
-   ```typescript
-   public async up(queryRunner: QueryRunner): Promise<void> {
-     const result = await queryRunner.query(
-       `SELECT COUNT(*) as count FROM product_catalog WHERE slug = 'new-product'`,
-     );
+# 2. Generar migration automática
+npm run migration:generate src/database/migrations/AddNewField
 
-     if (parseInt(result[0].count) > 0) {
-       console.log('⚠️  Product already exists. Skipping.');
-       return;
-     }
+# 3. Revisar migration generada
+# 4. Commit y deploy
+git add src/database/migrations/
+git commit -m "feat: add new field to products"
+docker-compose up -d --build
+```
 
-     await queryRunner.query(`
-       INSERT INTO product_catalog (slug, name, ...) VALUES ('new-product', 'New Product', ...);
-     `);
-   }
+## Troubleshooting
 
-   public async down(queryRunner: QueryRunner): Promise<void> {
-     await queryRunner.query(`DELETE FROM product_catalog WHERE slug = 'new-product';`);
-   }
-   ```
+### Resetear migrations en desarrollo
 
-3. **Deploy** (igual que arriba)
+```bash
+# 1. Conectar a base de datos
+docker exec -it nebu-postgres-prod psql -U nebu_user -d nebu_db
+
+# 2. Limpiar tabla de migrations
+DELETE FROM migrations_history;
+
+# 3. Eliminar tabla (opcional)
+DROP TABLE product_catalog CASCADE;
+
+# 4. Salir
+\q
+
+# 5. Re-ejecutar migrations
+docker exec -it nebu-backend npm run migration:run
+```
+
+### Ver migrations ejecutadas
+
+```bash
+docker exec -it nebu-postgres-prod psql -U nebu_user -d nebu_db \
+  -c "SELECT * FROM migrations_history ORDER BY id;"
+```
+
+### Error: "Table already exists"
+
+Si la tabla ya existe pero no hay registro en migrations_history:
+
+```bash
+# Marcar migration como ejecutada sin correrla
+docker exec -it nebu-postgres-prod psql -U nebu_user -d nebu_db -c \
+  "INSERT INTO migrations_history (timestamp, name) \
+   VALUES (1732741000000, 'InitialProductCatalog1732741000000');"
+```
+
+## Tipos de Datos Importantes
+
+| Campo | Tipo TypeORM | Tipo PostgreSQL | Formato en Migration |
+|-------|--------------|-----------------|---------------------|
+| `images` | `simple-array` | `text` | `''` o `'img1.jpg,img2.jpg'` |
+| `features` | `simple-array` | `text` | `'Feature 1,Feature 2'` |
+| `colors` | `jsonb` | `jsonb` | `JSON.stringify(['#FF0000','#00FF00'])` |
+| `originalCharacter` | `varchar(200)` | `varchar(200)` | `'Nebu Original'` |
 
 ## Scripts Disponibles
 
@@ -200,41 +236,15 @@ DATABASE_PASSWORD=nebu_password_2024!
 DATABASE_NAME=nebu_db
 ```
 
-## Troubleshooting
+## Best Practices Implementadas
 
-### Resetear migrations en desarrollo
-
-```bash
-# Conectar a base de datos
-docker exec -it nebu-postgres-prod psql -U nebu_user -d nebu_db
-
-# Limpiar historial
-DELETE FROM migrations_history;
-
-# Limpiar datos (opcional)
-TRUNCATE product_catalog CASCADE;
-
-# Salir
-\q
-
-# Re-ejecutar migrations
-docker exec -it nebu-backend npm run migration:run
-```
-
-### Ver migrations ejecutadas
-
-```bash
-docker exec -it nebu-postgres-prod psql -U nebu_user -d nebu_db \
-  -c "SELECT * FROM migrations_history ORDER BY id;"
-```
-
-### Migration ya ejecutada
-
-```bash
-# Eliminar registro específico
-docker exec -it nebu-postgres-prod psql -U nebu_user -d nebu_db \
-  -c "DELETE FROM migrations_history WHERE name = 'NombreMigration';"
-```
+1. ✅ **Migration unificada**: Una sola migration para setup inicial completo
+2. ✅ **Prepared statements**: Prevención de SQL injection
+3. ✅ **Rollback completo**: `DROP TABLE CASCADE` revierte todo
+4. ✅ **Índices optimizados**: 8 índices para queries comunes
+5. ✅ **Constraints en DB**: Validación a nivel de base de datos
+6. ✅ **Datos estructurados**: Array de objetos en vez de SQL hardcodeado
+7. ✅ **Tipos correctos**: JSONB para JSON, simple-array para strings separados por comas
 
 ## Tecnologías
 
@@ -252,7 +262,7 @@ src/
 │   └── controllers/
 │       └── internal.controller.ts  # Endpoints de migrations
 ├── database/
-│   └── migrations/      # TypeORM migrations
+│   └── migrations/      # TypeORM migrations (1 archivo)
 ├── toys/                # Módulo de productos
 │   ├── entities/
 │   ├── services/
@@ -262,11 +272,6 @@ src/
 ├── auth/                # Autenticación
 └── main.ts             # Entry point
 ```
-
-## Documentación Adicional
-
-- [MIGRATIONS.md](./MIGRATIONS.md) - Guía completa de migrations
-- [API Swagger](http://localhost:3001/api) - Documentación de endpoints (en desarrollo)
 
 ## Contribuir
 
