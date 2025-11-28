@@ -1,0 +1,47 @@
+# ===========================================
+# DOCKER COMPOSE OVERRIDE - DESARROLLO
+# ===========================================
+# Este archivo se aplica AUTOMÁTICAMENTE sobre docker-compose.yml
+# Expone puertos de servicios para desarrollo local
+#
+# INSTRUCCIONES:
+# 1. Descomenta las secciones que necesites exponer
+# 2. Reinicia el servicio: docker-compose up -d <servicio>
+# 3. Conecta desde tu cliente favorito (DBeaver, RedisInsight, etc)
+
+services:
+  # ==============================================
+  # POSTGRES - EXPONER PUERTO PARA DESARROLLO
+  # ==============================================
+  # Descomenta para conectarte desde localhost:5432
+  # Cliente sugerido: DBeaver, pgAdmin, DataGrip
+  postgres:
+    ports:
+      - "5432:5432"
+    networks:
+      - nebu-network
+      - default  # Necesario para exponer puertos desde red interna
+
+  # ==============================================
+  # REDIS - EXPONER PUERTO PARA DESARROLLO
+  # ==============================================
+  # Descomenta para conectarte desde localhost:6379
+  # Cliente sugerido: RedisInsight, Redis Commander
+  redis:
+    ports:
+      - "6379:6379"
+    networks:
+      - nebu-network
+      - default  # Necesario para exponer puertos desde red interna
+
+  # ==============================================
+  # CHROMADB - EXPONER PUERTO PARA DESARROLLO
+  # ==============================================
+  # Descomenta para acceder a ChromaDB desde localhost:8000
+  # URL: http://localhost:8000
+  chromadb:
+    ports:
+      - "8000:8000"
+    networks:
+      - nebu-network
+      - default  # Necesario para exponer puertos desde red interna
