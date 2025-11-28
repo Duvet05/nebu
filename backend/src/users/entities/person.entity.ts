@@ -126,9 +126,7 @@ export class Person {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  // Relations using string references to avoid circular dependencies
-  @OneToMany('Student', 'person')
-  students: any[];
+  // Relations eliminadas: Student (ya no existe)
 
   // Virtual properties
   get fullName(): string {
