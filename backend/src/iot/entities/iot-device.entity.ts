@@ -6,7 +6,10 @@ import {
   UpdateDateColumn,
   Index,
   OneToOne,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Location } from '../../common/entities/location.entity';
 
 export type DeviceStatus = 'online' | 'offline' | 'error' | 'maintenance';
 export type DeviceType = 'sensor' | 'actuator' | 'camera' | 'microphone' | 'speaker' | 'controller';
@@ -45,7 +48,11 @@ export class IoTDevice {
   status: DeviceStatus;
 
   @Column({ length: 255, nullable: true })
-  location?: string;
+  location?: string; // Deprecated in favor of locationEntity
+
+  @ManyToOne(() => Location, { nullable: true })
+  @JoinColumn({ name: 'locationId' })
+  locationEntity?: Location;
 
   @Column({ type: 'jsonb', nullable: true })
   metadata?: Record<string, any>;
