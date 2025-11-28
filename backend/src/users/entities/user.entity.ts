@@ -6,10 +6,11 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
-// Using string references to avoid circular dependencies
-// Relations will be loaded via repositories when needed
+import { Person } from './person.entity';
 
 export enum UserRole {
   STUDENT = 'student',
@@ -39,14 +40,9 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
-
-  @Column({ nullable: true })
-  avatar: string;
+  @OneToOne(() => Person, { cascade: true, eager: true })
+  @JoinColumn()
+  person: Person;
 
   @Column({
     type: 'enum',
@@ -77,18 +73,6 @@ export class User {
   @Column({ type: 'timestamptz', nullable: true })
   lastLoginAt: Date;
 
-  @Column({ default: 'es' })
-  preferredLanguage: string;
-
-  @Column({ default: 'America/Lima' })
-  timezone: string;
-
-  @Column({ type: 'json', nullable: true })
-  preferences: Record<string, any>;
-
-  @Column({ type: 'json', nullable: true })
-  metadata: Record<string, any>;
-
   // OAuth fields
   @Column({ nullable: true })
   oauthProvider: string;
@@ -105,18 +89,81 @@ export class User {
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
 
-  // Relaciones a Course eliminadas por no existir entidad Course
-  // Relaciones eliminadas: Progress, Subscription, Purchase, Review, UserCourseEnrollment, UserProgress, Order (no existen entidades)
-
   @OneToMany('Toy', 'user')
   toys: any[];
 
   @ManyToMany('Role', 'users')
   roles: any[];
 
+  // Compatibility getters/setters for moved fields
+  get firstName(): string {
+    return this.person?.firstName;
+  }
+
+  set firstName(value: string) {
+    if (this.person) this.person.firstName = value;
+  }
+
+  get lastName(): string {
+    return this.person?.lastName;
+  }
+
+  set lastName(value: string) {
+    if (this.person) this.person.lastName = value;
+  }
+
+  get avatar(): string {
+    // Assuming avatar is not in Person yet, but plan said maybe move it. 
+    // Checking Person entity again, it doesn't have avatar.
+    // For now, let's keep avatar on User if it's user-specific, or add to Person.
+    // The plan said "Remove firstName, lastName, avatar (move to Person...)".
+    // I will add avatar to Person in the next step to match the plan.
+    return this.person?.metadata?.avatar;
+  }
+
+  set avatar(value: string) {
+    if (this.person) {
+        if (!this.person.metadata) this.person.metadata = {};
+        this.person.metadata.avatar = value;
+    }
+  }
+
+  get preferredLanguage(): string {
+    return this.person?.preferredLanguage;
+  }
+
+  set preferredLanguage(value: string) {
+    if (this.person) this.person.preferredLanguage = value;
+  }
+
+  get timezone(): string {
+    return this.person?.timezone;
+  }
+
+  set timezone(value: string) {
+    if (this.person) this.person.timezone = value;
+  }
+
+  get preferences(): Record<string, any> {
+    return this.person?.preferences;
+  }
+
+  set preferences(value: Record<string, any>) {
+    if (this.person) this.person.preferences = value;
+  }
+  
+  get metadata(): Record<string, any> {
+      return this.person?.metadata;
+  }
+
+  set metadata(value: Record<string, any>) {
+      if (this.person) this.person.metadata = value;
+  }
+
+
   // Virtual properties
   get fullName(): string {
-    return `${this.firstName} ${this.lastName}`.trim() || this.username;
+    return this.person?.fullName || this.username;
   }
 
   get isActive(): boolean {

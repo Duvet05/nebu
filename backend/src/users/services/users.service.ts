@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
 import { User, UserRole, UserStatus } from '../entities/user.entity';
+import { Person } from '../entities/person.entity';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 
@@ -11,11 +12,13 @@ import { CreateUserDto } from '../dto/create-user.dto';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(Person)
+    private personRepository: Repository<Person>
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const { email, username, password } = createUserDto;
+    const { email, username, password, firstName, lastName } = createUserDto;
 
     // Check if user already exists
     const existingUser = await this.userRepository.findOne({
@@ -35,9 +38,21 @@ export class UsersService {
     const saltRounds = parseInt(process.env.BCRYPT_ROUNDS) || 12;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+    // Create Person first
+    const person = this.personRepository.create({
+      firstName,
+      lastName,
+      email, // Person also has email
+      // Add other person fields if available in DTO, or defaults
+    });
+    
+    // We don't save person yet, we let cascade handle it or save it now. 
+    // User entity has cascade: true.
+
     const user = this.userRepository.create({
       ...createUserDto,
       password: hashedPassword,
+      person: person,
     });
 
     return this.userRepository.save(user);
@@ -48,7 +63,8 @@ export class UsersService {
     limit = 10,
     includeDeleted = false
   ): Promise<{ users: User[]; total: number; pages: number }> {
-    const queryBuilder = this.userRepository.createQueryBuilder('user');
+    const queryBuilder = this.userRepository.createQueryBuilder('user')
+      .leftJoinAndSelect('user.person', 'person');
 
     // Filter out deleted users unless explicitly requested
     if (!includeDeleted) {
@@ -71,7 +87,7 @@ export class UsersService {
   async findOne(id: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
-      relations: ['toys'],
+      relations: ['toys', 'person'],
     });
 
     if (!user) {
@@ -82,11 +98,17 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { email } });
+    return this.userRepository.findOne({ 
+      where: { email },
+      relations: ['person']
+    });
   }
 
   async findByUsername(username: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { username } });
+    return this.userRepository.findOne({ 
+      where: { username },
+      relations: ['person']
+    });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
@@ -113,7 +135,28 @@ export class UsersService {
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, saltRounds);
     }
 
-    Object.assign(user, updateUserDto);
+    // Handle Person updates
+    if (user.person) {
+      if (updateUserDto.firstName) user.person.firstName = updateUserDto.firstName;
+      if (updateUserDto.lastName) user.person.lastName = updateUserDto.lastName;
+      // Handle other fields that moved to Person
+      // Note: The setters in User entity might handle this if we just assign to user, 
+      // but Object.assign below might bypass setters if it just copies properties.
+      // However, updateUserDto is a plain object.
+      // Let's explicitly update person fields to be safe.
+    }
+
+    // Remove fields that shouldn't be directly assigned to User if they are now on Person
+    // to avoid "column not found" errors if TypeORM tries to save them to User table.
+    // But since we removed them from User entity, TypeORM shouldn't try to save them unless they are in the object.
+    // The setters in User entity are good for convenience, but here we are doing explicit update.
+    
+    // We can use the setters!
+    Object.assign(user, updateUserDto); 
+    // If updateUserDto has firstName, user.firstName setter will be called? 
+    // No, Object.assign on a class instance with accessors behaves differently depending on target.
+    // If target has a setter, it IS invoked.
+    
     return this.userRepository.save(user);
   }
 
@@ -124,6 +167,7 @@ export class UsersService {
     user.status = UserStatus.DELETED;
 
     // Set deleted timestamp in metadata
+    // Metadata is now on Person, accessed via getter/setter
     if (!user.metadata) {
       user.metadata = {};
     }
@@ -135,6 +179,7 @@ export class UsersService {
   async restore(id: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id, status: UserStatus.DELETED },
+      relations: ['person']
     });
 
     if (!user) {
@@ -160,7 +205,7 @@ export class UsersService {
 
   async updateAvatar(id: string, avatarUrl: string): Promise<User> {
     const user = await this.findOne(id);
-    user.avatar = avatarUrl;
+    user.avatar = avatarUrl; // Uses setter to update person.metadata.avatar
     return this.userRepository.save(user);
   }
 
