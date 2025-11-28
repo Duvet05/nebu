@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Privilege } from '../entities/privilege.entity';
 import { CreatePrivilegeDto } from '../dto/create-privilege.dto';
 import { UpdatePrivilegeDto } from '../dto/update-privilege.dto';
-import { PaginationDto, PaginatedResponseDto } from '../../common/dto';
+import { PaginationDto } from '../../common/dto';
 
 @Injectable()
 export class PrivilegesService {
@@ -18,19 +18,12 @@ export class PrivilegesService {
     return this.privilegeRepository.save(privilege);
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginatedResponseDto<Privilege>> {
-    const [data, totalItems] = await this.privilegeRepository.findAndCount({
+  async findAll(paginationDto: PaginationDto): Promise<[Privilege[], number]> {
+    return this.privilegeRepository.findAndCount({
       skip: paginationDto.skip,
       take: paginationDto.take,
       order: { createdAt: 'DESC' },
     });
-
-    return new PaginatedResponseDto(
-      data,
-      totalItems,
-      paginationDto.page,
-      paginationDto.limit,
-    );
   }
 
   async findOne(id: string): Promise<Privilege | null> {

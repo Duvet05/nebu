@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, Req } from '@nestjs/common';
 import { PrivilegesService } from '../services/privileges.service';
 import { CreatePrivilegeDto } from '../dto/create-privilege.dto';
 import { UpdatePrivilegeDto } from '../dto/update-privilege.dto';
-import { PaginationDto } from '../../common/dto';
+import { Paginate } from '../../common/decorators/paginate.decorator';
+import { Request } from 'express';
 
 @Controller('privileges')
 export class PrivilegesController {
@@ -14,8 +15,9 @@ export class PrivilegesController {
   }
 
   @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.privilegesService.findAll(paginationDto);
+  @Paginate()
+  findAll(@Req() request: Request) {
+    return this.privilegesService.findAll((request as any).pagination);
   }
 
   @Get(':id')

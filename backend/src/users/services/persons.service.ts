@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Person } from '../entities/person.entity';
 import { CreatePersonDto } from '../dto/create-person.dto';
 import { UpdatePersonDto } from '../dto/update-person.dto';
-import { PaginationDto, PaginatedResponseDto } from '../../common/dto';
+import { PaginationDto } from '../../common/dto';
 
 @Injectable()
 export class PersonsService {
@@ -18,19 +18,12 @@ export class PersonsService {
     return this.personRepository.save(person);
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginatedResponseDto<Person>> {
-    const [data, totalItems] = await this.personRepository.findAndCount({
+  async findAll(paginationDto: PaginationDto): Promise<[Person[], number]> {
+    return this.personRepository.findAndCount({
       skip: paginationDto.skip,
       take: paginationDto.take,
       order: { createdAt: 'DESC' },
     });
-
-    return new PaginatedResponseDto(
-      data,
-      totalItems,
-      paginationDto.page,
-      paginationDto.limit,
-    );
   }
 
   async findOne(id: string): Promise<Person | null> {

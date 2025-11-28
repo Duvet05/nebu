@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, Req } from '@nestjs/common';
 import { RolesService } from '../services/roles.service';
 import { CreateRoleDto } from '../dto/create-role.dto';
 import { UpdateRoleDto } from '../dto/update-role.dto';
-import { PaginationDto } from '../../common/dto';
+import { Paginate } from '../../common/decorators/paginate.decorator';
+import { Request } from 'express';
 
 @Controller('roles')
 export class RolesController {
@@ -14,8 +15,9 @@ export class RolesController {
   }
 
   @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.rolesService.findAll(paginationDto);
+  @Paginate()
+  findAll(@Req() request: Request) {
+    return this.rolesService.findAll((request as any).pagination);
   }
 
   @Get(':id')

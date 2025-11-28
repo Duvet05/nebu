@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Role } from '../entities/role.entity';
 import { CreateRoleDto } from '../dto/create-role.dto';
 import { UpdateRoleDto } from '../dto/update-role.dto';
-import { PaginationDto, PaginatedResponseDto } from '../../common/dto';
+import { PaginationDto } from '../../common/dto';
 
 @Injectable()
 export class RolesService {
@@ -18,19 +18,12 @@ export class RolesService {
     return this.roleRepository.save(role);
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginatedResponseDto<Role>> {
-    const [data, totalItems] = await this.roleRepository.findAndCount({
+  async findAll(paginationDto: PaginationDto): Promise<[Role[], number]> {
+    return this.roleRepository.findAndCount({
       skip: paginationDto.skip,
       take: paginationDto.take,
       order: { createdAt: 'DESC' },
     });
-
-    return new PaginatedResponseDto(
-      data,
-      totalItems,
-      paginationDto.page,
-      paginationDto.limit,
-    );
   }
 
   async findOne(id: string): Promise<Role | null> {

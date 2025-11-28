@@ -4,6 +4,7 @@ import { ClassSerializerInterceptor, Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ErrorHandlingInterceptor } from './common/interceptors/error-handling.interceptor';
 import { QueryOptimizationInterceptor } from './common/interceptors/query-optimization.interceptor';
+import { PaginationInterceptor } from './common/interceptors/pagination.interceptor';
 import { ValidationSanitizationPipe } from './common/pipes/validation-sanitization.pipe';
 import { getCorsOrigins } from './config/cors.config';
 import { join } from 'path';
@@ -55,8 +56,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationSanitizationPipe());
 
   // Global interceptors
+  const reflector = app.get(Reflector);
   app.useGlobalInterceptors(
-    new ClassSerializerInterceptor(app.get(Reflector)),
+    new ClassSerializerInterceptor(reflector),
+    new PaginationInterceptor(reflector),
     new ErrorHandlingInterceptor(),
     new QueryOptimizationInterceptor()
   );
