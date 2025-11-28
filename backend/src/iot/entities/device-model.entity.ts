@@ -42,7 +42,7 @@ export class DeviceModel {
   description: string;
 
   @Column({ nullable: true })
-  datasheet Url: string;
+  datasheetUrl: string;
 
   @Column({ nullable: true })
   imageUrl: string;
