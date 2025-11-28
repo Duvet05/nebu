@@ -13,7 +13,10 @@ export class InventoryService {
   ) {}
 
   async getInventory(product: string): Promise<Inventory | null> {
-    return this.inventoryRepository.findOne({ where: { product } });
+    return this.inventoryRepository.findOne({
+      where: { product: { name: product } },
+      relations: ['product']
+    });
   }
 
   async getAllInventory(): Promise<Inventory[]> {
@@ -21,11 +24,11 @@ export class InventoryService {
   }
 
   async createOrUpdateInventory(
-    product: string,
+    productName: string,
     totalUnits: number,
     description?: string,
   ): Promise<Inventory> {
-    let inventory = await this.getInventory(product);
+    let inventory = await this.getInventory(productName);
 
     if (inventory) {
       inventory.totalUnits = totalUnits;
@@ -33,18 +36,14 @@ export class InventoryService {
       if (description) {
         inventory.description = description;
       }
+      return this.inventoryRepository.save(inventory);
     } else {
-      inventory = this.inventoryRepository.create({
-        product,
-        totalUnits,
-        reservedUnits: 0,
-        soldUnits: 0,
-        availableUnits: totalUnits,
-        description,
-      });
+      // For new inventory, this method expects the product to already exist in ProductCatalog
+      // This is a simplified implementation - in production, you'd want to look up the ProductCatalog first
+      throw new BadRequestException(
+        `Product '${productName}' not found. Create the product in ProductCatalog first, then use createInventoryForProduct(productId).`
+      );
     }
-
-    return this.inventoryRepository.save(inventory);
   }
 
   async reserveUnits(product: string, quantity: number): Promise<Inventory> {

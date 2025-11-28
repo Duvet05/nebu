@@ -128,21 +128,13 @@ export class User {
   @ManyToMany('Role', 'users')
   roles: any[];
 
-  // Compatibility getters/setters for moved fields
+  // Compatibility getters for moved fields (readonly - use PersonName entity to modify)
   get firstName(): string {
     return this.person?.firstName;
   }
 
-  set firstName(value: string) {
-    if (this.person) this.person.firstName = value;
-  }
-
   get lastName(): string {
     return this.person?.lastName;
-  }
-
-  set lastName(value: string) {
-    if (this.person) this.person.lastName = value;
   }
 
   get avatar(): string {

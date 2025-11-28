@@ -116,6 +116,9 @@ export class Order {
   @Column('decimal', { precision: 10, scale: 2, default: 0 })
   totalAmount: number; // subtotal + shippingCost + tax - discount
 
+  @Column('decimal', { precision: 10, scale: 2, nullable: true })
+  reserveAmount: number; // Amount required for reservation (usually 50% for pre-orders)
+
   @Column({
     type: 'enum',
     enum: OrderStatus,
@@ -192,5 +195,9 @@ export class Order {
   get itemCount(): number {
     if (!this.items) return 0;
     return this.items.reduce((sum, item) => sum + item.quantity, 0);
+  }
+
+  get totalPrice(): number {
+    return this.totalAmount;
   }
 }

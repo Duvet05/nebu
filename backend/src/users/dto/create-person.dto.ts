@@ -3,10 +3,10 @@ import { Gender, PersonStatus } from '../entities/person.entity';
 
 export class CreatePersonDto {
   @IsString()
-  firstName: string;
+  givenName: string; // firstName -> givenName para compatibilidad con PersonName
 
   @IsString()
-  lastName: string;
+  familyName: string; // lastName -> familyName para compatibilidad con PersonName
 
   @IsOptional()
   @IsString()
@@ -14,7 +14,7 @@ export class CreatePersonDto {
 
   @IsOptional()
   @IsString()
-  preferredName?: string;
+  prefix?: string; // Dr., Mr., Mrs., etc.
 
   @IsEnum(Gender)
   gender: Gender = Gender.UNKNOWN;

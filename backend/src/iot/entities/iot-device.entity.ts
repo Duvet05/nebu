@@ -52,6 +52,13 @@ export class IoTDevice {
 
   @Column({
     type: 'enum',
+    enum: ['sensor', 'actuator', 'camera', 'microphone', 'speaker', 'controller'],
+    nullable: true,
+  })
+  deviceType?: DeviceType;
+
+  @Column({
+    type: 'enum',
     enum: ['online', 'offline', 'error', 'maintenance'],
     default: 'offline',
   })
@@ -101,6 +108,19 @@ export class IoTDevice {
   @Column({ type: 'timestamp', nullable: true })
   lastDataReceived?: Date;
 
+  // Sensor data fields
+  @Column({ type: 'float', nullable: true })
+  temperature?: number;
+
+  @Column({ type: 'float', nullable: true })
+  humidity?: number;
+
+  @Column({ type: 'int', nullable: true })
+  batteryLevel?: number;
+
+  @Column({ type: 'int', nullable: true })
+  signalStrength?: number;
+
   // Relación opcional con Toy (1:0 o 1:1)
   @OneToOne('Toy', 'iotDevice', { nullable: true })
   toy?: any;
@@ -148,5 +168,26 @@ export class IoTDevice {
 
   updateLastSeen(): void {
     this.lastSeen = new Date();
+  }
+
+  updateSensorData(sensorData: {
+    temperature?: number;
+    humidity?: number;
+    batteryLevel?: number;
+    signalStrength?: number;
+  }): void {
+    if (sensorData.temperature !== undefined) {
+      this.temperature = sensorData.temperature;
+    }
+    if (sensorData.humidity !== undefined) {
+      this.humidity = sensorData.humidity;
+    }
+    if (sensorData.batteryLevel !== undefined) {
+      this.batteryLevel = sensorData.batteryLevel;
+    }
+    if (sensorData.signalStrength !== undefined) {
+      this.signalStrength = sensorData.signalStrength;
+    }
+    this.lastDataReceived = new Date();
   }
 }
