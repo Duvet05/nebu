@@ -9,11 +9,15 @@ import { UsersService } from './services/users.service';
 import { UsersController } from './controllers/users.controller';
 import { PersonsService } from './services/persons.service';
 import { PersonsController } from './controllers/persons.controller';
+import { PrivilegesService } from './services/privileges.service';
+import { PrivilegesController } from './controllers/privileges.controller';
+import { RolesService } from './services/roles.service';
+import { RolesController } from './controllers/roles.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Person, Privilege, Role])],
-  providers: [UsersService, PersonsService],
-  controllers: [UsersController, PersonsController],
-  exports: [UsersService, PersonsService],
+  providers: [UsersService, PersonsService, PrivilegesService, RolesService],
+  controllers: [UsersController, PersonsController, PrivilegesController, RolesController],
+  exports: [UsersService, PersonsService, PrivilegesService, RolesService],
 })
 export class UsersModule {}
