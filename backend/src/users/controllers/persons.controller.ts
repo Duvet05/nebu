@@ -1,11 +1,16 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, Req, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PersonsService } from '../services/persons.service';
 import { CreatePersonDto } from '../dto/create-person.dto';
 import { UpdatePersonDto } from '../dto/update-person.dto';
 import { Paginate } from '../../common/decorators/paginate.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 
+@ApiTags('users')
 @Controller('persons')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class PersonsController {
   constructor(private readonly personsService: PersonsService) {}
 

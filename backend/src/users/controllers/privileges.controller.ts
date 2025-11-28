@@ -1,11 +1,16 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, Req, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PrivilegesService } from '../services/privileges.service';
 import { CreatePrivilegeDto } from '../dto/create-privilege.dto';
 import { UpdatePrivilegeDto } from '../dto/update-privilege.dto';
 import { Paginate } from '../../common/decorators/paginate.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 
+@ApiTags('users')
 @Controller('privileges')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class PrivilegesController {
   constructor(private readonly privilegesService: PrivilegesService) {}
 

@@ -31,7 +31,7 @@ export class Privilege {
   @Column({ unique: true })
   name: string;
 
-  @Column({ type: 'timestamptz', nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   displayName: string;
 
   @Column({ type: 'text', nullable: true })
@@ -51,10 +51,10 @@ export class Privilege {
   })
   scope: PrivilegeScope;
 
-  @Column({ type: 'timestamptz', nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   resource: string; // e.g., 'courses', 'users', 'analytics'
 
-  @Column({ type: 'timestamptz', nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   action: string; // e.g., 'create', 'update', 'delete', 'view'
 
   @Column({ default: 0 })

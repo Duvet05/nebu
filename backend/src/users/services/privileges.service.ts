@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Privilege } from '../entities/privilege.entity';
@@ -31,11 +31,19 @@ export class PrivilegesService {
   }
 
   async update(id: string, updatePrivilegeDto: UpdatePrivilegeDto): Promise<Privilege> {
+    const privilege = await this.findOne(id);
+    if (!privilege) {
+      throw new NotFoundException(`Privilegio con ID ${id} no encontrado`);
+    }
     await this.privilegeRepository.update(id, updatePrivilegeDto);
     return this.findOne(id);
   }
 
   async remove(id: string): Promise<void> {
+    const privilege = await this.findOne(id);
+    if (!privilege) {
+      throw new NotFoundException(`Privilegio con ID ${id} no encontrado`);
+    }
     await this.privilegeRepository.delete(id);
   }
 }

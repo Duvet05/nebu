@@ -28,7 +28,7 @@ export class Role {
   @Column({ unique: true })
   name: string;
 
-  @Column({ type: 'timestamptz', nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   displayName: string;
 
   @Column({ type: 'text', nullable: true })
