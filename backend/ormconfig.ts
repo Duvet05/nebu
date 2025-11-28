@@ -11,7 +11,7 @@ export default new DataSource({
   password: process.env.DATABASE_PASSWORD || 'nebu_password_2024!',
   database: process.env.DATABASE_NAME || 'nebu_db',
   entities: ['src/**/*.entity.ts'],
-  migrations: ['src/database/migrations/*.ts'],
+  migrations: [], // No usar migrations - usar synchronize
   migrationsTableName: 'migrations_history',
   synchronize: true, // TypeORM crea/actualiza tablas automáticamente desde entities
   logging: process.env.NODE_ENV === 'development',
