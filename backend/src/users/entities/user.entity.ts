@@ -5,8 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  // ManyToMany,
-  // JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 // Using string references to avoid circular dependencies
@@ -111,6 +110,9 @@ export class User {
 
   @OneToMany('Toy', 'user')
   toys: any[];
+
+  @ManyToMany('Role', 'users')
+  roles: any[];
 
   // Virtual properties
   get fullName(): string {

@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsEmail, IsUrl, IsDateString } from 'class-validator';
 import { Gender, PersonStatus } from '../entities/person.entity';
 
 export class CreatePersonDto {
@@ -20,6 +20,7 @@ export class CreatePersonDto {
   gender: Gender = Gender.UNKNOWN;
 
   @IsOptional()
+  @IsDateString()
   birthDate?: Date;
 
   @IsOptional()
@@ -30,7 +31,7 @@ export class CreatePersonDto {
   status: PersonStatus = PersonStatus.ACTIVE;
 
   @IsOptional()
-  @IsString()
+  @IsEmail()
   email?: string;
 
   @IsOptional()
@@ -70,19 +71,19 @@ export class CreatePersonDto {
   company?: string;
 
   @IsOptional()
-  @IsString()
+  @IsUrl()
   website?: string;
 
   @IsOptional()
-  @IsString()
+  @IsUrl()
   linkedin?: string;
 
   @IsOptional()
-  @IsString()
+  @IsUrl()
   github?: string;
 
   @IsOptional()
-  @IsString()
+  @IsUrl()
   twitter?: string;
 
   @IsOptional()

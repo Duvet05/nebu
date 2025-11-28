@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
+  Index,
 } from 'typeorm';
 // Using string references to avoid circular dependencies
 
@@ -24,6 +25,9 @@ export enum PrivilegeScope {
 }
 
 @Entity('privileges')
+@Index(['scope'])
+@Index(['resource', 'action'])
+@Index(['isActive'])
 export class Privilege {
   @PrimaryGeneratedColumn('uuid')
   id: string;

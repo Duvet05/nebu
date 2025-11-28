@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  Index,
 } from 'typeorm';
 // Using string references to avoid circular dependencies
 
@@ -22,6 +23,8 @@ export enum PersonStatus {
 }
 
 @Entity('persons')
+@Index(['email'])
+@Index(['status'])
 export class Person {
   @PrimaryGeneratedColumn('uuid')
   id: string;

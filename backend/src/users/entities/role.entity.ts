@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  Index,
 } from 'typeorm';
 // Using string references to avoid circular dependencies
 
@@ -21,6 +22,9 @@ export enum RoleStatus {
 }
 
 @Entity('roles')
+@Index(['status'])
+@Index(['type'])
+@Index(['name', 'status'])
 export class Role {
   @PrimaryGeneratedColumn('uuid')
   id: string;
