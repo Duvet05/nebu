@@ -37,11 +37,11 @@ services:
   # ==============================================
   # CHROMADB - EXPONER PUERTO PARA DESARROLLO
   # ==============================================
-  # Descomenta para acceder a ChromaDB desde localhost:8000
-  # URL: http://localhost:8000
+  # Descomenta para acceder a ChromaDB desde localhost:8001
+  # URL: http://localhost:8001
   chromadb:
     ports:
-      - "8000:8000"
+      - "8001:8000"  # Puerto 8000 puede estar ocupado, usamos 8001
     networks:
       - nebu-network
       - default  # Necesario para exponer puertos desde red interna
