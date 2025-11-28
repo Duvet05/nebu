@@ -39,6 +39,9 @@ module.exports = [
       '*.config.js',
       '*.config.mjs',
       '.eslintrc.js',
+      'src/**/*.disabled/**',
+      'src/agents.disabled/**',
+      'src/memory.disabled/**',
     ],
   },
 ];
