@@ -10,6 +10,7 @@ import {
   Index,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { ProductCatalog } from './product-catalog.entity';
 
 export enum ToyStatus {
   INACTIVE = 'inactive',      // Sin activar
@@ -31,6 +32,14 @@ export class Toy {
 
   @Column({ type: 'varchar', length: 100 })
   name: string; // Nombre del juguete (ej: "Mi Robot Azul")
+
+  // Product catalog reference
+  @ManyToOne(() => ProductCatalog, { nullable: true, eager: true })
+  @JoinColumn({ name: 'productCatalogId' })
+  productCatalog: ProductCatalog;
+
+  @Column({ type: 'uuid', nullable: true })
+  productCatalogId: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
   model: string; // Modelo del juguete (ej: "NebuBot Pro")
@@ -99,12 +108,33 @@ export class Toy {
   @Column({ type: 'uuid', nullable: true })
   userId?: string;
 
-  // Metadatos de auditoría
-  @CreateDateColumn()
+  // OpenMRS-style auditing
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'creatorId' })
+  creator?: User;
+
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'changedById' })
+  changedBy?: User;
+
+  @Column({ default: false })
+  retired: boolean;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'retiredById' })
+  retiredBy?: User;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  dateRetired?: Date;
+
+  @Column({ nullable: true })
+  retireReason?: string;
 
   // Getters calculados (se serializan automáticamente en respuestas JSON)
   get isActive(): boolean {
