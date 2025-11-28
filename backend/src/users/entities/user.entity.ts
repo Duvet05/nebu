@@ -8,6 +8,7 @@ import {
   ManyToMany,
   OneToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Person } from './person.entity';
@@ -30,12 +31,23 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ unique: true, nullable: true })
+  systemId: string;
+
   @Column({ unique: true })
   username: string;
 
   @Column({ nullable: true })
   @Exclude()
   password: string;
+
+  @Column({ nullable: true })
+  @Exclude()
+  secretQuestion: string;
+
+  @Column({ nullable: true })
+  @Exclude()
+  secretAnswer: string;
 
   @Column({ unique: true })
   email: string;
@@ -86,8 +98,29 @@ export class User {
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'creatorId' })
+  creator: User;
+
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'changedById' })
+  changedBy: User;
+
+  @Column({ default: false })
+  retired: boolean;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'retiredById' })
+  retiredBy: User;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  dateRetired: Date;
+
+  @Column({ nullable: true })
+  retireReason: string;
 
   @OneToMany('Toy', 'user')
   toys: any[];
@@ -113,11 +146,6 @@ export class User {
   }
 
   get avatar(): string {
-    // Assuming avatar is not in Person yet, but plan said maybe move it. 
-    // Checking Person entity again, it doesn't have avatar.
-    // For now, let's keep avatar on User if it's user-specific, or add to Person.
-    // The plan said "Remove firstName, lastName, avatar (move to Person...)".
-    // I will add avatar to Person in the next step to match the plan.
     return this.person?.metadata?.avatar;
   }
 

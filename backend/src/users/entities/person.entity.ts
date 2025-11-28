@@ -6,7 +6,10 @@ import {
   UpdateDateColumn,
   OneToMany,
   Index,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 // Using string references to avoid circular dependencies
 
 export enum Gender {
@@ -126,8 +129,29 @@ export class Person {
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'creatorId' })
+  creator: User;
+
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'changedById' })
+  changedBy: User;
+
+  @Column({ default: false })
+  voided: boolean;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'voidedById' })
+  voidedBy: User;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  dateVoided: Date;
+
+  @Column({ nullable: true })
+  voidReason: string;
 
   // Relations eliminadas: Student (ya no existe)
 
