@@ -289,7 +289,7 @@ services:
   # CHROMADB - BASE DE DATOS VECTORIAL
   # ==============================================
   chromadb:
-    image: chromadb/chroma:0.4.22
+    image: chromadb/chroma:latest
     container_name: nebu-chromadb-prod
     restart: on-failure:3
     environment:
