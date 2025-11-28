@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:22-alpine AS base
 
 # Install curl para el startup script
 RUN apk add --no-cache curl
