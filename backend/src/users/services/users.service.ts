@@ -44,15 +44,20 @@ export class UsersService {
       lastName,
       email, // Person also has email
       // Add other person fields if available in DTO, or defaults
+      // Auditing fields (creator would be the current user if we had context, for now null or system)
+      // person.creator = currentUser; 
     });
     
-    // We don't save person yet, we let cascade handle it or save it now. 
-    // User entity has cascade: true.
+    // Generate systemId (simple implementation for now, could be UUID or custom format)
+    const systemId = `USR-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
     const user = this.userRepository.create({
       ...createUserDto,
       password: hashedPassword,
       person: person,
+      systemId: systemId,
+      // Auditing
+      // creator: currentUser
     });
 
     return this.userRepository.save(user);
@@ -165,9 +170,22 @@ export class UsersService {
 
     // Soft delete - change user status to DELETED
     user.status = UserStatus.DELETED;
+    
+    // OpenMRS style: retire user
+    user.retired = true;
+    user.dateRetired = new Date();
+    user.retireReason = 'Deleted via API';
+    // user.retiredBy = currentUser;
 
-    // Set deleted timestamp in metadata
-    // Metadata is now on Person, accessed via getter/setter
+    // OpenMRS style: void person
+    if (user.person) {
+        user.person.voided = true;
+        user.person.dateVoided = new Date();
+        user.person.voidReason = 'User deleted';
+        // user.person.voidedBy = currentUser;
+    }
+
+    // Set deleted timestamp in metadata (keeping for backward compatibility)
     if (!user.metadata) {
       user.metadata = {};
     }
