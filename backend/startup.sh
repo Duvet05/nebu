@@ -50,16 +50,16 @@ wait_for_postgres() {
   return 1
 }
 
-# Function to run TypeORM migrations
-run_migrations() {
+# Function to run database seeders (only if DB is empty)
+run_seeders() {
   echo ""
-  echo "🔄 Running TypeORM migrations..."
+  echo "🌱 Checking if seeders need to run..."
 
-  if npm run migration:run; then
-    echo "✅ Migrations completed successfully"
+  if npm run seed; then
+    echo "✅ Seeders completed successfully"
     return 0
   else
-    echo "⚠️  Migration execution failed"
+    echo "⚠️  Seeder execution failed (may already have data)"
     return 1
   fi
 }
@@ -79,9 +79,9 @@ main() {
     exit 1
   fi
 
-  # Run migrations
-  if ! run_migrations; then
-    echo "⚠️  Migrations failed, but continuing with application startup..."
+  # Run seeders (synchronize creates tables automatically)
+  if ! run_seeders; then
+    echo "⚠️  Seeders failed or data already exists, continuing with application startup..."
   fi
 
   echo ""
