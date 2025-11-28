@@ -79,10 +79,8 @@ main() {
     exit 1
   fi
 
-  # Run seeders (synchronize creates tables automatically)
-  if ! run_seeders; then
-    echo "⚠️  Seeders failed or data already exists, continuing with application startup..."
-  fi
+  # Note: Seeders run automatically after app initialization (see main.ts)
+  echo "ℹ️  Seeders will run automatically after synchronize completes"
 
   echo ""
   echo "================================================"

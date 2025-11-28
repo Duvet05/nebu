@@ -95,6 +95,24 @@ async function bootstrap() {
   logger.log('🚀 Nebu Mobile Backend iniciado!');
   logger.log(`📚 API Docs: http://localhost:${port}/api/docs`);
   logger.log(`💚 Health Check: http://localhost:${port}/health`);
+
+  // Run seeders automatically after app initialization
+  // Only when using synchronize mode (not migrations)
+  const useMigrations = process.env.DB_USE_MIGRATIONS === 'true';
+  const autoSeed = process.env.AUTO_SEED === 'true';
+
+  if (autoSeed && !useMigrations) {
+    logger.log('🌱 Auto-seeding enabled (synchronize mode), running seeders...');
+    try {
+      const { execSync } = await import('child_process');
+      execSync('npm run seed', { stdio: 'inherit' });
+      logger.log('✅ Seeders completed successfully');
+    } catch (error) {
+      logger.warn('⚠️  Seeders failed (data may already exist). See:', error);
+    }
+  } else if (useMigrations) {
+    logger.log('ℹ️  Using migrations mode - seeders skipped (run manually if needed)');
+  }
 }
 
 bootstrap();

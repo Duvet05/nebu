@@ -361,6 +361,12 @@ services:
       # Memory Configuration
       - MEMORY_RETENTION_DAYS=${MEMORY_RETENTION_DAYS:-30}
       - ENABLE_MEMORY_DECAY=${ENABLE_MEMORY_DECAY:-true}
+      # Database Mode Configuration (see backend/DATABASE_MODES.md)
+      # DB_USE_MIGRATIONS=false (default): Use synchronize mode (development)
+      # DB_USE_MIGRATIONS=true: Use migrations mode (production)
+      - DB_USE_MIGRATIONS=${DB_USE_MIGRATIONS:-false}
+      # Auto-seed only works in synchronize mode (DB_USE_MIGRATIONS=false)
+      - AUTO_SEED=${AUTO_SEED:-true}
     ports:
       - "3001:3001"
     volumes:

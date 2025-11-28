@@ -58,27 +58,34 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     // Database - Direct configuration to ensure synchronization works
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: () => ({
-        type: 'postgres' as const,
-        host: process.env.DATABASE_HOST!,
-        port: parseInt(process.env.DATABASE_PORT || '5432', 10),
-        username: process.env.DATABASE_USERNAME!,
-        password: process.env.DATABASE_PASSWORD!,
-        database: process.env.DATABASE_NAME!,
-        entities: [], // Let autoLoadEntities handle this
-        synchronize: true, // Force sync for initial setup in production
-        logging: process.env.NODE_ENV === 'development',
-        ssl: process.env.DATABASE_SSL === 'true' ? {
-          rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false',
-        } : false,
-        autoLoadEntities: true, // This SHOULD work with webpack
-        retryAttempts: 3,
-        retryDelay: 3000,
-        maxQueryExecutionTime: 10000,
-        connectTimeoutMS: 10000,
-        acquireTimeoutMS: 10000,
-        timeout: 10000,
-      }),
+      useFactory: () => {
+        // Use synchronize in development/when explicitly enabled
+        // Use migrations in production (set DB_USE_MIGRATIONS=true)
+        const useMigrations = process.env.DB_USE_MIGRATIONS === 'true';
+
+        return {
+          type: 'postgres' as const,
+          host: process.env.DATABASE_HOST!,
+          port: parseInt(process.env.DATABASE_PORT || '5432', 10),
+          username: process.env.DATABASE_USERNAME!,
+          password: process.env.DATABASE_PASSWORD!,
+          database: process.env.DATABASE_NAME!,
+          entities: [], // Let autoLoadEntities handle this
+          synchronize: !useMigrations, // Only sync if not using migrations
+          migrationsRun: useMigrations, // Auto-run migrations if enabled
+          logging: process.env.NODE_ENV === 'development',
+          ssl: process.env.DATABASE_SSL === 'true' ? {
+            rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false',
+          } : false,
+          autoLoadEntities: true, // This SHOULD work with webpack
+          retryAttempts: 3,
+          retryDelay: 3000,
+          maxQueryExecutionTime: 10000,
+          connectTimeoutMS: 10000,
+          acquireTimeoutMS: 10000,
+          timeout: 10000,
+        };
+      },
     }),
 
     // Redis Cache
