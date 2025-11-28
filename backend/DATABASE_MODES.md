@@ -153,6 +153,38 @@ Cuando estés listo para pasar a producción:
 
 ---
 
+## 🛡️ Protección de Seguridad
+
+### Modos Mutuamente Excluyentes
+
+El sistema usa **UNA SOLA bandera** (`DB_USE_MIGRATIONS`) que controla automáticamente ambos modos:
+
+**Cómo funciona:**
+```typescript
+const useMigrations = process.env.DB_USE_MIGRATIONS === 'true';
+
+return {
+  synchronize: !useMigrations,  // Inverso de migrations
+  migrationsRun: useMigrations, // Solo uno puede estar true
+};
+```
+
+**Garantía de seguridad:**
+- ✅ **Imposible activar ambos**: Son lógicamente inversos (`!useMigrations`)
+- ✅ **Sin variables extras**: Una sola bandera maestra
+- ✅ **Sin casos ambiguos**: Solo dos estados posibles
+
+**Por qué esto es seguro:**
+- No existe forma de poner `synchronize: true` Y `migrationsRun: true` simultáneamente
+- El código garantiza que si uno está activo, el otro está desactivado
+- Previene pérdida de datos y conflictos de schema por diseño
+
+**Implementación:**
+- Código: [app.module.ts:61-76](src/app.module.ts#L61-L76)
+- Los modos son **matemáticamente excluyentes** (`!` operator)
+
+---
+
 ## 📝 Notas Importantes
 
 1. **NUNCA uses `synchronize: true` en producción**

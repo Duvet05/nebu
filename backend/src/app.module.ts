@@ -59,8 +59,9 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: () => {
-        // Use synchronize in development/when explicitly enabled
-        // Use migrations in production (set DB_USE_MIGRATIONS=true)
+        // ONE master flag controls the database mode
+        // DB_USE_MIGRATIONS=false (default) → synchronize mode (development)
+        // DB_USE_MIGRATIONS=true → migrations mode (production)
         const useMigrations = process.env.DB_USE_MIGRATIONS === 'true';
 
         return {
@@ -71,7 +72,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
           password: process.env.DATABASE_PASSWORD!,
           database: process.env.DATABASE_NAME!,
           entities: [], // Let autoLoadEntities handle this
-          synchronize: !useMigrations, // Only sync if not using migrations
+          synchronize: !useMigrations, // Mutually exclusive with migrations
           migrationsRun: useMigrations, // Auto-run migrations if enabled
           logging: process.env.NODE_ENV === 'development',
           ssl: process.env.DATABASE_SSL === 'true' ? {
