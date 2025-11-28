@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Person } from '../../users/entities/person.entity';
 
 export enum OrderStatus {
   PENDING = 'pending',
@@ -26,28 +29,33 @@ export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // Customer info
+  // Customer reference
+  @ManyToOne(() => Person, { nullable: true })
+  @JoinColumn({ name: 'personId' })
+  person: Person;
+
+  @Column({ type: 'uuid', nullable: true })
+  personId: string;
+
+  // Shipping address (can be different from person's address)
   @Column()
-  email: string;
+  shippingAddress: string;
 
   @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
-
-  @Column()
-  phone: string;
-
-  // Shipping address
-  @Column()
-  address: string;
-
-  @Column()
-  city: string;
+  shippingCity: string;
 
   @Column({ nullable: true })
-  postalCode: string;
+  shippingPostalCode: string;
+
+  @Column({ nullable: true })
+  shippingCountry: string;
+
+  // Contact info (snapshot at order time)
+  @Column()
+  contactEmail: string;
+
+  @Column()
+  contactPhone: string;
 
   // Order details
   @Column()
@@ -92,6 +100,9 @@ export class Order {
 
   @Column({ nullable: true })
   notes: string;
+
+  @Column({ type: 'text', nullable: true })
+  customerNotes: string;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -38,26 +38,32 @@ export class UsersService {
     const saltRounds = parseInt(process.env.BCRYPT_ROUNDS) || 12;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Create Person first
+    // Create Person first (without name fields)
     const person = this.personRepository.create({
-      firstName,
-      lastName,
-      email, // Person also has email
-      // Add other person fields if available in DTO, or defaults
-      // Auditing fields (creator would be the current user if we had context, for now null or system)
-      // person.creator = currentUser; 
+      email,
+      // Names will be in PersonName table
     });
     
-    // Generate systemId (simple implementation for now, could be UUID or custom format)
+    // Save person to get ID
+    const savedPerson = await this.personRepository.save(person);
+
+    // Create PersonName
+    const personName = this.personRepository.manager.create('PersonName', {
+      personId: savedPerson.id,
+      givenName: firstName,
+      familyName: lastName,
+      preferred: true,
+    });
+    await this.personRepository.manager.save('PersonName', personName);
+    
+    // Generate systemId
     const systemId = `USR-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
     const user = this.userRepository.create({
       ...createUserDto,
       password: hashedPassword,
-      person: person,
+      person: savedPerson,
       systemId: systemId,
-      // Auditing
-      // creator: currentUser
     });
 
     return this.userRepository.save(user);
@@ -140,28 +146,33 @@ export class UsersService {
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, saltRounds);
     }
 
-    // Handle Person updates
-    if (user.person) {
-      if (updateUserDto.firstName) user.person.firstName = updateUserDto.firstName;
-      if (updateUserDto.lastName) user.person.lastName = updateUserDto.lastName;
-      // Handle other fields that moved to Person
-      // Note: The setters in User entity might handle this if we just assign to user, 
-      // but Object.assign below might bypass setters if it just copies properties.
-      // However, updateUserDto is a plain object.
-      // Let's explicitly update person fields to be safe.
+    // Handle PersonName updates
+    if (user.person && (updateUserDto.firstName || updateUserDto.lastName)) {
+      // Find or create preferred name
+      let preferredName = user.person.names?.find(n => n.preferred);
+      
+      if (!preferredName) {
+        // Create new PersonName
+        preferredName = this.personRepository.manager.create('PersonName', {
+          personId: user.person.id,
+          givenName: updateUserDto.firstName || '',
+          familyName: updateUserDto.lastName || '',
+          preferred: true,
+        });
+      } else {
+        // Update existing
+        if (updateUserDto.firstName) preferredName.givenName = updateUserDto.firstName;
+        if (updateUserDto.lastName) preferredName.familyName = updateUserDto.lastName;
+      }
+      
+      await this.personRepository.manager.save('PersonName', preferredName);
     }
+    
+    // Remove firstName/lastName from updateUserDto to avoid trying to set read-only properties
+    const { firstName, lastName, ...restDto } = updateUserDto;
 
-    // Remove fields that shouldn't be directly assigned to User if they are now on Person
-    // to avoid "column not found" errors if TypeORM tries to save them to User table.
-    // But since we removed them from User entity, TypeORM shouldn't try to save them unless they are in the object.
-    // The setters in User entity are good for convenience, but here we are doing explicit update.
-    
-    // We can use the setters!
-    Object.assign(user, updateUserDto); 
-    // If updateUserDto has firstName, user.firstName setter will be called? 
-    // No, Object.assign on a class instance with accessors behaves differently depending on target.
-    // If target has a setter, it IS invoked.
-    
+    Object.assign(user, restDto);
+ 
     return this.userRepository.save(user);
   }
 

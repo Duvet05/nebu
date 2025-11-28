@@ -5,9 +5,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
   Index,
 } from 'typeorm';
 import { AiConversation } from './ai-conversation.entity';
+import { User } from '../../users/entities/user.entity';
 
 export type SessionStatus = 'active' | 'ended' | 'paused' | 'error';
 
@@ -15,6 +18,10 @@ export type SessionStatus = 'active' | 'ended' | 'paused' | 'error';
 export class VoiceSession {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'userId' })
+  user: User;
 
   @Column({ type: 'uuid', nullable: true })
   @Index()

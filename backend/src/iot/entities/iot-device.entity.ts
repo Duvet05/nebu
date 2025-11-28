@@ -10,6 +10,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Location } from '../../common/entities/location.entity';
+import { User } from '../../users/entities/user.entity';
 
 export type DeviceStatus = 'online' | 'offline' | 'error' | 'maintenance';
 export type DeviceType = 'sensor' | 'actuator' | 'camera' | 'microphone' | 'speaker' | 'controller';
@@ -56,6 +57,10 @@ export class IoTDevice {
 
   @Column({ type: 'jsonb', nullable: true })
   metadata?: Record<string, any>;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'userId' })
+  user?: User;
 
   @Column({ type: 'uuid', nullable: true })
   @Index()

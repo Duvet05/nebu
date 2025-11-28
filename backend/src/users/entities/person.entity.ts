@@ -10,6 +10,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { PersonName } from './person-name.entity';
+import { PersonAttribute } from './person-attribute.entity';
 // Using string references to avoid circular dependencies
 
 export enum Gender {
@@ -32,19 +34,6 @@ export class Person {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // Basic Information
-  @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
-
-  @Column({ nullable: true })
-  middleName: string;
-
-  @Column({ nullable: true })
-  preferredName: string;
-
   @Column({
     type: 'enum',
     enum: Gender,
@@ -54,6 +43,9 @@ export class Person {
 
   @Column({ type: 'date', nullable: true })
   birthDate: Date;
+
+  @Column({ default: false })
+  birthdateEstimated: boolean;
 
   @Column({ nullable: true })
   birthPlace: string;
@@ -65,8 +57,14 @@ export class Person {
   })
   status: PersonStatus;
 
+  @Column({ default: false })
+  dead: boolean;
+
   @Column({ type: 'date', nullable: true })
   deathDate: Date;
+
+  @Column({ type: 'uuid', nullable: true })
+  causeOfDeath: string; // Concept ID in future
 
   // Contact Information
   @Column({ nullable: true })
@@ -153,22 +151,40 @@ export class Person {
   @Column({ nullable: true })
   voidReason: string;
 
-  // Relations eliminadas: Student (ya no existe)
+  // OpenMRS-style relationships
+  @OneToMany(() => PersonName, (name) => name.person)
+  names: PersonName[];
 
-  // Virtual properties
+  @OneToMany(() => PersonAttribute, (attr) => attr.person)
+  attributes: PersonAttribute[];
+
+  @OneToMany('Relationship', 'personA')
+  relationshipsAsA: any[];
+
+  @OneToMany('Relationship', 'personB')
+  relationshipsAsB: any[];
+
+  // Virtual properties - now use PersonName
+  get preferredName(): PersonName | undefined {
+    return this.names?.find(n => n.preferred);
+  }
+
   get fullName(): string {
-    if (this.preferredName) {
-      return this.preferredName;
-    }
-    return `${this.firstName} ${this.lastName}`;
+    const preferred = this.preferredName;
+    if (!preferred) return 'Unknown';
+    return preferred.fullName;
   }
 
   get displayName(): string {
-    if (this.preferredName) {
-      return this.preferredName;
-    }
-    const middle = this.middleName ? ` ${this.middleName}` : '';
-    return `${this.firstName}${middle} ${this.lastName}`;
+    return this.fullName;
+  }
+
+  get firstName(): string {
+    return this.preferredName?.givenName || '';
+  }
+
+  get lastName(): string {
+    return this.preferredName?.familyName || '';
   }
 
   get age(): number | null {
