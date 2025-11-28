@@ -70,10 +70,10 @@ export class Privilege {
   @Column({ type: 'json', nullable: true })
   metadata: Record<string, any>;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
 
   // Relations using string references to avoid circular dependencies

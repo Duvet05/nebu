@@ -99,10 +99,10 @@ export class User {
   @Column({ nullable: true })
   stripeCustomerId: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
 
   // Relaciones a Course eliminadas por no existir entidad Course
