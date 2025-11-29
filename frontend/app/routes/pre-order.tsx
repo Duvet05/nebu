@@ -856,7 +856,10 @@ export default function PreOrder() {
       </div>
 
       <Newsletter />
-      <Footer />
+        <Footer />
+        <div className="text-center text-xs text-gray-400 py-4">
+          Versión frontend: v1.0.0
+        </div>
     </div>
   );
 }
