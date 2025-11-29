@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm';
+import { Logger } from '@nestjs/common';
 import { ProductCatalog } from '../../toys/entities/product-catalog.entity';
 
 /**
@@ -11,16 +12,17 @@ import { ProductCatalog } from '../../toys/entities/product-catalog.entity';
  *   npm run seed:products
  */
 export async function seedProducts(dataSource: DataSource): Promise<void> {
+  const logger = new Logger('ProductSeeder');
   const productRepository = dataSource.getRepository(ProductCatalog);
 
   // Verificar si ya hay productos
   const count = await productRepository.count();
   if (count > 0) {
-    console.log(`⚠️  Ya existen ${count} productos. Saltando seed inicial.`);
+    logger.warn(`Ya existen ${count} productos. Saltando seed inicial.`);
     return;
   }
 
-  console.log('🌱 Insertando 13 productos iniciales...');
+  logger.log('🌱 Insertando 13 productos iniciales...');
 
   const products = [
     {
@@ -263,5 +265,5 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
   const productEntities = products.map((data) => productRepository.create(data));
   await productRepository.save(productEntities);
 
-  console.log('✅ 13 productos insertados exitosamente');
+  logger.log('✅ 13 productos insertados exitosamente');
 }

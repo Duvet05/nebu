@@ -169,7 +169,7 @@ export class UsersService {
     }
     
     // Remove firstName/lastName from updateUserDto to avoid trying to set read-only properties
-    const { firstName, lastName, ...restDto } = updateUserDto;
+    const {...restDto } = updateUserDto;
 
     Object.assign(user, restDto);
  
