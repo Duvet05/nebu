@@ -28,7 +28,7 @@ export class InventoryService {
     totalUnits: number,
     description?: string,
   ): Promise<Inventory> {
-    let inventory = await this.getInventory(productName);
+    const inventory = await this.getInventory(productName);
 
     if (inventory) {
       inventory.totalUnits = totalUnits;

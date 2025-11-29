@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm';
+import { Logger } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { seedProducts } from './product-catalog.seeder';
 import { ProductCatalog } from '../../toys/entities/product-catalog.entity';
@@ -13,6 +14,8 @@ dotenv.config({ path: ['.env.local', '.env'] });
  * Uso: npm run seed
  */
 async function runSeeders() {
+  const logger = new Logger('Seeders');
+
   // Crear conexión a la base de datos
   const dataSource = new DataSource({
     type: 'postgres',
@@ -30,22 +33,22 @@ async function runSeeders() {
   });
 
   try {
-    console.log('📦 Conectando a la base de datos...');
+    logger.log('📦 Conectando a la base de datos...');
     await dataSource.initialize();
-    console.log('✅ Conectado exitosamente\n');
+    logger.log('✅ Conectado exitosamente');
 
     // Ejecutar seeders
-    console.log('🌱 Ejecutando seeders...\n');
+    logger.log('🌱 Ejecutando seeders...');
 
     await seedProducts(dataSource);
 
-    console.log('\n✅ Todos los seeders completados exitosamente');
+    logger.log('✅ Todos los seeders completados exitosamente');
   } catch (error) {
-    console.error('❌ Error ejecutando seeders:', error);
+    logger.error('❌ Error ejecutando seeders:', error);
     process.exit(1);
   } finally {
     await dataSource.destroy();
-    console.log('📦 Conexión cerrada');
+    logger.log('📦 Conexión cerrada');
   }
 }
 
