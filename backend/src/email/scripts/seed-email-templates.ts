@@ -146,64 +146,61 @@ El equipo de Nebu`,
       previewText: 'Restablece tu contraseña de Nebu',
     },
     {
-      name: 'course_enrollment',
-      subject: '¡Te has inscrito en {{courseName}}!',
+      name: 'order_confirmation',
+      subject: 'Pedido confirmado #{{orderNumber}}',
       content: `Hola {{firstName}},
 
-¡Felicitaciones! Te has inscrito exitosamente en el curso "{{courseName}}".
+¡Tu pedido ha sido confirmado!
 
-Detalles del curso:
-- Curso: {{courseName}}
-- Instructor: {{instructorName}}
-- Duración: {{courseDuration}}
-- Nivel: {{courseLevel}}
+Detalles del pedido:
+- Número de pedido: {{orderNumber}}
+- Producto: {{productName}}
+- Total: \${{totalAmount}}
 
-Puedes acceder al curso en cualquier momento desde tu panel de usuario.
+Te notificaremos cuando tu pedido sea enviado.
 
-¡Que tengas un excelente aprendizaje!
-
+Gracias por tu compra,
 El equipo de Nebu`,
       htmlContent: `
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Inscripción al curso</title>
+    <title>Pedido confirmado</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: #10B981; color: white; padding: 20px; text-align: center; }
         .content { padding: 20px; background: #f9f9f9; }
         .button { display: inline-block; background: #10B981; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
-        .course-info { background: white; padding: 20px; border-radius: 5px; margin: 20px 0; }
+        .order-info { background: white; padding: 20px; border-radius: 5px; margin: 20px 0; }
         .footer { text-align: center; padding: 20px; color: #666; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>¡Inscripción Exitosa!</h1>
+            <h1>¡Pedido Confirmado!</h1>
         </div>
         <div class="content">
             <p>Hola <strong>{{firstName}}</strong>,</p>
-            <p>¡Felicitaciones! Te has inscrito exitosamente en el curso "{{courseName}}".</p>
-            
-            <div class="course-info">
-                <h3>Detalles del curso:</h3>
+            <p>Tu pedido <strong>#{{orderNumber}}</strong> ha sido confirmado.</p>
+
+            <div class="order-info">
+                <h3>Detalles del pedido:</h3>
                 <ul>
-                    <li><strong>Curso:</strong> {{courseName}}</li>
-                    <li><strong>Instructor:</strong> {{instructorName}}</li>
-                    <li><strong>Duración:</strong> {{courseDuration}}</li>
-                    <li><strong>Nivel:</strong> {{courseLevel}}</li>
+                    <li><strong>Pedido:</strong> #{{orderNumber}}</li>
+                    <li><strong>Producto:</strong> {{productName}}</li>
+                    <li><strong>Total:</strong> \${{totalAmount}}</li>
                 </ul>
             </div>
-            
+
             <p style="text-align: center;">
-                <a href="{{courseUrl}}" class="button">Acceder al Curso</a>
+                <a href="{{orderUrl}}" class="button">Ver Mi Pedido</a>
             </p>
-            
-            <p>Puedes acceder al curso en cualquier momento desde tu panel de usuario.</p>
-            <p>¡Que tengas un excelente aprendizaje!</p>
+
+            <p>Te notificaremos cuando tu pedido sea enviado.</p>
+            <p>Gracias por tu compra!</p>
         </div>
         <div class="footer">
             <p>El equipo de Nebu</p>
@@ -211,11 +208,11 @@ El equipo de Nebu`,
     </div>
 </body>
 </html>`,
-      type: EmailTemplateType.COURSE_ENROLLMENT,
+      type: EmailTemplateType.ORDER_CONFIRMATION,
       status: EmailTemplateStatus.ACTIVE,
-      description: 'Plantilla para confirmación de inscripción a curso',
-      variables: '["firstName", "courseName", "instructorName", "courseDuration", "courseLevel", "courseUrl"]',
-      previewText: '¡Te has inscrito exitosamente en el curso!',
+      description: 'Plantilla para confirmación de pedido',
+      variables: '["firstName", "orderNumber", "productName", "totalAmount", "orderUrl"]',
+      previewText: '¡Tu pedido ha sido confirmado!',
     },
   ];
 

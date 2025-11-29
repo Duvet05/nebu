@@ -127,31 +127,41 @@ export class EmailService {
     });
   }
 
-  async sendCourseEnrollmentEmail(userEmail: string, courseName: string): Promise<EmailLog> {
+  async sendOrderConfirmationEmail(
+    userEmail: string,
+    orderNumber: string,
+    productName: string,
+    amount: number
+  ): Promise<EmailLog> {
     const content = `
-      <h1>¡Te has inscrito exitosamente!</h1>
-      <p>Has sido inscrito en el curso: <strong>${courseName}</strong></p>
-      <p>Puedes acceder a tu curso desde tu dashboard.</p>
-      <p>¡Que tengas un excelente aprendizaje!</p>
+      <h1>¡Pedido confirmado!</h1>
+      <p>Tu pedido <strong>#${orderNumber}</strong> ha sido confirmado.</p>
+      <p>Producto: <strong>${productName}</strong></p>
+      <p>Total: <strong>$${amount.toFixed(2)}</strong></p>
+      <p>Te notificaremos cuando tu pedido sea enviado.</p>
     `;
 
     return this.sendEmail({
       to: userEmail,
-      subject: `Inscripción exitosa - ${courseName}`,
+      subject: `Pedido confirmado - #${orderNumber}`,
       content,
-      type: EmailType.COURSE_ENROLLMENT,
+      type: EmailType.ORDER_CONFIRMATION,
       accountType: EmailAccountType.NOREPLY,
       isHtml: true,
-      metadata: { courseName, userEmail },
+      metadata: { orderNumber, productName, amount, userEmail },
     });
   }
 
-  async sendPaymentConfirmationEmail(userEmail: string, amount: number, courseName: string): Promise<EmailLog> {
+  async sendPaymentConfirmationEmail(
+    userEmail: string,
+    amount: number,
+    orderNumber: string
+  ): Promise<EmailLog> {
     const content = `
       <h1>¡Pago confirmado!</h1>
-      <p>Tu pago de $${amount} ha sido procesado exitosamente.</p>
-      <p>Curso: <strong>${courseName}</strong></p>
-      <p>Ya puedes acceder a tu curso desde tu dashboard.</p>
+      <p>Tu pago de $${amount.toFixed(2)} ha sido procesado exitosamente.</p>
+      <p>Pedido: <strong>#${orderNumber}</strong></p>
+      <p>Puedes ver el estado de tu pedido desde tu cuenta.</p>
       <p>Gracias por tu compra.</p>
     `;
 
@@ -162,7 +172,7 @@ export class EmailService {
       type: EmailType.PAYMENT_CONFIRMATION,
       accountType: EmailAccountType.TEAM,
       isHtml: true,
-      metadata: { amount, courseName, userEmail },
+      metadata: { amount, orderNumber, userEmail },
     });
   }
 

@@ -7,7 +7,7 @@ export interface TemplateVariable {
   required: boolean;
   defaultValue?: any;
   example?: string;
-  category: 'user' | 'course' | 'system' | 'payment' | 'custom';
+  category: 'user' | 'order' | 'product' | 'system' | 'payment' | 'custom';
 }
 
 export interface TemplateContext {
@@ -23,15 +23,21 @@ export interface TemplateContext {
     createdAt: Date;
     lastLoginAt?: Date;
   };
-  course?: {
+  order?: {
     id: string;
-    title: string;
+    orderNumber: string;
+    status: string;
+    totalAmount: number;
+    createdAt: Date;
+    trackingNumber?: string;
+  };
+  product?: {
+    id: string;
+    name: string;
+    slug: string;
     description: string;
-    instructor: string;
-    duration: number;
-    level: string;
     price: number;
-    thumbnail?: string;
+    image?: string;
     url: string;
   };
   system?: {
@@ -113,70 +119,80 @@ export class TemplateEngineService {
       category: 'user',
     },
 
-    // Course variables
+    // Order variables
     {
-      name: 'course.title',
-      description: 'Título del curso',
+      name: 'order.orderNumber',
+      description: 'Número de pedido',
       type: 'string',
       required: false,
-      example: 'Curso de JavaScript',
-      category: 'course',
+      example: 'ORD-2024-001',
+      category: 'order',
     },
     {
-      name: 'course.description',
-      description: 'Descripción del curso',
+      name: 'order.status',
+      description: 'Estado del pedido',
       type: 'string',
       required: false,
-      example: 'Aprende JavaScript desde cero',
-      category: 'course',
+      example: 'confirmed',
+      category: 'order',
     },
     {
-      name: 'course.instructor',
-      description: 'Nombre del instructor',
-      type: 'string',
-      required: false,
-      example: 'María García',
-      category: 'course',
-    },
-    {
-      name: 'course.duration',
-      description: 'Duración del curso en horas',
+      name: 'order.totalAmount',
+      description: 'Monto total del pedido',
       type: 'number',
       required: false,
-      example: '40',
-      category: 'course',
+      example: '380.00',
+      category: 'order',
     },
     {
-      name: 'course.level',
-      description: 'Nivel del curso',
+      name: 'order.trackingNumber',
+      description: 'Número de seguimiento',
       type: 'string',
       required: false,
-      example: 'intermedio',
-      category: 'course',
+      example: 'TRK123456789',
+      category: 'order',
+    },
+
+    // Product variables
+    {
+      name: 'product.name',
+      description: 'Nombre del producto',
+      type: 'string',
+      required: false,
+      example: 'Star Hunters',
+      category: 'product',
     },
     {
-      name: 'course.price',
-      description: 'Precio del curso',
+      name: 'product.description',
+      description: 'Descripción del producto',
+      type: 'string',
+      required: false,
+      example: 'Aventureros cósmicos que viajan entre galaxias',
+      category: 'product',
+    },
+    {
+      name: 'product.price',
+      description: 'Precio del producto',
       type: 'number',
       required: false,
-      example: '99.99',
-      category: 'course',
+      example: '380.00',
+      category: 'product',
     },
     {
-      name: 'course.thumbnail',
-      description: 'URL de la imagen del curso',
+      name: 'product.image',
+      description: 'URL de la imagen del producto',
       type: 'string',
       required: false,
-      example: 'https://example.com/course.jpg',
-      category: 'course',
+      example: 'https://example.com/product.jpg',
+      category: 'product',
     },
     {
-      name: 'course.url',
-      description: 'URL del curso',
+      name: 'product.url',
+      description: 'URL del producto',
       type: 'string',
       required: false,
-      example: 'https://nebu.academy/courses/javascript',
-      category: 'course',
+      example: 'https://nebu.store/products/star-hunters',
+      category: 'product',
     },
 
     // System variables

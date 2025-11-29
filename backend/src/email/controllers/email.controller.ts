@@ -78,16 +78,23 @@ export class EmailController {
     return await this.emailService.sendPasswordResetEmail(data.userEmail, data.resetToken);
   }
 
-  @Post('send-course-enrollment')
+  @Post('send-order-confirmation')
   @Roles(UserRole.ADMIN, UserRole.SUPPORT)
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Enviar email de inscripción a curso' })
-  @ApiResponse({ status: 200, description: 'Email de inscripción enviado' })
-  async sendCourseEnrollmentEmail(@Body() data: {
+  @ApiOperation({ summary: 'Enviar email de confirmación de pedido' })
+  @ApiResponse({ status: 200, description: 'Email de confirmación enviado' })
+  async sendOrderConfirmationEmail(@Body() data: {
     userEmail: string;
-    courseName: string;
+    orderNumber: string;
+    productName: string;
+    amount: number;
   }) {
-    return await this.emailService.sendCourseEnrollmentEmail(data.userEmail, data.courseName);
+    return await this.emailService.sendOrderConfirmationEmail(
+      data.userEmail,
+      data.orderNumber,
+      data.productName,
+      data.amount
+    );
   }
 
   @Post('send-payment-confirmation')
@@ -98,12 +105,12 @@ export class EmailController {
   async sendPaymentConfirmationEmail(@Body() data: {
     userEmail: string;
     amount: number;
-    courseName: string;
+    orderNumber: string;
   }) {
     return await this.emailService.sendPaymentConfirmationEmail(
       data.userEmail,
       data.amount,
-      data.courseName
+      data.orderNumber
     );
   }
 

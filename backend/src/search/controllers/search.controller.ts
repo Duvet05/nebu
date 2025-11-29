@@ -21,7 +21,7 @@ export class SearchController {
             type: 'object',
             properties: {
               id: { type: 'string' },
-              type: { type: 'string', enum: ['course', 'path', 'article', 'project'] },
+              type: { type: 'string', enum: ['product', 'toy', 'article', 'order'] },
               title: { type: 'string' },
               description: { type: 'string' },
               url: { type: 'string' },

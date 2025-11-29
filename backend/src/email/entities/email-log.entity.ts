@@ -21,8 +21,10 @@ export enum EmailType {
   WELCOME = 'welcome',
   EMAIL_VERIFICATION = 'email_verification',
   PASSWORD_RESET = 'password_reset',
-  COURSE_ENROLLMENT = 'course_enrollment',
+  ORDER_CONFIRMATION = 'order_confirmation',
+  ORDER_SHIPPED = 'order_shipped',
   PAYMENT_CONFIRMATION = 'payment_confirmation',
+  PREORDER_AVAILABLE = 'preorder_available',
   ADMIN_ALERT = 'admin_alert',
   MARKETING = 'marketing',
 }

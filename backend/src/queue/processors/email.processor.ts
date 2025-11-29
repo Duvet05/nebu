@@ -71,67 +71,71 @@ export class EmailProcessor {
   }
 
   @Process('send-course-enrollment-email')
-  async sendCourseEnrollmentEmail(
+  async sendOrderConfirmationEmail(
     job: Job<{
       userEmail: string;
       userName: string;
-      courseName: string;
-      courseId: string;
+      orderNumber: string;
+      productName: string;
+      amount: number;
     }>
   ) {
     try {
-      this.logger.log(`Sending course enrollment email to ${job.data.userEmail}`);
+      this.logger.log(`Sending order confirmation email to ${job.data.userEmail}`);
 
-      await this.emailService.sendCourseEnrollmentEmail(job.data.userEmail, job.data.courseName);
+      await this.emailService.sendOrderConfirmationEmail(
+        job.data.userEmail,
+        job.data.orderNumber,
+        job.data.productName,
+        job.data.amount
+      );
 
-      this.logger.log(`Course enrollment email sent to ${job.data.userEmail}`);
+      this.logger.log(`Order confirmation email sent to ${job.data.userEmail}`);
 
       return {
         success: true,
         userEmail: job.data.userEmail,
-        courseName: job.data.courseName,
-        courseId: job.data.courseId,
+        orderNumber: job.data.orderNumber,
+        productName: job.data.productName,
         sentAt: new Date(),
       };
     } catch (error) {
-      this.logger.error(`Failed to send course enrollment email to ${job.data.userEmail}:`, error);
+      this.logger.error(`Failed to send order confirmation email to ${job.data.userEmail}:`, error);
       throw error;
     }
   }
 
-  @Process('send-course-completion-email')
-  async sendCourseCompletionEmail(
+  @Process('send-order-shipped-email')
+  async sendOrderShippedEmail(
     job: Job<{
       userEmail: string;
       userName: string;
-      courseName: string;
-      courseId: string;
-      certificateUrl?: string;
+      orderNumber: string;
+      trackingNumber: string;
     }>
   ) {
     try {
-      this.logger.log(`Sending course completion email to ${job.data.userEmail}`);
+      this.logger.log(`Sending order shipped email to ${job.data.userEmail}`);
 
-      // TODO: Implement course completion email sending
-      // - Use email service to send completion email
-      // - Include certificate information
+      // TODO: Implement order shipped email sending
+      // - Use email service to send shipping notification
+      // - Include tracking information
       // - Track email delivery
 
       // Simulate email sending
       await new Promise(resolve => setTimeout(resolve, 1300));
 
-      this.logger.log(`Course completion email sent to ${job.data.userEmail}`);
+      this.logger.log(`Order shipped email sent to ${job.data.userEmail}`);
 
       return {
         success: true,
         userEmail: job.data.userEmail,
-        courseName: job.data.courseName,
-        courseId: job.data.courseId,
-        certificateUrl: job.data.certificateUrl,
+        orderNumber: job.data.orderNumber,
+        trackingNumber: job.data.trackingNumber,
         sentAt: new Date(),
       };
     } catch (error) {
-      this.logger.error(`Failed to send course completion email to ${job.data.userEmail}:`, error);
+      this.logger.error(`Failed to send order shipped email to ${job.data.userEmail}:`, error);
       throw error;
     }
   }
