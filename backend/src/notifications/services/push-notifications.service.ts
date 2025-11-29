@@ -196,43 +196,55 @@ export class PushNotificationsService {
   }
 
   // Métodos de conveniencia para notificaciones específicas
-  async sendCourseEnrollmentNotification(userId: string, courseName: string): Promise<boolean> {
-    return this.sendNotificationToUser(userId, {
-      title: ' ¡Inscripción exitosa!',
-      body: `Te has inscrito exitosamente en "${courseName}"`,
-      data: { type: 'enrollment', courseName },
-      actionUrl: '/my-courses',
-    });
-  }
-
-  async sendLessonCompletionNotification(
+  async sendOrderConfirmationNotification(
     userId: string,
-    lessonName: string,
-    courseName: string
+    orderNumber: string,
+    productName: string
   ): Promise<boolean> {
     return this.sendNotificationToUser(userId, {
-      title: ' ¡Lección completada!',
-      body: `Has completado "${lessonName}" en ${courseName}`,
-      data: { type: 'lesson_complete', lessonName, courseName },
-      actionUrl: '/my-courses',
+      title: '¡Pedido confirmado!',
+      body: `Tu pedido #${orderNumber} de "${productName}" ha sido confirmado`,
+      data: { type: 'order_confirmed', orderNumber, productName },
+      actionUrl: '/orders',
     });
   }
 
-  async sendCourseCompletionNotification(userId: string, courseName: string): Promise<boolean> {
+  async sendShippingNotification(
+    userId: string,
+    orderNumber: string,
+    trackingNumber: string
+  ): Promise<boolean> {
     return this.sendNotificationToUser(userId, {
-      title: ' ¡Curso completado!',
-      body: `¡Felicidades! Has completado "${courseName}"`,
-      data: { type: 'course_complete', courseName },
-      actionUrl: '/certificates',
+      title: '¡Pedido enviado!',
+      body: `Tu pedido #${orderNumber} está en camino. Número de seguimiento: ${trackingNumber}`,
+      data: { type: 'order_shipped', orderNumber, trackingNumber },
+      actionUrl: `/orders/${orderNumber}`,
     });
   }
 
-  async sendPaymentSuccessNotification(userId: string, courseName: string): Promise<boolean> {
+  async sendPreOrderAvailableNotification(
+    userId: string,
+    productName: string,
+    productSlug: string
+  ): Promise<boolean> {
     return this.sendNotificationToUser(userId, {
-      title: ' Pago procesado',
-      body: `Tu pago para "${courseName}" ha sido procesado exitosamente`,
-      data: { type: 'payment_success', courseName },
-      actionUrl: '/my-courses',
+      title: '¡Producto disponible!',
+      body: `"${productName}" ya está disponible para pre-orden`,
+      data: { type: 'preorder_available', productName, productSlug },
+      actionUrl: `/products/${productSlug}`,
+    });
+  }
+
+  async sendPaymentSuccessNotification(
+    userId: string,
+    orderNumber: string,
+    amount: number
+  ): Promise<boolean> {
+    return this.sendNotificationToUser(userId, {
+      title: 'Pago procesado',
+      body: `Tu pago de $${amount.toFixed(2)} para el pedido #${orderNumber} ha sido procesado exitosamente`,
+      data: { type: 'payment_success', orderNumber, amount },
+      actionUrl: `/orders/${orderNumber}`,
     });
   }
 }

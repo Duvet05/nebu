@@ -238,23 +238,23 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async promoteToInstructor(id: string): Promise<User> {
+  async promoteToSupport(id: string): Promise<User> {
     const user = await this.findOne(id);
 
-    // Check if user is already an instructor or admin
-    if (user.role === UserRole.INSTRUCTOR || user.role === UserRole.ADMIN) {
-      throw new ConflictException('Usuario ya tiene rol de instructor o superior');
+    // Check if user is already support or admin
+    if (user.role === UserRole.SUPPORT || user.role === UserRole.ADMIN) {
+      throw new ConflictException('Usuario ya tiene rol de soporte o superior');
     }
 
-    // Promote user to instructor
-    user.role = UserRole.INSTRUCTOR;
+    // Promote user to support
+    user.role = UserRole.SUPPORT;
     user.status = UserStatus.ACTIVE;
 
     // Update metadata with promotion information
     if (!user.metadata) {
       user.metadata = {};
     }
-    user.metadata.promotedToInstructorAt = new Date().toISOString();
+    user.metadata.promotedToSupportAt = new Date().toISOString();
 
     return this.userRepository.save(user);
   }

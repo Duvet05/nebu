@@ -17,28 +17,12 @@ export const FEATURES = {
     twoFactorAuth: false, // TODO: Implementar 2FA
   },
 
-  // Courses & Content
-  courses: {
-    videoStreaming: true,
-    certificates: true,
-    liveClasses: true,
-    downloadContent: false, // TODO: Implementar descarga offline
-  },
-
   // Payments & Subscriptions
   payments: {
     subscriptions: true,
     culqi: true, // Culqi para Perú
     stripe: false, // TODO: Integrar Stripe
     paypal: false, // TODO: Integrar PayPal
-  },
-
-  // Community & Social
-  community: {
-    reviews: true,
-    comments: true,
-    chat: true,
-    forums: false, // TODO: Implementar foros
   },
 
   // Notifications

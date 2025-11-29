@@ -36,18 +36,9 @@ export const applicationConfig = registerAs('app', () => {
         oauthEnabled: FEATURES.authentication.oauth,
         emailVerificationRequired: FEATURES.authentication.emailVerificationRequired,
       },
-      courses: {
-        videoStreamingEnabled: FEATURES.courses.videoStreaming,
-        certificatesEnabled: FEATURES.courses.certificates,
-      },
       payments: {
         subscriptionsEnabled: FEATURES.payments.subscriptions,
         stripeEnabled: FEATURES.payments.stripe,
-      },
-      community: {
-        reviewsEnabled: FEATURES.community.reviews,
-        commentsEnabled: FEATURES.community.comments,
-        chatEnabled: FEATURES.community.chat,
       },
       notifications: {
         emailNotificationsEnabled: FEATURES.notifications.email,

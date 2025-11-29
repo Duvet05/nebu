@@ -14,8 +14,8 @@ import { Exclude } from 'class-transformer';
 import { Person } from './person.entity';
 
 export enum UserRole {
-  STUDENT = 'student',
-  INSTRUCTOR = 'instructor',
+  CUSTOMER = 'customer',
+  SUPPORT = 'support',
   ADMIN = 'admin',
 }
 
@@ -59,7 +59,7 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.STUDENT,
+    default: UserRole.CUSTOMER,
   })
   role: UserRole;
 
@@ -203,28 +203,18 @@ export class User {
     };
   }
 
-  get isInstructor(): boolean {
-    return this.role === UserRole.INSTRUCTOR || this.role === UserRole.ADMIN;
+  get isSupport(): boolean {
+    return this.role === UserRole.SUPPORT || this.role === UserRole.ADMIN;
   }
 
   get isAdmin(): boolean {
     return this.role === UserRole.ADMIN;
   }
 
-  get isStudent(): boolean {
-    return this.role === UserRole.STUDENT;
+  get isCustomer(): boolean {
+    return this.role === UserRole.CUSTOMER;
   }
 
-
-  get completedCoursesCount(): number {
-    // TODO: Implement when course system is added
-    return 0;
-  }
-
-  get totalProgressCount(): number {
-    // TODO: Implement when course system is added
-    return 0;
-  }
 
   get toysCount(): number {
     return this.toys ? this.toys.length : 0;

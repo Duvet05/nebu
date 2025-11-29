@@ -33,7 +33,7 @@ import { TemplateContext } from '../services/template-engine.service';
 @ApiTags('Email Templates')
 @Controller('email-templates')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.ADMIN, UserRole.INSTRUCTOR)
+@Roles(UserRole.ADMIN, UserRole.SUPPORT)
 @ApiBearerAuth()
 export class EmailTemplateController {
   constructor(private readonly emailTemplateService: EmailTemplateService) {}

@@ -37,7 +37,7 @@ export class EmailController {
   // ===== EMAIL SENDING =====
 
   @Post('send')
-  @Roles(UserRole.ADMIN, UserRole.INSTRUCTOR)
+  @Roles(UserRole.ADMIN, UserRole.SUPPORT)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Enviar email personalizado' })
   @ApiResponse({ status: 200, description: 'Email enviado exitosamente' })
@@ -79,7 +79,7 @@ export class EmailController {
   }
 
   @Post('send-course-enrollment')
-  @Roles(UserRole.ADMIN, UserRole.INSTRUCTOR)
+  @Roles(UserRole.ADMIN, UserRole.SUPPORT)
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Enviar email de inscripción a curso' })
   @ApiResponse({ status: 200, description: 'Email de inscripción enviado' })

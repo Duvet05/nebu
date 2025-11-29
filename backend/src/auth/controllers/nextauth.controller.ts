@@ -159,7 +159,7 @@ export class NextAuthController {
           email: result.email,
           name: result.fullName || result.username,
           avatar: result.avatar,
-          role: result.isAdmin ? 'admin' : result.isInstructor ? 'instructor' : 'student',
+          role: result.isAdmin ? 'admin' : result.isSupport ? 'support' : 'customer',
         },
       };
     } catch (error) {

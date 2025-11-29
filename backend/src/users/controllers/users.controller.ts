@@ -89,9 +89,9 @@ export class UsersController {
   @Post(':id/promote')
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
-  @ApiOperation({ summary: 'Promover usuario a instructor (Solo Admin)' })
-  promoteToInstructor(@Param('id', ParseUUIDPipe) id: string) {
-    return this.usersService.promoteToInstructor(id);
+  @ApiOperation({ summary: 'Promover usuario a soporte (Solo Admin)' })
+  promoteToSupport(@Param('id', ParseUUIDPipe) id: string) {
+    return this.usersService.promoteToSupport(id);
   }
 
   @Post(':id/suspend')

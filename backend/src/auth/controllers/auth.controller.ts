@@ -236,7 +236,7 @@ export class AuthController {
         email: user.email,
         name: user.fullName || user.username,
         avatar: user.avatar,
-        role: user.isAdmin ? 'admin' : user.isInstructor ? 'instructor' : 'student',
+        role: user.isAdmin ? 'admin' : user.isSupport ? 'support' : 'customer',
       },
     };
   }
