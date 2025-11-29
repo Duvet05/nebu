@@ -37,7 +37,7 @@ export interface Product {
   updatedAt: string;
 }
 
-const API_BASE_URL = process.env.BACKEND_URL || 'http://localhost:3001';
+const API_BASE_URL = process.env.BACKEND_URL || 'http://127.0.0.1:3001';
 
 /**
  * Fetch all active products
