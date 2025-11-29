@@ -95,28 +95,7 @@ export default function ProductosPage() {
     
     if (!color) return;
 
-    // Convert API product to cart product format
-    const cartProduct = {
-      id: product.id,
-      name: product.name,
-      slug: product.slug,
-      description: product.description,
-      shortDescription: product.shortDescription || '',
-      price: product.price,
-      originalPrice: product.originalPrice,
-      images: product.images,
-      colors: product.colors || [],
-      category: product.category as "plushie" | "subscription" | "accessory",
-      ageRange: product.ageRange || '',
-      features: product.features,
-      inStock: product.inStock,
-      stockCount: product.stockCount,
-      badge: product.badge,
-      preOrder: product.preOrder,
-      depositAmount: product.depositAmount,
-    };
-
-    addItem(cartProduct, color, 1);
+    addItem(product, color, 1);
   };
 
   return (

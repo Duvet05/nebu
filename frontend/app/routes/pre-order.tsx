@@ -1,7 +1,8 @@
 import { useState, useEffect, type FormEvent } from "react";
-import type { MetaFunction } from "@remix-run/node";
+import { json, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
-import { useSearchParams, Link } from "@remix-run/react";
+import { useLoaderData, useSearchParams, Link } from "@remix-run/react";
+import { fetchPreOrderProducts, enrichProduct, type Product, defaultProductColors } from "~/lib/api/products";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Minus,
@@ -20,9 +21,13 @@ import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { analytics } from "~/lib/analytics";
 import NebuModel3D from "~/components/NebuModel3D";
-import { products, getProductBySlug, type Product } from "~/data/products";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { BUSINESS } from "~/config/constants";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const products = await fetchPreOrderProducts();
+  return json({ products: products.map(enrichProduct) });
+}
 
 export const meta: MetaFunction = () => {
   return [
@@ -170,16 +175,18 @@ function WaitlistForm() {
 }
 
 export default function PreOrder() {
+  const { products } = useLoaderData<typeof loader>();
   const { t } = useTranslation("common");
   const [searchParams] = useSearchParams();
 
   // Get product from URL parameter or default to nebu-dino
   const productSlug = searchParams.get("product") || "nebu-dino";
-  const selectedProduct: Product = getProductBySlug(productSlug) || products[0];
+  const selectedProduct = products.find(p => p.slug === productSlug) || products[0];
+  const productColors = selectedProduct?.colors || defaultProductColors;
 
   // Form state
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState(selectedProduct.colors[0]);
+  const [selectedColor, setSelectedColor] = useState(productColors[0]);
   const [paymentMethod, setPaymentMethod] = useState("yape");
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -218,7 +225,8 @@ export default function PreOrder() {
 
   // Update selected color when product changes
   useEffect(() => {
-    setSelectedColor(selectedProduct.colors[0]);
+    const colors = selectedProduct?.colors || defaultProductColors;
+    setSelectedColor(colors[0]);
   }, [selectedProduct]);
 
   const basePrice = selectedProduct.price;
@@ -418,7 +426,7 @@ export default function PreOrder() {
                   <div className="mb-8">
                     <h4 className="font-semibold text-gray-900 mb-4">{t("preOrder.selectColor")}</h4>
                     <div className="grid grid-cols-2 gap-3">
-                      {selectedProduct.colors.map((color) => (
+                      {(selectedProduct?.colors || defaultProductColors).map((color) => (
                         <button
                           key={color.id}
                           onClick={() => setSelectedColor(color)}

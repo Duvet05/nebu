@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import type { Product, ProductColor } from '~/data/products';
+import type { Product, ProductColor } from '~/lib/api/products';
 import { trackAddToCart } from '~/lib/facebook-pixel';
 
 export interface CartItem {

@@ -12,10 +12,12 @@ import { Divider } from "~/components/Divider";
 import { useEffect } from "react";
 import { analytics } from "~/lib/analytics";
 import { useAnalytics } from "~/components/AnalyticsProvider";
-import { products } from "~/data/products";
+import { fetchProducts } from "~/lib/api/products";
 import { BUSINESS } from "~/config/constants";
 
 export async function loader() {
+  const products = await fetchProducts();
+
   // Generar datos estructurados para los productos
   const productsStructuredData = {
     "@context": "https://schema.org",
