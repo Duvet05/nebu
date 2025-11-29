@@ -75,7 +75,7 @@ export function LazyImage({
       {blurDataURL && !isLoaded && (
         <img
           src={blurDataURL}
-          alt=""
+          alt="Imagen de carga difuminada"
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover blur-lg scale-110"
         />
@@ -85,7 +85,7 @@ export function LazyImage({
       {placeholder && !isLoaded && !blurDataURL && (
         <img
           src={placeholder}
-          alt=""
+          alt="Imagen de fondo de carga"
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover opacity-50"
         />

@@ -23,7 +23,7 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
       >
         <img 
           src="/assets/images/Leaf (2).png" 
-          alt="" 
+          alt="Decoración hoja inferior izquierda"
           className="h-64 w-auto"
           aria-hidden="true"
         />
@@ -39,7 +39,7 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
       >
         <img 
           src="/assets/images/Leaf.png" 
-          alt="" 
+          alt="Decoración hoja inferior derecha"
           className="h-64 w-auto"
           aria-hidden="true"
         />

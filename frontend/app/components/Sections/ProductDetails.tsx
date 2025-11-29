@@ -74,12 +74,12 @@ const ProductDetails: React.FC = () => {
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <img
           src="/assets/images/decoration-top-right.png"
-          alt=""
+          alt="Decoración superior derecha"
           className="absolute top-20 right-10 w-32 h-32 opacity-15"
         />
         <img
           src="/assets/images/decoration-bottom-left.png"
-          alt=""
+          alt="Decoración inferior izquierda"
           className="absolute bottom-32 left-20 w-28 h-28 opacity-20"
         />
       </div>

@@ -46,7 +46,7 @@ const BenefitCard = memo(function BenefitCard({
         {benefit.iconType === 'svg' ? (
           <img
             src={benefit.iconPath}
-            alt=""
+            alt={`Icono de beneficio: ${benefit.title}`}
             className="w-8 h-8 relative z-10"
             aria-hidden="true"
             loading="lazy"
