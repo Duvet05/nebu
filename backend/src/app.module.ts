@@ -55,38 +55,14 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
       envFilePath: ['.env.local', '.env'],
     }),
 
-    // Database - Direct configuration to ensure synchronization works
+    // Database - Using shared configuration
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: () => {
-        // ONE master flag controls the database mode
-        // DB_USE_MIGRATIONS=false (default) → synchronize mode (development)
-        // DB_USE_MIGRATIONS=true → migrations mode (production)
-        const useMigrations = process.env.DB_USE_MIGRATIONS === 'true';
-
-        return {
-          type: 'postgres' as const,
-          host: process.env.DATABASE_HOST!,
-          port: parseInt(process.env.DATABASE_PORT || '5432', 10),
-          username: process.env.DATABASE_USERNAME!,
-          password: process.env.DATABASE_PASSWORD!,
-          database: process.env.DATABASE_NAME!,
-          entities: [], // Let autoLoadEntities handle this
-          synchronize: !useMigrations, // Mutually exclusive with migrations
-          migrationsRun: useMigrations, // Auto-run migrations if enabled
-          logging: process.env.NODE_ENV === 'development',
-          ssl: process.env.DATABASE_SSL === 'true' ? {
-            rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false',
-          } : false,
-          autoLoadEntities: true, // This SHOULD work with webpack
-          retryAttempts: 3,
-          retryDelay: 3000,
-          maxQueryExecutionTime: 10000,
-          connectTimeoutMS: 10000,
-          acquireTimeoutMS: 10000,
-          timeout: 10000,
-        };
-      },
+      useFactory: (configService: ConfigService) => ({
+        ...configService.get('database'),
+        entities: [], // Let autoLoadEntities handle this
+      }),
+      inject: [ConfigService],
     }),
 
     // Redis Cache

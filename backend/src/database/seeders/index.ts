@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import { Logger } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { seedProducts } from './product-catalog.seeder';
-import { ProductCatalog } from '../../toys/entities/product-catalog.entity';
+import { getDatabaseConfig } from '../../config/database.config';
 
 // Cargar variables de entorno
 dotenv.config({ path: ['.env.local', '.env'] });
@@ -16,20 +16,10 @@ dotenv.config({ path: ['.env.local', '.env'] });
 async function runSeeders() {
   const logger = new Logger('Seeders');
 
-  // Crear conexión a la base de datos
+  // Crear conexión a la base de datos usando configuración compartida
   const dataSource = new DataSource({
-    type: 'postgres',
-    host: process.env.DATABASE_HOST!,
-    port: parseInt(process.env.DATABASE_PORT || '5432', 10),
-    username: process.env.DATABASE_USERNAME!,
-    password: process.env.DATABASE_PASSWORD!,
-    database: process.env.DATABASE_NAME!,
-    entities: [ProductCatalog], // Importar entidades directamente
+    ...getDatabaseConfig(),
     synchronize: false, // No sincronizar en seeders
-    logging: true,
-    ssl: process.env.DATABASE_SSL === 'true' ? {
-      rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false',
-    } : false,
   });
 
   try {
