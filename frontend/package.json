@@ -48,7 +48,8 @@
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.5.2",
     "three": "^0.150.1",
-    "zod": "^4.1.13"
+    "zod": "^4.1.13",
+    "@cloudflare/stream-react": "^1.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
