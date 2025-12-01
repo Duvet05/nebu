@@ -3,7 +3,6 @@ import { Link, useNavigate } from "@remix-run/react";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { useCart } from "~/contexts/CartContext";
-import { motion } from "framer-motion";
 import { ShoppingBag, Truck, CreditCard, Shield, ArrowLeft, Trash2 } from "lucide-react";
 import { useState, useEffect, type FormEvent } from "react";
 import { trackInitiateCheckout } from "~/lib/facebook-pixel";

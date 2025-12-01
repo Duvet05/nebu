@@ -39,6 +39,58 @@ export interface Product {
 
 const API_BASE_URL = process.env.BACKEND_URL || 'http://127.0.0.1:3001';
 
+// Fallback dummy products (used only when backend is unreachable and in dev)
+const dummyProducts: Product[] = [
+  {
+    id: 'nebu-dino',
+    slug: 'nebu-dino',
+    name: 'Nebu Dino',
+    concept: 'Dinosaurio amigable',
+    originalCharacter: 'dino',
+    description: 'El compañero de aventuras sin pantallas.',
+    shortDescription: 'Compañero de aprendizaje sin pantallas',
+    price: 380,
+    preOrder: true,
+    inStock: false,
+    stockCount: 20,
+    images: ['/assets/products/nebu-dino/1.jpg'],
+    colors: undefined,
+    ageRange: '3-8',
+    features: ['Conversaciones AI', 'Sin pantallas', 'App parental'],
+    category: 'peluches',
+    badge: 'Pre-orden',
+    active: true,
+    viewCount: 1200,
+    orderCount: 85,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'nebu-gato',
+    slug: 'nebu-gato',
+    name: 'Nebu Gato',
+    concept: 'Gatito explorador',
+    originalCharacter: 'gato',
+    description: 'Suave y curioso.',
+    shortDescription: 'Nuevo amigo felino',
+    price: 420,
+    preOrder: true,
+    inStock: false,
+    stockCount: 10,
+    images: ['/assets/products/nebu-gato/1.jpg'],
+    colors: undefined,
+    ageRange: '3-8',
+    features: ['Ronroneos', 'Conexión parental'],
+    category: 'peluches',
+    badge: 'Próximamente',
+    active: true,
+    viewCount: 300,
+    orderCount: 8,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }
+];
+
 /**
  * Fetch all active products
  */
@@ -58,6 +110,11 @@ export async function fetchProducts(includeInactive = false): Promise<Product[]>
     return await response.json();
   } catch (error) {
     console.error('Error fetching products:', error);
+    const isDev = process.env.NODE_ENV !== 'production';
+    if (isDev) {
+      console.warn('Backend unreachable — returning dummy products for development');
+      return dummyProducts;
+    }
     throw error;
   }
 }
@@ -80,6 +137,11 @@ export async function fetchInStockProducts(): Promise<Product[]> {
     return await response.json();
   } catch (error) {
     console.error('Error fetching in-stock products:', error);
+    const isDev = process.env.NODE_ENV !== 'production';
+    if (isDev) {
+      console.warn('Backend unreachable — returning dummy in-stock products for development');
+      return dummyProducts.filter(p => p.inStock);
+    }
     throw error;
   }
 }
@@ -102,6 +164,11 @@ export async function fetchPreOrderProducts(): Promise<Product[]> {
     return await response.json();
   } catch (error) {
     console.error('Error fetching pre-order products:', error);
+    const isDev = process.env.NODE_ENV !== 'production';
+    if (isDev) {
+      console.warn('Backend unreachable — returning dummy pre-order products for development');
+      return dummyProducts.filter(p => p.preOrder);
+    }
     throw error;
   }
 }
@@ -124,6 +191,11 @@ export async function fetchProductById(id: string): Promise<Product> {
     return await response.json();
   } catch (error) {
     console.error(`Error fetching product ${id}:`, error);
+    const isDev = process.env.NODE_ENV !== 'production';
+    if (isDev) {
+      console.warn(`Backend unreachable — returning dummy product ${id} for development`);
+      return dummyProducts.find(p => p.id === id) || dummyProducts[0];
+    }
     throw error;
   }
 }
@@ -146,6 +218,11 @@ export async function fetchProductBySlug(slug: string): Promise<Product> {
     return await response.json();
   } catch (error) {
     console.error(`Error fetching product ${slug}:`, error);
+    const isDev = process.env.NODE_ENV !== 'production';
+    if (isDev) {
+      console.warn(`Backend unreachable — returning dummy product ${slug} for development`);
+      return dummyProducts.find(p => p.slug === slug) || dummyProducts[0];
+    }
     throw error;
   }
 }
