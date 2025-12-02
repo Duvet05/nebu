@@ -132,12 +132,14 @@ const ProductDetails: React.FC = () => {
                 </h2>
 
                 <div className="space-y-4 mb-6" itemProp="description">
-                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed text-justify">
-                    {t('productCTA.product.description')}
-                  </p>
-                  <p className="text-base md:text-lg text-gray-600 leading-relaxed text-justify">
-                    {t('productCTA.product.technicalDescription')}
-                  </p>
+                  <p 
+                    className="text-lg md:text-xl text-gray-600 leading-relaxed text-justify"
+                    dangerouslySetInnerHTML={{ __html: t('productCTA.product.description') }}
+                  />
+                  <p 
+                    className="text-base md:text-lg text-gray-600 leading-relaxed text-justify"
+                    dangerouslySetInnerHTML={{ __html: t('productCTA.product.technicalDescription') }}
+                  />
                 </div>
               </header>
 
