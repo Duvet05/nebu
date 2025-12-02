@@ -679,8 +679,8 @@
     }
   },
   "conversations": {
-    "title": "I'm Educational, Imaginative, and Oh-So-Entertaining!",
-    "subtitle": "Discover the amazing conversations your child can have with Nebu",
+    "title": "Discover the amazing conversations your child can have with Nebu",
+    "subtitle": "Explore the different types of educational, creative, and fun conversations",
     "examples": {
       "educational": [
         {
@@ -776,8 +776,8 @@
     "noExamples": "No examples available for this category"
   },
   "educationalContent": {
-    "title": "Why Choose Nebu for Your Child's Development?",
-    "subtitle": "Nebu combines advanced artificial intelligence technology with proven pedagogical principles to deliver a unique screen-free educational experience. Every conversation is designed to stimulate cognitive, emotional, and social development in children.",
+    "title": "I'm Educational, Imaginative, and Oh-So-Entertaining!",
+    "subtitle": "Nebu combines <strong>advanced artificial intelligence technology</strong> with <strong>proven pedagogical principles</strong> to deliver a unique <strong>screen-free</strong> educational experience. Every conversation is designed to stimulate <strong>cognitive, emotional, and social development</strong> in children.",
     "features": {
       "ai": {
         "title": "Personalized Artificial Intelligence",

@@ -7,7 +7,6 @@ import ConversationExamples from "~/components/Sections/ConversationExamples";
 import BenefitsCarousel from "~/components/Sections/BenefitsCarousel";
 import HeroQuote from "~/components/Sections/HeroQuote";
 import ProductDetails from "~/components/Sections/ProductDetails";
-import EducationalContent from "~/components/Sections/EducationalContent";
 import { HeroSection } from "~/components/Sections/HeroSection";
 import { Divider } from "~/components/Divider";
 import { useEffect } from "react";
@@ -201,12 +200,7 @@ export default function Index() {
         <HeroSection onCTAClick={handleCTAClick} />
 
   {/* Product Details Section */}
-  <ProductDetails />
-
-        <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
-
-        {/* Conversation Examples Section */}
-        <ConversationExamples />
+        <ProductDetails />
 
         <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
@@ -215,8 +209,8 @@ export default function Index() {
         
         <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
-        {/* Educational Content Section - SEO Rich Content */}
-        <EducationalContent />
+        {/* Educational Content & Conversation Examples Section - Combined */}
+        <ConversationExamples />
         
         <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 

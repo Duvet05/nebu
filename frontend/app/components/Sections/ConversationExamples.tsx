@@ -115,7 +115,7 @@ export default function ConversationExamples() {
   };
 
   return (
-    <section className="py-16 bg-nebu-bg relative overflow-hidden">
+    <section className="py-20 bg-nebu-bg relative overflow-hidden">
       {/* Subtle background decoration */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
@@ -123,25 +123,40 @@ export default function ConversationExamples() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Main Header Section */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-center mb-8"
+          className="text-center mb-12"
         >
-          <motion.h2 
+          <motion.div 
             variants={itemVariants}
-            className="text-4xl md:text-5xl font-bold font-gochi mb-3 text-primary leading-tight"
+            className="inline-block bg-primary/10 rounded-2xl px-8 py-6 mb-8"
           >
-            {t("conversations.title")}
-          </motion.h2>
+            <h2 className="text-3xl md:text-4xl font-bold font-gochi text-primary leading-tight">
+              {t("educationalContent.title")}
+            </h2>
+          </motion.div>
           
           <motion.p 
             variants={itemVariants}
-            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-16"
+            dangerouslySetInnerHTML={{ __html: t("educationalContent.subtitle") }}
+          />
+
+          <motion.div 
+            variants={itemVariants}
+            className="max-w-4xl mx-auto mb-4"
           >
-            {t("conversations.subtitle")}
-          </motion.p>
+            <h3 className="text-2xl md:text-3xl font-bold font-gochi text-primary leading-tight mb-3">
+              {t("conversations.title")}
+            </h3>
+            
+            <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+              {t("conversations.subtitle")}
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* Category Filter - Redesigned */}
@@ -233,21 +248,35 @@ export default function ConversationExamples() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Call to Action - Premium Design */}
+        {/* Call to Actions */}
         <motion.div
           variants={itemVariants}
           initial="hidden"
           animate="visible"
-          className="text-center mt-10"
+          className="text-center mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
+          {/* Primary CTA */}
           <motion.button
-            className="relative inline-flex items-center justify-center gap-2.5 font-gochi font-bold text-base px-6 py-3 rounded-full min-w-[240px] md:min-w-[280px] bg-primary text-white shadow-[0_6px_20px_rgba(255,181,74,0.3)] hover:shadow-[0_10px_30px_rgba(255,181,74,0.45)] transition-all duration-200 ease-out"
+            className="relative inline-flex items-center justify-center gap-2.5 font-gochi font-bold text-base px-8 py-4 rounded-full min-w-[240px] md:min-w-[280px] bg-primary text-white shadow-[0_6px_20px_rgba(255,181,74,0.3)] hover:shadow-[0_10px_30px_rgba(255,181,74,0.45)] transition-all duration-200 ease-out"
             whileHover={{ scale: 1.05, y: -3 }}
             whileTap={{ scale: 0.98 }}
           >
             <MessageSquare className="w-5 h-5" />
             <span>{t("conversationExamples.cta")}</span>
           </motion.button>
+
+          {/* Secondary CTA */}
+          <motion.a
+            href="/our-story"
+            className="inline-flex items-center justify-center gap-2 font-semibold text-base px-6 py-4 rounded-full min-w-[240px] bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all duration-200 ease-out"
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <span>{t("educationalContent.learnMore")}</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </motion.a>
         </motion.div>
       </div>
     </section>

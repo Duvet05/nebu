@@ -97,7 +97,7 @@
       "originalPrice": "S/ 380",
       "discount": "¡50% OFF! 🎉",
       "description": "Más que un peluche, Nebu es tu <strong>compañero inteligente</strong> que transforma cada conversación en una <strong>aventura educativa</strong>. Se adapta a la personalidad de tu hijo, responde sus preguntas con <strong>paciencia infinita</strong> y fomenta su <strong>desarrollo emocional e intelectual</strong>.",
-      "technicalDescription": "Incluye <strong>sistema de audio inteligente</strong> con micrófono que <strong>escucha y responde en tiempo real</strong>. Funciona con <strong>WiFi</strong> y trae <strong>app móvil</strong> para que los padres personalicen voces y configuraciones. <strong>Pausa automática</strong>, <strong>soporte multiidioma</strong> y <strong>carga USB Tipo-C</strong>. Requiere conexión a internet.",
+      "technicalDescription": "Incluye un <strong>sistema de audio inteligente</strong> con micrófono que <strong>escucha y responde en tiempo real</strong>. Funciona con <strong>WiFi</strong> y trae <strong>app móvil</strong> para que los padres personalicen voces y configuraciones. <strong>Deja de hablar cuando le respondes para escucharte</strong>, <strong>tiene soporte multiidioma</strong> y <strong>carga USB Tipo-C</strong>. Requiere conexión a internet.",
       "preOrderButton": "Pre-ordenar ahora • S/ 190",
       "waitlistButton": "Únete a la lista de espera",
       "features": {
@@ -679,8 +679,8 @@
     }
   },
   "conversations": {
-    "title": "Soy Educativo, Imaginativo y ¡Súper Entretenido!",
-    "subtitle": "Descubre las increíbles conversaciones que tu hijo puede tener con Nebu",
+    "title": "Descubre las increíbles conversaciones que tu hijo puede tener con Nebu",
+    "subtitle": "Explora los diferentes tipos de conversaciones educativas, creativas y divertidas",
     "examples": {
       "educational": [
         {
@@ -1105,8 +1105,8 @@
     }
   },
   "educationalContent": {
-    "title": "¿Por qué elegir Nebu para el desarrollo de tu hijo?",
-    "subtitle": "Nebu combina tecnología de inteligencia artificial avanzada con principios pedagógicos probados para ofrecer una experiencia educativa única sin pantallas. Cada conversación está diseñada para estimular el desarrollo cognitivo, emocional y social de los niños.",
+    "title": "Soy Educativo, Imaginativo y ¡Muy Entretenido!",
+    "subtitle": "Nebu combina <strong>tecnología de inteligencia artificial avanzada</strong> con <strong>principios pedagógicos probados</strong> para ofrecer una experiencia educativa única <strong>sin pantallas</strong>. Cada conversación está diseñada para estimular el <strong>desarrollo cognitivo, emocional y social</strong> de los niños.",
     "features": {
       "ai": {
         "title": "Inteligencia Artificial Personalizada",
