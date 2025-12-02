@@ -152,19 +152,6 @@ export default function ProductosPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  {/* Badge */}
-                  {product.badge && (
-                    <div className="absolute top-4 right-4 z-10">
-                      <div className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                        product.badge === "mostPopular"
-                          ? "bg-gradient-to-r from-primary to-accent text-white"
-                          : "bg-gray-900 text-white"
-                      }`}>
-                        {t(`products.badges.${product.badge}`)}
-                      </div>
-                    </div>
-                  )}
-
                   {/* Product Image */}
                     <div className="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                     <div className="absolute inset-0 flex items-center justify-center">
