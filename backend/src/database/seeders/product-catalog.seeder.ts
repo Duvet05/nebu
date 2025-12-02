@@ -5,7 +5,7 @@ import { ProductCatalog } from '../../toys/entities/product-catalog.entity';
 /**
  * Product Catalog Seeder
  *
- * Este seeder inserta 13 productos iniciales en el catálogo.
+ * Este seeder inserta 14 productos iniciales en el catálogo, incluyendo Nebu Dino.
  * Solo ejecuta si la tabla está vacía.
  *
  * Uso:
@@ -22,9 +22,36 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
     return;
   }
 
-  logger.log('🌱 Insertando 13 productos iniciales...');
+  logger.log('🌱 Insertando 14 productos iniciales...');
 
   const products = [
+    {
+      slug: 'nebu-dino',
+      name: 'Nebu Dino',
+      concept: '🦕 Nebu Dinosaurio',
+      originalCharacter: 'Nebu',
+      description: 'El peluche inteligente con IA que acompaña y enseña a los más pequeños. Nebu Dino es tu compañero de aprendizaje y aventuras, diseñado para niños de 4 a 12 años.',
+      shortDescription: 'Peluche inteligente con IA conversacional, sin pantallas, educativo y súper entretenido',
+      price: 380.0,
+      depositAmount: 190.0,
+      inStock: true,
+      preOrder: true,
+      images: [],
+      colors: ['#FF69B4', '#90EE90', '#87CEEB'], // Rosa, Verde, Azul
+      features: [
+        'IA personalizada adaptada a cada niño',
+        'Conversaciones educativas ilimitadas',
+        'Sin pantallas, 100% interactivo por voz',
+        'App para padres con control parental',
+        'Batería recargable 8-10 horas',
+        'Actualizaciones de contenido continuas',
+        'WiFi integrado',
+        'Multiidioma (Español/Inglés)'
+      ],
+      category: 'smart-companions',
+      badge: 'bestseller',
+      active: true,
+    },
     {
       slug: 'star-hunters',
       name: 'Star Hunters',
@@ -265,5 +292,5 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
   const productEntities = products.map((data) => productRepository.create(data));
   await productRepository.save(productEntities);
 
-  logger.log('✅ 13 productos insertados exitosamente');
+  logger.log('✅ 14 productos insertados exitosamente (incluyendo Nebu Dino)');
 }
