@@ -122,6 +122,101 @@ export default function OurStory() {
               ))}
             </div>
 
+            {/* Detailed Story Section */}
+            <motion.div
+              className="mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <h2 className="text-4xl font-bold text-center mb-6 font-gochi text-nebu-dark">
+                {t("about.story.title")}
+              </h2>
+              <p className="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
+                {t("about.story.problem.content")}
+              </p>
+
+              <div className="space-y-8">
+                {/* IA al Servicio Emocional */}
+                <div className="bg-white rounded-2xl p-8 shadow-lg">
+                  <h3 className="text-2xl font-bold text-primary mb-4 flex items-center gap-2">
+                    <span className="text-3xl">💚</span>
+                    {t("about.story.origin.title")}
+                  </h3>
+                  <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
+                    <p>{t("about.story.origin.paragraph1")}</p>
+                    <p>{t("about.story.origin.paragraph2")}</p>
+                    <p>{t("about.story.origin.paragraph3")}</p>
+                  </div>
+                </div>
+
+                {/* Innovar También es Cuidar */}
+                <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 shadow-lg">
+                  <h3 className="text-2xl font-bold text-primary mb-4 flex items-center gap-2">
+                    <span className="text-3xl">✨</span>
+                    {t("about.story.innovation.title")}
+                  </h3>
+                  <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
+                    <p>{t("about.story.innovation.paragraph1")}</p>
+                    <p>{t("about.story.innovation.paragraph2")}</p>
+                    <p>{t("about.story.innovation.paragraph3")}</p>
+                  </div>
+                </div>
+
+                {/* Tecnología que Crece con Propósito */}
+                <div className="bg-white rounded-2xl p-8 shadow-lg">
+                  <h3 className="text-2xl font-bold text-primary mb-4 flex items-center gap-2">
+                    <span className="text-3xl">🚀</span>
+                    {t("about.story.purpose.title")}
+                  </h3>
+                  <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
+                    <p>{t("about.story.purpose.paragraph1")}</p>
+                    <p>{t("about.story.purpose.paragraph2")}</p>
+                    <p className="text-lg font-semibold text-nebu-dark">
+                      {t("about.story.purpose.paragraph3")}
+                    </p>
+                  </div>
+                </div>
+
+                {/* El Equipo PUCP */}
+                <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg border-2 border-primary/20">
+                  <h3 className="text-2xl font-bold text-center text-primary mb-6 flex items-center justify-center gap-2">
+                    <Award className="w-8 h-8" />
+                    Egresados PUCP
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="bg-white rounded-xl p-6 shadow">
+                      <div className="text-4xl mb-3">🔬</div>
+                      <h4 className="font-bold text-lg text-nebu-dark mb-1">Richard Castillo Leguía</h4>
+                      <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
+                      <p className="text-sm text-gray-700">Fundador de Flow. Visión de IA aplicada a salud mental infantil.</p>
+                    </div>
+                    <div className="bg-white rounded-xl p-6 shadow">
+                      <div className="text-4xl mb-3">💻</div>
+                      <h4 className="font-bold text-lg text-nebu-dark mb-1">Gonzalo Gálvez Cortez</h4>
+                      <p className="text-sm text-gray-600 mb-2">Ingeniería Informática PUCP</p>
+                      <p className="text-sm text-gray-700">Arquitectura del sistema y app móvil con control parental.</p>
+                    </div>
+                    <div className="bg-white rounded-xl p-6 shadow">
+                      <div className="text-4xl mb-3">⚙️</div>
+                      <h4 className="font-bold text-lg text-nebu-dark mb-1">Bryan Bastidas</h4>
+                      <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
+                      <p className="text-sm text-gray-700">Diseño e integración de hardware. Robótica aplicada.</p>
+                    </div>
+                    <div className="bg-white rounded-xl p-6 shadow">
+                      <div className="text-4xl mb-3">🤖</div>
+                      <h4 className="font-bold text-lg text-nebu-dark mb-1">Mitshell Ramos</h4>
+                      <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
+                      <p className="text-sm text-gray-700">Expansión de funcionalidades y desarrollo de nuevos productos.</p>
+                    </div>
+                  </div>
+                  <p className="text-center text-gray-700 italic">
+                    "Una forma concreta de hacer tecnología desde la PUCP: con rigor técnico, sentido social y cuidado por las personas."
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
             {/* Press Recognition Section */}
             <motion.div
               className="mb-16"

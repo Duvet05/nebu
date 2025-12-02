@@ -1,8 +1,5 @@
 import { motion } from "framer-motion";
-import ProductSelector from "./ProductSelector";
-import ProductPreview from "./ProductPreview";
-import ColorSelector from "./ColorSelector";
-import QuantitySelector from "./QuantitySelector";
+import ProductSelection from "./ProductSelection";
 import FeatureHighlights from "./FeatureHighlights";
 import PriceSummary from "./PriceSummary";
 import type { Product, ProductColor } from "~/lib/api/products";
@@ -36,38 +33,30 @@ export default function ProductConfigurationSection({
 }: ProductConfigurationSectionProps) {
   return (
     <motion.div
-      className="space-y-8"
+      className="space-y-6"
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
     >
-      <ProductSelector 
+      {/* Selector Unificado: Producto + Cantidad + Preview + Color */}
+      <ProductSelection
         products={products}
-        selectedProductId={selectedProduct.id}
-      />
-
-      <ProductPreview 
-        product={selectedProduct}
+        selectedProduct={selectedProduct}
         selectedColor={selectedColor}
+        productColors={productColors}
+        quantity={quantity}
+        availableUnits={availableUnits}
+        soldOut={soldOut}
+        onColorChange={onColorChange}
+        onQuantityChange={onQuantityChange}
       />
 
-      <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-        <ColorSelector
-          colors={productColors}
-          selectedColor={selectedColor}
-          onColorChange={onColorChange}
-        />
-
-        <QuantitySelector
-          quantity={quantity}
-          availableUnits={availableUnits}
-          soldOut={soldOut}
-          onQuantityChange={onQuantityChange}
-        />
-
+      {/* Características */}
+      <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-100">
         <FeatureHighlights />
       </div>
 
+      {/* Resumen de Precio */}
       <PriceSummary
         quantity={quantity}
         basePrice={basePrice}

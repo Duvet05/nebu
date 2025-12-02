@@ -39,7 +39,7 @@ const ProductDetails: React.FC = () => {
   const features = [
     { icon: MonitorOff, color: 'green' as const, label: t('productCTA.product.features.screenFree') },
     { icon: Bot, color: 'blue' as const, label: t('productCTA.product.features.personalizedAI') },
-    { icon: Shield, color: 'purple' as const, label: t('productCTA.product.features.safePrivate') },
+    { icon: Shield, color: 'gray' as const, label: t('productCTA.product.features.safePrivate') },
     { icon: Users, color: 'orange' as const, label: t('productCTA.product.features.ages') },
   ];
 
@@ -52,14 +52,14 @@ const ProductDetails: React.FC = () => {
   const colorMap: Record<string, string> = {
     green: 'bg-green-100 group-hover:bg-green-200',
     blue: 'bg-blue-100 group-hover:bg-blue-200',
-    purple: 'bg-purple-100 group-hover:bg-purple-200',
+    gray: 'bg-gray-100 group-hover:bg-gray-200',
     orange: 'bg-orange-100 group-hover:bg-orange-200',
   };
 
   const dotColorMap: Record<string, string> = {
     green: 'bg-green-500',
     blue: 'bg-blue-500',
-    purple: 'bg-purple-500',
+    gray: 'bg-gray-500',
     orange: 'bg-orange-500',
   };
 

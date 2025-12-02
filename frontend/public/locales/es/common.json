@@ -404,6 +404,36 @@
       "subtitle": "Nuestra misión es construir conexiones significativas sin pantallas a través del juego, combinando diseño inteligente con simplicidad llena de corazón para apoyar el viaje de cada niño, una conversación a la vez.",
       "badge": "Más que un Juguete, una Conexión"
     },
+    "story": {
+      "title": "Nuestra Historia",
+      "subtitle": "Tecnología con propósito y corazón",
+      "problem": {
+        "title": "El Desafío",
+        "content": "Frente al excesivo consumo de pantallas, cuatro egresados de la PUCP desarrollaron Nebu: un juguete conversacional que promueve la calidez, el aprendizaje y el cuidado emocional de los más pequeños."
+      },
+      "origin": {
+        "title": "IA al Servicio Emocional",
+        "paragraph1": "Ansiedad, irritabilidad, trastornos del sueño, bajo rendimiento escolar e incluso aislamiento social. Esas son algunas consecuencias del excesivo uso de pantallas en niños pequeños, según el Ministerio de Salud.",
+        "paragraph2": "Richard Castillo Leguía, egresado de Ingeniería Mecatrónica PUCP, observó esta realidad trabajando en EsSalud. Enfocado en inteligencia artificial, decidió usar la IA como herramienta para ofrecer aprendizaje y bienestar emocional infantil.",
+        "paragraph3": "Así fundó Flow, una startup de tecnologías disruptivas basadas en IA y robótica, con enfoque en educación, salud mental e inclusión lingüística. Su primera versión: Nebu, un peluche con IA conversacional para conversar, enseñar y acompañar sin pantallas."
+      },
+      "innovation": {
+        "title": "Innovar También es Cuidar",
+        "paragraph1": "Nebu conversa en tiempo real. Cuenta historias, propone juegos para aprender idiomas y adapta sus diálogos a la edad del niño. Su diseño evita sobrecargas sensoriales: no compite con luces ni pantallas; insiste en la voz, la escucha y la imaginación.",
+        "paragraph2": "Gonzalo Gálvez Cortez, egresado de Ingeniería Informática PUCP, lidera la arquitectura del sistema y la app móvil que permite control parental y personalización del contenido. Las familias pueden ajustar rutinas y comprender qué despierta curiosidad en sus hijos.",
+        "paragraph3": "Bryan Bastidas y Mitshell Ramos, ingenieros mecatrónicos PUCP, se incorporaron para expandir funcionalidades a través del diseño e integración de hardware, desarrollando nuevos productos dentro de la robótica aplicada."
+      },
+      "purpose": {
+        "title": "Tecnología que Crece con Propósito",
+        "paragraph1": "La app que acompaña a Nebu no es un panel de control frío; es un puente de diálogo. Ofrece a los padres información sobre intereses del niño, con la intención de fortalecer la conexión familiar y orientar el aprendizaje, no de vigilar.",
+        "paragraph2": "El equipo proyecta alcanzar más de 1,000 usuarios activos en su primer año. Pero la ambición va más allá: buscan colaborar con educadores y especialistas para enriquecer contenidos y garantizar que la IA sea una aliada ética y pedagógica.",
+        "paragraph3": "Nebu propone cambiar la pregunta sobre la tecnología: dejar de pensar en cuánto consumen los niños para empezar a pensar en cómo la tecnología puede ayudarles a crecer. Es una apuesta por la empatía aplicada desde la ingeniería."
+      },
+      "team": {
+        "title": "El Equipo",
+        "description": "Richard, Gonzalo, Bryan y Mitshell representan una forma concreta de hacer tecnología desde la PUCP: con rigor técnico, sentido social y cuidado por las personas."
+      }
+    },
     "press": {
       "title": "Nebu en los Medios",
       "subtitle": "Reconocido por instituciones educativas líderes en Perú",

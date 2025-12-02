@@ -404,6 +404,36 @@
       "subtitle": "Our mission is to build meaningful, screen-free connections through play, blending intelligent design with heartfelt simplicity to support every child's journey, one conversation at a time.",
       "badge": "More than a Toy, a Connection"
     },
+    "story": {
+      "title": "Our Story",
+      "subtitle": "Technology with purpose and heart",
+      "problem": {
+        "title": "The Challenge",
+        "content": "Facing excessive screen consumption, four PUCP graduates developed Nebu: a conversational toy that promotes warmth, learning, and emotional care for young children."
+      },
+      "origin": {
+        "title": "AI for Emotional Well-being",
+        "paragraph1": "Anxiety, irritability, sleep disorders, poor school performance, and even social isolation. These are some consequences of excessive screen use in young children, according to the Ministry of Health.",
+        "paragraph2": "Richard Castillo Leguía, PUCP Mechatronics Engineering graduate, observed this reality working at EsSalud. Focused on artificial intelligence, he decided to use AI as a tool to provide learning and emotional well-being for children.",
+        "paragraph3": "He founded Flow, a startup of disruptive technologies based on AI and robotics, focusing on education, mental health, and linguistic inclusion. Its first version: Nebu, a plush toy with conversational AI to talk, teach, and accompany without screens."
+      },
+      "innovation": {
+        "title": "Innovation is Also Care",
+        "paragraph1": "Nebu converses in real-time. It tells stories, proposes games to learn languages, and adapts its dialogues to the child's age. Its design avoids sensory overload: it doesn't compete with lights or screens; it emphasizes voice, listening, and imagination.",
+        "paragraph2": "Gonzalo Gálvez Cortez, PUCP Computer Engineering graduate, leads the system architecture and mobile app that enables parental control and content personalization. Families can adjust routines and understand what sparks curiosity in their children.",
+        "paragraph3": "Bryan Bastidas and Mitshell Ramos, PUCP mechatronic engineers, joined to expand functionalities through hardware design and integration, developing new products within applied robotics."
+      },
+      "purpose": {
+        "title": "Technology Growing with Purpose",
+        "paragraph1": "The app that accompanies Nebu is not a cold control panel; it's a dialogue bridge. It offers parents information about the child's interests, intending to strengthen family connection and guide learning, not to surveil.",
+        "paragraph2": "The team projects reaching over 1,000 active users in its first year. But the ambition goes beyond numbers: they seek to collaborate with educators and specialists to enrich content and ensure AI is an ethical and pedagogical ally.",
+        "paragraph3": "Nebu proposes changing the question about technology: stop thinking about how much children consume and start thinking about how technology can help them grow. It's a commitment to empathy applied through engineering."
+      },
+      "team": {
+        "title": "The Team",
+        "description": "Richard, Gonzalo, Bryan, and Mitshell represent a concrete way of making technology from PUCP: with technical rigor, social awareness, and care for people."
+      }
+    },
     "press": {
       "title": "Nebu in the Media",
       "subtitle": "Recognized by leading educational institutions in Peru",
