@@ -28,18 +28,6 @@ export default function EducationalContent() {
       title: t("educationalContent.features.safety.title"),
       description: t("educationalContent.features.safety.description"),
       bgColor: "bg-gray-600"
-    },
-    {
-      icon: Sparkles,
-      title: t("educationalContent.features.stories.title"),
-      description: t("educationalContent.features.stories.description"),
-      bgColor: "bg-primary"
-    },
-    {
-      icon: Zap,
-      title: t("educationalContent.features.multilingual.title"),
-      description: t("educationalContent.features.multilingual.description"),
-      bgColor: "bg-primary"
     }
   ];
 
@@ -79,18 +67,17 @@ export default function EducationalContent() {
           })}
         </div>
 
-        {/* Additional Educational Content */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12">
-          <h3 className="text-3xl font-bold font-gochi mb-6 text-center text-primary">
-            {t("educationalContent.howItWorks.title")}
-          </h3>
-          
-          <div className="prose prose-lg max-w-none text-gray-700">
-            <p className="mb-4" dangerouslySetInnerHTML={{ __html: t("educationalContent.howItWorks.paragraph1") }} />
-            <p className="mb-4" dangerouslySetInnerHTML={{ __html: t("educationalContent.howItWorks.paragraph2") }} />
-            <p className="mb-4" dangerouslySetInnerHTML={{ __html: t("educationalContent.howItWorks.paragraph3") }} />
-            <p className="mb-0" dangerouslySetInnerHTML={{ __html: t("educationalContent.howItWorks.paragraph4") }} />
-          </div>
+        {/* Call to Action */}
+        <div className="text-center mt-12">
+          <a
+            href="/our-story"
+            className="inline-flex items-center justify-center gap-2 font-gochi font-bold text-lg px-8 py-4 rounded-full bg-primary text-white shadow-[0_6px_20px_rgba(255,181,74,0.3)] hover:shadow-[0_10px_30px_rgba(255,181,74,0.45)] transition-all duration-200 ease-out"
+          >
+            <span>{t("educationalContent.learnMore")}</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
         </div>
       </div>
     </section>

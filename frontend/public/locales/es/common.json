@@ -1127,6 +1127,7 @@
         "description": "Nebu puede conversar en español, inglés y próximamente más idiomas. Los niños pueden practicar idiomas extranjeros en contextos naturales, mejorando pronunciación, vocabulario y confianza lingüística sin sentirse en una 'clase'."
       }
     },
+    "learnMore": "Conoce más sobre Nebu",
     "howItWorks": {
       "title": "¿Cómo funciona la tecnología educativa de Nebu?",
       "paragraph1": "El <strong>corazón inteligente de Nebu</strong> es un sistema de procesamiento de lenguaje natural diseñado específicamente para niños. A diferencia de asistentes de voz genéricos, nuestro sistema entiende el habla infantil, modismos, errores gramaticales típicos de la edad y ajusta sus respuestas para ser pedagógicamente apropiadas.",

@@ -798,6 +798,7 @@
         "description": "Nebu can converse in Spanish, English, and soon more languages. Children can practice foreign languages in natural contexts, improving pronunciation, vocabulary, and linguistic confidence without feeling like they're in a 'class'."
       }
     },
+    "learnMore": "Learn more about Nebu",
     "howItWorks": {
       "title": "How Does Nebu's Educational Technology Work?",
       "paragraph1": "Nebu's <strong>intelligent heart</strong> is a natural language processing system designed specifically for children. Unlike generic voice assistants, our system understands children's speech, idioms, typical age-related grammatical errors, and adjusts its responses to be pedagogically appropriate.",
