@@ -20,6 +20,7 @@ import cloudinaryConfig from './config/cloudinary.config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
+import { CommonModule } from './common/common.module';
 import { HealthModule } from './common/health.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { EmailModule } from './email/email.module';
@@ -123,6 +124,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     }),
 
     // Core Modules (always loaded)
+    CommonModule,
     RedisModule,
     AuthModule,
     UsersModule,
