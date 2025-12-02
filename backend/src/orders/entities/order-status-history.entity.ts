@@ -24,17 +24,10 @@ export class OrderStatusHistory {
   @Column({ type: 'uuid' })
   orderId: string;
 
-  @Column({
-    type: 'enum',
-    enum: OrderStatus,
-    nullable: true,
-  })
-  fromStatus: OrderStatus;
+  @Column({ type: 'varchar', nullable: true })
+  fromStatus: OrderStatus | null;
 
-  @Column({
-    type: 'enum',
-    enum: OrderStatus,
-  })
+  @Column({ type: 'varchar' })
   toStatus: OrderStatus;
 
   @Column({ type: 'text', nullable: true })

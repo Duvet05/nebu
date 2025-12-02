@@ -80,13 +80,13 @@ export class IoTDevice {
   @Column({ type: 'uuid', nullable: true })
   currentFirmwareId?: string;
 
-  // Sensor readings (moved to separate entity)
-  @OneToMany('SensorReading', 'device')
-  readings?: any[];
+  // TODO: Enable when SensorReading entity is created
+  // @OneToMany(() => SensorReading, 'device')
+  // readings?: SensorReading[];
 
-  // Commands sent to device
-  @OneToMany('DeviceCommand', 'device')
-  commands?: any[];
+  // TODO: Enable when DeviceCommand entity is created
+  // @OneToMany(() => DeviceCommand, 'device')
+  // commands?: DeviceCommand[];
 
   @Column({ type: 'jsonb', nullable: true })
   metadata?: Record<string, any>;
