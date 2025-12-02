@@ -5,7 +5,7 @@ import { CheckCircle, AlertCircle } from "lucide-react";
 import { analytics } from "~/lib/analytics";
 
 /**
- * WaitlistSection - Formulario de waitlist para productos próximos (ej: Nebu Gato)
+ * WaitlistSection - Formulario de waitlist para productos próximos
  */
 export default function WaitlistSection() {
   const { t } = useTranslation('common');
@@ -32,7 +32,7 @@ export default function WaitlistSection() {
 
       if (response.ok) {
         // Track newsletter signup in GA4 with waitlist context
-        analytics.newsletterSignup(email, "nebu-gato-waitlist");
+        analytics.newsletterSignup(email, "waitlist");
 
         setStatus("success");
         setMessage(data.message || t('waitlist.success'));

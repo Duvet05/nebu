@@ -22,7 +22,6 @@ import FeatureHighlights from "~/components/PreOrder/FeatureHighlights";
 import PriceSummary from "~/components/PreOrder/PriceSummary";
 import ContactForm from "~/components/PreOrder/ContactForm";
 import PaymentMethodSelector from "~/components/PreOrder/PaymentMethodSelector";
-import WaitlistSection from "~/components/PreOrder/WaitlistSection";
 
 export async function loader({ request: _request }: LoaderFunctionArgs) {
   const products = await fetchPreOrderProducts();
@@ -369,55 +368,6 @@ export default function PreOrder() {
                 </form>
               </motion.div>
             </div>
-          </div>
-        </section>
-
-        {/* Coming Soon - Nebu Gato */}
-        <section className="py-20 px-4 bg-gradient-to-b from-white to-purple-50">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              className="bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-purple-200"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="relative bg-gradient-to-br from-purple-400 via-pink-400 to-purple-500 p-12 text-center">
-                {/* Decorative elements */}
-                <div className="absolute top-4 left-4 text-4xl animate-bounce">✨</div>
-                <div className="absolute top-4 right-4 text-4xl animate-bounce" style={{ animationDelay: '0.2s' }}>✨</div>
-                <div className="absolute bottom-4 left-8 text-3xl animate-bounce" style={{ animationDelay: '0.4s' }}>🌟</div>
-                <div className="absolute bottom-4 right-8 text-3xl animate-bounce" style={{ animationDelay: '0.6s' }}>🌟</div>
-
-                <motion.div
-                  className="relative z-10"
-                  initial={{ scale: 0.8 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                >
-                  <div className="w-48 h-48 mx-auto mb-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-4 border-white/30 shadow-2xl">
-                    <span className="text-8xl">🐱</span>
-                  </div>
-
-                  <div className="inline-block bg-yellow-400 text-purple-900 px-6 py-2 rounded-full font-bold text-lg mb-4 shadow-lg transform -rotate-2">
-                    PRÓXIMAMENTE
-                  </div>
-
-                  <h2 className="text-5xl md:text-6xl font-bold font-gochi text-white mb-4 drop-shadow-lg">
-                    Nebu Gato
-                  </h2>
-
-                  <p className="text-xl text-white/90 mb-6 max-w-2xl mx-auto">
-                    ¡El nuevo amigo felino de Nebu está en camino! Suave, adorable y listo para ronronear aventuras.
-                  </p>
-                </motion.div>
-              </div>
-
-              <div className="p-8 bg-white">
-                <WaitlistSection />
-              </div>
-            </motion.div>
           </div>
         </section>
       </div>
