@@ -163,14 +163,7 @@ export function Layout({ children }: { children: ReactNode }) {
         )}
       </head>
       <body>
-        {/* Skip navigation for accessibility */}
-        <a 
-          href="#main-content" 
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg transition-all"
-        >
-          Saltar al contenido principal
-        </a>
-        
+
         {children}
         
         <ScrollRestoration />

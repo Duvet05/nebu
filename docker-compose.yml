@@ -154,6 +154,7 @@ services:
       - PORT=3000
       - APP_URL=https://${DOMAIN:-flow-telligence.com}
       - API_URL=https://api.${DOMAIN:-flow-telligence.com}
+      - BACKEND_URL=http://backend:3001/api/v1
       - SESSION_SECRET=${SESSION_SECRET}
       - LIVEKIT_URL=${LIVEKIT_URL}
       - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
@@ -162,6 +163,7 @@ services:
       - FROM_EMAIL=${FROM_EMAIL}
       - CULQI_SECRET_KEY=${CULQI_SECRET_KEY}
       - CULQI_PUBLIC_KEY=${CULQI_PUBLIC_KEY}
+      - VITE_CULQI_PUBLIC_KEY=${CULQI_PUBLIC_KEY}
     volumes:
       - frontend_uploads:/app/public/uploads:rw
     networks:
