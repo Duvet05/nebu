@@ -18,7 +18,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function CheckoutPage() {
-  const { items, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
+  const { items, totalPrice, removeItem, clearCart, updateQuantity: _updateQuantity } = useCart();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
