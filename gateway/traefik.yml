@@ -33,7 +33,6 @@ entryPoints:
     http:
       tls:
         certResolver: letsencrypt
-      http3: {}
   
   traefik:
     address: ":9080"
@@ -42,7 +41,7 @@ entryPoints:
 certificatesResolvers:
   letsencrypt:
     acme:
-      email: ${ACME_EMAIL}
+      email: admin@flow-telligence.com
       storage: /letsencrypt/acme.json
       keyType: EC384
       httpChallenge:
@@ -55,7 +54,7 @@ global:
 
 # Logging
 log:
-  level: ${LOG_LEVEL:-INFO}
+  level: INFO
   format: json
 
 accessLog:

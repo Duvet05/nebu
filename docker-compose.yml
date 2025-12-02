@@ -330,7 +330,7 @@ services:
       - "traefik.http.routers.backend.entrypoints=websecure"
       - "traefik.http.routers.backend.tls=true"
       - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.backend.middlewares=api-rate-limit,security-headers"
+      - "traefik.http.routers.backend.middlewares=api-rate-limit@file,security-headers@file"
       - "traefik.http.routers.backend.service=backend"
 
       # Router HTTPS para acceso por IP con path /api/*
@@ -338,7 +338,7 @@ services:
       - "traefik.http.routers.backend-ip.entrypoints=websecure"
       - "traefik.http.routers.backend-ip.tls=true"
       - "traefik.http.routers.backend-ip.service=backend"
-      - "traefik.http.routers.backend-ip.middlewares=api-rate-limit,security-headers"
+      - "traefik.http.routers.backend-ip.middlewares=api-rate-limit@file,security-headers@file"
 
       # Routers HTTP (sin TLS) para dispositivos IoT
       - "traefik.http.routers.backend-iot.rule=Host(`62.169.30.44`) && PathPrefix(`/api`)"
