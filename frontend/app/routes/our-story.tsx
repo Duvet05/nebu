@@ -122,6 +122,55 @@ export default function OurStory() {
               ))}
             </div>
 
+            {/* Press Recognition Section */}
+            <motion.div
+              className="mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <h2 className="text-3xl font-bold text-center mb-4 font-gochi text-nebu-dark">
+                {t("about.press.title")}
+              </h2>
+              <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
+                {t("about.press.subtitle")}
+              </p>
+
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <a 
+                  href="https://facultad-ciencias-ingenieria.pucp.edu.pe/2025/10/27/nebu-conoce-al-peluche-con-inteligencia-artificial-que-acompana-y-ensena-a-los-mas-pequenos/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col md:flex-row items-center gap-6 p-6 group"
+                >
+                  {/* PUCP Logo/Badge */}
+                  <div className="flex-shrink-0 w-full md:w-48 h-32 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl flex items-center justify-center">
+                    <div className="text-center">
+                      <Award className="w-12 h-12 text-primary mx-auto mb-2" />
+                      <p className="text-sm font-bold text-nebu-dark">{t("about.press.pucp.badge")}</p>
+                      <p className="text-xs text-gray-600">{t("about.press.pucp.badgeSubtitle")}</p>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <h3 className="text-xl md:text-2xl font-bold text-nebu-dark mb-2 group-hover:text-primary transition-colors">
+                      {t("about.press.pucp.title")}
+                    </h3>
+                    <p className="text-gray-600 mb-3">
+                      {t("about.press.pucp.description")}
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-primary font-semibold">
+                      <span>{t("about.press.pucp.cta")}</span>
+                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </motion.div>
+
             {/* Video Section */}
             <motion.div
               className="mb-16"

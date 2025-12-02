@@ -404,6 +404,17 @@
       "subtitle": "Our mission is to build meaningful, screen-free connections through play, blending intelligent design with heartfelt simplicity to support every child's journey, one conversation at a time.",
       "badge": "More than a Toy, a Connection"
     },
+    "press": {
+      "title": "Nebu in the Media",
+      "subtitle": "Recognized by leading educational institutions in Peru",
+      "pucp": {
+        "title": "Nebu: meet the AI-powered plush toy that accompanies and teaches young children",
+        "description": "The Pontifical Catholic University of Peru highlights Nebu as an innovation in the responsible use of AI for child development, combining technology with emotional education.",
+        "badge": "PUCP",
+        "badgeSubtitle": "Faculty of Sciences and Engineering",
+        "cta": "Read full article"
+      }
+    },
     "videos": {
       "title": "Learn more about Nebu"
     },

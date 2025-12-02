@@ -404,6 +404,17 @@
       "subtitle": "Nuestra misión es construir conexiones significativas sin pantallas a través del juego, combinando diseño inteligente con simplicidad llena de corazón para apoyar el viaje de cada niño, una conversación a la vez.",
       "badge": "Más que un Juguete, una Conexión"
     },
+    "press": {
+      "title": "Nebu en los Medios",
+      "subtitle": "Reconocido por instituciones educativas líderes en Perú",
+      "pucp": {
+        "title": "Nebu: conoce al peluche con inteligencia artificial que acompaña y enseña a los más pequeños",
+        "description": "La Pontificia Universidad Católica del Perú destaca a Nebu como una innovación en el uso responsable de la IA para el desarrollo infantil, combinando tecnología con educación emocional.",
+        "badge": "PUCP",
+        "badgeSubtitle": "Facultad de Ciencias e Ingeniería",
+        "cta": "Leer artículo completo"
+      }
+    },
     "videos": {
       "title": "Conoce más sobre Nebu"
     },
