@@ -1056,5 +1056,42 @@
         }
       }
     }
+  },
+  "educationalContent": {
+    "title": "¿Por qué elegir Nebu para el desarrollo de tu hijo?",
+    "subtitle": "Nebu combina tecnología de inteligencia artificial avanzada con principios pedagógicos probados para ofrecer una experiencia educativa única sin pantallas. Cada conversación está diseñada para estimular el desarrollo cognitivo, emocional y social de los niños.",
+    "features": {
+      "ai": {
+        "title": "Inteligencia Artificial Personalizada",
+        "description": "Nebu utiliza IA conversacional de última generación que se adapta al nivel de comprensión, intereses y ritmo de aprendizaje de cada niño. El sistema reconoce patrones de conversación y ajusta su complejidad lingüística para mantener el desafío apropiado."
+      },
+      "screenFree": {
+        "title": "Aprendizaje sin Pantallas",
+        "description": "A diferencia de las tablets y smartphones, Nebu fomenta la imaginación activa sin la sobre-estimulación visual. Los niños desarrollan habilidades de escucha activa, concentración y creatividad mientras mantienen un sueño saludable y tiempo de calidad en familia."
+      },
+      "emotional": {
+        "title": "Desarrollo Socioemocional",
+        "description": "Cada historia y conversación está diseñada para trabajar habilidades como la empatía, resolución de conflictos, identificación de emociones y autoestima. Nebu actúa como un compañero emocional que valida los sentimientos del niño y lo guía hacia respuestas saludables."
+      },
+      "safety": {
+        "title": "Seguridad y Privacidad Garantizada",
+        "description": "Todas las conversaciones están moderadas por IA con filtros de seguridad multicapa. Los datos se encriptan de extremo a extremo, y los padres tienen control total sobre las configuraciones. Cumplimos con COPPA y GDPR-K para protección infantil."
+      },
+      "stories": {
+        "title": "Historias Interactivas Ilimitadas",
+        "description": "Acceso a una biblioteca en constante expansión de cuentos educativos, aventuras personalizables y actividades interactivas. Cada historia incorpora lecciones morales, ciencia, matemáticas o habilidades sociales de forma natural y entretenida."
+      },
+      "multilingual": {
+        "title": "Aprendizaje Multilingüe Natural",
+        "description": "Nebu puede conversar en español, inglés y próximamente más idiomas. Los niños pueden practicar idiomas extranjeros en contextos naturales, mejorando pronunciación, vocabulario y confianza lingüística sin sentirse en una 'clase'."
+      }
+    },
+    "howItWorks": {
+      "title": "¿Cómo funciona la tecnología educativa de Nebu?",
+      "paragraph1": "El <strong>corazón inteligente de Nebu</strong> es un sistema de procesamiento de lenguaje natural diseñado específicamente para niños. A diferencia de asistentes de voz genéricos, nuestro sistema entiende el habla infantil, modismos, errores gramaticales típicos de la edad y ajusta sus respuestas para ser pedagógicamente apropiadas.",
+      "paragraph2": "Cada sesión de juego genera <strong>insights de desarrollo</strong> que los padres pueden revisar en la app móvil. Verás qué temas le interesan más a tu hijo, qué habilidades está desarrollando y recibirás sugerencias personalizadas de actividades complementarias para hacer juntos.",
+      "paragraph3": "La <strong>arquitectura de seguridad</strong> incluye filtros de contenido inapropiado, detección de situaciones de riesgo (bullying, ansiedad, comportamiento atípico) y notificaciones automáticas a los padres cuando se detectan patrones preocupantes. Nunca compartimos datos con terceros ni usamos la información para publicidad.",
+      "paragraph4": "El sistema de <strong>aprendizaje adaptativo</strong> utiliza machine learning para entender el perfil único de cada niño: si prefiere aventuras de acción o historias tranquilas, si aprende mejor con ejemplos visuales descritos o con analogías, si necesita más refuerzo positivo o desafíos intelectuales. Con el tiempo, Nebu se convierte en el compañero perfecto para TU hijo específicamente."
+    }
   }
 }
