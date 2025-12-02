@@ -4,7 +4,12 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { motion } from "framer-motion";
-import { Star, Sparkles, ShieldCheck, Award } from 'lucide-react';
+import ValuesGrid from "~/components/About/ValuesGrid";
+import StorySummary from "~/components/About/StorySummary";
+import TeamSection from "~/components/About/TeamSection";
+import PressSection from "~/components/About/PressSection";
+import VideoSection from "~/components/About/VideoSection";
+import SafetySection from "~/components/About/SafetySection";
 import i18next from "~/lib/i18next.server";
 import { BUSINESS } from "~/config/constants";
 
@@ -45,29 +50,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function OurStory() {
   const { t } = useTranslation();
 
-  const values = [
-    {
-      title: t("about.values.play.title"),
-      description: t("about.values.play.description"),
-      icon: <Sparkles className="w-6 h-6 text-primary" />
-    },
-    {
-      title: t("about.values.purpose.title"),
-      description: t("about.values.purpose.description"),
-      icon: <Star className="w-6 h-6 text-primary" />
-    },
-    {
-      title: t("about.values.trust.title"),
-      description: t("about.values.trust.description"),
-      icon: <ShieldCheck className="w-6 h-6 text-primary" />
-    },
-    {
-      title: t("about.values.design.title"),
-      description: t("about.values.design.description"),
-      icon: <Award className="w-6 h-6 text-primary" />
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-nebu-bg">
       <Header />
@@ -98,189 +80,23 @@ export default function OurStory() {
 
         <section className="pb-20 px-4">
           <div className="max-w-4xl mx-auto">
-
             {/* Values Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-              {values.map((value, index) => (
-                <motion.div
-                  key={index}
-                  className="text-center"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  {/* Icons: remove gradient shape, keep simple icon */}
-                  <div className="mx-auto mb-4 flex items-center justify-center">
-                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-nebu-dark/10 bg-white">
-                      {/* ensure icon uses brand color */}
-                      {value.icon}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 text-nebu-dark">{value.title}</h3>
-                  <p className="text-gray-600">{value.description}</p>
-                </motion.div>
-              ))}
-            </div>
+            <ValuesGrid />
 
             {/* Story Summary */}
-            <motion.div
-              className="mb-16 text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 font-gochi text-primary">
-                {t("about.story.title")}
-              </h2>
-              <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
-                {t("about.story.problem.content")}
-              </p>
-            </motion.div>
+            <StorySummary />
 
-            {/* Team Section - Clean Cards */}
-            <motion.div
-              className="mb-16"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-3 mb-4">
-                  <Award className="w-6 h-6 text-primary" />
-                  <span className="font-bold text-primary">Egresados PUCP</span>
-                </div>
-                <p className="text-gray-600 max-w-2xl mx-auto">
-                  {t("about.story.team.description")}
-                </p>
-              </div>
+            {/* Team Section */}
+            <TeamSection />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
-                  <div className="text-4xl mb-3">🔬</div>
-                  <h4 className="font-bold text-lg text-nebu-dark mb-1">Richard Castillo Leguía</h4>
-                  <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
-                  <p className="text-sm text-gray-700">Fundador de Flow. Visión de IA aplicada a salud mental infantil.</p>
-                </div>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
-                  <div className="text-4xl mb-3">💻</div>
-                  <h4 className="font-bold text-lg text-nebu-dark mb-1">Gonzalo Gálvez Cortez</h4>
-                  <p className="text-sm text-gray-600 mb-2">Ingeniería Informática PUCP</p>
-                  <p className="text-sm text-gray-700">Arquitectura del sistema y app móvil con control parental.</p>
-                </div>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
-                  <div className="text-4xl mb-3">⚙️</div>
-                  <h4 className="font-bold text-lg text-nebu-dark mb-1">Bryan Bastidas</h4>
-                  <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
-                  <p className="text-sm text-gray-700">Diseño e integración de hardware. Robótica aplicada.</p>
-                </div>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
-                  <div className="text-4xl mb-3">🤖</div>
-                  <h4 className="font-bold text-lg text-nebu-dark mb-1">Mitshell Ramos</h4>
-                  <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
-                  <p className="text-sm text-gray-700">Expansión de funcionalidades y desarrollo de nuevos productos.</p>
-                </div>
-              </div>
-            </motion.div>
+            {/* Press Recognition Section */}
+            <PressSection />
 
-            {/* Press Recognition Section - Simplified */}
-            <motion.div
-              className="mb-16"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <div className="text-center mb-8">
-                <h2 className="text-2xl md:text-3xl font-bold font-gochi text-primary mb-3">
-                  {t("about.press.title")}
-                </h2>
-                <p className="text-gray-600 max-w-2xl mx-auto">
-                  {t("about.press.subtitle")}
-                </p>
-              </div>
+            {/* Video Section */}
+            <VideoSection />
 
-              <a 
-                href="https://facultad-ciencias-ingenieria.pucp.edu.pe/2025/10/27/nebu-conoce-al-peluche-con-inteligencia-artificial-que-acompana-y-ensena-a-los-mas-pequenos/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all duration-200 group"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <Award className="w-6 h-6 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-xs font-semibold text-primary mb-1">
-                      {t("about.press.pucp.badge")} • {t("about.press.pucp.badgeSubtitle")}
-                    </div>
-                    <h3 className="text-lg md:text-xl font-bold text-nebu-dark mb-2 group-hover:text-primary transition-colors">
-                      {t("about.press.pucp.title")}
-                    </h3>
-                    <p className="text-gray-600 text-sm mb-3">
-                      {t("about.press.pucp.description")}
-                    </p>
-                    <div className="flex items-center gap-2 text-sm text-primary font-semibold">
-                      <span>{t("about.press.pucp.cta")}</span>
-                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-
-            {/* Video Section - Simplified */}
-            <motion.div
-              className="mb-16"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-            >
-              <div className="text-center mb-6">
-                <h2 className="text-2xl md:text-3xl font-bold font-gochi text-primary">
-                  {t("about.videos.title")}
-                </h2>
-              </div>
-
-              <div className="flex justify-center">
-                <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-200 max-w-md w-full">
-                  <div className="relative overflow-hidden rounded-xl" style={{ paddingBottom: '177.78%' }}>
-                    <iframe
-                      title="Video de presentación de Nebu"
-                      src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1538072024288534&show_text=false&width=267&t=0"
-                      className="absolute top-0 left-0 w-full h-full"
-                      style={{ border: 'none', overflow: 'hidden' }}
-                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                      allowFullScreen={true}
-                    />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Safety Section - Simplified */}
-            <motion.div
-              className="bg-white rounded-2xl p-8 text-center border border-gray-200 shadow-sm"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <div className="inline-flex items-center justify-center gap-2 bg-primary/10 rounded-full px-5 py-2.5 mb-4">
-                <ShieldCheck className="w-5 h-5 text-primary" />
-                <span className="font-bold text-primary text-sm">{t("about.safety.title")}</span>
-              </div>
-
-              <p className="text-gray-700 max-w-2xl mx-auto mb-6 leading-relaxed">
-                {t("about.safety.description")}
-              </p>
-
-              <button className="inline-flex items-center justify-center gap-2 font-semibold text-base px-6 py-3 rounded-full bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all duration-200 ease-out">
-                <span>{t("about.safety.learnMore")}</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </motion.div>
+            {/* Safety Section */}
+            <SafetySection />
           </div>
         </section>
       </main>
