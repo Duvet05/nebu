@@ -21,8 +21,7 @@ export type DeviceType = 'sensor' | 'actuator' | 'camera' | 'microphone' | 'spea
 @Entity('iot_devices')
 @Index(['deviceModelId'])
 @Index(['status'])
-@Index(['macAddress'])
-@Index(['deviceId'])
+@Index(['userId'])
 @Index(['locationId'])
 export class IoTDevice {
   @PrimaryGeneratedColumn('uuid')
@@ -62,7 +61,6 @@ export class IoTDevice {
     enum: ['online', 'offline', 'error', 'maintenance'],
     default: 'offline',
   })
-  @Index()
   status: DeviceStatus;
 
   @ManyToOne(() => Location, { nullable: true })
@@ -96,7 +94,6 @@ export class IoTDevice {
   user?: User;
 
   @Column({ type: 'uuid', nullable: true })
-  @Index()
   userId?: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
