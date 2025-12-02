@@ -20,7 +20,7 @@ import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
 import { analytics } from "~/lib/analytics";
-import NebuModel3D from "~/components/NebuModel3D";
+import ProductVideoPlayer from "~/components/ProductVideoPlayer";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { BUSINESS } from "~/config/constants";
 
@@ -58,19 +58,6 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-interface ColorOption {
-  id: string;
-  name: string;
-  color: string;
-  gradient: string;
-}
-
-const _colorOptions: ColorOption[] = [
-  { id: "aqua", name: "Aqua", color: "#4ECDC4", gradient: "from-teal-400 to-cyan-500" },
-  { id: "dusk", name: "Anochecer", color: "#6366F1", gradient: "from-indigo-500 to-purple-600" },
-  { id: "quartz", name: "Cuarzo", color: "#EC4899", gradient: "from-pink-500 to-rose-600" },
-  { id: "flare", name: "Destello", color: "#F59E0B", gradient: "from-amber-500 to-orange-600" }
-];
 
 function WaitlistForm() {
   const { t } = useTranslation('common');
@@ -409,7 +396,11 @@ export default function PreOrder() {
                 {/* Product Preview */}
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
                   <div className="mb-8">
-                    <NebuModel3D color={selectedColor.hex} />
+                    <ProductVideoPlayer 
+                      playbackId={selectedProduct.videoPlaybackId}
+                      videoProvider={selectedProduct.videoProvider}
+                      thumbnailUrl={selectedProduct.videoThumbnail}
+                    />
                   </div>
                   <div className="text-center mb-8">
                     <h3 className="text-2xl font-bold font-heading">{selectedProduct.name} - {selectedColor.name}</h3>

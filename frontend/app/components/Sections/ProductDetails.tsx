@@ -12,7 +12,7 @@ import {
   RotateCcw,
   ChevronRight,
 } from 'lucide-react';
-import NebuModel3D from '../NebuModel3D';
+import ProductVideoPlayer from '../ProductVideoPlayer';
 import CTAButton from './CTAButton';
 
 const ProductDetails: React.FC = () => {
@@ -109,7 +109,10 @@ const ProductDetails: React.FC = () => {
                 transition={{ duration: 0.3 }}
               >
                 <div className="h-full rounded-3xl shadow-xl relative">
-                  <NebuModel3D color="#4ECDC4" />
+                  <ProductVideoPlayer 
+                    playbackId="ed5516e7514f3ae7dd5ce4f7d49b52c8"
+                    videoProvider="cloudflare"
+                  />
                 </div>
 
                 <motion.div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-gold to-primary rounded-full shadow-lg" {...floatingAnimation} aria-hidden="true" />

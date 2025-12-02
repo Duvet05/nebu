@@ -47,6 +47,15 @@ export class ProductCatalog {
   @Column('simple-array', { nullable: true })
   images: string[];
 
+  @Column({ length: 100, nullable: true })
+  videoPlaybackId: string; // Cloudflare Stream ID or YouTube ID
+
+  @Column({ length: 20, nullable: true })
+  videoProvider: string; // 'cloudflare' | 'youtube' | null
+
+  @Column({ length: 500, nullable: true })
+  videoThumbnail: string; // Optional thumbnail URL (auto-generated if not provided)
+
   @Column('jsonb', { nullable: true })
   colors: any[];
 

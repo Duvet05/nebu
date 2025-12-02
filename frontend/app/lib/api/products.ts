@@ -25,6 +25,9 @@ export interface Product {
   inStock: boolean;
   stockCount: number;
   images: string[];
+  videoPlaybackId?: string;
+  videoProvider?: 'cloudflare' | 'youtube';
+  videoThumbnail?: string;
   colors?: ProductColor[];
   ageRange?: string;
   features: string[];
@@ -54,6 +57,8 @@ const dummyProducts: Product[] = [
     inStock: false,
     stockCount: 20,
     images: ['/assets/products/nebu-dino/1.jpg'],
+    videoPlaybackId: 'ed5516e7514f3ae7dd5ce4f7d49b52c8',
+    videoProvider: 'cloudflare',
     colors: undefined,
     ageRange: '3-8',
     features: ['Conversaciones AI', 'Sin pantallas', 'App parental'],
