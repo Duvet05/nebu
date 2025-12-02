@@ -10,6 +10,8 @@ import {
   Index,
 } from 'typeorm';
 import { DeviceType } from './device-type.entity';
+import { FirmwareVersion } from './firmware-version.entity';
+import { DeviceCapability } from './device-capability.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('device_models')
@@ -48,17 +50,17 @@ export class DeviceModel {
   imageUrl: string;
 
   // Capabilities relationship
-  @OneToMany('DeviceCapability', 'deviceModel')
-  capabilities: any[];
+  @OneToMany(() => DeviceCapability, (cap) => cap.deviceModel)
+  capabilities: DeviceCapability[];
 
   // Firmware versions relationship
-  @OneToMany('FirmwareVersion', 'deviceModel')
-  firmwareVersions: any[];
+  @OneToMany(() => FirmwareVersion, (fw) => fw.deviceModel)
+  firmwareVersions: FirmwareVersion[];
 
   // Default firmware
-  @ManyToOne('FirmwareVersion', { nullable: true })
+  @ManyToOne(() => FirmwareVersion, { nullable: true })
   @JoinColumn({ name: 'defaultFirmwareId' })
-  defaultFirmware: any;
+  defaultFirmware: FirmwareVersion;
 
   @Column({ type: 'uuid', nullable: true })
   defaultFirmwareId: string;

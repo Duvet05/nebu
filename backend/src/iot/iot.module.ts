@@ -6,12 +6,15 @@ import { DeviceTokenController } from './device-token.controller';
 import { ESP32TokenController } from './esp32-token.controller';
 import { IoTDevice } from './entities/iot-device.entity';
 import { DeviceModel } from './entities/device-model.entity';
+import { DeviceType } from './entities/device-type.entity';
+import { DeviceCapability } from './entities/device-capability.entity';
 import { FirmwareVersion } from './entities/firmware-version.entity';
+import { Location } from '../common/entities/location.entity';
 import { LiveKitModule } from '../livekit/livekit.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([IoTDevice, DeviceModel, FirmwareVersion]),
+    TypeOrmModule.forFeature([IoTDevice, DeviceModel, DeviceType, DeviceCapability, FirmwareVersion, Location]),
     LiveKitModule,
     // JwtModule is already globally configured in app.module.ts
   ],
