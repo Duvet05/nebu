@@ -196,7 +196,7 @@ export default function BenefitsCarousel() {
         
         .benefit-card:hover {
           transform: scale(1.05) translateY(-8px);
-          box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.15);
           z-index: 20;
         }
         
