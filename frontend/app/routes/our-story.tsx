@@ -10,6 +10,7 @@ import TeamSection from "~/components/About/TeamSection";
 import PressSection from "~/components/About/PressSection";
 import VideoSection from "~/components/About/VideoSection";
 import SafetySection from "~/components/About/SafetySection";
+import { Divider } from "~/components/Divider";
 import i18next from "~/lib/i18next.server";
 import { BUSINESS } from "~/config/constants";
 
@@ -83,17 +84,27 @@ export default function OurStory() {
             {/* Values Grid */}
             <ValuesGrid />
 
+            <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
+
             {/* Story Summary */}
             <StorySummary />
+
+            <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
             {/* Team Section */}
             <TeamSection />
 
+            <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
+
             {/* Press Recognition Section */}
             <PressSection />
 
+            <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
+
             {/* Video Section */}
             <VideoSection />
+
+            <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
             {/* Safety Section */}
             <SafetySection />

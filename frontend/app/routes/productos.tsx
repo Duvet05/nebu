@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import { trackEvent } from "~/lib/facebook-pixel";
 import { BackInStockNotify } from "~/components/BackInStockNotify";
 import { ProductComparison } from "~/components/ProductComparison";
+import { Divider } from "~/components/Divider";
 import { BUSINESS } from "~/config/constants";
 import { fetchProducts, enrichProduct } from "~/lib/api/products";
 import { json } from "@remix-run/node";
@@ -324,6 +325,8 @@ export default function ProductosPage() {
             </div>
           </div>
         </section>
+
+        <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
         {/* Comparison Section */}
         <ProductComparison />

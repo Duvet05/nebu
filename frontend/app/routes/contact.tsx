@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { Newsletter } from "~/components/Newsletter";
+import { Divider } from "~/components/Divider";
 import { motion } from "framer-motion";
 import { ArrowRight, MessageCircle, Mail, Clock, Send, Phone, MapPin } from "lucide-react";
 import { sendContactEmail } from "~/lib/email.server";
@@ -167,6 +168,8 @@ export default function ContactPage() {
             </div>
           </div>
         </section>
+
+        <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
         {/* Main Content */}
         <section className="pb-20 px-4">
@@ -367,6 +370,8 @@ export default function ContactPage() {
           </div>
         </section>
       </div>
+
+      <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
       <Newsletter />
       <Footer />

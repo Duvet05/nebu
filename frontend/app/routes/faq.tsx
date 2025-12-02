@@ -7,6 +7,7 @@ import { FAQSchema } from "~/components/FAQSection";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
+import { Divider } from "~/components/Divider";
 import i18next from "~/lib/i18next.server";
 import { BUSINESS } from "~/config/constants";
 
@@ -158,8 +159,10 @@ export default function FAQ() {
                 ))}
               </Accordion.Root>
 
+              <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
+
               <motion.div 
-                className="mt-12 text-center p-8 bg-gradient-to-br from-primary to-accent rounded-2xl text-white shadow-lg"
+                className="text-center p-8 bg-gradient-to-br from-primary to-accent rounded-2xl text-white shadow-lg"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
@@ -181,6 +184,8 @@ export default function FAQ() {
           </div>
         </section>
       </div>
+
+      <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
       <Newsletter />
       <Footer />
