@@ -15,62 +15,39 @@ const BenefitCard = memo(function BenefitCard({
   
   return (
     <div
-      className={`
-        benefit-card
-        flex-shrink-0 w-80 lg:w-[360px] 
-        bg-gradient-to-br ${benefit.bgGradient} 
-        border-2 ${benefit.borderColor} 
-        rounded-[2rem] p-6 
-        shadow-lg
-        relative overflow-hidden
-      `}
+      className="benefit-card flex-shrink-0 w-80 lg:w-[360px] bg-white rounded-2xl p-5 shadow-sm border border-gray-200 h-full"
     >
-      {/* Simplified decorative background - removed blur for performance */}
-      <div 
-        className={`
-          absolute -top-10 -right-10 w-32 h-32 
-          bg-gradient-to-br ${benefit.gradient} 
-          rounded-full opacity-15
-        `} 
-      />
-
-      {/* Icon container */}
-      <div
-        className={`
-          relative w-16 h-16 
-          bg-gradient-to-br ${benefit.gradient} 
-          rounded-2xl flex items-center justify-center 
-          mb-4 shadow-lg rotate-3
-        `}
-      >
-        {benefit.iconType === 'svg' ? (
-          <img
-            src={benefit.iconPath}
-            alt={`Icono de beneficio: ${benefit.title}`}
-            className="w-8 h-8 relative z-10"
-            aria-hidden="true"
-            loading="lazy"
-          />
-        ) : (
-          IconComponent && <IconComponent className="w-8 h-8 text-white relative z-10" />
-        )}
-        <div className="absolute inset-0 bg-white/20 rounded-2xl" />
+      {/* Icon container - simplified */}
+      <div className="mb-3 flex items-center justify-between">
+        <div
+          className={`w-10 h-10 bg-gradient-to-br ${benefit.gradient} rounded-lg flex items-center justify-center`}
+        >
+          {benefit.iconType === 'svg' ? (
+            <img
+              src={benefit.iconPath}
+              alt={`Icono de beneficio: ${benefit.title}`}
+              className="w-6 h-6"
+              aria-hidden="true"
+              loading="lazy"
+            />
+          ) : (
+            IconComponent && <IconComponent className="w-6 h-6 text-white" />
+          )}
+        </div>
+        
+        {/* Category badge */}
+        <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wide bg-gradient-to-r ${benefit.gradient} text-white`}>
+          {benefit.category}
+        </span>
       </div>
 
-      <h3 className="text-xl font-bold text-gray-900 mb-3 font-heading relative z-10">
+      <h3 className="text-lg font-bold text-gray-900 mb-2 leading-snug">
         {benefit.title}
       </h3>
 
-      <p className="text-gray-700 text-sm leading-relaxed mb-4 relative z-10">
+      <p className="text-gray-600 text-sm leading-relaxed">
         {benefit.description}
       </p>
-
-      {/* Static dots - removed individual animations */}
-      <div className="flex gap-2 mt-auto">
-        <div className={`h-2 w-2 rounded-full bg-gradient-to-r ${benefit.gradient} dot-pulse`} style={{ animationDelay: '0s' }} />
-        <div className={`h-2 w-2 rounded-full bg-gradient-to-r ${benefit.gradient} dot-pulse`} style={{ animationDelay: '0.3s' }} />
-        <div className={`h-2 w-2 rounded-full bg-gradient-to-r ${benefit.gradient} dot-pulse`} style={{ animationDelay: '0.6s' }} />
-      </div>
     </div>
   );
 });
@@ -83,8 +60,7 @@ interface Benefit {
   title: string;
   description: string;
   gradient: string;
-  bgGradient: string;
-  borderColor: string;
+  category: string;
 }
 
 export default function BenefitsCarousel() {
@@ -99,8 +75,7 @@ export default function BenefitsCarousel() {
       title: t("benefits.reduceScreenTime.title"),
       description: t("benefits.reduceScreenTime.description"),
       gradient: "from-sky-400 via-blue-500 to-indigo-500",
-      bgGradient: "from-sky-50 to-blue-50",
-      borderColor: "border-blue-200"
+      category: t("benefits.reduceScreenTime.category")
     },
     {
       id: 2,
@@ -109,8 +84,7 @@ export default function BenefitsCarousel() {
       title: t("benefits.nurtureImagination.title"),
       description: t("benefits.nurtureImagination.description"),
       gradient: "from-pink-400 via-purple-500 to-indigo-500",
-      bgGradient: "from-pink-50 to-purple-50",
-      borderColor: "border-purple-200"
+      category: t("benefits.nurtureImagination.category")
     },
     {
       id: 3,
@@ -119,8 +93,7 @@ export default function BenefitsCarousel() {
       title: t("benefits.buildConfidence.title"),
       description: t("benefits.buildConfidence.description"),
       gradient: "from-amber-400 via-orange-500 to-red-500",
-      bgGradient: "from-amber-50 to-orange-50",
-      borderColor: "border-orange-200"
+      category: t("benefits.buildConfidence.category")
     },
     {
       id: 4,
@@ -129,8 +102,7 @@ export default function BenefitsCarousel() {
       title: t("benefits.developEmpathy.title"),
       description: t("benefits.developEmpathy.description"),
       gradient: "from-rose-400 via-pink-500 to-red-500",
-      bgGradient: "from-rose-50 to-pink-50",
-      borderColor: "border-pink-200"
+      category: t("benefits.developEmpathy.category")
     },
     {
       id: 5,
@@ -139,8 +111,7 @@ export default function BenefitsCarousel() {
       title: t("benefits.stimulateLearning.title"),
       description: t("benefits.stimulateLearning.description"),
       gradient: "from-emerald-400 via-green-500 to-teal-500",
-      bgGradient: "from-emerald-50 to-green-50",
-      borderColor: "border-green-200"
+      category: t("benefits.stimulateLearning.category")
     },
     {
       id: 6,
@@ -149,8 +120,7 @@ export default function BenefitsCarousel() {
       title: t("benefits.safeAndPrivate.title"),
       description: t("benefits.safeAndPrivate.description"),
       gradient: "from-blue-400 via-indigo-500 to-purple-500",
-      bgGradient: "from-blue-50 to-indigo-50",
-      borderColor: "border-indigo-200"
+      category: t("benefits.safeAndPrivate.category")
     }
   ], [t]);
 
@@ -170,15 +140,6 @@ export default function BenefitsCarousel() {
           }
         }
         
-        @keyframes dot-pulse {
-          0%, 100% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.2);
-          }
-        }
-        
         .carousel-track {
           animation: scroll-carousel 40s linear infinite;
           will-change: transform;
@@ -190,26 +151,19 @@ export default function BenefitsCarousel() {
         }
         
         .benefit-card {
-          transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
           margin: 1rem 0;
         }
         
         .benefit-card:hover {
-          transform: scale(1.05) translateY(-8px);
-          box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.15);
-          z-index: 20;
-        }
-        
-        .dot-pulse {
-          animation: dot-pulse 2s ease-in-out infinite;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px -3px rgba(0, 0, 0, 0.1);
+          border-color: rgb(209 213 219);
         }
         
         /* Reduce motion for accessibility */
         @media (prefers-reduced-motion: reduce) {
           .carousel-track {
-            animation: none;
-          }
-          .dot-pulse {
             animation: none;
           }
           .benefit-card:hover {

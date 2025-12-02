@@ -52,27 +52,33 @@
     "subtitle": "Descubre los beneficios que hacen de Nebu el compañero perfecto para el desarrollo de tu hijo",
     "reduceScreenTime": {
       "title": "Reduce el tiempo de pantalla",
-      "description": "Un compañero de juego inteligente que mantiene a los niños alejados de tablets y celulares, promoviendo la interacción física y el desarrollo motor a través de actividades dinámicas y entretenidas"
+      "description": "Un compañero de juego inteligente que mantiene a los niños alejados de tablets y celulares, promoviendo la interacción física y el desarrollo motor a través de actividades dinámicas y entretenidas",
+      "category": "Digital"
     },
     "nurtureImagination": {
       "title": "Nutre la imaginación",
-      "description": "Crea mundos fantásticos personalizados para cada niño, adaptando las historias a sus intereses y despertando su creatividad natural con aventuras que estimulan el pensamiento original"
+      "description": "Crea mundos fantásticos personalizados para cada niño, adaptando las historias a sus intereses y despertando su creatividad natural con aventuras que estimulan el pensamiento original",
+      "category": "Creatividad"
     },
     "buildConfidence": {
       "title": "Construye confianza",
-      "description": "Fomenta la expresión oral mediante diálogos interactivos que se adaptan al nivel del niño, celebrando sus logros y alentándolo a compartir sus ideas sin miedo al juicio"
+      "description": "Fomenta la expresión oral mediante diálogos interactivos que se adaptan al nivel del niño, celebrando sus logros y alentándolo a compartir sus ideas sin miedo al juicio",
+      "category": "Desarrollo"
     },
     "developEmpathy": {
       "title": "Desarrolla empatía",
-      "description": "Enseña valores fundamentales como la bondad y el respeto mediante historias con lecciones morales, ayudando a tu hijo a comprender diferentes perspectivas y emociones"
+      "description": "Enseña valores fundamentales como la bondad y el respeto mediante historias con lecciones morales, ayudando a tu hijo a comprender diferentes perspectivas y emociones",
+      "category": "Valores"
     },
     "stimulateLearning": {
       "title": "Estimula el aprendizaje",
-      "description": "Transforma cada pregunta en una oportunidad educativa, respondiendo con paciencia infinita y adaptándose al ritmo de aprendizaje único de cada niño para fomentar su curiosidad natural"
+      "description": "Transforma cada pregunta en una oportunidad educativa, respondiendo con paciencia infinita y adaptándose al ritmo de aprendizaje único de cada niño para fomentar su curiosidad natural",
+      "category": "Educación"
     },
     "safeAndPrivate": {
       "title": "Seguro y privado",
-      "description": "Entorno completamente controlado por los padres con encriptación de datos de grado bancario, sin compartir información con terceros y con filtros de contenido apropiados para cada edad"
+      "description": "Entorno completamente controlado por los padres con encriptación de datos de grado bancario, sin compartir información con terceros y con filtros de contenido apropiados para cada edad",
+      "category": "Seguridad"
     }
   },
   "productCTA": {
