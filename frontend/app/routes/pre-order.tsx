@@ -24,7 +24,7 @@ import ContactForm from "~/components/PreOrder/ContactForm";
 import PaymentMethodSelector from "~/components/PreOrder/PaymentMethodSelector";
 import WaitlistSection from "~/components/PreOrder/WaitlistSection";
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request: _request }: LoaderFunctionArgs) {
   const products = await fetchPreOrderProducts();
   return json({ products: products.map(enrichProduct) });
 }

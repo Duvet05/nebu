@@ -42,7 +42,6 @@ export default function ProductVideoPlayer({
       })
       .catch(() => {
         // Library not available, will use iframe fallback
-        console.info('Using iframe fallback for Cloudflare Stream');
       });
   }, [videoProvider]);
 
