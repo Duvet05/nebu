@@ -171,7 +171,8 @@
       "complaintBook": "Complaints Book"
     },
     "allRightsReserved": "All rights reserved",
-    "madeWith": "Made with ❤️ by Flow-telligence"
+    "madeWith": "Made with ❤️ by Flow-telligence",
+    "version": "Frontend version: v{{version}}"
   },
   "preOrder": {
     "title": "Pre-order your Nebu",

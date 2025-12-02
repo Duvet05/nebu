@@ -171,7 +171,8 @@
       "complaintBook": "Libro de Reclamaciones"
     },
     "allRightsReserved": "Todos los derechos reservados",
-    "madeWith": "Hecho con ❤️ por Flow-telligence"
+    "madeWith": "Hecho con ❤️ por Flow-telligence",
+    "version": "Versión frontend: v{{version}}"
   },
   "preOrder": {
     "title": "Pre-ordena tu Nebu Dino",
