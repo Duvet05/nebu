@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import ProductSelection from "./ProductSelection";
-import FeatureHighlights from "./FeatureHighlights";
 import PriceSummary from "./PriceSummary";
 import type { Product, ProductColor } from "~/lib/api/products";
 
@@ -50,11 +49,6 @@ export default function ProductConfigurationSection({
         onColorChange={onColorChange}
         onQuantityChange={onQuantityChange}
       />
-
-      {/* Características */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-100">
-        <FeatureHighlights />
-      </div>
 
       {/* Resumen de Precio */}
       <PriceSummary

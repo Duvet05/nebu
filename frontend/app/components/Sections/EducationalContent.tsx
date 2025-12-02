@@ -8,32 +8,38 @@ export default function EducationalContent() {
     {
       icon: Brain,
       title: t("educationalContent.features.ai.title"),
-      description: t("educationalContent.features.ai.description")
+      description: t("educationalContent.features.ai.description"),
+      bgColor: "bg-primary"
     },
     {
       icon: Book,
       title: t("educationalContent.features.screenFree.title"),
-      description: t("educationalContent.features.screenFree.description")
+      description: t("educationalContent.features.screenFree.description"),
+      bgColor: "bg-primary"
     },
     {
       icon: Heart,
       title: t("educationalContent.features.emotional.title"),
-      description: t("educationalContent.features.emotional.description")
+      description: t("educationalContent.features.emotional.description"),
+      bgColor: "bg-primary"
     },
     {
       icon: Shield,
       title: t("educationalContent.features.safety.title"),
-      description: t("educationalContent.features.safety.description")
+      description: t("educationalContent.features.safety.description"),
+      bgColor: "bg-gray-600"
     },
     {
       icon: Sparkles,
       title: t("educationalContent.features.stories.title"),
-      description: t("educationalContent.features.stories.description")
+      description: t("educationalContent.features.stories.description"),
+      bgColor: "bg-primary"
     },
     {
       icon: Zap,
       title: t("educationalContent.features.multilingual.title"),
-      description: t("educationalContent.features.multilingual.description")
+      description: t("educationalContent.features.multilingual.description"),
+      bgColor: "bg-primary"
     }
   ];
 
@@ -52,22 +58,25 @@ export default function EducationalContent() {
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {features.map((feature, index) => (
-            <div 
-              key={index}
-              className="bg-gray-50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
-            >
-              <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mb-4">
-                <feature.icon className="w-7 h-7 text-white" />
+          {features.map((feature, index) => {
+            const FeatureIcon = feature.icon;
+            return (
+              <div 
+                key={index}
+                className="bg-gray-50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+              >
+                <div className={`w-14 h-14 ${feature.bgColor} rounded-xl flex items-center justify-center mb-4`}>
+                  <FeatureIcon className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 font-heading">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 font-heading">
-                {feature.title}
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Additional Educational Content */}
