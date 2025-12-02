@@ -52,27 +52,27 @@
     "subtitle": "Discover the benefits that make Nebu the perfect companion for your child's development",
     "reduceScreenTime": {
       "title": "Reduce screen-time",
-      "description": "Nebu sparks playful, story-driven and interactive activities that pull children into immersive conversations instead of onto a screen"
+      "description": "Nebu transforms technology into meaningful play. Instead of passive screen watching, children engage in active conversations that capture their imagination through interactive storytelling and educational adventures. Each session becomes an opportunity for learning and creative exploration without digital distractions."
     },
     "nurtureImagination": {
       "title": "Nurture imagination",
-      "description": "Stories, questions and adventures unfold in ways that spark your child's curiosity and creativity"
+      "description": "Every conversation with Nebu opens a door to new worlds. Stories adapt to your child's interests, questions trigger creative thinking, and adventures unfold naturally, sparking curiosity and developing storytelling abilities that will benefit them throughout their educational journey."
     },
     "buildConfidence": {
       "title": "Build confidence",
-      "description": "Back-and-forth conversations that grow with your child, encouraging natural practice in speaking, listening, and expressing themselves every day"
+      "description": "Through patient, judgment-free conversations, Nebu helps children find their voice. Each interaction builds communication skills, encourages self-expression, and creates a safe space where kids can practice speaking, asking questions, and sharing ideas—essential skills for academic and social success."
     },
     "developEmpathy": {
       "title": "Develop empathy",
-      "description": "Deep emotional understanding through meaningful conversations and stories that teach values"
+      "description": "Nebu's stories and conversations teach emotional intelligence through relatable scenarios and character-driven narratives. Children learn to understand different perspectives, recognize feelings, and develop compassion—fundamental values that shape caring, thoughtful individuals."
     },
     "stimulateLearning": {
       "title": "Stimulate learning",
-      "description": "Curiosity that never stops, fostering love for knowledge and exploration"
+      "description": "Learning becomes an exciting adventure with Nebu. Personalized educational content adapts to your child's pace and interests, transforming subjects like math, science, and language into engaging conversations. This approach fosters genuine curiosity and a lifelong love for discovery and knowledge."
     },
     "safeAndPrivate": {
       "title": "Safe and private",
-      "description": "Total protection guaranteed with the highest security for your family's conversations"
+      "description": "Parents' peace of mind is our priority. Nebu operates with enterprise-grade security, encrypted conversations, and complete parental control. All content is age-appropriate, monitored, and designed with children's safety first. Your family's privacy is protected with the highest industry standards."
     }
   },
   "productCTA": {
@@ -727,6 +727,45 @@
     },
     "cta": "Start conversations with Nebu!",
     "noExamples": "No examples available for this category"
+  },
+  "educationalContent": {
+    "title": "The Science Behind Screen-Free Learning with AI",
+    "subtitle": "How Nebu uses artificial intelligence to create meaningful educational experiences",
+    "introduction": "Nebu represents a breakthrough in educational technology, combining conversational AI with child development principles to create an intelligent companion that grows with your child. Unlike passive screen-based entertainment, Nebu actively engages children in interactive learning experiences that stimulate cognitive development, emotional intelligence, and creativity.",
+    "sections": {
+      "aiTechnology": {
+        "title": "Advanced AI Technology for Children",
+        "content": "Nebu utilizes state-of-the-art natural language processing specifically trained for child interactions. Our AI understands context, adapts to different learning styles, and provides age-appropriate responses that challenge and engage young minds. The system continuously learns from interactions while maintaining strict privacy and safety protocols that ensure every conversation is educational, positive, and secure."
+      },
+      "cognitiveDevelopment": {
+        "title": "Supporting Cognitive Development",
+        "content": "Research shows that interactive conversations significantly enhance language development, critical thinking, and problem-solving skills in children ages 4-12. Nebu's conversational approach encourages active participation rather than passive consumption, helping children develop executive functions like working memory, attention control, and cognitive flexibility—skills essential for academic success and lifelong learning."
+      },
+      "emotionalIntelligence": {
+        "title": "Building Emotional Intelligence",
+        "content": "Through empathetic conversations and character-driven stories, Nebu helps children identify and express emotions, understand social cues, and develop self-awareness. These emotional skills are fundamental for building healthy relationships, managing stress, and succeeding in collaborative environments—both in school and throughout life."
+      },
+      "parentalInvolvement": {
+        "title": "Empowering Parental Involvement",
+        "content": "The Nebu companion app provides parents with insights into their child's interests, learning progress, and developmental milestones. Parents can customize content, set boundaries, and review conversations—ensuring Nebu complements family values and educational goals. This transparency creates a partnership between technology and parenting that supports holistic child development."
+      },
+      "researchBased": {
+        "title": "Research-Based Educational Approach",
+        "content": "Nebu's content is developed in collaboration with child development experts, educators, and psychologists. Our curriculum aligns with educational standards while incorporating proven methodologies like scaffolded learning, positive reinforcement, and growth mindset principles. Every interaction is designed to build confidence, encourage curiosity, and foster a genuine love for learning."
+      },
+      "futureLearning": {
+        "title": "Preparing for the Future of Education",
+        "content": "As education evolves, skills like critical thinking, creativity, communication, and collaboration become increasingly important. Nebu nurtures these 21st-century competencies through open-ended conversations, creative problem-solving activities, and storytelling that encourages imagination. Children develop not just knowledge, but the thinking skills needed to thrive in an ever-changing world."
+      }
+    },
+    "statistics": {
+      "title": "The Impact of Interactive Learning",
+      "engagement": "Children engage 3x longer with interactive conversations than passive video content",
+      "retention": "Active learning increases knowledge retention by up to 75% compared to passive methods",
+      "development": "Conversational AI improves language skills and vocabulary development by 40% in regular users",
+      "screenTime": "Families report 60% reduction in passive screen time after introducing Nebu"
+    },
+    "conclusion": "Nebu isn't just a toy—it's an investment in your child's educational journey, emotional well-being, and future success. By combining cutting-edge AI technology with proven child development principles, Nebu creates a learning experience that is engaging, effective, and aligned with how children naturally learn best: through conversation, play, and meaningful interaction."
   },
   "productDetails": {
     "meet": "Meet:",

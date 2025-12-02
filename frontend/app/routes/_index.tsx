@@ -7,6 +7,7 @@ import ConversationExamples from "~/components/Sections/ConversationExamples";
 import BenefitsCarousel from "~/components/Sections/BenefitsCarousel";
 import HeroQuote from "~/components/Sections/HeroQuote";
 import ProductDetails from "~/components/Sections/ProductDetails";
+import EducationalContent from "~/components/Sections/EducationalContent";
 import { HeroSection } from "~/components/Sections/HeroSection";
 import { Divider } from "~/components/Divider";
 import { useEffect } from "react";
@@ -211,6 +212,11 @@ export default function Index() {
 
         {/* Benefits Carousel Section */}
         <BenefitsCarousel />
+        
+        <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
+
+        {/* Educational Content Section - SEO Rich Content */}
+        <EducationalContent />
         
         <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
