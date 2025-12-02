@@ -38,7 +38,7 @@ export default function EducationalContent() {
   ];
 
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-20 px-4 bg-nebu-bg">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
