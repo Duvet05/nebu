@@ -203,7 +203,7 @@ export default function ConversationExamples() {
                   variants={cardVariants}
                   className="group h-full"
                 >
-                  <div className="relative h-full bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-gray-300">
+                  <div className="relative h-full bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-gray-300">
                     {/* Question - Clean layout */}
                     <div className="mb-3 flex-1">
                       <p className="text-gray-800 font-medium text-sm leading-relaxed">

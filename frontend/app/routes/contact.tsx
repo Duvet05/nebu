@@ -92,7 +92,7 @@ export default function ContactPage() {
         <Header />
         <div className="relative z-10 pt-32 pb-20 px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
               <svg
                 className="w-10 h-10 text-white"
                 fill="none"
@@ -113,7 +113,7 @@ export default function ContactPage() {
             <p className="text-xl text-gray-600 mb-8">
               {t('contact.success.message')}
             </p>
-            <a href="/" className="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+            <a href="/" className="bg-primary text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
               {t('contact.success.backHome')}
             </a>
           </div>
@@ -182,7 +182,7 @@ export default function ContactPage() {
               >
                 <div className="bg-white rounded-2xl shadow-lg p-8 md:p-10 flex-1 flex flex-col">
                   <div className="flex items-center gap-4 mb-8">
-                    <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center shadow-lg">
+                    <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg">
                       <Send className="w-8 h-8 text-white" />
                     </div>
                     <div>
@@ -281,7 +281,7 @@ export default function ContactPage() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-primary to-accent text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="w-full bg-primary text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       {isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}
                       <ArrowRight className="w-5 h-5" />
@@ -300,7 +300,7 @@ export default function ContactPage() {
                 {/* Información de contacto rápida */}
                 <div className="bg-white rounded-2xl shadow-lg p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                    <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
                       <Phone className="w-6 h-6 text-white" />
                     </div>
 {t('contact.info.directContact')}
