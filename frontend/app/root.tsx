@@ -132,9 +132,11 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+        {/* Meta tags de la ruta actual (incluye title, description, canonical, og:*, twitter:*) */}
         <Meta />
         
-        {/* Meta tags adicionales */}
+        {/* Meta tags globales adicionales (author, robots, business info) */}
         {getMetaTags(locale).map((tag: any, index: number) => (
           <meta key={index} {...tag} />
         ))}
@@ -149,7 +151,6 @@ export function Layout({ children }: { children: ReactNode }) {
           />
         )}
         
-        <Meta />
         <Links />
         
         {/* Analytics solo en producción */}

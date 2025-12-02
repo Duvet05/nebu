@@ -79,10 +79,11 @@ export function getStructuredData(): OrganizationSchema {
 }
 
 export function getMetaTags(locale: string = 'es') {
-  const isSpanish = locale === 'es';
+  // Solo meta tags globales que NO se definen en páginas individuales
+  // Las páginas definen: title, description, canonical, og:*, twitter:*
   
   return [
-    // Core Meta Tags
+    // Core Meta Tags (información de la empresa)
     { name: "author", content: BUSINESS.name },
     { name: "company", content: BUSINESS.legalName },
     { name: "rating", content: "General" },
@@ -93,24 +94,14 @@ export function getMetaTags(locale: string = 'es') {
     { name: "audience", content: "all" },
     { name: "coverage", content: "Worldwide" },
     
-    // Open Graph Tags
-    { property: "og:site_name", content: BUSINESS.name },
-    { property: "og:type", content: "website" },
-    { property: "og:locale", content: isSpanish ? "es_PE" : "en_US" },
-    
-    // Twitter Card Tags
-    { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:site", content: "@flowtelligence" },
-    { name: "twitter:creator", content: "@flowtelligence" },
-    
-    // Business information
+    // Business contact information (para rich snippets)
     { property: "business:contact_data:street_address", content: BUSINESS.address.full },
     { property: "business:contact_data:locality", content: BUSINESS.address.city },
     { property: "business:contact_data:country_name", content: BUSINESS.address.countryName },
     { property: "business:contact_data:email", content: CONTACT.email.main },
     { property: "business:contact_data:phone_number", content: CONTACT.phone },
     
-    // Additional SEO Tags
+    // SEO Bot Instructions (global para todo el sitio)
     { name: "robots", content: "index, follow, max-image-preview:large" },
     { name: "googlebot", content: "index, follow" },
     { name: "bingbot", content: "index, follow" },
