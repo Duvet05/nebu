@@ -11,8 +11,7 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { PersonName } from './person-name.entity';
-// import { PersonAttribute } from './person-attribute.entity'; // Temporarily disabled
-// Using string references to avoid circular dependencies
+import { PersonAttribute } from './person-attribute.entity';
 
 export enum Gender {
   MALE = 'male',
@@ -155,9 +154,8 @@ export class Person {
   @OneToMany(() => PersonName, (name) => name.person)
   names: PersonName[];
 
-  // TODO: Enable when PersonAttribute is properly configured
-  // @OneToMany(() => PersonAttribute, (attr) => attr.person)
-  // attributes: PersonAttribute[];
+  @OneToMany(() => PersonAttribute, (attr) => attr.person)
+  attributes: PersonAttribute[];
 
   @OneToMany('Relationship', 'personA')
   relationshipsAsA: any[];

@@ -17,22 +17,47 @@ export class OrdersService {
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     try {
-      // Calculate reserve amount (50%)
-      const reserveAmount = createOrderDto.totalPrice * 0.5;
+      // Calculate reserve amount (50%) and total amount
+      const subtotal = createOrderDto.totalPrice;
+      const reserveAmount = subtotal * 0.5;
+      const totalAmount = subtotal; // For now, no shipping/tax/discount
 
-      // Reserve inventory units
+      // Reserve inventory units (if product field is a name, we need ProductCatalog lookup)
+      // For now, skipping inventory reservation as Order entity needs ProductCatalog integration
+      // TODO: Add ProductCatalog relation to Order and use productId instead of product name
+      this.logger.log(`Order created with product: ${createOrderDto.product} (inventory reservation skipped pending ProductCatalog integration)`);
+      
+      /*
       try {
-        await this.inventoryService.reserveUnits(createOrderDto.product, createOrderDto.quantity);
+        await this.inventoryService.reserveUnitsByProductName(createOrderDto.product, createOrderDto.quantity);
         this.logger.log(`Reserved ${createOrderDto.quantity} units of ${createOrderDto.product}`);
       } catch (inventoryError) {
         this.logger.error(`Failed to reserve inventory: ${inventoryError.message}`);
         // Continue creating order even if inventory fails (for backward compatibility)
       }
+      */
 
+      // Map legacy DTO fields to normalized Order schema
       const order = this.ordersRepository.create({
-        ...createOrderDto,
+        contactEmail: createOrderDto.email,
+        contactPhone: createOrderDto.phone,
+        shippingAddress: createOrderDto.address,
+        shippingCity: createOrderDto.city,
+        shippingPostalCode: createOrderDto.postalCode,
+        subtotal,
+        totalAmount,
         reserveAmount,
         status: OrderStatus.PENDING,
+        metadata: {
+          ...createOrderDto.metadata,
+          // Store legacy fields in metadata for backward compatibility
+          legacyProduct: createOrderDto.product,
+          legacyColor: createOrderDto.color,
+          legacyQuantity: createOrderDto.quantity,
+          legacyFirstName: createOrderDto.firstName,
+          legacyLastName: createOrderDto.lastName,
+          legacyPaymentMethod: createOrderDto.paymentMethod,
+        },
       });
 
       const savedOrder = await this.ordersRepository.save(order);
@@ -64,14 +89,17 @@ export class OrdersService {
   async updatePaidAmount(id: string, amount: number): Promise<Order> {
     const order = await this.findOne(id);
 
-    // Calculate current paid amount from payments (getter) and compute new total
+    // Calculate current paid amount from payments relation (getter)
     const currentPaid = order.paidAmount || 0;
     const newPaidAmount = currentPaid + amount;
 
     const updates: Partial<Order> = {};
 
     // Auto-update status based on payment thresholds
-    if (newPaidAmount >= order.reserveAmount && order.status === OrderStatus.PENDING) {
+    // Use reserveAmount if set, otherwise use 50% of totalAmount
+    const reserveThreshold = order.reserveAmount || order.totalAmount * 0.5;
+    
+    if (newPaidAmount >= reserveThreshold && order.status === OrderStatus.PENDING) {
       updates.status = OrderStatus.RESERVED;
     }
     if (newPaidAmount >= order.totalAmount) {
@@ -79,6 +107,7 @@ export class OrdersService {
     }
 
     // Persist only the status change (payments should be stored in PaymentTransaction separately)
+    // This method assumes PaymentTransaction entries are created elsewhere
     if (Object.keys(updates).length > 0) {
       await this.ordersRepository.update(id, updates);
     }

@@ -12,9 +12,16 @@ export class InventoryService {
     private inventoryRepository: Repository<Inventory>,
   ) {}
 
-  async getInventory(product: string): Promise<Inventory | null> {
+  async getInventory(productId: string): Promise<Inventory | null> {
     return this.inventoryRepository.findOne({
-      where: { product: { name: product } },
+      where: { productId },
+      relations: ['product']
+    });
+  }
+
+  async getInventoryByProductName(productName: string): Promise<Inventory | null> {
+    return this.inventoryRepository.findOne({
+      where: { product: { name: productName } },
       relations: ['product']
     });
   }
@@ -24,11 +31,11 @@ export class InventoryService {
   }
 
   async createOrUpdateInventory(
-    productName: string,
+    productId: string,
     totalUnits: number,
     description?: string,
   ): Promise<Inventory> {
-    const inventory = await this.getInventory(productName);
+    const inventory = await this.getInventory(productId);
 
     if (inventory) {
       inventory.totalUnits = totalUnits;
@@ -38,19 +45,24 @@ export class InventoryService {
       }
       return this.inventoryRepository.save(inventory);
     } else {
-      // For new inventory, this method expects the product to already exist in ProductCatalog
-      // This is a simplified implementation - in production, you'd want to look up the ProductCatalog first
-      throw new BadRequestException(
-        `Product '${productName}' not found. Create the product in ProductCatalog first, then use createInventoryForProduct(productId).`
-      );
+      // Create new inventory entry for existing product
+      const newInventory = this.inventoryRepository.create({
+        productId,
+        totalUnits,
+        availableUnits: totalUnits,
+        reservedUnits: 0,
+        soldUnits: 0,
+        description,
+      });
+      return this.inventoryRepository.save(newInventory);
     }
   }
 
-  async reserveUnits(product: string, quantity: number): Promise<Inventory> {
-    const inventory = await this.getInventory(product);
+  async reserveUnits(productId: string, quantity: number): Promise<Inventory> {
+    const inventory = await this.getInventory(productId);
 
     if (!inventory) {
-      throw new BadRequestException(`Product ${product} not found in inventory`);
+      throw new BadRequestException(`Product ${productId} not found in inventory`);
     }
 
     if (inventory.availableUnits < quantity) {
@@ -62,16 +74,26 @@ export class InventoryService {
     inventory.reservedUnits += quantity;
     inventory.availableUnits -= quantity;
 
-    this.logger.log(`Reserved ${quantity} units of ${product}. Available: ${inventory.availableUnits}`);
+    this.logger.log(`Reserved ${quantity} units of product ${productId}. Available: ${inventory.availableUnits}`);
 
     return this.inventoryRepository.save(inventory);
   }
 
-  async confirmSale(product: string, quantity: number): Promise<Inventory> {
-    const inventory = await this.getInventory(product);
+  async reserveUnitsByProductName(productName: string, quantity: number): Promise<Inventory> {
+    const inventory = await this.getInventoryByProductName(productName);
 
     if (!inventory) {
-      throw new BadRequestException(`Product ${product} not found in inventory`);
+      throw new BadRequestException(`Product '${productName}' not found in inventory`);
+    }
+
+    return this.reserveUnits(inventory.productId, quantity);
+  }
+
+  async confirmSale(productId: string, quantity: number): Promise<Inventory> {
+    const inventory = await this.getInventory(productId);
+
+    if (!inventory) {
+      throw new BadRequestException(`Product ${productId} not found in inventory`);
     }
 
     if (inventory.reservedUnits < quantity) {
@@ -83,31 +105,30 @@ export class InventoryService {
     inventory.reservedUnits -= quantity;
     inventory.soldUnits += quantity;
 
-    this.logger.log(`Confirmed sale of ${quantity} units of ${product}. Sold: ${inventory.soldUnits}`);
+    this.logger.log(`Confirmed sale of ${quantity} units of product ${productId}. Sold: ${inventory.soldUnits}`);
 
     return this.inventoryRepository.save(inventory);
   }
 
-  async cancelReservation(product: string, quantity: number): Promise<Inventory> {
-    const inventory = await this.getInventory(product);
+  async cancelReservation(productId: string, quantity: number): Promise<Inventory> {
+    const inventory = await this.getInventory(productId);
 
     if (!inventory) {
-      throw new BadRequestException(`Product ${product} not found in inventory`);
+      throw new BadRequestException(`Product ${productId} not found in inventory`);
     }
 
     inventory.reservedUnits -= quantity;
     inventory.availableUnits += quantity;
 
-    this.logger.log(`Cancelled reservation of ${quantity} units of ${product}. Available: ${inventory.availableUnits}`);
+    this.logger.log(`Cancelled reservation of ${quantity} units of product ${productId}. Available: ${inventory.availableUnits}`);
 
     return this.inventoryRepository.save(inventory);
   }
 
   async initializeNebuDino(): Promise<Inventory> {
-    return this.createOrUpdateInventory(
-      'Nebu Dino',
-      20,
-      'Peluche Nebu Dino - Edición Limitada',
-    );
+    // This is a legacy method - should be updated to use ProductCatalog lookup
+    // For now, keeping it for backward compatibility but logging warning
+    this.logger.warn('initializeNebuDino() is deprecated. Use createOrUpdateInventory(productId, units) instead.');
+    throw new BadRequestException('This method requires ProductCatalog integration. Use createOrUpdateInventory(productId, units) instead.');
   }
 }
