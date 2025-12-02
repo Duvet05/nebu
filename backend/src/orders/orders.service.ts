@@ -32,7 +32,6 @@ export class OrdersService {
       const order = this.ordersRepository.create({
         ...createOrderDto,
         reserveAmount,
-        paidAmount: 0,
         status: OrderStatus.PENDING,
       });
 
@@ -65,17 +64,25 @@ export class OrdersService {
   async updatePaidAmount(id: string, amount: number): Promise<Order> {
     const order = await this.findOne(id);
 
-    const newPaidAmount = order.paidAmount + amount;
-    const updates: Partial<Order> = { paidAmount: newPaidAmount };
+    // Calculate current paid amount from payments (getter) and compute new total
+    const currentPaid = order.paidAmount || 0;
+    const newPaidAmount = currentPaid + amount;
 
-    // Auto-update status based on payment
+    const updates: Partial<Order> = {};
+
+    // Auto-update status based on payment thresholds
     if (newPaidAmount >= order.reserveAmount && order.status === OrderStatus.PENDING) {
       updates.status = OrderStatus.RESERVED;
-    } else if (newPaidAmount >= order.totalPrice) {
+    }
+    if (newPaidAmount >= order.totalAmount) {
       updates.status = OrderStatus.CONFIRMED;
     }
 
-    await this.ordersRepository.update(id, updates);
+    // Persist only the status change (payments should be stored in PaymentTransaction separately)
+    if (Object.keys(updates).length > 0) {
+      await this.ordersRepository.update(id, updates);
+    }
+
     return this.findOne(id);
   }
 
@@ -94,10 +101,13 @@ export class OrdersService {
       this.ordersRepository.count({ where: { status: OrderStatus.CANCELLED } }),
     ]);
 
-    const totalRevenue = await this.ordersRepository
+    // Sum completed payments from PaymentTransaction via payments relation
+    const totalRevenueResult = await this.ordersRepository
       .createQueryBuilder('order')
-      .select('SUM(order.paidAmount)', 'sum')
+      .leftJoin('order.payments', 'payment')
+      .select('COALESCE(SUM(CASE WHEN payment.status = :completed THEN payment.amount ELSE 0 END), 0)', 'sum')
       .where('order.status != :cancelled', { cancelled: OrderStatus.CANCELLED })
+      .setParameter('completed', 'completed')
       .getRawOne();
 
     return {
@@ -110,7 +120,7 @@ export class OrdersService {
         delivered,
         cancelled,
       },
-      revenue: parseFloat(totalRevenue?.sum || '0'),
+      revenue: parseFloat(totalRevenueResult?.sum || '0'),
     };
   }
 }
