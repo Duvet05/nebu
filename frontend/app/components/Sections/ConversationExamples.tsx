@@ -149,11 +149,11 @@ export default function ConversationExamples() {
             variants={itemVariants}
             className="max-w-4xl mx-auto mb-4"
           >
-            <h3 className="text-2xl md:text-3xl font-bold font-gochi text-primary leading-tight mb-3">
+            <p className="text-2xl md:text-3xl font-bold font-gochi text-primary leading-tight mb-3">
               {t("conversations.title")}
-            </h3>
+            </p>
             
-            <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+            <p className="text-base md:text-lg text-gray-600 leading-relaxed font-medium">
               {t("conversations.subtitle")}
             </p>
           </motion.div>
