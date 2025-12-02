@@ -12,7 +12,7 @@ import {
 import type { LinksFunction, LoaderFunctionArgs, HeadersFunction } from "@remix-run/node";
 import { useChangeLanguage } from "remix-i18next/react";
 import type { ReactNode } from "react";
-import { Suspense, lazy, useState, useEffect } from "react";
+import { Suspense, lazy } from "react";
 import i18next from "~/lib/i18next.server";
 
 // Lazy load components para mejor performance
@@ -181,23 +181,13 @@ export function Layout({ children }: { children: ReactNode }) {
 
 // App component con Suspense boundaries
 export default function App() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   return (
     <Suspense fallback={<LoadingSkeleton />}>
       <AnalyticsProvider>
         <CartProvider>
           <Outlet />
-          {isClient && (
-            <>
-              <CartSidebar />
-              <WhatsAppButton />
-            </>
-          )}
+          <CartSidebar />
+          <WhatsAppButton />
         </CartProvider>
       </AnalyticsProvider>
     </Suspense>

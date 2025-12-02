@@ -31,25 +31,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedCart = localStorage.getItem('nebu-cart');
-      if (savedCart) {
-        try {
-          setItems(JSON.parse(savedCart));
-        } catch (error) {
-          console.error('Error loading cart:', error);
-        }
+    const savedCart = localStorage.getItem('nebu-cart');
+    if (savedCart) {
+      try {
+        setItems(JSON.parse(savedCart));
+      } catch (error) {
+        console.error('Error loading cart:', error);
       }
-      setIsHydrated(true);
     }
+    setIsHydrated(true);
   }, []);
 
-  // Save cart to localStorage whenever it changes
+  // Save cart to localStorage whenever it changes (only after hydration)
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (isHydrated) {
       localStorage.setItem('nebu-cart', JSON.stringify(items));
     }
-  }, [items]);
+  }, [items, isHydrated]);
 
   const addItem = (product: Product, color: ProductColor, quantity: number = 1) => {
     setItems(currentItems => {
@@ -123,7 +121,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   return (
     <CartContext.Provider
       value={{
-        items,
+        items: isHydrated ? items : [],
         addItem,
         removeItem,
         updateQuantity,

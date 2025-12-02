@@ -10,7 +10,6 @@ http:
     # Security headers
     security-headers:
       headers:
-        frameDeny: true
         contentTypeNosniff: true
         browserXssFilter: true
         forceSTSHeader: true
@@ -19,6 +18,8 @@ http:
         stsPreload: true
         referrerPolicy: "strict-origin-when-cross-origin"
         permissionsPolicy: "camera=(), microphone=(), geolocation=()"
+        customFrameOptionsValue: "SAMEORIGIN"
+        contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://checkout.culqi.com https://static.cloudflareinsights.com https://embed.cloudflarestream.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.flow-telligence.com wss://api.flow-telligence.com https://www.google-analytics.com https://analytics.google.com https://www.facebook.com; frame-src https://checkout.culqi.com https://customer-zbno8sqqfzr3s0ue.cloudflarestream.com; media-src 'self' https://customer-zbno8sqqfzr3s0ue.cloudflarestream.com blob:;"
     
     # Rate limiting
     rate-limit:

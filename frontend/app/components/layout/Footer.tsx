@@ -172,7 +172,7 @@ export function Footer() {
         {/* Copyright */}
         <div className="border-t border-gray-200 dark:border-gray-700 mt-12 pt-8">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-sm text-gray-600 dark:text-gray-400">
-            <span>© {new Date().getFullYear()} Flow-telligence. {t("footer.allRightsReserved")}.</span>
+            <span suppressHydrationWarning>© {new Date().getFullYear()} Flow-telligence. {t("footer.allRightsReserved")}.</span>
             <span className="hidden sm:inline">•</span>
             <span className="text-gray-900 dark:text-gray-100 font-medium">{t("footer.madeWith")}</span>
           </div>

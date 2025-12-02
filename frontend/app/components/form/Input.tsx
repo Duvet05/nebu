@@ -19,7 +19,7 @@
  * />
  */
 
-import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, useId, type InputHTMLAttributes, type ReactNode } from 'react';
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
@@ -51,8 +51,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    // Generar ID único si no se proporciona
-    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+    // Generar ID único consistente entre servidor y cliente
+    const generatedId = useId();
+    const inputId = id || generatedId;
     const hasError = Boolean(error);
 
     // Clases base según variante
