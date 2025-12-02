@@ -101,23 +101,27 @@ const ProductDetails: React.FC = () => {
 
       <motion.div {...fadeInUp} className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center px-6 md:px-12">
-            <figure className="relative order-2 lg:order-1 h-[500px] md:h-[600px] lg:h-[700px]" itemProp="image">
+            {/* Video container - TikTok style vertical format */}
+            <figure className="relative order-2 lg:order-1 flex justify-center items-start" itemProp="image">
               <meta itemProp="contentUrl" content={`${BUSINESS.website}/models/nebu-dino/shaded_00.png`} />
-              <motion.div
-                className="relative h-full"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="h-full rounded-3xl shadow-xl relative">
-                  <ProductVideoPlayer 
-                    playbackId="ed5516e7514f3ae7dd5ce4f7d49b52c8"
-                    videoProvider="cloudflare"
-                  />
-                </div>
+              <div className="w-full max-w-[380px] lg:max-w-[420px] mx-auto relative">
+                <motion.div
+                  className="relative"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="rounded-3xl shadow-xl relative">
+                    <ProductVideoPlayer 
+                      playbackId="ed5516e7514f3ae7dd5ce4f7d49b52c8"
+                      videoProvider="cloudflare"
+                      aspectRatio="vertical"
+                    />
+                  </div>
 
-                <motion.div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-gold to-primary rounded-full shadow-lg" {...floatingAnimation} aria-hidden="true" />
-                <motion.div className="absolute -bottom-4 -left-4 w-12 h-12 bg-gradient-to-br from-accent to-secondary rounded-full shadow-lg" animate={{ y: [10, -10, 10] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' as const, delay: 1.5 }} aria-hidden="true" />
-              </motion.div>
+                  <motion.div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-gold to-primary rounded-full shadow-lg" {...floatingAnimation} aria-hidden="true" />
+                  <motion.div className="absolute -bottom-4 -left-4 w-12 h-12 bg-gradient-to-br from-accent to-secondary rounded-full shadow-lg" animate={{ y: [10, -10, 10] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' as const, delay: 1.5 }} aria-hidden="true" />
+                </motion.div>
+              </div>
             </figure>
 
             <article className="space-y-6 order-1 lg:order-2">

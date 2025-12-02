@@ -11,6 +11,8 @@ interface ProductVideoPlayerProps {
   className?: string;
   /** Legacy prop for compatibility - not used in video player */
   color?: string;
+  /** Aspect ratio mode: 'landscape' (16:9) or 'vertical' (9:16 like TikTok) */
+  aspectRatio?: 'landscape' | 'vertical';
 }
 
 /**
@@ -26,7 +28,8 @@ export default function ProductVideoPlayer({
   playbackId,
   videoProvider = 'cloudflare',
   thumbnailUrl,
-  className = ''
+  className = '',
+  aspectRatio = 'landscape'
 }: ProductVideoPlayerProps) {
   const [isVisible, setIsVisible] = React.useState(false);
   const [StreamComponent, setStreamComponent] = React.useState<any>(null);
@@ -74,11 +77,15 @@ export default function ProductVideoPlayer({
     return () => observer.disconnect();
   }, []);
 
+  // Calculate padding for aspect ratio
+  // 16:9 = 56.25% (landscape), 9:16 = 177.78% (vertical like TikTok)
+  const paddingBottom = aspectRatio === 'vertical' ? '177.78%' : '56.25%';
+
   // Render Cloudflare Stream video
   if (videoProvider === 'cloudflare' && playbackId) {
     return (
       <div ref={containerRef} className={`w-full ${className}`}>
-        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+        <div className="relative w-full" style={{ paddingBottom }}>
           {!isVisible ? (
             <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden border shadow-md bg-gray-100 flex items-center justify-center">
               {thumbnail ? (
@@ -122,7 +129,7 @@ export default function ProductVideoPlayer({
     
     return (
       <div ref={containerRef} className={`w-full ${className}`}>
-        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+        <div className="relative w-full" style={{ paddingBottom }}>
           {!isVisible ? (
             <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden border shadow-md bg-gray-100 flex items-center justify-center">
               {thumbnail ? (
@@ -152,7 +159,7 @@ export default function ProductVideoPlayer({
   // No video data provided
   return (
     <div className={`w-full ${className}`}>
-      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+      <div className="relative w-full" style={{ paddingBottom }}>
         <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden border shadow-md bg-gray-100 flex items-center justify-center">
           <div className="text-gray-500">No hay video disponible</div>
         </div>
