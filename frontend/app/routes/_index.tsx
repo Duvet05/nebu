@@ -185,14 +185,14 @@ export default function Index() {
         {/* Decorative background elements */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
           <img
-            src="/assets/images/decoration-top-right.png"
+            src="/assets/decoration-strokes-scattered.png"
             alt=""
-            className="absolute top-20 right-10 w-32 h-32 opacity-15"
+            className="absolute top-20 right-10 w-32 h-auto opacity-15 object-contain"
           />
           <img
-            src="/assets/images/decoration-bottom-left.png"
+            src="/assets/decoration-strokes-vertical.png"
             alt=""
-            className="absolute bottom-32 left-20 w-28 h-28 opacity-20"
+            className="absolute bottom-32 left-20 w-28 h-auto opacity-20 object-contain"
           />
         </div>
 
