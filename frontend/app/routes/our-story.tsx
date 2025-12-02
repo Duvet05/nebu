@@ -122,137 +122,100 @@ export default function OurStory() {
               ))}
             </div>
 
-            {/* Detailed Story Section */}
+            {/* Story Summary */}
             <motion.div
-              className="mb-16"
+              className="mb-16 text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <h2 className="text-4xl font-bold text-center mb-6 font-gochi text-nebu-dark">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 font-gochi text-primary">
                 {t("about.story.title")}
               </h2>
-              <p className="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
+              <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
                 {t("about.story.problem.content")}
               </p>
+            </motion.div>
 
-              <div className="space-y-8">
-                {/* IA al Servicio Emocional */}
-                <div className="bg-white rounded-2xl p-8 shadow-lg">
-                  <h3 className="text-2xl font-bold text-primary mb-4 flex items-center gap-2">
-                    <span className="text-3xl">💚</span>
-                    {t("about.story.origin.title")}
-                  </h3>
-                  <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
-                    <p>{t("about.story.origin.paragraph1")}</p>
-                    <p>{t("about.story.origin.paragraph2")}</p>
-                    <p>{t("about.story.origin.paragraph3")}</p>
-                  </div>
+            {/* Team Section - Clean Cards */}
+            <motion.div
+              className="mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-3 mb-4">
+                  <Award className="w-6 h-6 text-primary" />
+                  <span className="font-bold text-primary">Egresados PUCP</span>
                 </div>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  {t("about.story.team.description")}
+                </p>
+              </div>
 
-                {/* Innovar También es Cuidar */}
-                <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 shadow-lg">
-                  <h3 className="text-2xl font-bold text-primary mb-4 flex items-center gap-2">
-                    <span className="text-3xl">✨</span>
-                    {t("about.story.innovation.title")}
-                  </h3>
-                  <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
-                    <p>{t("about.story.innovation.paragraph1")}</p>
-                    <p>{t("about.story.innovation.paragraph2")}</p>
-                    <p>{t("about.story.innovation.paragraph3")}</p>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
+                  <div className="text-4xl mb-3">🔬</div>
+                  <h4 className="font-bold text-lg text-nebu-dark mb-1">Richard Castillo Leguía</h4>
+                  <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
+                  <p className="text-sm text-gray-700">Fundador de Flow. Visión de IA aplicada a salud mental infantil.</p>
                 </div>
-
-                {/* Tecnología que Crece con Propósito */}
-                <div className="bg-white rounded-2xl p-8 shadow-lg">
-                  <h3 className="text-2xl font-bold text-primary mb-4 flex items-center gap-2">
-                    <span className="text-3xl">🚀</span>
-                    {t("about.story.purpose.title")}
-                  </h3>
-                  <div className="prose prose-lg max-w-none text-gray-700 space-y-4">
-                    <p>{t("about.story.purpose.paragraph1")}</p>
-                    <p>{t("about.story.purpose.paragraph2")}</p>
-                    <p className="text-lg font-semibold text-nebu-dark">
-                      {t("about.story.purpose.paragraph3")}
-                    </p>
-                  </div>
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
+                  <div className="text-4xl mb-3">💻</div>
+                  <h4 className="font-bold text-lg text-nebu-dark mb-1">Gonzalo Gálvez Cortez</h4>
+                  <p className="text-sm text-gray-600 mb-2">Ingeniería Informática PUCP</p>
+                  <p className="text-sm text-gray-700">Arquitectura del sistema y app móvil con control parental.</p>
                 </div>
-
-                {/* El Equipo PUCP */}
-                <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg border-2 border-primary/20">
-                  <h3 className="text-2xl font-bold text-center text-primary mb-6 flex items-center justify-center gap-2">
-                    <Award className="w-8 h-8" />
-                    Egresados PUCP
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div className="bg-white rounded-xl p-6 shadow">
-                      <div className="text-4xl mb-3">🔬</div>
-                      <h4 className="font-bold text-lg text-nebu-dark mb-1">Richard Castillo Leguía</h4>
-                      <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
-                      <p className="text-sm text-gray-700">Fundador de Flow. Visión de IA aplicada a salud mental infantil.</p>
-                    </div>
-                    <div className="bg-white rounded-xl p-6 shadow">
-                      <div className="text-4xl mb-3">💻</div>
-                      <h4 className="font-bold text-lg text-nebu-dark mb-1">Gonzalo Gálvez Cortez</h4>
-                      <p className="text-sm text-gray-600 mb-2">Ingeniería Informática PUCP</p>
-                      <p className="text-sm text-gray-700">Arquitectura del sistema y app móvil con control parental.</p>
-                    </div>
-                    <div className="bg-white rounded-xl p-6 shadow">
-                      <div className="text-4xl mb-3">⚙️</div>
-                      <h4 className="font-bold text-lg text-nebu-dark mb-1">Bryan Bastidas</h4>
-                      <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
-                      <p className="text-sm text-gray-700">Diseño e integración de hardware. Robótica aplicada.</p>
-                    </div>
-                    <div className="bg-white rounded-xl p-6 shadow">
-                      <div className="text-4xl mb-3">🤖</div>
-                      <h4 className="font-bold text-lg text-nebu-dark mb-1">Mitshell Ramos</h4>
-                      <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
-                      <p className="text-sm text-gray-700">Expansión de funcionalidades y desarrollo de nuevos productos.</p>
-                    </div>
-                  </div>
-                  <p className="text-center text-gray-700 italic">
-                    "Una forma concreta de hacer tecnología desde la PUCP: con rigor técnico, sentido social y cuidado por las personas."
-                  </p>
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
+                  <div className="text-4xl mb-3">⚙️</div>
+                  <h4 className="font-bold text-lg text-nebu-dark mb-1">Bryan Bastidas</h4>
+                  <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
+                  <p className="text-sm text-gray-700">Diseño e integración de hardware. Robótica aplicada.</p>
+                </div>
+                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
+                  <div className="text-4xl mb-3">🤖</div>
+                  <h4 className="font-bold text-lg text-nebu-dark mb-1">Mitshell Ramos</h4>
+                  <p className="text-sm text-gray-600 mb-2">Ingeniería Mecatrónica PUCP</p>
+                  <p className="text-sm text-gray-700">Expansión de funcionalidades y desarrollo de nuevos productos.</p>
                 </div>
               </div>
             </motion.div>
 
-            {/* Press Recognition Section */}
+            {/* Press Recognition Section - Simplified */}
             <motion.div
               className="mb-16"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
             >
-              <h2 className="text-3xl font-bold text-center mb-4 font-gochi text-nebu-dark">
-                {t("about.press.title")}
-              </h2>
-              <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
-                {t("about.press.subtitle")}
-              </p>
+              <div className="text-center mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold font-gochi text-primary mb-3">
+                  {t("about.press.title")}
+                </h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  {t("about.press.subtitle")}
+                </p>
+              </div>
 
-              <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <a 
-                  href="https://facultad-ciencias-ingenieria.pucp.edu.pe/2025/10/27/nebu-conoce-al-peluche-con-inteligencia-artificial-que-acompana-y-ensena-a-los-mas-pequenos/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-col md:flex-row items-center gap-6 p-6 group"
-                >
-                  {/* PUCP Logo/Badge */}
-                  <div className="flex-shrink-0 w-full md:w-48 h-32 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl flex items-center justify-center">
-                    <div className="text-center">
-                      <Award className="w-12 h-12 text-primary mx-auto mb-2" />
-                      <p className="text-sm font-bold text-nebu-dark">{t("about.press.pucp.badge")}</p>
-                      <p className="text-xs text-gray-600">{t("about.press.pucp.badgeSubtitle")}</p>
-                    </div>
+              <a 
+                href="https://facultad-ciencias-ingenieria.pucp.edu.pe/2025/10/27/nebu-conoce-al-peluche-con-inteligencia-artificial-que-acompana-y-ensena-a-los-mas-pequenos/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-md hover:border-primary/40 transition-all duration-200 group"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <Award className="w-6 h-6 text-primary" />
                   </div>
-
-                  {/* Content */}
                   <div className="flex-1">
-                    <h3 className="text-xl md:text-2xl font-bold text-nebu-dark mb-2 group-hover:text-primary transition-colors">
+                    <div className="text-xs font-semibold text-primary mb-1">
+                      {t("about.press.pucp.badge")} • {t("about.press.pucp.badgeSubtitle")}
+                    </div>
+                    <h3 className="text-lg md:text-xl font-bold text-nebu-dark mb-2 group-hover:text-primary transition-colors">
                       {t("about.press.pucp.title")}
                     </h3>
-                    <p className="text-gray-600 mb-3">
+                    <p className="text-gray-600 text-sm mb-3">
                       {t("about.press.pucp.description")}
                     </p>
                     <div className="flex items-center gap-2 text-sm text-primary font-semibold">
@@ -262,24 +225,25 @@ export default function OurStory() {
                       </svg>
                     </div>
                   </div>
-                </a>
-              </div>
+                </div>
+              </a>
             </motion.div>
 
-            {/* Video Section */}
+            {/* Video Section - Simplified */}
             <motion.div
               className="mb-16"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
             >
-              <h2 className="text-3xl font-bold text-center mb-8 font-gochi text-nebu-dark">
-                {t("about.videos.title")}
-              </h2>
+              <div className="text-center mb-6">
+                <h2 className="text-2xl md:text-3xl font-bold font-gochi text-primary">
+                  {t("about.videos.title")}
+                </h2>
+              </div>
 
               <div className="flex justify-center">
-                {/* Facebook Reel */}
-                <div className="bg-gray-50 rounded-2xl p-4 shadow-lg max-w-md w-full">
+                <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-200 max-w-md w-full">
                   <div className="relative overflow-hidden rounded-xl" style={{ paddingBottom: '177.78%' }}>
                     <iframe
                       title="Video de presentación de Nebu"
@@ -294,26 +258,27 @@ export default function OurStory() {
               </div>
             </motion.div>
 
-            {/* Safety Section */}
+            {/* Safety Section - Simplified */}
             <motion.div
-              className="bg-gray-50 rounded-2xl p-8 text-center space-y-6"
+              className="bg-white rounded-2xl p-8 text-center border border-gray-200 shadow-sm"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
             >
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow">
-                  <Award className="w-6 h-6 text-primary" />
-                </div>
-                <h2 className="text-2xl font-bold">{t("about.safety.title")}</h2>
+              <div className="inline-flex items-center justify-center gap-2 bg-primary/10 rounded-full px-5 py-2.5 mb-4">
+                <ShieldCheck className="w-5 h-5 text-primary" />
+                <span className="font-bold text-primary text-sm">{t("about.safety.title")}</span>
               </div>
 
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <p className="text-gray-700 max-w-2xl mx-auto mb-6 leading-relaxed">
                 {t("about.safety.description")}
               </p>
 
-              <button className="relative inline-flex items-center justify-center gap-2 font-gochi font-bold text-lg px-6 py-4 rounded-full w-auto self-center min-w-[200px] md:min-w-[240px] bg-primary text-white shadow-[0_6px_20px_rgba(255,181,74,0.3)] hover:shadow-[0_10px_30px_rgba(255,181,74,0.45)] transition-all duration-200 ease-out">
-                {t("about.safety.learnMore")}
+              <button className="inline-flex items-center justify-center gap-2 font-semibold text-base px-6 py-3 rounded-full bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all duration-200 ease-out">
+                <span>{t("about.safety.learnMore")}</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </button>
             </motion.div>
           </div>
