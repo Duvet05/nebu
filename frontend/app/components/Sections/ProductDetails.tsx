@@ -73,12 +73,12 @@ const ProductDetails: React.FC = () => {
       {/* Decorative background elements */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <img
-          src="/assets/decoration-strokes-scattered.png"
+          src="/assets/images/decoration-strokes-vertical.png"
           alt="Decoración superior derecha"
           className="absolute top-20 right-10 w-32 h-auto opacity-15 object-contain"
         />
         <img
-          src="/assets/decoration-strokes-vertical.png"
+          src="/assets/images/decoration-strokes-vertical.png"
           alt="Decoración inferior izquierda"
           className="absolute bottom-32 left-20 w-28 h-auto opacity-20 object-contain"
         />
