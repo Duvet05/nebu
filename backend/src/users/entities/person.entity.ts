@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  OneToOne,
   Index,
   ManyToOne,
   JoinColumn,
@@ -162,6 +163,10 @@ export class Person {
 
   @OneToMany('Relationship', 'personB')
   relationshipsAsB: any[];
+
+  // Relación inversa con User (opcional - una Person puede no tener usuario del sistema)
+  @OneToOne(() => User, user => user.person, { nullable: true })
+  user?: User;
 
   // Virtual properties - now use PersonName
   get preferredName(): PersonName | undefined {

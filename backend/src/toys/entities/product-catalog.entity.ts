@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
+import { Toy } from './toy.entity';
 
 @Entity('product_catalog')
 @Index(['slug'], { unique: true })
@@ -79,6 +80,10 @@ export class ProductCatalog {
 
   @Column({ type: 'int', default: 0 })
   orderCount: number;
+
+  // Relación inversa con Toy - Un producto del catálogo puede tener múltiples juguetes físicos
+  @OneToMany(() => Toy, toy => toy.productCatalog)
+  toys: Toy[];
 
   @CreateDateColumn()
   createdAt: Date;
