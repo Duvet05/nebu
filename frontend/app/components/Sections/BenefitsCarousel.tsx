@@ -182,6 +182,7 @@ export default function BenefitsCarousel() {
         .carousel-track {
           animation: scroll-carousel 40s linear infinite;
           will-change: transform;
+          transition: animation-duration 2s ease;
         }
         
         .carousel-track:hover {
@@ -189,12 +190,14 @@ export default function BenefitsCarousel() {
         }
         
         .benefit-card {
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s;
+          margin: 1rem 0;
         }
         
         .benefit-card:hover {
-          transform: scale(1.03) translateY(-4px) rotate(1deg);
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+          transform: scale(1.05) translateY(-8px);
+          box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
+          z-index: 20;
         }
         
         .dot-pulse {
@@ -244,7 +247,7 @@ export default function BenefitsCarousel() {
             className="relative w-full" 
             aria-label="Carousel de beneficios de Nebu"
           >
-            <div className="overflow-hidden">
+            <div className="overflow-hidden" style={{ padding: '2rem 0' }}>
               <div 
                 className="carousel-track flex gap-5"
                 aria-live="polite"
