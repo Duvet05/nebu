@@ -1,0 +1,34 @@
+http:
+  middlewares:
+    # Redirect www to non-www
+    redirect-www-to-non-www:
+      redirectRegex:
+        regex: "^https?://www\\.(.+)"
+        replacement: "https://${1}"
+        permanent: true
+    
+    # Security headers
+    security-headers:
+      headers:
+        frameDeny: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        forceSTSHeader: true
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        referrerPolicy: "strict-origin-when-cross-origin"
+        permissionsPolicy: "camera=(), microphone=(), geolocation=()"
+    
+    # Rate limiting
+    rate-limit:
+      rateLimit:
+        average: 50
+        burst: 100
+        period: "1m"
+    
+    # Basic auth for dashboard
+    auth-basic:
+      basicAuth:
+        users:
+          - "admin:$2y$10$7jKKUP7/K.H.zt2VXtmQ4O6IjR7nKNZD8W8.IW5UIzW8QjV1rJ1Ka"
