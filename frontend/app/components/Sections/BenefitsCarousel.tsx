@@ -15,12 +15,12 @@ const BenefitCard = memo(function BenefitCard({
   
   return (
     <div
-      className="benefit-card flex-shrink-0 w-80 lg:w-[360px] bg-white rounded-2xl p-5 shadow-sm border border-gray-200 h-[280px] flex flex-col"
+      className="benefit-card flex-shrink-0 w-80 lg:w-[380px] bg-white rounded-2xl p-6 shadow-sm border border-gray-200 h-[200px] flex flex-col"
     >
       {/* Icon container - simplified */}
       <div className="mb-3 flex items-center justify-between">
         <div
-          className={`w-10 h-10 bg-gradient-to-br ${benefit.gradient} rounded-lg flex items-center justify-center`}
+          className={`w-11 h-11 bg-gradient-to-br ${benefit.gradient} rounded-xl flex items-center justify-center`}
         >
           {benefit.iconType === 'svg' ? (
             <img
@@ -36,16 +36,16 @@ const BenefitCard = memo(function BenefitCard({
         </div>
         
         {/* Category badge */}
-        <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wide bg-gradient-to-r ${benefit.gradient} text-white`}>
+        <span className={`inline-flex items-center px-3 py-1 rounded-lg text-[11px] font-semibold uppercase tracking-wide bg-gradient-to-r ${benefit.gradient} text-white`}>
           {benefit.category}
         </span>
       </div>
 
-      <h3 className="text-lg font-bold text-gray-900 mb-2 leading-snug">
+      <h3 className="text-lg font-bold text-gray-900 mb-2.5 leading-tight">
         {benefit.title}
       </h3>
 
-      <p className="text-gray-600 text-sm leading-relaxed flex-1 overflow-y-auto">
+      <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
         {benefit.description}
       </p>
     </div>
