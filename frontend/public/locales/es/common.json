@@ -233,7 +233,9 @@
       "newsletter": "Quiero recibir actualizaciones sobre Nebu y ofertas especiales.",
       "submit": "Confirmar Pre-orden",
       "submitting": "Procesando...",
-      "securePayment": "Pago seguro y protegido"
+      "securePayment": "Pago seguro y protegido",
+      "soldOut": "¡Agotado!",
+      "reserveNow": "Reservar ahora"
     },
     "success": {
       "title": "¡Pre-orden confirmada!",

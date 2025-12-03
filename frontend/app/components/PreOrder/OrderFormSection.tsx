@@ -48,7 +48,9 @@ export default function OrderFormSection({
       transition={{ duration: 0.6, delay: 0.4 }}
     >
       <form onSubmit={onSubmit} className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-        <h3 className="text-2xl font-bold font-heading mb-8">{t("preOrder.contactInfo")}</h3>
+        <h3 className="text-2xl md:text-3xl font-bold font-heading mb-8 text-gray-900">
+          {t("preOrder.contactInfo")}
+        </h3>
         
         <ContactForm
           formData={formData}
@@ -93,7 +95,11 @@ export default function OrderFormSection({
         <button
           type="submit"
           disabled={loading || soldOut}
-          className="w-full bg-gradient-to-r from-primary to-accent text-white py-4 px-8 rounded-full font-semibold text-lg hover:shadow-lg hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+          className={`w-full py-4 px-8 rounded-full font-semibold text-lg transition-all duration-200 flex items-center justify-center gap-2 ${
+            soldOut
+              ? "bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 text-white cursor-not-allowed opacity-90 animate-pulse"
+              : "bg-gradient-to-r from-primary to-accent text-white hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          }`}
         >
           {loading ? (
             <>
@@ -101,11 +107,13 @@ export default function OrderFormSection({
               <span className="ml-2">{t("preOrder.form.submitting")}</span>
             </>
           ) : soldOut ? (
-            <>¡Agotado!</>
+            <>
+              {t("preOrder.form.soldOut")}
+            </>
           ) : (
             <>
               <ShoppingCart className="w-5 h-5" />
-              Reservar ahora • {t("preOrder.currency")} {reserveAmount}
+              {t("preOrder.form.reserveNow")} • {t("preOrder.currency")} {reserveAmount}
             </>
           )}
         </button>
