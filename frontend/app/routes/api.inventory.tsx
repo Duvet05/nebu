@@ -5,9 +5,13 @@ const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:4000";
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
-    const product = url.searchParams.get("product") || "Nebu Dino";
+    const productId = url.searchParams.get("productId");
 
-    const response = await fetch(`${BACKEND_URL}/inventory/${encodeURIComponent(product)}`);
+    if (!productId) {
+      return data({ error: "Product ID is required" }, { status: 400 });
+    }
+
+    const response = await fetch(`${BACKEND_URL}/inventory/${encodeURIComponent(productId)}`);
 
     if (!response.ok) {
       return data({ availableUnits: 20 }, { status: 200 }); // Fallback

@@ -54,8 +54,8 @@ export function usePreOrderForm(
   useEffect(() => {
     analytics.viewProduct(selectedProduct.id, selectedProduct.name);
 
-    // Fetch inventory from backend
-    fetch(`/api/inventory?product=${encodeURIComponent(selectedProduct.name)}`)
+    // Fetch inventory from backend using product ID (UUID)
+    fetch(`/api/inventory?productId=${encodeURIComponent(selectedProduct.id)}`)
       .then(res => res.json())
       .then(data => {
         if (data.availableUnits !== undefined) {
