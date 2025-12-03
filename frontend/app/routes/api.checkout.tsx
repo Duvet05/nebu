@@ -83,30 +83,70 @@ export async function action({ request }: ActionFunctionArgs) {
       html: generateCompanyNotificationEmail(checkoutData, orderId),
     });
 
-    // Validate stock availability before creating order
+    // Create order in backend (validates stock and decrements automatically)
+    const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://localhost:3000";
+
     try {
-      await validateStockAvailability(checkoutData.items);
-    } catch (error) {
-      console.error("Stock validation failed:", error);
-      return data(
-        {
-          error: error instanceof Error ? error.message : "Productos sin stock suficiente",
-          outOfStock: true
+      const orderResponse = await fetch(`${BACKEND_API_URL}/orders/checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        { status: 400 }
-      );
+        body: JSON.stringify({
+          email: checkoutData.email,
+          firstName: checkoutData.firstName,
+          lastName: checkoutData.lastName,
+          phone: checkoutData.phone,
+          address: checkoutData.address,
+          city: checkoutData.city,
+          postalCode: checkoutData.postalCode,
+          items: checkoutData.items,
+          subtotal: checkoutData.subtotal,
+          shipping: checkoutData.shipping,
+          total: checkoutData.total,
+          reserveAmount: checkoutData.reserveAmount,
+          agreeTerms: checkoutData.agreeTerms,
+          subscribeNewsletter: checkoutData.subscribeNewsletter,
+          metadata: {
+            culqiOrderId,
+          },
+        }),
+      });
+
+      if (!orderResponse.ok) {
+        const errorData = await orderResponse.json();
+        console.error("Backend order creation failed:", errorData);
+        return data(
+          {
+            error: errorData.message || "Error al crear la orden",
+            outOfStock: errorData.message?.includes("stock"),
+          },
+          { status: 400 }
+        );
+      }
+
+      const order = await orderResponse.json();
+
+      return data({
+        success: true,
+        orderId: order.orderNumber || orderId,
+        backendOrderId: order.id,
+        culqiOrderId,
+        message: "Pre-orden procesada exitosamente",
+      });
+
+    } catch (error) {
+      console.error("Error creating order in backend:", error);
+      // If backend fails, still return success but log the error
+      // This prevents losing the customer's order information
+      return data({
+        success: true,
+        orderId,
+        culqiOrderId,
+        message: "Pre-orden procesada exitosamente",
+        warning: "La orden se guardó localmente pero hubo un error con el sistema",
+      });
     }
-
-    // TODO: Save order to backend database via API
-    // TODO: Decrement stock via backend API
-    // TODO: Send to fulfillment system
-
-    return data({
-      success: true,
-      orderId,
-      culqiOrderId,
-      message: "Pre-orden procesada exitosamente",
-    });
   } catch (error) {
     console.error("Error processing checkout:", error);
     return data(
@@ -369,42 +409,6 @@ function generateCompanyNotificationEmail(data: CheckoutData, orderId: string): 
       </body>
     </html>
   `;
-}
-
-/**
- * Validate stock availability for checkout items
- */
-async function validateStockAvailability(items: CheckoutItem[]) {
-  const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://localhost:3000";
-
-  for (const item of items) {
-    try {
-      const response = await fetch(`${BACKEND_API_URL}/products/${item.productId}`);
-
-      if (!response.ok) {
-        throw new Error(`Producto ${item.productName} no encontrado`);
-      }
-
-      const product = await response.json();
-
-      // Check if product is in stock
-      if (!product.inStock && !product.preOrder) {
-        throw new Error(`${product.name} no está disponible`);
-      }
-
-      // Check if there's enough stock
-      if (product.inStock && product.stockCount < item.quantity) {
-        throw new Error(
-          `Stock insuficiente para ${product.name}. Disponible: ${product.stockCount}, Solicitado: ${item.quantity}`
-        );
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        throw error;
-      }
-      throw new Error(`Error validando disponibilidad de ${item.productName}`);
-    }
-  }
 }
 
 /**

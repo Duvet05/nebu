@@ -4,7 +4,7 @@ import {
   sendPreOrderNotification,
 } from "~/lib/resend.server";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:4000";
+const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://localhost:3000";
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
@@ -26,16 +26,48 @@ export async function action({ request }: ActionFunctionArgs) {
     const color = formData.get("color") as string;
     const totalPrice = parseInt(formData.get("totalPrice") as string);
     const paymentMethod = formData.get("paymentMethod") as string;
+    const productSlug = formData.get("productSlug") as string;
 
     // Validate required fields
     if (!email || !firstName || !lastName || !phone || !address || !city) {
       return data({ error: "Faltan campos requeridos" }, { status: 400 });
     }
 
-    // Save order to backend database
+    // Save lead to backend first (HOT lead from pre-order)
+    try {
+      await fetch(`${BACKEND_API_URL}/leads/pre-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          firstName,
+          lastName,
+          phone,
+          productSlug,
+          metadata: {
+            color,
+            quantity,
+            totalPrice,
+            address,
+            city,
+            postalCode,
+            paymentMethod,
+            source: "website_pre_order",
+            userAgent: request.headers.get("user-agent"),
+          },
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to save pre-order lead to backend:", error);
+      // Continue even if backend fails
+    }
+
+    // Save order to backend database (legacy orders endpoint)
     let orderId: string | null = null;
     try {
-      const backendResponse = await fetch(`${BACKEND_URL}/orders`, {
+      const backendResponse = await fetch(`${BACKEND_API_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +80,7 @@ export async function action({ request }: ActionFunctionArgs) {
           address,
           city,
           postalCode,
-          product: "Nebu Dino",
+          product: "Nebu",
           color,
           quantity,
           totalPrice,
@@ -63,9 +95,7 @@ export async function action({ request }: ActionFunctionArgs) {
       if (backendResponse.ok) {
         const order = await backendResponse.json();
         orderId = order.id;
-        // Order saved successfully to backend
       } else {
-        // Backend failed, but continue to send emails
         await backendResponse.text();
       }
     } catch {

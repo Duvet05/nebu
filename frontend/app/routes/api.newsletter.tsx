@@ -1,6 +1,8 @@
 import { data, type ActionFunctionArgs } from "@remix-run/node";
 import { sendNewsletterWelcome } from "~/lib/resend.server";
 
+const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://localhost:3000";
+
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
     return data({ error: "Method not allowed" }, { status: 405 });
@@ -9,12 +11,28 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     const formData = await request.formData();
     const email = formData.get("email") as string;
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
 
     if (!email || !email.includes("@")) {
       return data(
         { error: "Email inválido" },
         { status: 400 }
       );
+    }
+
+    // Save lead to backend
+    try {
+      await fetch(`${BACKEND_API_URL}/leads/newsletter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, firstName, lastName }),
+      });
+    } catch (error) {
+      console.error("Failed to save newsletter lead to backend:", error);
+      // Continue even if backend fails
     }
 
     // Send welcome email via Resend

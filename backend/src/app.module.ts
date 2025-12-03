@@ -35,6 +35,7 @@ import { VoiceModule } from './voice/voice.module';
 import { ToysModule } from './toys/toys.module';
 // import { MemoryModule } from './memory/memory.module'; // Temporalmente desactivado (depende de agents)
 import { OrdersModule } from './orders/orders.module';
+import { LeadsModule } from './leads/leads.module';
 import { RedisModule } from './config/redis.module';
 import { DynamicModulesConfig } from './config/dynamic-modules.config';
 
@@ -137,12 +138,13 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     CompanyModule,
     LiveKitModule,
     IoTModule,
-  VoiceModule,
+    VoiceModule,
   // Agents personalization module
   // AgentsModule, // Temporalmente desactivado por error de @nestjs/axios
-  ToysModule,
+    ToysModule,
     // MemoryModule, // Temporalmente desactivado (depende de agents)
     OrdersModule,
+    LeadsModule,
     NotificationsModule,
 
     // Dynamic Modules (loaded based on feature flags)
