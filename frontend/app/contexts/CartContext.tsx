@@ -50,6 +50,27 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items, isHydrated]);
 
   const addItem = (product: Product, color: ProductColor, quantity: number = 1) => {
+    // Check stock availability before adding
+    if (product.inStock && product.stockCount !== undefined) {
+      // Get current quantity in cart for this product/color
+      const existingItem = items.find(
+        item => item.product.id === product.id && item.color.id === color.id
+      );
+      const currentQuantityInCart = existingItem?.quantity || 0;
+      const newTotalQuantity = currentQuantityInCart + quantity;
+
+      // Check if we have enough stock
+      if (newTotalQuantity > product.stockCount) {
+        const available = product.stockCount - currentQuantityInCart;
+        if (available <= 0) {
+          alert(`No hay más stock disponible de ${product.name}`);
+          return;
+        }
+        alert(`Solo ${available} unidades disponibles de ${product.name}. Se agregará ${available} al carrito.`);
+        quantity = available;
+      }
+    }
+
     setItems(currentItems => {
       // Check if item already exists
       const existingItemIndex = currentItems.findIndex(
@@ -92,6 +113,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (quantity <= 0) {
       removeItem(productId, colorId);
       return;
+    }
+
+    // Find the item to check stock
+    const item = items.find(
+      i => i.product.id === productId && i.color.id === colorId
+    );
+
+    if (item && item.product.inStock && item.product.stockCount !== undefined) {
+      // Check if requested quantity exceeds stock
+      if (quantity > item.product.stockCount) {
+        alert(`Solo hay ${item.product.stockCount} unidades disponibles de ${item.product.name}`);
+        quantity = item.product.stockCount;
+      }
     }
 
     setItems(currentItems =>

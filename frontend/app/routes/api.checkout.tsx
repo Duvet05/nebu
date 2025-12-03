@@ -83,10 +83,23 @@ export async function action({ request }: ActionFunctionArgs) {
       html: generateCompanyNotificationEmail(checkoutData, orderId),
     });
 
-    // Here you would typically:
-    // 1. Save order to database
-    // 2. Update inventory
-    // 3. Send to fulfillment system
+    // Validate stock availability before creating order
+    try {
+      await validateStockAvailability(checkoutData.items);
+    } catch (error) {
+      console.error("Stock validation failed:", error);
+      return data(
+        {
+          error: error instanceof Error ? error.message : "Productos sin stock suficiente",
+          outOfStock: true
+        },
+        { status: 400 }
+      );
+    }
+
+    // TODO: Save order to backend database via API
+    // TODO: Decrement stock via backend API
+    // TODO: Send to fulfillment system
 
     return data({
       success: true,
@@ -356,6 +369,42 @@ function generateCompanyNotificationEmail(data: CheckoutData, orderId: string): 
       </body>
     </html>
   `;
+}
+
+/**
+ * Validate stock availability for checkout items
+ */
+async function validateStockAvailability(items: CheckoutItem[]) {
+  const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://localhost:3000";
+
+  for (const item of items) {
+    try {
+      const response = await fetch(`${BACKEND_API_URL}/products/${item.productId}`);
+
+      if (!response.ok) {
+        throw new Error(`Producto ${item.productName} no encontrado`);
+      }
+
+      const product = await response.json();
+
+      // Check if product is in stock
+      if (!product.inStock && !product.preOrder) {
+        throw new Error(`${product.name} no está disponible`);
+      }
+
+      // Check if there's enough stock
+      if (product.inStock && product.stockCount < item.quantity) {
+        throw new Error(
+          `Stock insuficiente para ${product.name}. Disponible: ${product.stockCount}, Solicitado: ${item.quantity}`
+        );
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error(`Error validando disponibilidad de ${item.productName}`);
+    }
+  }
 }
 
 /**

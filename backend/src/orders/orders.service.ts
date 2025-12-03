@@ -1,9 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { Order, OrderStatus } from './entities/order.entity';
+import { OrderItem } from './entities/order-item.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateCheckoutOrderDto } from './dto/create-checkout-order.dto';
 import { InventoryService } from './inventory.service';
+import { ProductCatalogService } from '../toys/services/product-catalog.service';
 
 @Injectable()
 export class OrdersService {
@@ -12,8 +15,110 @@ export class OrdersService {
   constructor(
     @InjectRepository(Order)
     private ordersRepository: Repository<Order>,
+    @InjectRepository(OrderItem)
+    private orderItemsRepository: Repository<OrderItem>,
     private inventoryService: InventoryService,
+    private productCatalogService: ProductCatalogService,
+    private dataSource: DataSource,
   ) {}
+
+  /**
+   * Create order from checkout with stock validation and decrement
+   */
+  async createFromCheckout(dto: CreateCheckoutOrderDto): Promise<Order> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // 1. Validate stock availability for all items
+      for (const item of dto.items) {
+        const product = await this.productCatalogService.findOne(item.productId);
+
+        // Check if product is available
+        if (!product.inStock && !product.preOrder) {
+          throw new BadRequestException(`${product.name} no está disponible`);
+        }
+
+        // Check sufficient stock (only for in-stock items, not pre-orders)
+        if (product.inStock && product.stockCount < item.quantity) {
+          throw new BadRequestException(
+            `Stock insuficiente para ${product.name}. Disponible: ${product.stockCount}, Solicitado: ${item.quantity}`
+          );
+        }
+      }
+
+      // 2. Generate order number
+      const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+
+      // 3. Create order
+      const order = queryRunner.manager.create(Order, {
+        orderNumber,
+        contactEmail: dto.email,
+        contactPhone: dto.phone,
+        shippingAddress: dto.address,
+        shippingCity: dto.city,
+        shippingPostalCode: dto.postalCode,
+        subtotal: dto.subtotal,
+        shippingCost: dto.shipping,
+        totalAmount: dto.total,
+        reserveAmount: dto.reserveAmount,
+        status: OrderStatus.PENDING,
+        metadata: {
+          ...dto.metadata,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          subscribeNewsletter: dto.subscribeNewsletter,
+        },
+      });
+
+      const savedOrder = await queryRunner.manager.save(order);
+
+      // 4. Create order items and decrement stock
+      for (const item of dto.items) {
+        const product = await this.productCatalogService.findOne(item.productId);
+
+        // Create order item
+        const orderItem = queryRunner.manager.create(OrderItem, {
+          orderId: savedOrder.id,
+          productId: item.productId,
+          quantity: item.quantity,
+          unitPrice: item.price,
+          subtotal: item.price * item.quantity,
+          color: item.colorName,
+          customization: {
+            colorId: item.colorId,
+          },
+        });
+
+        await queryRunner.manager.save(orderItem);
+
+        // Decrement stock (only for in-stock items, not pre-orders)
+        if (product.inStock) {
+          await this.productCatalogService.decrementStock(item.productId, item.quantity);
+          this.logger.log(`Decremented stock for ${product.name}: ${item.quantity} units`);
+        }
+
+        // Increment order count
+        await this.productCatalogService.incrementOrderCount(item.productId);
+      }
+
+      // 5. Commit transaction
+      await queryRunner.commitTransaction();
+
+      this.logger.log(`Order created from checkout: ${savedOrder.orderNumber} - ${dto.email}`);
+
+      // 6. Return order with items
+      return this.findOne(savedOrder.id);
+
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      this.logger.error(`Failed to create order from checkout: ${error.message}`, error.stack);
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     try {
@@ -78,7 +183,10 @@ export class OrdersService {
   }
 
   async findOne(id: string): Promise<Order> {
-    return this.ordersRepository.findOne({ where: { id } });
+    return this.ordersRepository.findOne({
+      where: { id },
+      relations: ['items', 'items.product', 'payments'],
+    });
   }
 
   async updateStatus(id: string, status: OrderStatus): Promise<Order> {

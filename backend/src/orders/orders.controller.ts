@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param, Patch, HttpCode, HttpStatus } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateCheckoutOrderDto } from './dto/create-checkout-order.dto';
 import { Order, OrderStatus } from './entities/order.entity';
 
 @Controller('orders')
@@ -11,6 +12,12 @@ export class OrdersController {
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
     return this.ordersService.create(createOrderDto);
+  }
+
+  @Post('checkout')
+  @HttpCode(HttpStatus.CREATED)
+  async createFromCheckout(@Body() dto: CreateCheckoutOrderDto): Promise<Order> {
+    return this.ordersService.createFromCheckout(dto);
   }
 
   @Get()

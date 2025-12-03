@@ -175,10 +175,28 @@ export default function ProductosPage() {
                         {product.slug.includes('jester') && "🤡"}
                         {product.slug.includes('sawbite') && "🪚"}
                       </div>
-                    </div>                    {/* Stock indicator */}
-                    {!product.inStock && (
+                    </div>
+                    {/* Stock indicator */}
+                    {product.inStock && product.stockCount !== undefined && (
+                      <div className="absolute top-4 right-4">
+                        <div className={`backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold ${
+                          product.stockCount > 10
+                            ? 'bg-green-100/90 text-green-700'
+                            : product.stockCount > 0
+                            ? 'bg-yellow-100/90 text-yellow-700'
+                            : 'bg-red-100/90 text-red-700'
+                        }`}>
+                          {product.stockCount > 10
+                            ? 'En Stock'
+                            : product.stockCount > 0
+                            ? `Solo ${product.stockCount} disponibles`
+                            : 'Agotado'}
+                        </div>
+                      </div>
+                    )}
+                    {!product.inStock && product.preOrder && (
                       <div className="absolute bottom-4 left-4">
-                        <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-700">
+                        <div className="bg-blue-100/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-blue-700">
                           {t("products.badges.preOrder")}
                         </div>
                       </div>
@@ -243,7 +261,7 @@ export default function ProductosPage() {
 
                     {/* CTA Buttons */}
                     <div className="space-y-2">
-                      {product.inStock ? (
+                      {product.inStock && product.stockCount > 0 ? (
                         <>
                           <button
                             onClick={() => handleAddToCart(product.id)}
@@ -259,6 +277,13 @@ export default function ProductosPage() {
                             {t("products.cta.preOrderDirect")}
                           </Link>
                         </>
+                      ) : product.preOrder ? (
+                        <Link
+                          to={`/pre-order?product=${product.slug}`}
+                          className="block w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:scale-[1.02] text-center"
+                        >
+                          {t("products.cta.preOrder")}
+                        </Link>
                       ) : (
                         <BackInStockNotify
                           productId={product.id}

@@ -11,17 +11,21 @@ import { OrderStatusHistory } from './entities/order-status-history.entity';
 import { PaymentTransaction } from './entities/payment-transaction.entity';
 import { ShippingMethod } from './entities/shipping-method.entity';
 import { Inventory } from './entities/inventory.entity';
+import { ToysModule } from '../toys/toys.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([
-    Order,
-    OrderItem,
-    OrderType,
-    OrderStatusHistory,
-    PaymentTransaction,
-    ShippingMethod,
-    Inventory
-  ])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Order,
+      OrderItem,
+      OrderType,
+      OrderStatusHistory,
+      PaymentTransaction,
+      ShippingMethod,
+      Inventory
+    ]),
+    ToysModule,
+  ],
   controllers: [OrdersController, InventoryController],
   providers: [OrdersService, InventoryService],
   exports: [OrdersService, InventoryService],
