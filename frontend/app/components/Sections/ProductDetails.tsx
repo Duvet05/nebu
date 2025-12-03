@@ -162,7 +162,7 @@ const ProductDetails: React.FC = () => {
                 {features.map((feature, index) => {
                   const Icon = feature.icon;
                   return (
-                    <motion.li key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="flex items-center gap-3 group cursor-default">
+                    <motion.li key={index} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }} transition={{ duration: 0.2, ease: "easeOut" }} className="flex items-center gap-3 group cursor-default">
                       <div className={`w-10 h-10 ${colorMap[feature.color]} rounded-full flex items-center justify-center transition-colors duration-300 shadow-sm`} role="img" aria-label={feature.label}>
                         <Icon className={`w-5 h-5 ${dotColorMap[feature.color].replace('bg-', 'text-')}`} />
                       </div>

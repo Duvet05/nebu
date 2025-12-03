@@ -11,9 +11,10 @@ export default function TikTokShowcase() {
         <div className="text-center mb-12">
           <motion.div
             className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-md mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -100px 0px" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <Video className="w-5 h-5 text-primary" />
             <span className="text-sm font-semibold text-gray-700">
@@ -23,18 +24,20 @@ export default function TikTokShowcase() {
 
           <motion.h2
             className="text-4xl md:text-5xl lg:text-6xl font-bold font-gochi text-primary mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -100px 0px" }}
+            transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
           >
             {t("tiktokShowcase.title", "Descubre Nebu en TikTok")}
           </motion.h2>
 
           <motion.p
             className="text-xl text-gray-600 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -100px 0px" }}
+            transition={{ duration: 0.3, delay: 0.2, ease: "easeOut" }}
           >
             {t("tiktokShowcase.subtitle", "Mira cómo Nebu transforma cada momento en una aventura educativa")}
           </motion.p>
@@ -42,9 +45,10 @@ export default function TikTokShowcase() {
 
         <motion.div
           className="max-w-md mx-auto"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.1, margin: "0px 0px -100px 0px" }}
+          transition={{ duration: 0.3, delay: 0.3, ease: "easeOut" }}
         >
           <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden">
             <div className="relative" style={{ paddingBottom: "177.78%" }}>

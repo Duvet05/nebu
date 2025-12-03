@@ -80,23 +80,26 @@ export default function ConversationExamples() {
   };
 
   const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
-        staggerChildren: 0.1
+        duration: 0.3,
+        ease: [0.4, 0, 0.2, 1]
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.4 }
+      transition: { 
+        duration: 0.2,
+        ease: [0.4, 0, 0.2, 1]
+      }
     }
   };
 
@@ -127,7 +130,8 @@ export default function ConversationExamples() {
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1, margin: "0px 0px -100px 0px" }}
           className="text-center mb-12"
         >
           <motion.div 
@@ -163,7 +167,8 @@ export default function ConversationExamples() {
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1, margin: "0px 0px -100px 0px" }}
           className="flex flex-wrap justify-center gap-2 mb-8"
         >
           {categories.map((category) => {
