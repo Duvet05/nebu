@@ -1,4 +1,5 @@
 import { IsEmail, IsString, IsOptional, IsEnum, IsNumber, Min, Max } from 'class-validator';
+import { LeadTemperature } from '../entities/lead.entity';
 
 export enum LeadSource {
   WEBSITE_FORM = 'WEBSITE',
@@ -9,12 +10,6 @@ export enum LeadSource {
   WHATSAPP = 'WHATSAPP',
   REFERRAL = 'REFERRAL',
   OTHER = 'OTHER',
-}
-
-export enum LeadTemperature {
-  COLD = 'COLD',
-  WARM = 'WARM',
-  HOT = 'HOT',
 }
 
 export class CreateLeadDto {

@@ -15,6 +15,7 @@ import { Divider } from "~/components/Divider";
 import { BUSINESS } from "~/config/constants";
 import { fetchProducts, enrichProduct } from "~/lib/api/products";
 import { json } from "@remix-run/node";
+import { ProductImage } from "~/components/ProductImage";
 
 export const meta: MetaFunction = () => {
   return [
@@ -154,28 +155,9 @@ export default function ProductosPage() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
                   {/* Product Image */}
-                    <div className="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      {/* Placeholder - Replace with actual image */}
-                      <div className={`w-48 h-48 rounded-full bg-gradient-to-br ${colors[0]?.gradient || 'from-gray-200 to-gray-300'} opacity-50`}></div>
-                      <div className="absolute text-6xl">
-                        {product.slug.includes('dino') && "🦕"}
-                        {product.slug.includes('gato') && "🐱"}
-                        {product.slug.includes('conejo') && "🐰"}
-                        {product.slug.includes('oso') && "�"}
-                        {product.slug.includes('dragon') && "🐉"}
-                        {product.slug.includes('star') && "⭐"}
-                        {product.slug.includes('chaos') && "�"}
-                        {product.slug.includes('kosmik') && "👾"}
-                        {product.slug.includes('pup') && "🐶"}
-                        {product.slug.includes('gruñon') && "👹"}
-                        {product.slug.includes('arms') && "🤗"}
-                        {product.slug.includes('kitty') && "😺"}
-                        {product.slug.includes('bunny') && "🐰"}
-                        {product.slug.includes('jester') && "🤡"}
-                        {product.slug.includes('sawbite') && "🪚"}
-                      </div>
-                    </div>
+                  <div className="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                    <ProductImage images={product.images} name={product.name} slug={product.slug} gradient={colors[0]?.gradient} />
+
                     {/* Stock indicator */}
                     {product.inStock && product.stockCount !== undefined && (
                       <div className="absolute top-4 right-4">

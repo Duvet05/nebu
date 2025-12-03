@@ -1,10 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+  import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Lead } from './entities/lead.entity';
+import { Lead, LeadTemperature } from './entities/lead.entity';
 import { LeadSource } from './entities/lead-source.entity';
 import { LeadStatus } from './entities/lead-status.entity';
-import { CreateLeadDto, CreateNewsletterLeadDto, CreatePreOrderLeadDto, LeadTemperature } from './dto/create-lead.dto';
+import { CreateLeadDto, CreateNewsletterLeadDto, CreatePreOrderLeadDto } from './dto/create-lead.dto';
 
 @Injectable()
 export class LeadsService {
@@ -46,8 +46,12 @@ export class LeadsService {
       if (!newStatus) {
         newStatus = this.leadStatusRepository.create({
           name: 'New',
-          displayOrder: 1,
+          code: 'NEW',
+          description: 'Nuevo lead sin contactar',
+          order: 0,
           active: true,
+          isFinal: false,
+          color: '#3B82F6',
         });
         await this.leadStatusRepository.save(newStatus);
       }
