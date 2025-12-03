@@ -79,6 +79,7 @@ export default function ConversationExamples() {
     return t(`conversationExamples.categories.${category}`);
   };
 
+  // Animation variants for consistent motion
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -86,19 +87,7 @@ export default function ConversationExamples() {
       y: 0,
       transition: {
         duration: 0.3,
-        ease: [0.4, 0, 0.2, 1]
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { 
-        duration: 0.2,
-        ease: [0.4, 0, 0.2, 1]
+        ease: [0.4, 0, 0.2, 1] as const
       }
     }
   };
@@ -134,29 +123,22 @@ export default function ConversationExamples() {
           viewport={{ once: true, amount: 0.1, margin: "0px 0px -100px 0px" }}
           className="text-center mb-12"
         >
-          <motion.div 
-            variants={itemVariants}
-            className="inline-block bg-primary/10 rounded-2xl px-8 py-6 mb-8"
-          >
+          <div className="inline-block bg-primary/10 rounded-2xl px-8 py-6 mb-8">
             <h2 className="text-4xl md:text-5xl font-bold font-gochi mb-4 text-primary">
               {t("educationalContent.title")}
             </h2>
-          </motion.div>
+          </div>
           
-          <motion.p 
-            variants={itemVariants}
+          <p 
             className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-16"
             dangerouslySetInnerHTML={{ __html: t("educationalContent.subtitle") }}
           />
 
-          <motion.div 
-            variants={itemVariants}
-            className="max-w-4xl mx-auto mb-4"
-          >
+          <div className="max-w-4xl mx-auto mb-4">
             <p className="block mb-3 text-xl md:text-2xl font-normal text-nebu-dark/70">
               {t("conversations.title")}
             </p>
-          </motion.div>
+          </div>
         </motion.div>
 
         {/* Category Filter - Redesigned */}
@@ -174,7 +156,9 @@ export default function ConversationExamples() {
             return (
               <motion.button
                 key={category}
-                variants={itemVariants}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                 onClick={() => setSelectedCategory(category)}
                 className={`
                   relative flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 overflow-hidden
@@ -251,9 +235,10 @@ export default function ConversationExamples() {
 
         {/* Call to Actions */}
         <motion.div
-          variants={itemVariants}
-          initial="hidden"
-          animate="visible"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1, margin: "0px 0px -100px 0px" }}
+          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
           className="text-center mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           {/* Primary CTA */}
@@ -269,8 +254,8 @@ export default function ConversationExamples() {
           {/* Secondary CTA */}
           <motion.a
             href="/our-story"
-            className="inline-flex items-center justify-center gap-2 font-semibold text-base px-6 py-4 rounded-full min-w-[240px] bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all duration-200 ease-out"
-            whileHover={{ scale: 1.03, y: -2 }}
+            className="inline-flex items-center justify-center gap-2 font-gochi font-bold text-base px-8 py-4 rounded-full min-w-[240px] md:min-w-[280px] bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white shadow-[0_4px_15px_rgba(255,181,74,0.2)] hover:shadow-[0_8px_25px_rgba(255,181,74,0.35)] transition-all duration-200 ease-out"
+            whileHover={{ scale: 1.05, y: -3 }}
             whileTap={{ scale: 0.98 }}
           >
             <span>{t("educationalContent.learnMore")}</span>
