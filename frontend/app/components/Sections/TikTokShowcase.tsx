@@ -48,20 +48,51 @@ export default function TikTokShowcase() {
         >
           <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden">
             <div className="relative" style={{ paddingBottom: "177.78%" }}>
-              <iframe
-                src="https://www.tiktok.com/embed/7563090924025203976"
-                className="absolute top-0 left-0 w-full h-full"
-                allowFullScreen
-                scrolling="no"
-                allow="encrypted-media;"
-                title="TikTok Video - Nebu en acción"
-              />
+              <style dangerouslySetInnerHTML={{
+                __html: `
+                  .tiktok-embed iframe {
+                    pointer-events: none;
+                  }
+                  .tiktok-embed::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 80px;
+                    height: 100%;
+                    background: transparent;
+                    z-index: 10;
+                    pointer-events: auto;
+                  }
+                  .tiktok-embed::before {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    height: 80px;
+                    background: transparent;
+                    z-index: 10;
+                    pointer-events: auto;
+                  }
+                `
+              }} />
+              <div className="tiktok-embed absolute top-0 left-0 w-full h-full">
+                <iframe
+                  src="https://www.tiktok.com/embed/7563090924025203976"
+                  className="absolute top-0 left-0 w-full h-full"
+                  allowFullScreen
+                  scrolling="no"
+                  allow="encrypted-media;"
+                  title="TikTok Video - Nebu en acción"
+                />
+              </div>
             </div>
           </div>
 
           <div className="mt-6 text-center">
             <a
-              href="https://www.tiktok.com/@flow_.ia"
+              href="https://www.tiktok.com/@flow_.ia/video/7563090924025203976"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors font-semibold"
