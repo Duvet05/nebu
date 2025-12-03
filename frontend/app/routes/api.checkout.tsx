@@ -84,10 +84,10 @@ export async function action({ request }: ActionFunctionArgs) {
     });
 
     // Create order in backend (validates stock and decrements automatically)
-    const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://localhost:3000";
+    const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
 
     try {
-      const orderResponse = await fetch(`${BACKEND_API_URL}/orders/checkout`, {
+      const orderResponse = await fetch(`${BACKEND_URL}/orders/checkout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

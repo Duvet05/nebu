@@ -1,7 +1,7 @@
 import { data, type ActionFunctionArgs } from "@remix-run/node";
 import { sendNewsletterWelcome } from "~/lib/resend.server";
 
-const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://localhost:3000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
@@ -23,7 +23,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Save lead to backend
     try {
-      await fetch(`${BACKEND_API_URL}/leads/newsletter`, {
+      await fetch(`${BACKEND_URL}/leads/newsletter`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -4,7 +4,7 @@ import {
   sendPreOrderNotification,
 } from "~/lib/resend.server";
 
-const BACKEND_API_URL = process.env.BACKEND_API_URL || "http://localhost:3000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
@@ -35,7 +35,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Save lead to backend first (HOT lead from pre-order)
     try {
-      await fetch(`${BACKEND_API_URL}/leads/pre-order`, {
+      await fetch(`${BACKEND_URL}/leads/pre-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export async function action({ request }: ActionFunctionArgs) {
     // Save order to backend database (legacy orders endpoint)
     let orderId: string | null = null;
     try {
-      const backendResponse = await fetch(`${BACKEND_API_URL}/orders`, {
+      const backendResponse = await fetch(`${BACKEND_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
