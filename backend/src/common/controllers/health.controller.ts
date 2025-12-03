@@ -146,9 +146,9 @@ export class HealthService {
   private async checkExternalServices() {
     const checks = {
       smtp: !!this.configService.get('smtp.host'),
-      stripe: !!(
-        this.configService.get('STRIPE_SECRET_KEY') &&
-        this.configService.get('STRIPE_PUBLISHABLE_KEY')
+      culqi: !!(
+        this.configService.get('CULQI_SECRET_KEY') &&
+        this.configService.get('CULQI_PUBLIC_KEY')
       ),
       frontend: await this.checkFrontend(),
     };
