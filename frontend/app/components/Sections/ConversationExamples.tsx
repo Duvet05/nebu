@@ -156,10 +156,6 @@ export default function ConversationExamples() {
             <p className="text-2xl md:text-3xl font-bold font-gochi text-primary leading-tight mb-3">
               {t("conversations.title")}
             </p>
-            
-            <p className="text-base md:text-lg text-gray-600 leading-relaxed font-medium">
-              {t("conversations.subtitle")}
-            </p>
           </motion.div>
         </motion.div>
 

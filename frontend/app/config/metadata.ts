@@ -78,7 +78,7 @@ export function getStructuredData(): OrganizationSchema {
   };
 }
 
-export function getMetaTags(locale: string = 'es') {
+export function getMetaTags(_locale: string = 'es') {
   // Solo meta tags globales que NO se definen en páginas individuales
   // Las páginas definen: title, description, canonical, og:*, twitter:*
   

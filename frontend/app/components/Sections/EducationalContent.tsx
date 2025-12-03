@@ -1,4 +1,4 @@
-import { Book, Brain, Heart, Shield, Sparkles, Zap } from 'lucide-react';
+import { Book, Brain, Heart, Shield } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function EducationalContent() {
