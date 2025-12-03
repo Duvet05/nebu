@@ -10,6 +10,7 @@ import TeamSection from "~/components/About/TeamSection";
 import PressSection from "~/components/About/PressSection";
 import VideoSection from "~/components/About/VideoSection";
 import SafetySection from "~/components/About/SafetySection";
+import TikTokShowcase from "~/components/Sections/TikTokShowcase";
 import { Divider } from "~/components/Divider";
 import i18next from "~/lib/i18next.server";
 import { BUSINESS } from "~/config/constants";
@@ -110,6 +111,9 @@ export default function OurStory() {
             <SafetySection />
           </div>
         </section>
+
+        {/* TikTok Showcase Section */}
+        <TikTokShowcase />
       </main>
 
       <Newsletter />

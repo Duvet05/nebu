@@ -94,7 +94,7 @@ export default function PreOrder() {
         {/* Pre-Order Form */}
         <section className="pb-20 px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12">
+            <div className="grid lg:grid-cols-2 gap-12 lg:items-stretch">
               
               {/* Product Configuration */}
               <ProductConfigurationSection
