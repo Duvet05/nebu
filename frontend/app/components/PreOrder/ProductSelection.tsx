@@ -54,31 +54,45 @@ export default function ProductSelection({
         </div>
         
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
-          {products.slice(0, 5).map((product) => (
-            <Link
-              key={product.id}
-              to={`/pre-order?product=${product.slug}`}
-              className={`p-2.5 rounded-lg border-2 transition-all duration-200 text-center ${
-                selectedProduct.id === product.id
-                  ? "border-primary bg-primary/5"
-                  : "border-gray-200 hover:border-primary/50"
-              }`}
-            >
-              <div className="text-xl mb-0.5">
-                {product.id === "nebu-dino" && "🦕"}
-                {product.id === "nebu-gato" && "🐱"}
-                {product.id === "nebu-conejo" && "🐰"}
-                {product.id === "nebu-oso" && "🐻"}
-                {product.id === "nebu-dragon" && "🐉"}
-              </div>
-              <span className="text-xs font-medium text-gray-900 block truncate">
-                {product.name.replace("Nebu ", "")}
-              </span>
-              {!product.inStock && (
-                <div className="text-xs text-gray-500 mt-0.5">Pre-orden</div>
-              )}
-            </Link>
-          ))}
+          {products.slice(0, 6).map((product) => {
+            // Extract emoji from concept field or use default based on slug
+            const getEmoji = (product: Product) => {
+              if (product.concept) {
+                const emojiMatch = product.concept.match(/[\p{Emoji}]/u);
+                if (emojiMatch) return emojiMatch[0];
+              }
+              // Fallback based on slug
+              if (product.slug.includes('dino')) return '🦕';
+              if (product.slug.includes('capibara')) return '🦦';
+              if (product.slug.includes('gato') || product.slug.includes('cat')) return '🐱';
+              if (product.slug.includes('conejo') || product.slug.includes('bunny')) return '🐰';
+              if (product.slug.includes('oso')) return '🐻';
+              if (product.slug.includes('dragon')) return '🐉';
+              return '🎁';
+            };
+
+            return (
+              <Link
+                key={product.id}
+                to={`/pre-order?product=${product.slug}`}
+                className={`p-2.5 rounded-lg border-2 transition-all duration-200 text-center ${
+                  selectedProduct.id === product.id
+                    ? "border-primary bg-primary/5"
+                    : "border-gray-200 hover:border-primary/50"
+                }`}
+              >
+                <div className="text-xl mb-0.5">
+                  {getEmoji(product)}
+                </div>
+                <span className="text-xs font-medium text-gray-900 block truncate">
+                  {product.name.replace("Nebu ", "")}
+                </span>
+                {!product.inStock && (
+                  <div className="text-xs text-gray-500 mt-0.5">Pre-orden</div>
+                )}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Selector de Cantidad Integrado */}

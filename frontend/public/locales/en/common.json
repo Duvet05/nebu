@@ -329,6 +329,7 @@
     },
     "cta": {
       "addToCart": "Add to Cart",
+      "preOrder": "Pre-order",
       "preOrderDirect": "Pre-order Direct",
       "viewDetails": "View full details →"
     },
