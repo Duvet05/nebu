@@ -237,10 +237,46 @@ html, body, #__next {
   height: 100%;
 }
 
+/* Smooth scrolling optimizations */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   color: var(--color-text);
   background: var(--color-bg);
   transition: background-color .2s ease, color .2s ease;
+  /* Hardware acceleration for smooth scrolling */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Optimize images and transforms for GPU acceleration */
+img, video, iframe {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Smooth transform animations */
+* {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Navigation Links */

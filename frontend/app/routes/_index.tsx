@@ -182,22 +182,26 @@ export default function Index() {
       <div className="min-h-screen bg-nebu-bg relative">
         <Header />
 
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        {/* Decorative background elements - optimized for smooth scrolling */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true" style={{ willChange: 'transform' }}>
           <img
             src="/assets/images/decoration-strokes-vertical.png"
             alt=""
             className="absolute top-20 right-10 w-32 h-auto opacity-15 object-contain"
+            loading="lazy"
+            decoding="async"
           />
           <img
             src="/assets/images/decoration-strokes-vertical.png"
             alt=""
             className="absolute bottom-32 left-20 w-28 h-auto opacity-20 object-contain"
+            loading="lazy"
+            decoding="async"
           />
         </div>
 
       {/* Hero Section - 95% Screen Height */}
-      <main id="main-content" className="relative z-10">
+      <main id="main-content" className="relative z-10" style={{ isolation: 'isolate' }}>
         <HeroSection onCTAClick={handleCTAClick} />
 
   {/* Product Details Section */}
