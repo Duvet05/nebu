@@ -549,6 +549,12 @@
       "address": "Lima, Perú"
     }
   },
+  "tiktokShowcase": {
+    "badge": "¡Míranos en acción!",
+    "title": "Descubre Nebu en TikTok",
+    "subtitle": "Mira cómo Nebu transforma cada momento en una aventura educativa",
+    "followUs": "Síguenos en TikTok @flow_.ia"
+  },
   "newsletter": {
     "title": "Suscríbete para historias inspiradoras, ofertas y noticias.",
     "description": "Mantente al día con las últimas aventuras de Nebu y consejos para padres.",

@@ -7,6 +7,7 @@ import ConversationExamples from "~/components/Sections/ConversationExamples";
 import BenefitsCarousel from "~/components/Sections/BenefitsCarousel";
 import HeroQuote from "~/components/Sections/HeroQuote";
 import ProductDetails from "~/components/Sections/ProductDetails";
+import TikTokShowcase from "~/components/Sections/TikTokShowcase";
 import { HeroSection } from "~/components/Sections/HeroSection";
 import { Divider } from "~/components/Divider";
 import { useEffect } from "react";
@@ -212,6 +213,11 @@ export default function Index() {
         {/* Educational Content & Conversation Examples Section - Combined */}
         <ConversationExamples />
         
+        <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
+
+        {/* TikTok Showcase Section */}
+        <TikTokShowcase />
+
         <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
         {/* Hero Quote Section */}
