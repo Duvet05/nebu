@@ -159,7 +159,9 @@ export async function action({ request }: ActionFunctionArgs) {
 function generateCustomerConfirmationEmail(data: CheckoutData, orderId: string): string {
   const itemsHtml = data.items
     .map(
-      (item) => `
+      (item) => {
+        const price = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
+        return `
     <tr>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">
         <strong>${item.productName}</strong><br>
@@ -169,13 +171,14 @@ function generateCustomerConfirmationEmail(data: CheckoutData, orderId: string):
         ${item.quantity}
       </td>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right;">
-        S/ ${item.price.toFixed(2)}
+        S/ ${price.toFixed(2)}
       </td>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right;">
-        S/ ${(item.price * item.quantity).toFixed(2)}
+        S/ ${(price * item.quantity).toFixed(2)}
       </td>
     </tr>
-  `
+  `;
+      }
     )
     .join("");
 
@@ -319,15 +322,18 @@ function generateCustomerConfirmationEmail(data: CheckoutData, orderId: string):
 function generateCompanyNotificationEmail(data: CheckoutData, orderId: string): string {
   const itemsHtml = data.items
     .map(
-      (item) => `
+      (item) => {
+        const price = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
+        return `
     <tr>
       <td style="padding: 8px; border-bottom: 1px solid #e5e7eb;">${item.productName}</td>
       <td style="padding: 8px; border-bottom: 1px solid #e5e7eb;">${item.colorName}</td>
       <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: center;">${item.quantity}</td>
-      <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: right;">S/ ${item.price.toFixed(2)}</td>
-      <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: right;">S/ ${(item.price * item.quantity).toFixed(2)}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: right;">S/ ${price.toFixed(2)}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: right;">S/ ${(price * item.quantity).toFixed(2)}</td>
     </tr>
-  `
+  `;
+      }
     )
     .join("");
 
