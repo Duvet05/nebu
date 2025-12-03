@@ -15,7 +15,7 @@ const BenefitCard = memo(function BenefitCard({
   
   return (
     <div
-      className="benefit-card flex-shrink-0 w-80 lg:w-[360px] bg-white rounded-2xl p-5 shadow-sm border border-gray-200 h-full"
+      className="benefit-card flex-shrink-0 w-80 lg:w-[360px] bg-white rounded-2xl p-5 shadow-sm border border-gray-200 h-[280px] flex flex-col"
     >
       {/* Icon container - simplified */}
       <div className="mb-3 flex items-center justify-between">
@@ -45,7 +45,7 @@ const BenefitCard = memo(function BenefitCard({
         {benefit.title}
       </h3>
 
-      <p className="text-gray-600 text-sm leading-relaxed">
+      <p className="text-gray-600 text-sm leading-relaxed flex-1 overflow-y-auto">
         {benefit.description}
       </p>
     </div>
