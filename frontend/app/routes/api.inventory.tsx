@@ -1,13 +1,12 @@
 import { data, type LoaderFunctionArgs, type ActionFunctionArgs } from "@remix-run/node";
-
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:4000";
+import { API_ENDPOINTS } from "~/config/api.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
     const product = url.searchParams.get("product") || "Nebu Dino";
 
-    const response = await fetch(`${BACKEND_URL}/inventory/${encodeURIComponent(product)}`);
+    const response = await fetch(API_ENDPOINTS.inventory.byProduct(encodeURIComponent(product)));
 
     if (!response.ok) {
       return data({ availableUnits: 20 }, { status: 200 }); // Fallback
@@ -51,7 +50,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     // Send to backend
-    const response = await fetch(`${BACKEND_URL}/inventory/notifications`, {
+    const response = await fetch(API_ENDPOINTS.inventory.notifications(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

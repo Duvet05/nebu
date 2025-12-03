@@ -2,6 +2,7 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { data } from "@remix-run/node";
 import { Resend } from "resend";
 import { CONTACT, BUSINESS } from "~/config/constants";
+import { API_ENDPOINTS } from "~/config/api.server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const CULQI_SECRET_KEY = process.env.CULQI_SECRET_KEY || "";
@@ -84,10 +85,8 @@ export async function action({ request }: ActionFunctionArgs) {
     });
 
     // Create order in backend (validates stock and decrements automatically)
-    const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
-
     try {
-      const orderResponse = await fetch(`${BACKEND_URL}/orders/checkout`, {
+      const orderResponse = await fetch(API_ENDPOINTS.orders.checkout(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -40,7 +40,7 @@ export interface Product {
   updatedAt: string;
 }
 
-const API_BASE_URL = process.env.BACKEND_URL || 'http://127.0.0.1:3001';
+import { API_ENDPOINTS } from '~/config/api.server';
 
 // Fallback dummy products (used only when backend is unreachable and in dev)
 const dummyProducts: Product[] = [
@@ -101,8 +101,7 @@ const dummyProducts: Product[] = [
  */
 export async function fetchProducts(includeInactive = false): Promise<Product[]> {
   try {
-    const url = `${API_BASE_URL}/products${includeInactive ? '?includeInactive=true' : ''}`;
-    const response = await fetch(url, {
+    const response = await fetch(API_ENDPOINTS.products.list(includeInactive), {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -129,7 +128,7 @@ export async function fetchProducts(includeInactive = false): Promise<Product[]>
  */
 export async function fetchInStockProducts(): Promise<Product[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/products/in-stock`, {
+    const response = await fetch(API_ENDPOINTS.products.inStock(), {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -156,7 +155,7 @@ export async function fetchInStockProducts(): Promise<Product[]> {
  */
 export async function fetchPreOrderProducts(): Promise<Product[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/products/pre-orders`, {
+    const response = await fetch(API_ENDPOINTS.products.preOrders(), {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -183,7 +182,7 @@ export async function fetchPreOrderProducts(): Promise<Product[]> {
  */
 export async function fetchProductById(id: string): Promise<Product> {
   try {
-    const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+    const response = await fetch(API_ENDPOINTS.products.byId(id), {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -210,7 +209,7 @@ export async function fetchProductById(id: string): Promise<Product> {
  */
 export async function fetchProductBySlug(slug: string): Promise<Product> {
   try {
-    const response = await fetch(`${API_BASE_URL}/products/slug/${slug}`, {
+    const response = await fetch(API_ENDPOINTS.products.bySlug(slug), {
       headers: {
         'Content-Type': 'application/json',
       },
