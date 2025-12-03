@@ -36,7 +36,7 @@ export default function EducationalContent() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold font-gochi mb-4 text-primary">
+          <h2 className="text-4xl md:text-5xl font-bold font-gochi mb-3 text-primary">
             {t("educationalContent.title")}
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">

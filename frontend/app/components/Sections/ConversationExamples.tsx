@@ -138,7 +138,7 @@ export default function ConversationExamples() {
             variants={itemVariants}
             className="inline-block bg-primary/10 rounded-2xl px-8 py-6 mb-8"
           >
-            <h2 className="text-3xl md:text-4xl font-bold font-gochi text-primary leading-tight">
+            <h2 className="text-4xl md:text-5xl font-bold font-gochi mb-4 text-primary">
               {t("educationalContent.title")}
             </h2>
           </motion.div>
@@ -153,7 +153,7 @@ export default function ConversationExamples() {
             variants={itemVariants}
             className="max-w-4xl mx-auto mb-4"
           >
-            <p className="text-2xl md:text-3xl font-bold font-gochi text-primary leading-tight mb-3">
+            <p className="block mb-3 text-xl md:text-2xl font-normal text-nebu-dark/70">
               {t("conversations.title")}
             </p>
           </motion.div>
