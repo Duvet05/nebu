@@ -44,11 +44,11 @@ export default function ProductSelection({
       <div className="mb-6">
         <div className="flex items-center justify-between mb-3">
           <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
-            Selecciona tu Nebu
+            {t("preOrder.selectYourNebu")}
           </h4>
           <div className="flex items-center gap-2">
             <span className={`text-xs font-medium ${availableUnits <= 5 ? 'text-red-600' : 'text-green-600'}`}>
-              {availableUnits} disponibles
+              {availableUnits} {t("preOrder.available")}
             </span>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function ProductSelection({
                   {product.name.replace("Nebu ", "")}
                 </span>
                 {!product.inStock && (
-                  <div className="text-xs text-gray-500 mt-0.5">Pre-orden</div>
+                  <div className="text-xs text-gray-500 mt-0.5">{t("preOrder.preOrderBadge")}</div>
                 )}
               </Link>
             );
