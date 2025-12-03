@@ -87,7 +87,7 @@ export default function ProductVideoPlayer({
       <div ref={containerRef} className={`w-full ${className}`}>
         <div className="relative w-full" style={{ paddingBottom }}>
           {!isVisible ? (
-            <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden border shadow-md bg-gray-100 flex items-center justify-center">
+            <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden shadow-md bg-gray-100 flex items-center justify-center">
               {thumbnail ? (
                 <img 
                   src={thumbnail} 
@@ -100,7 +100,7 @@ export default function ProductVideoPlayer({
             </div>
           ) : StreamComponent ? (
             // Use @cloudflare/stream-react if available
-            <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden shadow-md border">
+            <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden shadow-md">
               <StreamComponent
                 src={playbackId}
                 controls
@@ -115,7 +115,7 @@ export default function ProductVideoPlayer({
               src={`https://iframe.videodelivery.net/${encodeURIComponent(playbackId)}`}
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              className="absolute top-0 left-0 w-full h-full rounded-xl shadow-md border"
+              className="absolute top-0 left-0 w-full h-full rounded-xl shadow-md"
             />
           )}
         </div>
@@ -131,7 +131,7 @@ export default function ProductVideoPlayer({
       <div ref={containerRef} className={`w-full ${className}`}>
         <div className="relative w-full" style={{ paddingBottom }}>
           {!isVisible ? (
-            <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden border shadow-md bg-gray-100 flex items-center justify-center">
+            <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden shadow-md bg-gray-100 flex items-center justify-center">
               {thumbnail ? (
                 <img 
                   src={thumbnail} 
@@ -148,7 +148,7 @@ export default function ProductVideoPlayer({
               src={ytSrc}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              className="absolute top-0 left-0 w-full h-full rounded-xl shadow-md border"
+              className="absolute top-0 left-0 w-full h-full rounded-xl shadow-md"
             />
           )}
         </div>
@@ -160,7 +160,7 @@ export default function ProductVideoPlayer({
   return (
     <div className={`w-full ${className}`}>
       <div className="relative w-full" style={{ paddingBottom }}>
-        <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden border shadow-md bg-gray-100 flex items-center justify-center">
+        <div className="absolute top-0 left-0 w-full h-full rounded-xl overflow-hidden shadow-md bg-gray-100 flex items-center justify-center">
           <div className="text-gray-500">No hay video disponible</div>
         </div>
       </div>

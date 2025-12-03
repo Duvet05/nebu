@@ -48,45 +48,14 @@ export default function TikTokShowcase() {
         >
           <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden">
             <div className="relative" style={{ paddingBottom: "177.78%" }}>
-              <style dangerouslySetInnerHTML={{
-                __html: `
-                  .tiktok-embed iframe {
-                    pointer-events: none;
-                  }
-                  .tiktok-embed::after {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    width: 80px;
-                    height: 100%;
-                    background: transparent;
-                    z-index: 10;
-                    pointer-events: auto;
-                  }
-                  .tiktok-embed::before {
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    height: 80px;
-                    background: transparent;
-                    z-index: 10;
-                    pointer-events: auto;
-                  }
-                `
-              }} />
-              <div className="tiktok-embed absolute top-0 left-0 w-full h-full">
-                <iframe
-                  src="https://www.tiktok.com/embed/7563090924025203976"
-                  className="absolute top-0 left-0 w-full h-full"
-                  allowFullScreen
-                  scrolling="no"
-                  allow="encrypted-media;"
-                  title="TikTok Video - Nebu en acción"
-                />
-              </div>
+              <iframe
+                src="https://customer-6wol0f3dx3u8wuhd.cloudflarestream.com/87848b56dbe4f7e7e92a0e5a8fe56b4f/iframe?poster=https%3A%2F%2Fcustomer-6wol0f3dx3u8wuhd.cloudflarestream.com%2F87848b56dbe4f7e7e92a0e5a8fe56b4f%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+                loading="lazy"
+                className="absolute top-0 left-0 w-full h-full border-0"
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                allowFullScreen
+                title="Video - Nebu en acción"
+              />
             </div>
           </div>
 
