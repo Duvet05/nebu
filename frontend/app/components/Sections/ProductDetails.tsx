@@ -118,8 +118,23 @@ const ProductDetails: React.FC = () => {
                     />
                   </div>
 
-                  <motion.div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-gold to-primary rounded-full shadow-lg" {...floatingAnimation} aria-hidden="true" />
-                  <motion.div className="absolute -bottom-4 -left-4 w-12 h-12 bg-gradient-to-br from-accent to-secondary rounded-full shadow-lg" animate={{ y: [10, -10, 10] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' as const, delay: 1.5 }} aria-hidden="true" />
+                  {/* Gradiente rojo superior derecha - más grande y completo */}
+                  <motion.div 
+                    className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-red-400 via-orange-400 to-yellow-400 rounded-full blur-2xl opacity-40" 
+                    {...floatingAnimation} 
+                    aria-hidden="true" 
+                  />
+                  <motion.div 
+                    className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-gold to-primary rounded-full shadow-lg" 
+                    {...floatingAnimation} 
+                    aria-hidden="true" 
+                  />
+                  <motion.div 
+                    className="absolute -bottom-4 -left-4 w-12 h-12 bg-gradient-to-br from-accent to-secondary rounded-full shadow-lg" 
+                    animate={{ y: [10, -10, 10] }} 
+                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' as const, delay: 1.5 }} 
+                    aria-hidden="true" 
+                  />
                 </motion.div>
               </div>
             </figure>
