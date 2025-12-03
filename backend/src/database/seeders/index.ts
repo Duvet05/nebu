@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { Logger } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { seedProducts } from './product-catalog.seeder';
+import { seedInventory } from './inventory.seeder';
 import { getDatabaseConfig } from '../../config/database.config';
 
 // Cargar variables de entorno
@@ -31,6 +32,7 @@ async function runSeeders() {
     logger.log('🌱 Ejecutando seeders...');
 
     await seedProducts(dataSource);
+    await seedInventory(dataSource);
 
     logger.log('✅ Todos los seeders completados exitosamente');
   } catch (error) {
