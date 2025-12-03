@@ -248,11 +248,33 @@ export const defaultProductColors: ProductColor[] = [
  * Transform API product to include default colors if needed
  */
 export function enrichProduct(product: Product): Product {
+  // Transform colors: if they're just hex strings, convert to full color objects
+  let enrichedColors = defaultProductColors.slice(0, 4);
+  
+  if (product.colors && Array.isArray(product.colors) && product.colors.length > 0) {
+    // Check if colors are already objects or just strings
+    const firstColor = product.colors[0];
+    
+    if (typeof firstColor === 'string') {
+      // Convert hex strings to color objects
+      enrichedColors = (product.colors as unknown as string[]).map((hex, index) => {
+        const colorNames = ['Aqua', 'Anochecer', 'Cuarzo', 'Destello', 'Bosque', 'Lavanda'];
+        return {
+          id: `color-${index}`,
+          name: colorNames[index] || `Color ${index + 1}`,
+          hex: hex,
+          gradient: `from-[${hex}] to-[${hex}]`
+        };
+      });
+    } else if (typeof firstColor === 'object' && 'hex' in firstColor) {
+      // Already in the right format
+      enrichedColors = product.colors;
+    }
+  }
+
   return {
     ...product,
-    colors: product.colors && product.colors.length > 0 
-      ? product.colors 
-      : defaultProductColors.slice(0, 4),
+    colors: enrichedColors,
     features: Array.isArray(product.features) ? product.features : [],
     images: Array.isArray(product.images) && product.images.length > 0
       ? product.images
