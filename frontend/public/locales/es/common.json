@@ -79,6 +79,11 @@
       "title": "Seguro y privado",
       "description": "Seguridad empresarial con conversaciones encriptadas y control parental completo. Tu privacidad familiar protegida.",
       "category": "Seguridad"
+    },
+    "helpsADHD": {
+      "title": "Ayuda con TDAH",
+      "description": "El uso diario de Nebu puede ayudar a regular el cuerpo y enfocar la mente, aliviando síntomas del Trastorno por Déficit de Atención e Hiperactividad (TDAH).",
+      "category": "Bienestar"
     }
   },
   "productCTA": {

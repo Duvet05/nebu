@@ -79,6 +79,11 @@
       "title": "Safe and private",
       "description": "Enterprise-grade security with encrypted conversations and complete parental control. Your family's privacy protected.",
       "category": "Security"
+    },
+    "helpsADHD": {
+      "title": "Help with ADHD",
+      "description": "Daily use of Nebu can help regulate the body and focus the mind, alleviating symptoms of Attention Deficit Hyperactivity Disorder (ADHD).",
+      "category": "Wellness"
     }
   },
   "productCTA": {

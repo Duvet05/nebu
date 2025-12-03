@@ -5,7 +5,7 @@ import { ProductCatalog } from '../../toys/entities/product-catalog.entity';
 /**
  * Product Catalog Seeder
  *
- * Este seeder inserta 14 productos iniciales en el catálogo, incluyendo Nebu Dino.
+ * Este seeder inserta 15 productos iniciales en el catálogo, incluyendo Nebu Dino y Nebu Capibara.
  * Solo ejecuta si la tabla está vacía.
  *
  * Uso:
@@ -22,7 +22,7 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
     return;
   }
 
-  logger.log('🌱 Insertando 14 productos iniciales...');
+  logger.log('🌱 Insertando 15 productos iniciales...');
 
   const products = [
     {
@@ -35,8 +35,13 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
       price: 380.0,
       depositAmount: 190.0,
       inStock: true,
+      stockCount: 20,
       preOrder: true,
-      images: [],
+      images: [
+        'https://imagedelivery.net/MYEKC5pvgdAkEdXGy8suoQ/dino_0/public',
+        'https://imagedelivery.net/MYEKC5pvgdAkEdXGy8suoQ/dino_1/public',
+        'https://imagedelivery.net/MYEKC5pvgdAkEdXGy8suoQ/dino_2/public'
+      ],
       colors: ['#FF69B4', '#90EE90', '#87CEEB'], // Rosa, Verde, Azul
       features: [
         'IA personalizada adaptada a cada niño',
@@ -50,6 +55,38 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
       ],
       category: 'smart-companions',
       badge: 'bestseller',
+      active: true,
+    },
+    {
+      slug: 'nebu-capibara',
+      name: 'Nebu Capibara',
+      concept: '🦦 Nebu Capibara',
+      originalCharacter: 'Nebu',
+      description: 'El peluche inteligente con IA que acompaña y enseña a los más pequeños. Nebu Capibara es tu compañero tranquilo y sabio, diseñado para niños de 4 a 12 años.',
+      shortDescription: 'Peluche inteligente con IA conversacional, sin pantallas, educativo y súper relajante',
+      price: 380.0,
+      depositAmount: 190.0,
+      inStock: true,
+      stockCount: 15,
+      preOrder: true,
+      images: [
+        'https://imagedelivery.net/MYEKC5pvgdAkEdXGy8suoQ/capibara_0/public',
+        'https://imagedelivery.net/MYEKC5pvgdAkEdXGy8suoQ/capibara_1/public',
+        'https://imagedelivery.net/MYEKC5pvgdAkEdXGy8suoQ/capibara_2/public'
+      ],
+      colors: ['#8B7355', '#A0826D', '#C19A6B'], // Marrón, Beige, Camel
+      features: [
+        'IA personalizada adaptada a cada niño',
+        'Conversaciones educativas ilimitadas',
+        'Sin pantallas, 100% interactivo por voz',
+        'App para padres con control parental',
+        'Batería recargable 8-10 horas',
+        'Actualizaciones de contenido continuas',
+        'WiFi integrado',
+        'Multiidioma (Español/Inglés)'
+      ],
+      category: 'smart-companions',
+      badge: 'new',
       active: true,
     },
     {
@@ -292,5 +329,5 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
   const productEntities = products.map((data) => productRepository.create(data));
   await productRepository.save(productEntities);
 
-  logger.log('✅ 14 productos insertados exitosamente (incluyendo Nebu Dino)');
+  logger.log('✅ 15 productos insertados exitosamente (incluyendo Nebu Dino y Nebu Capibara)');
 }

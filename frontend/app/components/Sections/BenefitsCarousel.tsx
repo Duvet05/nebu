@@ -1,6 +1,6 @@
 import { memo, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Star, Brain, Shield } from 'lucide-react';
+import { Star, Brain, Shield, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 // Memoized card component to prevent unnecessary re-renders
@@ -56,7 +56,7 @@ interface Benefit {
   id: number;
   iconType: 'svg' | 'lucide';
   iconPath?: string;
-  icon?: typeof Star | typeof Brain | typeof Shield;
+  icon?: typeof Star | typeof Brain | typeof Shield | typeof Heart;
   title: string;
   description: string;
   gradient: string;
@@ -121,6 +121,15 @@ export default function BenefitsCarousel() {
       description: t("benefits.safeAndPrivate.description"),
       gradient: "from-blue-400 via-indigo-500 to-purple-500",
       category: t("benefits.safeAndPrivate.category")
+    },
+    {
+      id: 7,
+      iconType: 'lucide',
+      icon: Heart,
+      title: t("benefits.helpsADHD.title"),
+      description: t("benefits.helpsADHD.description"),
+      gradient: "from-cyan-400 via-teal-500 to-emerald-500",
+      category: t("benefits.helpsADHD.category")
     }
   ], [t]);
 
