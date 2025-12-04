@@ -101,8 +101,6 @@ export default function PreOrder() {
         {/* Hero Section */}
         <PreOrderHero availableUnits={availableUnits} />
 
-        <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
-
         {/* Pre-Order Form */}
         <section className="pb-20 px-4">
           <div className="max-w-6xl mx-auto">
