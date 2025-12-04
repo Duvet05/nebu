@@ -38,6 +38,7 @@ import { OrdersModule } from './orders/orders.module';
 import { LeadsModule } from './leads/leads.module';
 import { RedisModule } from './config/redis.module';
 import { DynamicModulesConfig } from './config/dynamic-modules.config';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -146,6 +147,7 @@ import { DynamicModulesConfig } from './config/dynamic-modules.config';
     OrdersModule,
     LeadsModule,
     NotificationsModule,
+    PaymentsModule,
 
     // Dynamic Modules (loaded based on feature flags)
     DynamicModulesConfig.forRoot(new ConfigService()),
