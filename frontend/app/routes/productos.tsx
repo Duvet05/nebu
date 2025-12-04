@@ -14,7 +14,6 @@ import { ProductComparison } from "~/components/ProductComparison";
 import { Divider } from "~/components/Divider";
 import { BUSINESS } from "~/config/constants";
 import { fetchProducts, enrichProduct } from "~/lib/api/products";
-import { json } from "@remix-run/node";
 import { ProductImage } from "~/components/ProductImage";
 
 export const meta: MetaFunction = () => {
@@ -44,17 +43,17 @@ export async function loader(_args: LoaderFunctionArgs) {
     const products = await fetchProducts(false);
     const enrichedProducts = products.map(enrichProduct);
     
-    return json({ 
+    return { 
       products: enrichedProducts,
       error: null 
-    });
+    };
   } catch (error) {
     console.error('Error loading products:', error);
     // Return empty array on error - fallback to client-side handling
-    return json({ 
+    return { 
       products: [],
       error: 'Failed to load products' 
-    });
+    };
   }
 }
 
