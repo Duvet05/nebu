@@ -21,7 +21,7 @@ export default function PreOrderHero({ availableUnits }: PreOrderHeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {t("about.hero.title")}
+          {t("preOrder.hero.title")}
         </motion.h1>
 
         <motion.p
@@ -30,7 +30,7 @@ export default function PreOrderHero({ availableUnits }: PreOrderHeroProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          {t("about.hero.subtitle")}
+          {t("preOrder.hero.subtitle")}
         </motion.p>
       </div>
     </section>

@@ -189,6 +189,10 @@
     "title": "Pre-ordena tu Nebu Dino",
     "subtitle": "Solo 20 unidades • Reserva con 50%",
     "description": "Asegura tu peluche Nebu Dino edición limitada. El compañero más adorable para tu hijo.",
+    "hero": {
+      "title": "Pre-ordena tu Nebu",
+      "subtitle": "Asegura tu compañero educativo IoT hoy. Transforma el aprendizaje en aventuras sin pantallas."
+    },
     "selectColor": "Selecciona tu color:",
     "selectYourNebu": "Selecciona tu Nebu",
     "available": "disponibles",
