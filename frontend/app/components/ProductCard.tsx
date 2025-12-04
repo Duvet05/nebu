@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import { motion } from "framer-motion";
-import { ShoppingCart, Check, Info } from "lucide-react";
+import { ShoppingCart, Check, Info, Calendar } from "lucide-react";
 import { Product } from "~/lib/api/products";
 import { ProductImage } from "~/components/ProductImage";
 import { BackInStockNotify } from "~/components/BackInStockNotify";
@@ -138,8 +138,8 @@ export function ProductCard({ product, index = 0, onAddToCart }: ProductCardProp
           </span>
         </div>
 
-        {/* Deposit info for pre-orders */}
-        {product.preOrder && product.depositAmount && (
+        {/* Deposit info for pre-orders - Only show if NOT in stock */}
+        {!product.inStock && product.preOrder && product.depositAmount ? (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
             <p className="text-xs text-blue-800">
               <Info className="w-3 h-3 inline mr-1" />
@@ -148,6 +148,8 @@ export function ProductCard({ product, index = 0, onAddToCart }: ProductCardProp
               {t("products.pricing.reservePercentage")}
             </p>
           </div>
+        ) : (
+          <div className="h-[52px] mb-4" />
         )}
 
         {/* CTA Buttons - Three States */}
@@ -167,8 +169,9 @@ export function ProductCard({ product, index = 0, onAddToCart }: ProductCardProp
             /* STATE 2: Pre-order Only */
             <Link
               to={`/pre-order?product=${product.slug}`}
-              className="block w-full bg-transparent border-2 border-primary text-primary py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg hover:scale-[1.02] text-center"
+              className="flex items-center justify-center gap-3 w-full bg-transparent border-2 border-primary text-primary py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg hover:scale-[1.02]"
             >
+              <Calendar className="w-6 h-6" />
               {t("products.cta.preOrder")}
             </Link>
           ) : (
