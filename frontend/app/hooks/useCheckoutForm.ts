@@ -20,7 +20,7 @@ interface CheckoutFormData {
 
 export function useCheckoutForm() {
   const navigate = useNavigate();
-  const { items, totalPrice, clearCart } = useCart();
+  const { items, clearCart } = useCart();
   const culqi = useCulqi();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<CheckoutFormData>({
@@ -38,7 +38,13 @@ export function useCheckoutForm() {
     subscribeNewsletter: true,
   });
 
-  const reserveAmount = totalPrice * 0.5; // 50% deposit
+  // Calcular total considerando pre-orders (50%) y productos normales (100%)
+  const totalPrice = items.reduce((sum, item) => {
+    const itemTotal = item.product.price * item.quantity;
+    return sum + (item.isPreOrder ? itemTotal * 0.5 : itemTotal);
+  }, 0);
+
+  const reserveAmount = totalPrice; // Ya está calculado con los descuentos
   const shippingCost = 0; // Free shipping
   const finalTotal = totalPrice + shippingCost;
 

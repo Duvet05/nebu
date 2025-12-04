@@ -111,9 +111,16 @@ export default function CheckoutPage() {
                         </span>
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-sm text-gray-900">
-                          {item.product.name}
-                        </h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-semibold text-sm text-gray-900">
+                            {item.product.name}
+                          </h3>
+                          {item.isPreOrder && (
+                            <span className="px-2 py-0.5 bg-primary/10 text-primary text-xs font-semibold rounded-full">
+                              Pre-orden
+                            </span>
+                          )}
+                        </div>
                         <div className="flex items-center gap-2 mt-1">
                           <div
                             className="w-3 h-3 rounded-full border border-gray-300"
@@ -128,7 +135,12 @@ export default function CheckoutPage() {
                             Cant: {item.quantity}
                           </span>
                           <span className="font-semibold text-sm">
-                            S/ {(item.product.price * item.quantity).toFixed(2)}
+                            S/ {(item.product.price * item.quantity * (item.isPreOrder ? 0.5 : 1)).toFixed(2)}
+                            {item.isPreOrder && (
+                              <span className="text-xs text-gray-500 block">
+                                (50% adelanto)
+                              </span>
+                            )}
                           </span>
                         </div>
                       </div>

@@ -6,11 +6,12 @@ export interface CartItem {
   product: Product;
   color: ProductColor;
   quantity: number;
+  isPreOrder?: boolean; // Flag para identificar productos de pre-orden
 }
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (product: Product, color: ProductColor, quantity?: number) => void;
+  addItem: (product: Product, color: ProductColor, quantity?: number, isPreOrder?: boolean) => void;
   removeItem: (productId: string, colorId: string) => void;
   updateQuantity: (productId: string, colorId: string, quantity: number) => void;
   clearCart: () => void;
@@ -49,9 +50,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items, isHydrated]);
 
-  const addItem = (product: Product, color: ProductColor, quantity: number = 1) => {
-    // Check stock availability before adding
-    if (product.inStock && product.stockCount !== undefined) {
+  const addItem = (product: Product, color: ProductColor, quantity: number = 1, isPreOrder: boolean = false) => {
+    // Check stock availability before adding (skip for pre-orders)
+    if (!isPreOrder && product.inStock && product.stockCount !== undefined) {
       // Get current quantity in cart for this product/color
       const existingItem = items.find(
         item => item.product.id === product.id && item.color.id === color.id
@@ -84,7 +85,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return newItems;
       } else {
         // Add new item
-        return [...currentItems, { product, color, quantity }];
+        return [...currentItems, { product, color, quantity, isPreOrder }];
       }
     });
 

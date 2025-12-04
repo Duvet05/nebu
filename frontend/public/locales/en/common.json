@@ -218,6 +218,14 @@
     "contactInfo": "Contact information",
     "paymentMethod": "Payment method",
     "cardPayment": "Credit/debit card",
+    "summary": {
+      "title": "Summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "freeShipping": "Free",
+      "total": "Total",
+      "securePayment": "Secure payment processed by Culqi. 50% will be charged upon confirmation."
+    },
     "form": {
       "firstName": "First name",
       "firstNamePlaceholder": "Your first name",
@@ -239,7 +247,8 @@
       "submitting": "Processing...",
       "securePayment": "Secure and protected payment",
       "soldOut": "Sold Out!",
-      "reserveNow": "Reserve now"
+      "reserveNow": "Reserve now",
+      "addToCart": "Add to Cart & Go to Checkout"
     },
     "success": {
       "title": "Pre-order confirmed!",
