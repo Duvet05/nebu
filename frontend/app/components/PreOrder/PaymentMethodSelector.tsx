@@ -44,41 +44,23 @@ export default function PaymentMethodSelector({
           </div>
         </label>
 
-        {/* Stripe */}
+        {/* Culqi - Tarjetas */}
         <label className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer transition-all ${
-          paymentMethod === "stripe" ? "border-primary bg-primary/5" : "border-gray-300 hover:border-primary"
+          paymentMethod === "culqi" ? "border-primary bg-primary/5" : "border-gray-300 hover:border-primary"
         }`}>
           <input
             type="radio"
             name="paymentMethod"
-            value="stripe"
-            checked={paymentMethod === "stripe"}
+            value="culqi"
+            checked={paymentMethod === "culqi"}
             onChange={(e) => onPaymentMethodChange(e.target.value)}
             className="text-primary"
           />
           <CreditCard className="w-5 h-5 text-gray-400" />
           <div className="flex-1">
             <span className="font-medium">{t("preOrder.cardPayment")}</span>
-            <p className="text-xs text-gray-500 mt-1">{t("preOrder.paymentMethods.stripe")}</p>
+            <p className="text-xs text-gray-500 mt-1">Visa, Mastercard, AMEX • Pago seguro</p>
           </div>
-        </label>
-
-        {/* PayPal */}
-        <label className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer transition-all ${
-          paymentMethod === "paypal" ? "border-blue-600 bg-blue-50" : "border-gray-300 hover:border-primary"
-        }`}>
-          <input
-            type="radio"
-            name="paymentMethod"
-            value="paypal"
-            checked={paymentMethod === "paypal"}
-            onChange={(e) => onPaymentMethodChange(e.target.value)}
-            className="text-primary"
-          />
-          <div className="w-5 h-5 rounded bg-blue-600 flex items-center justify-center">
-            <span className="text-white text-xs font-bold">P</span>
-          </div>
-          <span className="font-medium">{t("preOrder.paymentMethods.paypal")}</span>
         </label>
       </div>
 

@@ -255,8 +255,8 @@
     "reviewsCount": "127",
     "productMultiplier": "×",
     "paymentMethods": {
-      "stripe": "Stripe",
-      "paypal": "PayPal"
+      "culqi": "Culqi - Tarjetas Perú",
+      "yape": "Yape"
     }
   },
   "contact": {
