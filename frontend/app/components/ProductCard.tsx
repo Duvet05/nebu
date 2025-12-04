@@ -83,7 +83,7 @@ export function ProductCard({ product, index = 0, onAddToCart }: ProductCardProp
           {product.name}
         </h3>
 
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2 h-10 overflow-hidden">
           {product.shortDescription}
         </p>
 
@@ -106,17 +106,27 @@ export function ProductCard({ product, index = 0, onAddToCart }: ProductCardProp
           </div>
         )}
 
-        {/* Key Features */}
-        {product.features && product.features.length > 0 && (
-          <div className="space-y-2 mb-6">
-            {product.features.slice(0, 3).map((feature, idx) => (
-              <div key={idx} className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                <span className="text-xs text-gray-600">{feature}</span>
+        {/* Key Features - Always 3 lines to prevent layout shift */}
+        <div className="space-y-2 mb-6 h-[72px]">
+          {[0, 1, 2].map((idx) => {
+            const feature = product.features?.[idx];
+            return (
+              <div key={idx} className="flex items-start gap-2 h-6">
+                {feature ? (
+                  <>
+                    <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-xs text-gray-600 line-clamp-1">{feature}</span>
+                  </>
+                ) : (
+                  <div className="opacity-0">
+                    <Check className="w-4 h-4" />
+                    <span className="text-xs">&nbsp;</span>
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-        )}
+            );
+          })}
+        </div>
 
         {/* Price */}
         <div className="flex items-baseline gap-2 mb-6">
@@ -147,23 +157,17 @@ export function ProductCard({ product, index = 0, onAddToCart }: ProductCardProp
             <>
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-gradient-to-r from-primary to-accent text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex items-center justify-center gap-2"
+                className="w-full bg-primary text-white py-4 px-6 rounded-xl font-bold text-lg shadow-[0_8px_30px_rgba(255,107,53,0.3)] hover:shadow-[0_12px_40px_rgba(255,107,53,0.5)] transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3"
               >
-                <ShoppingCart className="w-5 h-5" />
+                <ShoppingCart className="w-6 h-6" />
                 {t("products.cta.addToCart")}
               </button>
-              <Link
-                to={`/pre-order?product=${product.slug}`}
-                className="block w-full bg-gray-100 text-gray-900 py-2 px-6 rounded-xl font-medium transition-all duration-300 hover:bg-gray-200 text-center"
-              >
-                {t("products.cta.preOrderDirect")}
-              </Link>
             </>
           ) : product.preOrder ? (
             /* STATE 2: Pre-order Only */
             <Link
               to={`/pre-order?product=${product.slug}`}
-              className="block w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:scale-[1.02] text-center"
+              className="block w-full bg-transparent border-2 border-primary text-primary py-4 px-6 rounded-xl font-bold text-lg transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-lg hover:scale-[1.02] text-center"
             >
               {t("products.cta.preOrder")}
             </Link>
