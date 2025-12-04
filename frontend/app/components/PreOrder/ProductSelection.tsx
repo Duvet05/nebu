@@ -1,4 +1,3 @@
-import { Link } from "@remix-run/react";
 import { Minus, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { Product, ProductColor } from "~/lib/api/products";
@@ -14,6 +13,7 @@ interface ProductSelectionProps {
   soldOut: boolean;
   onColorChange: (color: ProductColor) => void;
   onQuantityChange: (delta: number) => void;
+  onProductChange?: (product: Product) => void;
 }
 
 /**
@@ -33,7 +33,8 @@ export default function ProductSelection({
   maxQuantity = 5,
   soldOut,
   onColorChange,
-  onQuantityChange
+  onQuantityChange,
+  onProductChange
 }: ProductSelectionProps) {
   const { t } = useTranslation("common");
 
@@ -71,10 +72,17 @@ export default function ProductSelection({
             };
 
             return (
-              <Link
+              <button
                 key={product.id}
-                to={`/pre-order?product=${product.slug}`}
-                className={`p-2.5 rounded-lg border-2 transition-all duration-200 text-center ${
+                type="button"
+                onClick={() => {
+                  if (onProductChange) {
+                    onProductChange(product);
+                  }
+                  // Update URL without navigation
+                  window.history.replaceState({}, '', `/pre-order?product=${product.slug}`);
+                }}
+                className={`p-2.5 rounded-lg border-2 transition-all duration-200 text-center hover:scale-105 ${
                   selectedProduct.id === product.id
                     ? "border-primary bg-primary/5"
                     : "border-gray-200 hover:border-primary/50"
@@ -89,7 +97,7 @@ export default function ProductSelection({
                 {!product.inStock && (
                   <div className="text-xs text-gray-500 mt-0.5">{t("preOrder.preOrderBadge")}</div>
                 )}
-              </Link>
+              </button>
             );
           })}
         </div>

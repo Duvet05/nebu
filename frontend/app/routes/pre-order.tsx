@@ -1,6 +1,7 @@
-import { type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
+import { json, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
+import { useState } from "react";
 import { fetchPreOrderProducts, enrichProduct, defaultProductColors } from "~/lib/api/products";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
@@ -58,8 +59,17 @@ export default function PreOrder() {
 
   // Get product from URL parameter or default to nebu-dino
   const productSlug = searchParams.get("product") || "nebu-dino";
-  const selectedProduct = products.find(p => p.slug === productSlug) || products[0];
+  const [currentProduct, setCurrentProduct] = useState(() => 
+    products.find(p => p.slug === productSlug) || products[0]
+  );
+  
+  const selectedProduct = currentProduct;
   const productColors = selectedProduct?.colors || defaultProductColors;
+  
+  // Handler para cambiar producto sin recargar la página
+  const handleProductChange = (product: typeof currentProduct) => {
+    setCurrentProduct(product);
+  };
 
   // Use custom hook for all form logic
   const {
@@ -111,6 +121,7 @@ export default function PreOrder() {
                 reservePercentage={reservePercentage}
                 onColorChange={setSelectedColor}
                 onQuantityChange={handleQuantityChange}
+                onProductChange={handleProductChange}
               />
 
               {/* Order Form */}

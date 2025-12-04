@@ -15,6 +15,7 @@ interface ProductConfigurationSectionProps {
   reservePercentage: number;
   onColorChange: (color: ProductColor) => void;
   onQuantityChange: (delta: number) => void;
+  onProductChange?: (product: Product) => void;
 }
 
 export default function ProductConfigurationSection({
@@ -29,6 +30,7 @@ export default function ProductConfigurationSection({
   reservePercentage,
   onColorChange,
   onQuantityChange,
+  onProductChange,
 }: ProductConfigurationSectionProps) {
   return (
     <motion.div
@@ -48,6 +50,7 @@ export default function ProductConfigurationSection({
         soldOut={soldOut}
         onColorChange={onColorChange}
         onQuantityChange={onQuantityChange}
+        onProductChange={onProductChange}
       />
 
       {/* Resumen de Precio */}
