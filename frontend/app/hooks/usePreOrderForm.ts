@@ -1,6 +1,7 @@
 import { useState, useEffect, type FormEvent } from "react";
 import { analytics } from "~/lib/analytics";
 import type { ProductColor } from "~/lib/api/products";
+import { useCulqi } from "~/hooks/useCulqi";
 
 interface Product {
   id: string;
@@ -29,6 +30,9 @@ export function usePreOrderForm(
   productColors: ProductColor[],
   t: (key: string) => string
 ) {
+  // Culqi integration
+  const culqi = useCulqi();
+
   // Form state
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState<ProductColor>(productColors[0]);
@@ -103,67 +107,115 @@ export function usePreOrderForm(
     analytics.preOrderStart(selectedColor.id, quantity);
 
     try {
-      // Send pre-order data to API
-      const formDataToSend = new FormData();
-      formDataToSend.append("product", selectedProduct.name);
-      formDataToSend.append("productId", selectedProduct.id);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("firstName", formData.firstName);
-      formDataToSend.append("lastName", formData.lastName);
-      formDataToSend.append("phone", formData.phone);
-      formDataToSend.append("address", formData.address);
-      formDataToSend.append("city", formData.city);
-      formDataToSend.append("postalCode", formData.postalCode);
-      formDataToSend.append("quantity", quantity.toString());
-      formDataToSend.append("color", selectedColor.name);
-      formDataToSend.append("totalPrice", finalPrice.toString());
-      formDataToSend.append("paymentMethod", paymentMethod);
-
-      const response = await fetch("/api/pre-order", {
-        method: "POST",
-        body: formDataToSend,
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Track successful pre-order
-        analytics.preOrderComplete(
-          formData.email,
-          quantity,
-          selectedColor.id,
-          finalPrice
-        );
-
-        // Track newsletter signup if checked
-        if (formData.subscribeNewsletter) {
-          analytics.newsletterSignup(formData.email, "pre-order-form");
+      // Si el método de pago es Culqi, abrir modal de pago
+      if (paymentMethod === "culqi") {
+        if (!culqi.isReady) {
+          throw new Error("Sistema de pagos no disponible");
         }
 
-        // Show success message
-        alert(t("preOrder.messages.successAlert"));
-
-        // Reset form
-        setFormData({
-          email: "",
-          firstName: "",
-          lastName: "",
-          phone: "",
-          address: "",
-          city: "",
-          postalCode: "",
-          agreeTerms: false,
-          subscribeNewsletter: true,
-        });
-        setQuantity(1);
-      } else {
-        throw new Error(data.error || "Error al procesar la pre-orden");
+        // Abrir modal de Culqi
+        culqi.openCheckout(
+          {
+            title: `Pre-orden Nebu - ${selectedProduct.name}`,
+            currency: "PEN",
+            amount: Math.round(reserveAmount * 100), // Monto en centavos
+            order: `pre-order-${Date.now()}`,
+          },
+          async (token) => {
+            // Token generado exitosamente, procesar el pago
+            try {
+              await processPreOrder(token.id);
+            } catch (error) {
+              console.error("Error processing pre-order with Culqi:", error);
+              alert(t("preOrder.messages.errorAlert"));
+            } finally {
+              culqi.resetProcessing();
+              setLoading(false);
+            }
+          },
+          (error) => {
+            // Error al generar token
+            console.error("Culqi token error:", error);
+            alert(error.user_message || t("preOrder.messages.errorAlert"));
+            culqi.resetProcessing();
+            setLoading(false);
+          }
+        );
+        return; // No continuar, esperamos el callback de Culqi
       }
+
+      // Para otros métodos de pago (Yape), procesar directamente
+      await processPreOrder();
     } catch (error) {
       console.error("Error processing pre-order:", error);
       alert(t("preOrder.messages.errorAlert"));
-    } finally {
       setLoading(false);
+    }
+  };
+
+  // Función auxiliar para procesar la pre-orden
+  const processPreOrder = async (culqiToken?: string) => {
+    // Send pre-order data to API
+    const formDataToSend = new FormData();
+    formDataToSend.append("product", selectedProduct.name);
+    formDataToSend.append("productId", selectedProduct.id);
+    formDataToSend.append("productSlug", selectedProduct.slug);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("firstName", formData.firstName);
+    formDataToSend.append("lastName", formData.lastName);
+    formDataToSend.append("phone", formData.phone);
+    formDataToSend.append("address", formData.address);
+    formDataToSend.append("city", formData.city);
+    formDataToSend.append("postalCode", formData.postalCode);
+    formDataToSend.append("quantity", quantity.toString());
+    formDataToSend.append("color", selectedColor.name);
+    formDataToSend.append("totalPrice", reserveAmount.toString());
+    formDataToSend.append("paymentMethod", paymentMethod);
+    
+    if (culqiToken) {
+      formDataToSend.append("culqiToken", culqiToken);
+    }
+
+    const response = await fetch("/api/pre-order", {
+      method: "POST",
+      body: formDataToSend,
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Track successful pre-order
+      analytics.preOrderComplete(
+        formData.email,
+        quantity,
+        selectedColor.id,
+        finalPrice
+      );
+
+      // Track newsletter signup if checked
+      if (formData.subscribeNewsletter) {
+        analytics.newsletterSignup(formData.email, "pre-order-form");
+      }
+
+      // Show success message
+      alert(t("preOrder.messages.successAlert"));
+
+      // Reset form
+      setFormData({
+        email: "",
+        firstName: "",
+        lastName: "",
+        phone: "",
+        address: "",
+        city: "",
+        postalCode: "",
+        agreeTerms: false,
+        subscribeNewsletter: true,
+      });
+      setQuantity(1);
+      setLoading(false);
+    } else {
+      throw new Error(data.error || "Error al procesar la pre-orden");
     }
   };
 

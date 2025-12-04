@@ -3,6 +3,7 @@ import {
   sendPreOrderConfirmation,
   sendPreOrderNotification,
 } from "~/lib/resend.server";
+import { createCharge } from "~/lib/culqi.server";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
 
@@ -24,13 +25,45 @@ export async function action({ request }: ActionFunctionArgs) {
     const postalCode = formData.get("postalCode") as string;
     const quantity = parseInt(formData.get("quantity") as string);
     const color = formData.get("color") as string;
-    const totalPrice = parseInt(formData.get("totalPrice") as string);
+    const totalPrice = parseFloat(formData.get("totalPrice") as string);
     const paymentMethod = formData.get("paymentMethod") as string;
     const productSlug = formData.get("productSlug") as string;
+    const culqiToken = formData.get("culqiToken") as string | null;
 
     // Validate required fields
     if (!email || !firstName || !lastName || !phone || !address || !city) {
       return data({ error: "Faltan campos requeridos" }, { status: 400 });
+    }
+
+    // Si el método de pago es Culqi, procesar el cargo
+    let culqiChargeId: string | null = null;
+    if (paymentMethod === "culqi" && culqiToken) {
+      const chargeResult = await createCharge(culqiToken, {
+        email,
+        firstName,
+        lastName,
+        phone,
+        address,
+        city,
+        postalCode,
+        quantity,
+        color,
+        totalPrice,
+      });
+
+      if (!chargeResult.success) {
+        return data(
+          { 
+            error: chargeResult.error || "Error al procesar el pago con tarjeta",
+            errorCode: chargeResult.errorCode,
+            retryable: chargeResult.retryable,
+          },
+          { status: 400 }
+        );
+      }
+
+      culqiChargeId = chargeResult.data?.id;
+      console.log("[Pre-Order] Culqi charge successful:", culqiChargeId);
     }
 
     // Save lead to backend first (HOT lead from pre-order)
@@ -85,9 +118,11 @@ export async function action({ request }: ActionFunctionArgs) {
           quantity,
           totalPrice,
           paymentMethod,
+          culqiChargeId,
           metadata: {
             source: "website",
             userAgent: request.headers.get("user-agent"),
+            paymentStatus: culqiChargeId ? "paid" : "pending",
           },
         }),
       });
