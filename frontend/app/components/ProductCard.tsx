@@ -138,19 +138,19 @@ export function ProductCard({ product, index = 0, onAddToCart }: ProductCardProp
           </span>
         </div>
 
-        {/* Deposit info for pre-orders - Only show if NOT in stock */}
-        {!product.inStock && product.preOrder && product.depositAmount ? (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-            <p className="text-xs text-blue-800">
-              <Info className="w-3 h-3 inline mr-1" />
-              {t("products.pricing.reserveWith")}{" "}
-              <strong>S/ {product.depositAmount}</strong>{" "}
-              {t("products.pricing.reservePercentage")}
-            </p>
-          </div>
-        ) : (
-          <div className="h-[52px] mb-4" />
-        )}
+        {/* Deposit info for pre-orders - Fixed height container to keep buttons aligned */}
+        <div className="mb-4 min-h-[64px]">
+          {!product.inStock && product.preOrder && product.depositAmount && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-xs text-blue-800">
+                <Info className="w-3 h-3 inline mr-1" />
+                {t("products.pricing.reserveWith")}{" "}
+                <strong>S/ {product.depositAmount}</strong>{" "}
+                {t("products.pricing.reservePercentage")}
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* CTA Buttons - Three States */}
         <div className="space-y-2">
