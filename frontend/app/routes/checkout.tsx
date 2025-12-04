@@ -1,13 +1,14 @@
 import type { MetaFunction } from "@remix-run/node";
-import { Link, useNavigate } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import { Header } from "~/components/layout/Header";
 import { Footer } from "~/components/layout/Footer";
 import { useCart } from "~/contexts/CartContext";
 import { ShoppingBag, Truck, CreditCard, Shield, ArrowLeft, Trash2 } from "lucide-react";
-import { useState, useEffect, type FormEvent } from "react";
+import { useEffect } from "react";
 import { trackInitiateCheckout } from "~/lib/facebook-pixel";
 import { LoadingSpinner } from "~/components/LoadingSpinner";
 import { InfoBox } from "~/components/ui/InfoBox";
+import { useCheckoutForm } from "~/hooks/useCheckoutForm";
 
 export const meta: MetaFunction = () => {
   return [
@@ -18,27 +19,16 @@ export const meta: MetaFunction = () => {
 };
 
 export default function CheckoutPage() {
-  const { items, totalPrice, removeItem, clearCart, updateQuantity: _updateQuantity } = useCart();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    phone: "",
-    company: "",
-    address: "",
-    apartment: "",
-    city: "",
-    region: "",
-    postalCode: "",
-    agreeTerms: false,
-    subscribeNewsletter: true,
-  });
-
-  const reserveAmount = totalPrice * 0.5; // 50% deposit
-  const shippingCost = 0; // Free shipping
-  const finalTotal = totalPrice + shippingCost;
+  const { items, totalPrice, removeItem, updateQuantity: _updateQuantity } = useCart();
+  const {
+    formData,
+    loading,
+    handleInputChange,
+    handleSubmit,
+    reserveAmount,
+    shippingCost,
+    finalTotal,
+  } = useCheckoutForm();
 
   // Track InitiateCheckout event when page loads with items
   useEffect(() => {
@@ -50,65 +40,6 @@ export default function CheckoutPage() {
       });
     }
   }, []); // Only track once on mount
-
-  const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      // Prepare order data
-      const orderData = {
-        ...formData,
-        items: items.map(item => ({
-          productId: item.product.id,
-          productName: item.product.name,
-          colorId: item.color.id,
-          colorName: item.color.name,
-          quantity: item.quantity,
-          price: item.product.price,
-        })),
-        subtotal: totalPrice,
-        shipping: shippingCost,
-        total: finalTotal,
-        reserveAmount,
-        country: "Perú",
-      };
-
-      // Send to API
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Prepare order data for confirmation page
-        const orderParams = new URLSearchParams({
-          orderId: data.orderId,
-          total: finalTotal.toString(),
-          numItems: items.reduce((sum, item) => sum + item.quantity, 0).toString(),
-          productIds: items.map(item => item.product.id).join(','),
-        });
-
-        // Clear cart and redirect to success
-        clearCart();
-        navigate(`/order-confirmation?${orderParams.toString()}`);
-      } else {
-        throw new Error(data.error || "Error processing order");
-      }
-    } catch (error) {
-      console.error("Checkout error:", error);
-      alert("Hubo un error al procesar tu pedido. Por favor intenta nuevamente.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (items.length === 0) {
     return (

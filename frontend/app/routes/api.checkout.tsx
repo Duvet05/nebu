@@ -2,6 +2,7 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { data } from "@remix-run/node";
 import { Resend } from "resend";
 import { CONTACT, BUSINESS } from "~/config/constants";
+import { createCharge as createCulqiCharge } from "~/lib/culqi.server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const CULQI_SECRET_KEY = process.env.CULQI_SECRET_KEY || "";
@@ -39,7 +40,7 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   try {
-    const checkoutData: CheckoutData = await request.json();
+    const checkoutData: CheckoutData & { culqiToken?: string } = await request.json();
 
     // Validate required fields
     if (!checkoutData.email || !checkoutData.firstName || !checkoutData.lastName || !checkoutData.phone || !checkoutData.address || !checkoutData.city) {
@@ -56,6 +57,50 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Generate order ID
     const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    
+    // Process Culqi payment if token provided
+    let culqiChargeId = null;
+    if (checkoutData.culqiToken) {
+      try {
+        // Adapt checkout data to PreOrderData format expected by createCulqiCharge
+        const preOrderData = {
+          email: checkoutData.email,
+          firstName: checkoutData.firstName,
+          lastName: checkoutData.lastName,
+          phone: checkoutData.phone,
+          address: checkoutData.address,
+          city: checkoutData.city,
+          postalCode: checkoutData.postalCode,
+          quantity: checkoutData.items.reduce((sum, item) => sum + item.quantity, 0),
+          color: checkoutData.items.map(i => i.colorName).join(", "),
+          totalPrice: checkoutData.reserveAmount,
+        };
+        
+        const chargeResult = await createCulqiCharge(
+          checkoutData.culqiToken,
+          preOrderData
+        );
+
+        if (!chargeResult.success) {
+          return data(
+            {
+              error: chargeResult.error || "Error al procesar el pago",
+              errorCode: chargeResult.errorCode,
+              retryable: chargeResult.retryable,
+            },
+            { status: 402 }
+          );
+        }
+
+        culqiChargeId = chargeResult.data?.id;
+      } catch (error) {
+        console.error("Culqi charge error:", error);
+        return data(
+          { error: "Error al procesar el pago con Culqi" },
+          { status: 402 }
+        );
+      }
+    }
 
     // Create Culqi Order (for payment link)
     let culqiOrderId = null;
@@ -109,6 +154,7 @@ export async function action({ request }: ActionFunctionArgs) {
           subscribeNewsletter: checkoutData.subscribeNewsletter,
           metadata: {
             culqiOrderId,
+            culqiChargeId,
           },
         }),
       });
