@@ -15,7 +15,7 @@ interface CulqiSettings {
   title: string;
   currency: string;
   amount: number;
-  order: string;
+  description?: string;
 }
 
 declare global {
@@ -83,7 +83,7 @@ export function useCulqi() {
       title: settings.title,
       currency: settings.currency,
       amount: settings.amount, // Monto en centavos
-      order: settings.order,
+      description: settings.description,
     });
 
     // Configurar callbacks

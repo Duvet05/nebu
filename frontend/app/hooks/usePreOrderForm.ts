@@ -119,7 +119,7 @@ export function usePreOrderForm(
             title: `Pre-orden Nebu - ${selectedProduct.name}`,
             currency: "PEN",
             amount: Math.round(reserveAmount * 100), // Monto en centavos
-            order: `pre-order-${Date.now()}`,
+            description: `Pre-orden ${selectedProduct.name} - ${selectedColor.name}`,
           },
           async (token) => {
             // Token generado exitosamente, procesar el pago
