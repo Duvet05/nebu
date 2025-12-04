@@ -20,12 +20,14 @@ export default function PriceSummary({ quantity, basePrice, reservePercentage }:
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-      <h4 className="font-semibold text-gray-900 mb-6">{t("preOrder.orderSummary.title")}</h4>
+      <h3 className="text-2xl md:text-3xl font-bold font-heading mb-8 text-gray-900">
+        {t("preOrder.orderSummary.title")}
+      </h3>
       
       <div className="space-y-4">
         <div className="flex justify-between">
           <span>{t("preOrder.productName")} {t("preOrder.productMultiplier")} {quantity}</span>
-          <span>{t("preOrder.currency")} {totalPrice}</span>
+          <span>S/ {totalPrice}</span>
         </div>
         
         <div className="flex justify-between text-green-600">
@@ -37,12 +39,12 @@ export default function PriceSummary({ quantity, basePrice, reservePercentage }:
         
         <div className="flex justify-between text-lg">
           <span>Total del pedido</span>
-          <span>{t("preOrder.currency")} {finalPrice}</span>
+          <span>S/ {finalPrice}</span>
         </div>
         
         <div className="flex justify-between text-xl font-bold text-primary">
           <span>Reserva ahora (50%)</span>
-          <span>{t("preOrder.currency")} {reserveAmount}</span>
+          <span>S/ {reserveAmount}</span>
         </div>
         
         <div className="text-sm text-gray-600">

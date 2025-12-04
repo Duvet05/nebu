@@ -101,8 +101,8 @@ export default function OrderFormSection({
           disabled={loading || soldOut}
           className={`w-full py-4 px-8 rounded-full font-semibold text-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-md ${
             soldOut
-              ? "bg-gradient-to-r from-gray-400 via-gray-500 to-gray-600 text-white cursor-not-allowed border-2 border-gray-300"
-              : "bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 text-white hover:shadow-2xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none animate-pulse font-bold"
+              ? "bg-primary from-gray-400 via-gray-500 to-gray-600 text-white cursor-not-allowed border-2 border-gray-300"
+              : "bg-primary hover:bg-primary/90 text-white hover:shadow-2xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none font-bold"
           }`}
           style={{ textShadow: soldOut ? 'none' : '0 2px 4px rgba(0,0,0,0.2)' }}
         >
@@ -121,7 +121,7 @@ export default function OrderFormSection({
             <>
               <span className="text-xl">✨</span>
               <ShoppingCart className="w-5 h-5" />
-              {t("preOrder.form.reserveNow")} • $ {reserveAmount}
+              {t("preOrder.form.reserveNow")} • S/ {reserveAmount}
               <span className="text-xl">✨</span>
             </>
           )}
