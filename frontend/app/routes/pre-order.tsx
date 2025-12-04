@@ -1,4 +1,4 @@
-import { json, type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
+import { type LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { useTranslation } from "react-i18next";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { fetchPreOrderProducts, enrichProduct, defaultProductColors } from "~/lib/api/products";
@@ -19,7 +19,9 @@ import { usePreOrderForm } from "~/hooks/usePreOrderForm";
 
 export async function loader({ request: _request }: LoaderFunctionArgs) {
   const products = await fetchPreOrderProducts();
-  return json({ products: products.map(enrichProduct) });
+  // Filtrar solo productos que estén disponibles en pre-orden
+  const availablePreOrderProducts = products.filter(p => p.preOrder && p.inStock);
+  return { products: availablePreOrderProducts.map(enrichProduct) };
 }
 
 export const meta: MetaFunction = () => {

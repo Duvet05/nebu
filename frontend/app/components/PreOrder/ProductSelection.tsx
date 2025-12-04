@@ -1,7 +1,6 @@
 import { Link } from "@remix-run/react";
-import { Star, Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import ProductVideoPlayer from "~/components/ProductVideoPlayer";
 import type { Product, ProductColor } from "~/lib/api/products";
 
 interface ProductSelectionProps {
@@ -42,10 +41,10 @@ export default function ProductSelection({
     <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-100">
       {/* Selector de Productos y Cantidad */}
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-2xl md:text-3xl font-bold font-heading text-gray-900">
             {t("preOrder.selectYourNebu")}
-          </h4>
+          </h3>
           <div className="flex items-center gap-2">
             <span className={`text-xs font-medium ${availableUnits <= 5 ? 'text-red-600' : 'text-green-600'}`}>
               {availableUnits} {t("preOrder.available")}
@@ -132,11 +131,20 @@ export default function ProductSelection({
       {/* Preview del Producto */}
       <div className="mb-6">
         <div className="mb-4">
-          <ProductVideoPlayer 
-            playbackId={selectedProduct.videoPlaybackId}
-            videoProvider={selectedProduct.videoProvider}
-            thumbnailUrl={selectedProduct.videoThumbnail}
-          />
+          {/* Imagen del producto en lugar del video */}
+          <div className="relative aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+            {selectedProduct.images && selectedProduct.images.length > 0 ? (
+              <img 
+                src={selectedProduct.images[0]}
+                alt={selectedProduct.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="text-gray-400 text-center p-8">
+                <p className="text-sm">No hay video disponible</p>
+              </div>
+            )}
+          </div>
         </div>
         
         <div className="text-center">
@@ -146,15 +154,6 @@ export default function ProductSelection({
           <p className="text-sm text-gray-600 mt-1.5 line-clamp-2">
             {selectedProduct.shortDescription}
           </p>
-          
-          <div className="flex items-center justify-center gap-1 mt-2.5">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star key={star} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-            ))}
-            <span className="text-xs text-gray-500 ml-2">
-              (5.0 · 180 {t("preOrder.reviews")})
-            </span>
-          </div>
         </div>
       </div>
 
