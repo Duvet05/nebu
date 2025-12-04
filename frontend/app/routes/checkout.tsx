@@ -56,7 +56,7 @@ export default function CheckoutPage() {
             </p>
             <Link
               to="/productos"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
+              className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300"
             >
               <ArrowLeft className="w-5 h-5" />
               Ver Productos
