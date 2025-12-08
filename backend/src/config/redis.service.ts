@@ -6,6 +6,8 @@ import Redis from 'ioredis';
 export class RedisService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(RedisService.name);
   private client: Redis;
+  private isConnected = false;
+  private connectionAttempts = 0;
 
   constructor(private configService: ConfigService) {}
 
@@ -19,7 +21,16 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       port,
       keyPrefix: this.configService.get<string>('REDIS_KEY_PREFIX', 'nebu:'),
       retryStrategy: (times) => {
+        this.connectionAttempts = times;
         const delay = Math.min(times * 50, 2000);
+        
+        // Log retry attempts as warnings, not errors
+        if (times <= 5) {
+          this.logger.log(`Redis connection attempt ${times}, retrying in ${delay}ms...`);
+        } else if (times === 10) {
+          this.logger.warn(`Redis connection taking longer than expected (${times} attempts)`);
+        }
+        
         return delay;
       },
       maxRetriesPerRequest: 3,
@@ -38,12 +49,35 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       this.logger.log(`Redis connected to ${host}:${port}`);
     });
 
+    this.client.on('ready', () => {
+      this.isConnected = true;
+      if (this.connectionAttempts > 0) {
+        this.logger.log(`Redis connection established after ${this.connectionAttempts} attempts`);
+      }
+      this.connectionAttempts = 0;
+    });
+
     this.client.on('error', (error) => {
-      this.logger.error(`Redis error: ${error.message}`);
+      // Durante el inicio (primeros intentos), tratamos timeouts como logs normales
+      if (!this.isConnected && this.connectionAttempts <= 3 && error.message.includes('ETIMEDOUT')) {
+        this.logger.log(`Redis connecting... (timeout during initial connection is normal)`);
+      } else if (!this.isConnected && error.message.includes('ETIMEDOUT')) {
+        this.logger.warn(`Redis connection timeout: ${error.message}`);
+      } else {
+        // Errores reales (no de conexión inicial) se registran como errores
+        this.logger.error(`Redis error: ${error.message}`);
+      }
     });
 
     this.client.on('close', () => {
-      this.logger.warn('Redis connection closed');
+      if (this.isConnected) {
+        this.logger.warn('Redis connection closed');
+        this.isConnected = false;
+      }
+    });
+
+    this.client.on('reconnecting', () => {
+      this.logger.log('Redis reconnecting...');
     });
   }
 
