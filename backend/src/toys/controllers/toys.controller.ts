@@ -220,6 +220,10 @@ export class ToysController {
     status: HttpStatus.NOT_FOUND,
     description: 'Juguete con el MAC address especificado no encontrado',
   })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'Juguete ya está asignado a otro usuario',
+  })
   async assignToy(
     @Body() assignToyDto: AssignToyDto,
     @CurrentUser() user: User,
@@ -229,6 +233,32 @@ export class ToysController {
       ...assignToyDto,
       userId: user.id,
     });
+  }
+
+  @Post(':id/unassign')
+  @ApiOperation({
+    summary: 'Liberar juguete',
+    description: 'Libera un juguete de mi cuenta para que pueda ser asignado a otro usuario'
+  })
+  @ApiParam({ name: 'id', description: 'ID del juguete (UUID)' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Juguete liberado exitosamente',
+    type: AssignToyResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Juguete no encontrado',
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'No tienes permiso para liberar este juguete',
+  })
+  async unassignToy(
+    @Param('id') id: string,
+    @CurrentUser() user: User,
+  ): Promise<AssignToyResponseDto> {
+    return this.toysService.unassignToy(id, user.id);
   }
 
   @Patch('connection/:macAddress')

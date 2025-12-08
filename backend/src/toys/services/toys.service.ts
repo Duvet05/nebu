@@ -299,6 +299,13 @@ export class ToysService {
       );
     }
 
+    // Verificar que el juguete no esté ya asignado a otro usuario
+    if (toy.userId && toy.userId !== assignToyDto.userId) {
+      throw new ConflictException(
+        `Este juguete ya está asignado a otro usuario. Si deseas reasignarlo, primero debe ser liberado por el usuario actual.`
+      );
+    }
+
     // Verificar que el usuario existe
     const user = await this.userRepository.findOne({
       where: { id: assignToyDto.userId },
@@ -314,11 +321,50 @@ export class ToysService {
       toy.name = assignToyDto.toyName;
     }
 
+    // Si se está asignando por primera vez, activar el toy
+    if (toy.status === ToyStatus.INACTIVE) {
+      toy.status = ToyStatus.ACTIVE;
+      toy.activatedAt = new Date();
+    }
+
     await this.toyRepository.save(toy);
 
     return {
       success: true,
       message: 'Juguete asignado exitosamente al usuario',
+      toy: this.mapToyToResponseDto(toy),
+    };
+  }
+
+  /**
+   * Liberar un juguete (quitar asignación de usuario)
+   */
+  async unassignToy(toyId: string, userId: string): Promise<AssignToyResponseDto> {
+    const toy = await this.toyRepository.findOne({
+      where: { id: toyId },
+      relations: ['user', 'iotDevice'],
+    });
+
+    if (!toy) {
+      throw new NotFoundException(`Juguete con ID ${toyId} no encontrado`);
+    }
+
+    // Verificar que el juguete pertenece al usuario
+    if (toy.userId !== userId) {
+      throw new ConflictException(
+        'No tienes permiso para liberar este juguete. Solo el propietario puede liberarlo.'
+      );
+    }
+
+    // Liberar el juguete
+    toy.userId = null;
+    toy.status = ToyStatus.INACTIVE;
+
+    await this.toyRepository.save(toy);
+
+    return {
+      success: true,
+      message: 'Juguete liberado exitosamente. Ahora puede ser asignado a otro usuario.',
       toy: this.mapToyToResponseDto(toy),
     };
   }
