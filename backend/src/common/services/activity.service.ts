@@ -1,12 +1,14 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, LessThan } from 'typeorm';
+import { Repository, LessThan, DataSource } from 'typeorm';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Activity } from '../entities/activity.entity';
 import {
   CreateActivityDto,
   ActivityFiltersDto,
   ActivityListResponseDto,
+  MigrateActivitiesDto,
+  MigrateActivitiesResponseDto,
 } from '../dto/activity.dto';
 
 @Injectable()
@@ -16,6 +18,7 @@ export class ActivityService {
   constructor(
     @InjectRepository(Activity)
     private activityRepository: Repository<Activity>,
+    private dataSource: DataSource,
   ) {}
 
   /**
@@ -172,5 +175,87 @@ export class ActivityService {
       last24Hours,
       last7Days,
     };
+  }
+
+  /**
+   * Migrar actividades de un usuario local (UUID temporal) a un usuario autenticado
+   * Se usa cuando el usuario se registra o inicia sesión después de usar la app sin cuenta
+   */
+  async migrateActivities(
+    migrateDto: MigrateActivitiesDto,
+  ): Promise<MigrateActivitiesResponseDto> {
+    const { localUserId, newUserId } = migrateDto;
+
+    this.logger.log(
+      `🔄 Starting activity migration from local user ${localUserId} to authenticated user ${newUserId}`,
+    );
+
+    // Verificar que localUserId y newUserId sean diferentes
+    if (localUserId === newUserId) {
+      this.logger.warn('⚠️  Local user ID and new user ID are the same, no migration needed');
+      return {
+        success: true,
+        message: 'No migration needed - IDs are identical',
+        migratedCount: 0,
+        newUserId,
+      };
+    }
+
+    // Usar transacción para garantizar atomicidad
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // 1. Contar actividades a migrar
+      const activitiesToMigrate = await queryRunner.manager.count(Activity, {
+        where: { userId: localUserId },
+      });
+
+      if (activitiesToMigrate === 0) {
+        this.logger.log('ℹ️  No activities found for local user ID');
+        await queryRunner.commitTransaction();
+        return {
+          success: true,
+          message: 'No activities to migrate',
+          migratedCount: 0,
+          newUserId,
+        };
+      }
+
+      this.logger.log(`📦 Found ${activitiesToMigrate} activities to migrate`);
+
+      // 2. Actualizar todas las actividades del usuario local al nuevo usuario
+      const result = await queryRunner.manager
+        .createQueryBuilder()
+        .update(Activity)
+        .set({ userId: newUserId })
+        .where('userId = :localUserId', { localUserId })
+        .execute();
+
+      const migratedCount = result.affected || 0;
+
+      // 3. Commit de la transacción
+      await queryRunner.commitTransaction();
+
+      this.logger.log(
+        `✅ Migration completed successfully: ${migratedCount} activities migrated from ${localUserId} to ${newUserId}`,
+      );
+
+      return {
+        success: true,
+        message: 'Activities migrated successfully',
+        migratedCount,
+        newUserId,
+      };
+    } catch (error) {
+      // Rollback en caso de error
+      await queryRunner.rollbackTransaction();
+      this.logger.error(`❌ Migration failed: ${error.message}`, error.stack);
+      throw error;
+    } finally {
+      // Liberar conexión
+      await queryRunner.release();
+    }
   }
 }
