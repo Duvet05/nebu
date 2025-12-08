@@ -98,7 +98,6 @@ export class Toy {
   iotDevice?: any;
 
   @Column({ type: 'uuid', nullable: true, unique: true })
-  @Index({ unique: true, where: 'iot_device_id IS NOT NULL' })
   iotDeviceId?: string;
 
   // Relación opcional con User - Un juguete puede estar sin asignar inicialmente

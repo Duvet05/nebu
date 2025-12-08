@@ -113,6 +113,13 @@ services:
     networks:
       - traefik-network
       - nebu-network
+    depends_on:
+      backend:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=nebu_traefik-network"
@@ -318,9 +325,12 @@ services:
       - traefik-network
       - nebu-network
     depends_on:
-      - postgres
-      - redis
-      - chromadb
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=nebu_traefik-network"
