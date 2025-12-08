@@ -10,6 +10,7 @@ import { Relationship } from './entities/relationship.entity';
 import { RelationshipType } from './entities/relationship-type.entity';
 import { Privilege } from './entities/privilege.entity';
 import { Role } from './entities/role.entity';
+import { UserSetup } from './entities/user-setup.entity';
 import { UsersService } from './services/users.service';
 import { UsersController } from './controllers/users.controller';
 import { PersonsService } from './services/persons.service';
@@ -18,11 +19,44 @@ import { PrivilegesService } from './services/privileges.service';
 import { PrivilegesController } from './controllers/privileges.controller';
 import { RolesService } from './services/roles.service';
 import { RolesController } from './controllers/roles.controller';
+import { UserSetupService } from './services/user-setup.service';
+import { UserSetupController } from './controllers/user-setup.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Person, PersonName, PersonAttribute, PersonAttributeType, Relationship, RelationshipType, Privilege, Role])],
-  providers: [UsersService, PersonsService, PrivilegesService, RolesService],
-  controllers: [UsersController, PersonsController, PrivilegesController, RolesController],
-  exports: [UsersService, PersonsService, PrivilegesService, RolesService],
+  imports: [
+    TypeOrmModule.forFeature([
+      User,
+      Person,
+      PersonName,
+      PersonAttribute,
+      PersonAttributeType,
+      Relationship,
+      RelationshipType,
+      Privilege,
+      Role,
+      UserSetup,
+    ]),
+  ],
+  providers: [
+    UsersService,
+    PersonsService,
+    PrivilegesService,
+    RolesService,
+    UserSetupService,
+  ],
+  controllers: [
+    UsersController,
+    PersonsController,
+    PrivilegesController,
+    RolesController,
+    UserSetupController,
+  ],
+  exports: [
+    UsersService,
+    PersonsService,
+    PrivilegesService,
+    RolesService,
+    UserSetupService,
+  ],
 })
 export class UsersModule {}

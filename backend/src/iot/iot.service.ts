@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cron } from '@nestjs/schedule';
@@ -69,7 +69,22 @@ export class IoTService {
   }
 
   async remove(id: string): Promise<void> {
-    const device = await this.findOne(id);
+    const device = await this.iotDeviceRepository.findOne({
+      where: { id },
+      relations: ['toy'],
+    });
+
+    if (!device) {
+      throw new NotFoundException(`IoT device with ID ${id} not found`);
+    }
+
+    // Verificar que no tenga un Toy asignado activo
+    if (device.toy && device.toy.userId) {
+      throw new ConflictException(
+        `Cannot delete IoT device: it is currently assigned to a Toy (${device.toy.name}). Please unassign the toy first.`
+      );
+    }
+
     await this.iotDeviceRepository.remove(device);
     this.logger.log(`IoT device removed: ${device.name} (${id})`);
   }

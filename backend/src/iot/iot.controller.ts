@@ -93,6 +93,7 @@ export class IoTController {
   @ApiOperation({ summary: 'Delete an IoT device' })
   @ApiResponse({ status: 204, description: 'Device deleted successfully' })
   @ApiResponse({ status: 404, description: 'Device not found' })
+  @ApiResponse({ status: 409, description: 'Device is currently assigned to an active Toy' })
   async remove(@Param('id') id: string): Promise<void> {
     return this.iotService.remove(id);
   }
