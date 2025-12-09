@@ -99,9 +99,12 @@ export class AuthService {
   async login(loginDto: LoginDto): Promise<AuthResponseDto> {
     const { email, password } = loginDto;
 
-    // Find user by email
+    // Determine if input is email or username
+    const isEmail = email.includes('@');
+    
+    // Find user by email or username
     const user = await this.userRepository.findOne({
-      where: { email },
+      where: isEmail ? { email } : { username: email },
     });
 
     if (!user) {
