@@ -152,7 +152,7 @@ export class Person {
   voidReason: string;
 
   // OpenMRS-style relationships
-  @OneToMany(() => PersonName, (name) => name.person)
+  @OneToMany(() => PersonName, (name) => name.person, { eager: true })
   names: PersonName[];
 
   @OneToMany(() => PersonAttribute, (attr) => attr.person)

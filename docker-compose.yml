@@ -317,6 +317,9 @@ services:
       - DB_USE_MIGRATIONS=${DB_USE_MIGRATIONS:-false}
       # Auto-seed only works in synchronize mode (DB_USE_MIGRATIONS=false)
       - AUTO_SEED=${AUTO_SEED:-true}
+      # Email Verification Configuration
+      # Set to 'false' to disable email verification (useful when SMTP is not configured)
+      - REQUIRE_EMAIL_VERIFICATION=${REQUIRE_EMAIL_VERIFICATION:-false}
     ports:
       - "3001:3001"
     volumes:

@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
+import { User } from '../../users/entities/user.entity';
 
 @Injectable()
 export class ValidationSanitizationPipe implements PipeTransform<any> {
@@ -48,8 +49,19 @@ export class ValidationSanitizationPipe implements PipeTransform<any> {
   }
 
   private toValidate(metatype: Function): boolean {
+    // Skip native types
     const types: Function[] = [String, Boolean, Number, Array, Object];
-    return !types.includes(metatype);
+    if (types.includes(metatype)) {
+      return false;
+    }
+
+    // Skip TypeORM entities - they should not be validated as DTOs
+    // The User entity is passed by @CurrentUser() decorator
+    if (metatype === User) {
+      return false;
+    }
+
+    return true;
   }
 
   private sanitizeInput(value: any): any {

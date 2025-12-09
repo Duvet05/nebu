@@ -264,7 +264,7 @@ export class TokenValidationService {
     try {
       const user = await this.userRepository.findOne({
         where: { id: userId },
-        select: ['id', 'email', 'firstName', 'lastName', 'role', 'status', 'emailVerified'],
+        relations: ['person', 'person.names'],
       });
 
       return user;

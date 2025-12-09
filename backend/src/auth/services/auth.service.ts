@@ -84,7 +84,16 @@ export class AuthService {
 
     // Send verification email only if required
     if (this.isEmailVerificationRequired()) {
-      await this.emailService.sendVerificationEmail(savedUser.email, emailVerificationToken);
+      try {
+        await this.emailService.sendVerificationEmail(savedUser.email, emailVerificationToken);
+      } catch (error) {
+        // Log error but don't fail registration if email fails
+        this.logger.warn(`Failed to send verification email to ${savedUser.email}: ${error.message}`);
+        // If email fails, auto-verify the user to allow them to continue
+        savedUser.emailVerified = true;
+        savedUser.status = UserStatus.ACTIVE;
+        await this.userRepository.save(savedUser);
+      }
     }
 
     // Generate tokens
@@ -102,9 +111,10 @@ export class AuthService {
     // Determine if input is email or username
     const isEmail = email.includes('@');
     
-    // Find user by email or username
+    // Find user by email or username with all necessary relations
     const user = await this.userRepository.findOne({
       where: isEmail ? { email } : { username: email },
+      relations: ['person', 'person.names'],
     });
 
     if (!user) {
@@ -273,6 +283,7 @@ export class AuthService {
   async validateUser(userId: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
+      relations: ['person', 'person.names'],
     });
 
     if (!user || user.status !== UserStatus.ACTIVE) {
@@ -404,10 +415,16 @@ export class AuthService {
   }
 
   private isEmailVerificationRequired(): boolean {
-    // Check environment
+    // Check if email verification is explicitly enabled/disabled
+    const emailVerificationEnabled = this.configService.get<string>('REQUIRE_EMAIL_VERIFICATION');
+    
+    // If explicitly set, use that value
+    if (emailVerificationEnabled !== undefined) {
+      return emailVerificationEnabled === 'true';
+    }
+    
+    // Otherwise, check environment (disabled by default for easier development)
     const nodeEnv = this.configService.get<string>('NODE_ENV');
-
-    // Disable email verification in development, enable in production
     return nodeEnv === 'production';
   }
 
