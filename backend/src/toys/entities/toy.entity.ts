@@ -92,6 +92,9 @@ export class Toy {
   @Column({ type: 'text', nullable: true })
   notes: string; // Notas adicionales del usuario
 
+  @Column({ type: 'text', nullable: true })
+  prompt: string; // Prompt para configurar el agente de IA del juguete
+
   // Relación opcional con IoTDevice (1:0 o 1:1) - Se crea automáticamente con macAddress
   @OneToOne('IoTDevice', 'toy')
   @JoinColumn({ name: 'iotDeviceId' })

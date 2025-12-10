@@ -145,28 +145,21 @@ export class IoTService {
   }> {
     this.logger.log(` Generating LiveKit token for device: ${deviceId}`);
 
-    // Buscar o crear el dispositivo por macAddress
+    // Buscar el dispositivo por deviceId
     let device = await this.iotDeviceRepository.findOne({
-      where: { macAddress: deviceId }
+      where: { deviceId }
     });
 
-    // Si no existe, crear un dispositivo básico
+    // Si no existe, lanzar excepción
     if (!device) {
-      this.logger.log(` Device not found, creating new device: ${deviceId}`);
-      device = this.iotDeviceRepository.create({
-        name: `Device ${deviceId}`,
-        macAddress: deviceId,
-        deviceType: 'sensor',
-        status: 'online',
-        lastSeen: new Date(),
-      });
-      device = await this.iotDeviceRepository.save(device);
-    } else {
-      // Actualizar lastSeen
-      device.lastSeen = new Date();
-      device.status = 'online';
-      await this.iotDeviceRepository.save(device);
+      this.logger.error(` Device not found: ${deviceId}`);
+      throw new NotFoundException(`Device with ID ${deviceId} not found. Please register the device first.`);
     }
+
+    // Actualizar lastSeen
+    device.lastSeen = new Date();
+    device.status = 'online';
+    await this.iotDeviceRepository.save(device);
 
     // Generate unique room name for EACH request (like your friend's implementation)
     const roomName = `iot-device-${randomUUID()}`;

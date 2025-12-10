@@ -25,6 +25,7 @@ import { UpdateToyDto } from '../dto/update-toy.dto';
 import { AssignToyDto, AssignToyResponseDto } from '../dto/assign-toy.dto';
 import { ToyResponseDto, ToyListResponseDto } from '../dto/toy-response.dto';
 import { UpdateConnectionStatusDto } from '../dto/update-connection-status.dto';
+import { ToyPromptResponseDto } from '../dto/toy-prompt.dto';
 import { ToyStatus } from '../entities/toy.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
@@ -142,6 +143,25 @@ export class ToysController {
   })
   async findByMacAddress(@Param('macAddress') macAddress: string): Promise<ToyResponseDto> {
     return this.toysService.findByMacAddress(macAddress);
+  }
+
+  @Get(':id/prompt')
+  @ApiOperation({
+    summary: 'Obtener prompt de un juguete',
+    description: 'Obtiene el prompt del agente de IA configurado para un juguete específico'
+  })
+  @ApiParam({ name: 'id', description: 'ID del juguete (UUID)' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Prompt del juguete obtenido exitosamente',
+    type: ToyPromptResponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Juguete no encontrado',
+  })
+  async getToyPrompt(@Param('id') id: string): Promise<ToyPromptResponseDto> {
+    return this.toysService.getToyPrompt(id);
   }
 
   @Get(':id')

@@ -415,6 +415,28 @@ export class ToysService {
   }
 
   /**
+   * Obtener el prompt de un juguete por ID
+   */
+  async getToyPrompt(toyId: string) {
+    const toy = await this.toyRepository.findOne({
+      where: { id: toyId },
+      select: ['id', 'name', 'prompt', 'model', 'manufacturer'],
+    });
+
+    if (!toy) {
+      throw new NotFoundException(`Juguete con ID ${toyId} no encontrado`);
+    }
+
+    return {
+      id: toy.id,
+      name: toy.name,
+      prompt: toy.prompt,
+      model: toy.model,
+      manufacturer: toy.manufacturer,
+    };
+  }
+
+  /**
    * Obtener estadísticas de juguetes
    */
   async getStatistics() {
