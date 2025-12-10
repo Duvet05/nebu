@@ -146,7 +146,7 @@ export class IoTService {
     this.logger.log(` Generating LiveKit token for device: ${deviceId}`);
 
     // Buscar el dispositivo por deviceId
-    let device = await this.iotDeviceRepository.findOne({
+    const device = await this.iotDeviceRepository.findOne({
       where: { deviceId }
     });
 
