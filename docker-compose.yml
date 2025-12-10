@@ -250,15 +250,12 @@ services:
     restart: on-failure:3
     environment:
       - IS_PERSISTENT=TRUE
-      - ANONYMIZED_TELEMETRY=${CHROMA_TELEMETRY:-FALSE}
+      - ANONYMIZED_TELEMETRY=FALSE
       - ALLOW_RESET=TRUE
-      - CHROMA_SERVER_AUTH_PROVIDER=${CHROMA_AUTH_PROVIDER:-}
-      - CHROMA_SERVER_AUTH_CREDENTIALS=${CHROMA_AUTH_CREDENTIALS:-}
     volumes:
       - chromadb_data:/chroma/chroma
-    ports:
-      # Solo expuesto en localhost para seguridad
-      - "127.0.0.1:8000:8000"
+    # Puertos expuestos via docker-compose.override.yml (desarrollo)
+    # En producción, solo accesible desde la red interna nebu-network
     networks:
       - nebu-network
     deploy:
@@ -305,7 +302,9 @@ services:
       - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
       - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
       # ChromaDB Configuration
-      - CHROMA_URL=http://chromadb:8000
+      - CHROMADB_HOST=chromadb
+      - CHROMADB_PORT=8000
+      - CHROMADB_RETENTION_DAYS=${CHROMADB_RETENTION_DAYS:-365}
       # OpenAI Configuration (para embeddings)
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       # Memory Configuration

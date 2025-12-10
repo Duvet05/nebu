@@ -65,6 +65,20 @@ export class VoiceSession {
   @Column({ type: 'float', default: 0 })
   totalCost: number;
 
+  // ChromaDB Integration Fields
+  @Column({ type: 'text', nullable: true })
+  summary?: string;
+
+  @Column({ type: 'simple-array', nullable: true })
+  topics?: string[];
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  emotion?: string;
+
+  @Column({ type: 'boolean', default: false })
+  @Index()
+  chromadbSynced: boolean;
+
   @UpdateDateColumn()
   updatedAt: Date;
 
@@ -90,5 +104,16 @@ export class VoiceSession {
 
   isActive(): boolean {
     return this.status === 'active';
+  }
+
+  needsChromaDBSync(): boolean {
+    return !this.chromadbSynced && this.status === 'ended' && !!this.endedAt;
+  }
+
+  markChromaDBSynced(summary: string, topics: string[], emotion: string): void {
+    this.summary = summary;
+    this.topics = topics;
+    this.emotion = emotion;
+    this.chromadbSynced = true;
   }
 }
