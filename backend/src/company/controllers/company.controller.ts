@@ -1,9 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CompanyService } from '../services/company.service';
+import { Public } from '../../auth/decorators/public.decorator';
 
 @ApiTags('company')
 @Controller('company-info')
+@Public()
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 

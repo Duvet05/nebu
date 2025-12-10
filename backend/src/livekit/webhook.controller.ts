@@ -1,9 +1,10 @@
 import { Controller, Post, Body, HttpCode, HttpStatus, Logger } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-// import { Public } from '../auth/decorators/public.decorator';
-//TODO PROTEGER CON JWT POR EL MOMENTO ESTA PUBLICO PARA LAS PRUEBAS
+import { Public } from '../auth/decorators/public.decorator';
+
 @ApiTags('livekit-webhook')
 @Controller('livekit')
+@Public()
 export class LiveKitWebhookController {
   private readonly logger = new Logger(LiveKitWebhookController.name);
 

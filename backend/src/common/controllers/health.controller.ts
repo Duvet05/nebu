@@ -7,6 +7,7 @@ import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject } from '@nestjs/common';
 import axios from 'axios';
+import { Public } from '../../auth/decorators/public.decorator';
 
 @Injectable()
 export class HealthService {
@@ -219,6 +220,7 @@ export class HealthService {
 }
 
 @Controller('health')
+@Public()
 export class HealthController {
   constructor(private healthService: HealthService) {}
 

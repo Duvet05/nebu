@@ -19,6 +19,7 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { UserRole } from '../../users/entities/user.entity';
+import { Public } from '../../auth/decorators/public.decorator';
 
 @ApiTags('Product Catalog')
 @Controller('products')
@@ -26,6 +27,7 @@ export class ProductCatalogController {
   constructor(private readonly productCatalogService: ProductCatalogService) {}
 
   // Public endpoints
+  @Public()
   @Get('health')
   @ApiOperation({ summary: 'Health check for product catalog' })
   @ApiResponse({ status: 200, description: 'Returns catalog health status' })
@@ -33,6 +35,7 @@ export class ProductCatalogController {
     return await this.productCatalogService.getHealth();
   }
 
+  @Public()
   @Get()
   @ApiOperation({ summary: 'Get all active products' })
   @ApiResponse({ status: 200, description: 'Returns all active products' })
@@ -58,6 +61,7 @@ export class ProductCatalogController {
     return await this.productCatalogService.findAll(include, filters);
   }
 
+  @Public()
   @Get('in-stock')
   @ApiOperation({ summary: 'Get products in stock' })
   @ApiResponse({ status: 200, description: 'Returns products currently in stock' })
@@ -65,6 +69,7 @@ export class ProductCatalogController {
     return await this.productCatalogService.findInStock();
   }
 
+  @Public()
   @Get('pre-orders')
   @ApiOperation({ summary: 'Get products available for pre-order' })
   @ApiResponse({ status: 200, description: 'Returns products available for pre-order' })
@@ -72,6 +77,7 @@ export class ProductCatalogController {
     return await this.productCatalogService.findPreOrders();
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get product by ID' })
   @ApiResponse({ status: 200, description: 'Returns product details' })
@@ -80,6 +86,7 @@ export class ProductCatalogController {
     return await this.productCatalogService.findOne(id);
   }
 
+  @Public()
   @Get('slug/:slug')
   @ApiOperation({ summary: 'Get product by slug' })
   @ApiResponse({ status: 200, description: 'Returns product details' })

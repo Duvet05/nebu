@@ -1,9 +1,11 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SearchService } from '../services/search.service';
+import { Public } from '../../auth/decorators/public.decorator';
 
 @ApiTags('search')
 @Controller('search')
+@Public()
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 

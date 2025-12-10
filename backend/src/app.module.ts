@@ -5,6 +5,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { JwtModule } from '@nestjs/jwt';
 import { redisStore } from 'cache-manager-redis-yet';
+import { APP_GUARD } from '@nestjs/core';
 
 // Configuration
 import { databaseConfig } from './config/database.config';
@@ -39,6 +40,7 @@ import { LeadsModule } from './leads/leads.module';
 import { RedisModule } from './config/redis.module';
 import { DynamicModulesConfig } from './config/dynamic-modules.config';
 import { PaymentsModule } from './payments/payments.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -151,6 +153,12 @@ import { PaymentsModule } from './payments/payments.module';
 
     // Dynamic Modules (loaded based on feature flags)
     DynamicModulesConfig.forRoot(new ConfigService()),
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}

@@ -10,6 +10,7 @@ import {
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { IoTService } from './iot.service';
 import { DeviceTokenRequestDto, DeviceTokenResponseDto } from './dto/device-token.dto';
+import { Public } from '../auth/decorators/public.decorator';
 
 /**
  * DTOs adicionales para ESP32
@@ -49,6 +50,7 @@ export class ESP32TokenController {
    * - Reconexión → Crear nuevo room (por diseño, cada request = nuevo room)
    * - Actualizar métricas del dispositivo
    */
+  @Public()
   @Post('esp32/token')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Generate ESP32-optimized LiveKit token with session management' })
@@ -99,6 +101,7 @@ export class ESP32TokenController {
    * - Reportar métricas (batería, señal, temperatura, etc.)
    * - Detectar desconexiones
    */
+  @Public()
   @Patch('esp32/heartbeat')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Record ESP32 heartbeat with device metrics' })

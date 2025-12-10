@@ -9,6 +9,7 @@ import {
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { IoTService } from './iot.service';
 import { DeviceTokenRequestDto, DeviceTokenResponseDto } from './dto/device-token.dto';
+import { Public } from '../auth/decorators/public.decorator';
 
 @ApiTags('iot')
 @Controller('iot')
@@ -17,6 +18,7 @@ export class DeviceTokenController {
   
   constructor(private readonly iotService: IoTService) {}
 
+  @Public()
   @Post('device/token')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Create LiveKit session and get LiveKit access token for IoT device' })
