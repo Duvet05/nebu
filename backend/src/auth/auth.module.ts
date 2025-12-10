@@ -20,12 +20,15 @@ import { EmailModule } from '../email/email.module';
     EmailModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('auth.jwtSecret'),
-        signOptions: {
-          expiresIn: configService.get<string>('auth.jwtExpiresIn'),
-        },
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const expiresIn = configService.get<string>('auth.jwtExpiresIn') || '1h';
+        return {
+          secret: configService.get<string>('auth.jwtSecret'),
+          signOptions: {
+            expiresIn: expiresIn as any, // Cast needed for compatibility with @nestjs/jwt v11
+          },
+        };
+      },
       inject: [ConfigService],
     }),
   ],

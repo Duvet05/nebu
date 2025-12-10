@@ -235,7 +235,7 @@ export class TokenValidationService {
 
     return this.jwtService.sign(payload, {
       secret: this.configService.get<string>('auth.jwtSecret'),
-      expiresIn: this.configService.get<string>('auth.jwtExpiresIn', '1h'),
+      expiresIn: this.configService.get<string>('auth.jwtExpiresIn', '1h') as any,
     });
   }
 
@@ -253,7 +253,7 @@ export class TokenValidationService {
 
     return this.jwtService.sign(payload, {
       secret: this.configService.get<string>('auth.refreshTokenSecret'),
-      expiresIn: this.configService.get<string>('auth.refreshTokenExpiresIn', '7d'),
+      expiresIn: this.configService.get<string>('auth.refreshTokenExpiresIn', '7d') as any,
     });
   }
 
