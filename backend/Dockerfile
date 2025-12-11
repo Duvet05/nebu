@@ -23,9 +23,9 @@ CMD ["npm", "run", "start:dev"]
 # Production stage
 FROM base AS production
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nestjs -u 1001
+# Create non-root user (Alpine syntax)
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nestjs -u 1001 -G nodejs
 
 # Build application
 RUN npm run build

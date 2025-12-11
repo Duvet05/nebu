@@ -106,12 +106,24 @@ async function bootstrap() {
 
   if (autoSeed && !useMigrations) {
     logger.log('🌱 Auto-seeding enabled (synchronize mode), running seeders...');
+    
+    // Seed PostgreSQL database
     try {
       const { execSync } = await import('child_process');
       execSync('npm run seed', { stdio: 'inherit' });
-      logger.log('✅ Seeders completed successfully');
+      logger.log('✅ Database seeders completed successfully');
     } catch (error) {
-      logger.warn('⚠️  Seeders failed (data may already exist). See:', error);
+      logger.warn('⚠️  Database seeders failed (data may already exist)');
+    }
+    
+    // Seed ChromaDB knowledge base (independent from DB seed)
+    try {
+      const { execSync } = await import('child_process');
+      logger.log('🌱 Seeding ChromaDB knowledge base...');
+      execSync('npm run chromadb:seed', { stdio: 'inherit' });
+      logger.log('✅ ChromaDB seeded successfully');
+    } catch (error) {
+      logger.warn('⚠️  ChromaDB seeding failed:', error.message);
     }
   } else if (useMigrations) {
     logger.log('ℹ️  Using migrations mode - seeders skipped (run manually if needed)');

@@ -34,6 +34,7 @@ export class HealthService {
         checks: {
           database: await this.checkDatabase(),
           redis: await this.checkRedis(),
+          chromadb: await this.checkChromaDB(),
           configuration: this.checkConfiguration(),
           external: await this.checkExternalServices(),
         },
@@ -127,6 +128,33 @@ export class HealthService {
         status: 'error',
         connected: false,
         error: error instanceof Error ? error.message : 'Unknown Redis error',
+      };
+    }
+  }
+
+  private async checkChromaDB() {
+    try {
+      const chromaHost = this.configService.get<string>('CHROMADB_HOST', 'chromadb');
+      const chromaPort = this.configService.get<number>('CHROMADB_PORT', 8000);
+      const chromaUrl = `http://${chromaHost}:${chromaPort}`;
+
+      const response = await axios.get(`${chromaUrl}/api/v2/heartbeat`, {
+        timeout: 3000,
+      });
+
+      return {
+        status: response.status === 200 ? 'ok' : 'error',
+        connected: response.status === 200,
+        host: chromaHost,
+        port: chromaPort,
+        url: chromaUrl,
+      };
+    } catch (error) {
+      return {
+        status: 'warning', // Warning porque ChromaDB no es crítico para el backend
+        connected: false,
+        error: error instanceof Error ? error.message : 'Unknown ChromaDB error',
+        note: 'ChromaDB is optional - backend can run without it',
       };
     }
   }

@@ -1,6 +1,7 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ChromaClient, Collection, IncludeEnum } from 'chromadb';
+import { OpenAIEmbeddingsHelper } from './openai-embeddings.helper';
 
 export interface ToyPersonalityMetadata {
   toyId: string;
@@ -40,8 +41,12 @@ export class ChromaDBService implements OnModuleInit {
   private conversationMemories: Collection;
   private knowledgeBase: Collection;
   private readonly logger = new Logger(ChromaDBService.name);
+  private isAvailable = false;
 
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private openaiEmbeddings: OpenAIEmbeddingsHelper,
+  ) {}
 
   async onModuleInit() {
     await this.initialize();
@@ -68,11 +73,21 @@ export class ChromaDBService implements OnModuleInit {
       // Inicializar colecciones
       await this.initializeCollections();
       
+      this.isAvailable = true;
       this.logger.log('✅ ChromaDB Service inicializado correctamente');
     } catch (error) {
+      this.isAvailable = false;
       this.logger.error('❌ Error inicializando ChromaDB:', error.message);
-      throw error;
+      this.logger.warn('⚠️  ChromaDB no disponible - el servicio continuará sin embeddings');
+      // NO lanzamos el error - permitimos que el backend funcione sin ChromaDB
     }
+  }
+
+  /**
+   * Verificar si ChromaDB está disponible
+   */
+  getAvailability(): boolean {
+    return this.isAvailable;
   }
 
   /**
@@ -122,6 +137,11 @@ export class ChromaDBService implements OnModuleInit {
     prompt: string,
     metadata: Partial<ToyPersonalityMetadata>,
   ) {
+    if (!this.isAvailable) {
+      this.logger.warn('ChromaDB no disponible - omitiendo guardado de personalidad');
+      return { success: false, reason: 'ChromaDB not available' };
+    }
+
     const document = this.buildPersonalityDocument(prompt, metadata);
     const meta: ToyPersonalityMetadata = {
       toyId,
@@ -134,11 +154,20 @@ export class ChromaDBService implements OnModuleInit {
       updatedAt: new Date().toISOString(),
     };
 
-    await this.toyPersonalities.upsert({
+    // Generar embedding con OpenAI
+    const embedding = await this.openaiEmbeddings.generateEmbedding(document);
+
+    const upsertParams: any = {
       ids: [toyId],
       documents: [document],
       metadatas: [meta as any],
-    });
+    };
+
+    if (embedding) {
+      upsertParams.embeddings = [embedding];
+    }
+
+    await this.toyPersonalities.upsert(upsertParams);
 
     this.logger.log(`✅ Personalidad guardada para toy: ${toyId}`);
     return { success: true, toyId };
@@ -211,6 +240,11 @@ export class ChromaDBService implements OnModuleInit {
     summary: string,
     metadata: Partial<ConversationMemoryMetadata>,
   ) {
+    if (!this.isAvailable) {
+      this.logger.warn('ChromaDB no disponible - omitiendo guardado de memoria');
+      return { success: false, reason: 'ChromaDB not available' };
+    }
+
     const document = this.buildConversationDocument(summary, metadata);
     const meta: ConversationMemoryMetadata = {
       sessionId,
@@ -223,11 +257,20 @@ export class ChromaDBService implements OnModuleInit {
       messageCount: metadata.messageCount || 0,
     };
 
-    await this.conversationMemories.add({
+    // Generar embedding con OpenAI
+    const embedding = await this.openaiEmbeddings.generateEmbedding(document);
+
+    const addParams: any = {
       ids: [`session_${sessionId}`],
       documents: [document],
       metadatas: [meta as any],
-    });
+    };
+
+    if (embedding) {
+      addParams.embeddings = [embedding];
+    }
+
+    await this.conversationMemories.add(addParams);
 
     this.logger.log(`✅ Memoria guardada para sesión: ${sessionId}`);
     return { success: true, sessionId };
@@ -307,13 +350,25 @@ export class ChromaDBService implements OnModuleInit {
       language: metadata.language || 'es',
     };
 
-    await this.knowledgeBase.add({
+    // Generar embedding con OpenAI
+    const embedding = await this.openaiEmbeddings.generateEmbedding(content);
+
+    const addParams: any = {
       ids: [id],
       documents: [content],
       metadatas: [meta as any],
-    });
+    };
 
-    this.logger.log(`✅ Conocimiento agregado: ${id}`);
+    // Solo agregar embeddings si están disponibles
+    // Sin embeddings, ChromaDB usa búsqueda lexical en lugar de semántica
+    if (embedding) {
+      addParams.embeddings = [embedding];
+    }
+
+    await this.knowledgeBase.add(addParams);
+
+    const embeddingStatus = embedding ? 'con embeddings' : 'sin embeddings (búsqueda lexical)';
+    this.logger.log(`✅ Conocimiento agregado: ${id} (${embeddingStatus})`);
   }
 
   /**
