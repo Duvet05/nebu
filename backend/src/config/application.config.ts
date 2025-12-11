@@ -38,7 +38,7 @@ export const applicationConfig = registerAs('app', () => {
       },
       payments: {
         subscriptionsEnabled: FEATURES.payments.subscriptions,
-        stripeEnabled: FEATURES.payments.stripe,
+        culqiEnabled: FEATURES.payments.culqi,
       },
       notifications: {
         emailNotificationsEnabled: FEATURES.notifications.email,

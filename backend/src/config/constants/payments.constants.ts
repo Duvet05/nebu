@@ -72,11 +72,6 @@ export const PAYMENT_CONSTANTS = {
       name: 'Culqi',
       supportedCountries: ['PE'] as const, // Perú
     },
-    stripe: {
-      enabled: false, // Por implementar
-      name: 'Stripe',
-      supportedCountries: ['US', 'MX', 'CA'] as const,
-    },
   },
 } as const;
 

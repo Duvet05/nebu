@@ -35,9 +35,9 @@ export class FeaturesConfig {
     return this.configService.get<string>('ENABLE_OAUTH') === 'true';
   }
 
-  // Stripe payments feature
-  get isStripeEnabled(): boolean {
-    return this.configService.get<string>('ENABLE_STRIPE') === 'true';
+  // Culqi payments feature
+  get isCulqiEnabled(): boolean {
+    return this.configService.get<string>('ENABLE_CULQI') === 'true';
   }
 
   // Get all features as an object
@@ -49,7 +49,7 @@ export class FeaturesConfig {
       notifications: this.isNotificationsEnabled,
       emailNotifications: this.isEmailNotificationsEnabled,
       oauth: this.isOAuthEnabled,
-      stripe: this.isStripeEnabled,
+      culqi: this.isCulqiEnabled,
     };
   }
 }

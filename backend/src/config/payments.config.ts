@@ -4,14 +4,6 @@ import { PAYMENT_CONSTANTS } from './constants/payments.constants';
 export const paymentsConfig = registerAs('payments', () => {
 
   return {
-    // Stripe Configuration (secrets from environment)
-    stripe: {
-      secretKey: process.env.STRIPE_SECRET_KEY,
-      publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-      webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
-      enabled: PAYMENT_CONSTANTS.paymentMethods.stripe.enabled,
-    },
-
     // Culqi Configuration (secrets from environment)
     culqi: {
       secretKey: process.env.CULQI_SECRET_KEY,

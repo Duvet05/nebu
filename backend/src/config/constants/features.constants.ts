@@ -20,9 +20,7 @@ export const FEATURES = {
   // Payments & Subscriptions
   payments: {
     subscriptions: true,
-    culqi: true, // Culqi para Perú
-    stripe: false, // TODO: Integrar Stripe
-    paypal: false, // TODO: Integrar PayPal
+    culqi: true, // Culqi para Perú (activo)
   },
 
   // Notifications

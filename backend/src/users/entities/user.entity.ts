@@ -93,7 +93,7 @@ export class User {
   oauthId: string;
 
   @Column({ nullable: true })
-  stripeCustomerId: string;
+  culqiCustomerId: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
