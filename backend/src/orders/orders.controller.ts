@@ -5,6 +5,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { CreateCheckoutOrderDto } from './dto/create-checkout-order.dto';
 import { Order, OrderStatus } from './entities/order.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Public } from '../auth/decorators/public.decorator';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -13,12 +14,22 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
+  /**
+   * Create order (legacy endpoint - used by pre-order form)
+   * Public endpoint for anonymous orders
+   */
+  @Public()
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
     return this.ordersService.create(createOrderDto);
   }
 
+  /**
+   * Create order from checkout flow
+   * Public endpoint for anonymous checkout
+   */
+  @Public()
   @Post('checkout')
   @HttpCode(HttpStatus.CREATED)
   async createFromCheckout(@Body() dto: CreateCheckoutOrderDto): Promise<Order> {

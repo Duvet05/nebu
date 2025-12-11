@@ -21,8 +21,8 @@ export async function action({ request }: ActionFunctionArgs) {
     console.log("[Culqi Webhook] Received event:", event.object);
 
     // Reenviar al backend
-    const backendUrl = process.env.BACKEND_URL || "http://localhost:3001";
-    const response = await fetch(`${backendUrl}/api/v1/webhooks/culqi`, {
+    const backendUrl = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
+    const response = await fetch(`${backendUrl}/webhooks/culqi`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

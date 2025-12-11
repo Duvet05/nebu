@@ -40,7 +40,21 @@ export interface Product {
   updatedAt: string;
 }
 
-const API_BASE_URL = process.env.BACKEND_URL || 'http://127.0.0.1:3001';
+// Construct API base URL with proper /api/v1 prefix
+const getApiBaseUrl = () => {
+  const backendUrl = process.env.BACKEND_URL;
+
+  // If BACKEND_URL already includes /api/v1, use it as-is
+  if (backendUrl?.includes('/api/v1')) {
+    return backendUrl;
+  }
+
+  // Otherwise, append /api/v1 to the base URL
+  const baseUrl = backendUrl || 'http://127.0.0.1:3001';
+  return `${baseUrl}/api/v1`;
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Fallback dummy products (used only when backend is unreachable and in dev)
 const dummyProducts: Product[] = [
