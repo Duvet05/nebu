@@ -23,7 +23,7 @@ export const EMAIL_CONFIG = {
 } as const;
 
 // Email configuration
-const EMAIL_FROM = process.env.EMAIL_FROM || `Nebu <${EMAIL_CONFIG.contacto}>`;
+const EMAIL_FROM = process.env.RESEND_FROM_EMAIL || `Nebu <${EMAIL_CONFIG.contacto}>`;
 const EMAIL_TO = process.env.EMAIL_TO || EMAIL_CONFIG.admin;
 
 // Email templates
