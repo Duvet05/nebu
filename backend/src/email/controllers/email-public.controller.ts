@@ -11,54 +11,156 @@ import {
   ApiOperation,
   ApiResponse,
 } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsString, IsArray, IsNumber, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 import { Public } from '../../auth/decorators/public.decorator';
 import { ResendEmailService } from '../services/resend-email.service';
 
 class SendNewsletterWelcomeDto {
+  @IsNotEmpty({ message: 'El email es requerido' })
+  @IsEmail({}, { message: 'Debe ser un email válido' })
   email: string;
 }
 
 class SendPreOrderConfirmationDto {
+  @IsNotEmpty({ message: 'El email es requerido' })
+  @IsEmail({}, { message: 'Debe ser un email válido' })
   email: string;
+
+  @IsNotEmpty({ message: 'El nombre es requerido' })
+  @IsString({ message: 'El nombre debe ser texto' })
   firstName: string;
+
+  @IsNotEmpty({ message: 'El apellido es requerido' })
+  @IsString({ message: 'El apellido debe ser texto' })
   lastName: string;
+
+  @IsNotEmpty({ message: 'La cantidad es requerida' })
   quantity: number;
+
+  @IsNotEmpty({ message: 'El color es requerido' })
+  @IsString({ message: 'El color debe ser texto' })
   color: string;
+
+  @IsNotEmpty({ message: 'El precio es requerido' })
   totalPrice: number;
 }
 
 class SendPreOrderNotificationDto {
+  @IsNotEmpty({ message: 'El email es requerido' })
+  @IsEmail({}, { message: 'Debe ser un email válido' })
   email: string;
+
+  @IsNotEmpty({ message: 'El nombre es requerido' })
+  @IsString({ message: 'El nombre debe ser texto' })
   firstName: string;
+
+  @IsNotEmpty({ message: 'El apellido es requerido' })
+  @IsString({ message: 'El apellido debe ser texto' })
   lastName: string;
+
+  @IsNotEmpty({ message: 'El teléfono es requerido' })
+  @IsString({ message: 'El teléfono debe ser texto' })
   phone: string;
+
+  @IsNotEmpty({ message: 'La dirección es requerida' })
+  @IsString({ message: 'La dirección debe ser texto' })
   address: string;
+
+  @IsNotEmpty({ message: 'La ciudad es requerida' })
+  @IsString({ message: 'La ciudad debe ser texto' })
   city: string;
+
+  @IsNotEmpty({ message: 'El código postal es requerido' })
+  @IsString({ message: 'El código postal debe ser texto' })
   postalCode: string;
+
+  @IsNotEmpty({ message: 'La cantidad es requerida' })
   quantity: number;
+
+  @IsNotEmpty({ message: 'El color es requerido' })
+  @IsString({ message: 'El color debe ser texto' })
   color: string;
+
+  @IsNotEmpty({ message: 'El precio es requerido' })
   totalPrice: number;
+
+  @IsNotEmpty({ message: 'El método de pago es requerido' })
+  @IsString({ message: 'El método de pago debe ser texto' })
   paymentMethod: string;
 }
 
+class OrderItemDto {
+  @IsNotEmpty({ message: 'El nombre del producto es requerido' })
+  @IsString({ message: 'El nombre del producto debe ser texto' })
+  productName: string;
+
+  @IsNotEmpty({ message: 'El nombre del color es requerido' })
+  @IsString({ message: 'El nombre del color debe ser texto' })
+  colorName: string;
+
+  @IsNotEmpty({ message: 'La cantidad es requerida' })
+  @IsNumber({}, { message: 'La cantidad debe ser un número' })
+  quantity: number;
+
+  @IsNotEmpty({ message: 'El precio es requerido' })
+  @IsNumber({}, { message: 'El precio debe ser un número' })
+  price: number;
+}
+
 class SendOrderConfirmationDto {
+  @IsNotEmpty({ message: 'El email es requerido' })
+  @IsEmail({}, { message: 'Debe ser un email válido' })
   email: string;
+
+  @IsNotEmpty({ message: 'El nombre es requerido' })
+  @IsString({ message: 'El nombre debe ser texto' })
   firstName: string;
+
+  @IsNotEmpty({ message: 'El apellido es requerido' })
+  @IsString({ message: 'El apellido debe ser texto' })
   lastName: string;
+
+  @IsNotEmpty({ message: 'El ID de orden es requerido' })
+  @IsString({ message: 'El ID de orden debe ser texto' })
   orderId: string;
-  items: Array<{
-    productName: string;
-    colorName: string;
-    quantity: number;
-    price: number;
-  }>;
+
+  @IsNotEmpty({ message: 'Los items son requeridos' })
+  @IsArray({ message: 'Los items deben ser un array' })
+  @ValidateNested({ each: true })
+  @Type(() => OrderItemDto)
+  items: OrderItemDto[];
+
+  @IsNotEmpty({ message: 'El subtotal es requerido' })
+  @IsNumber({}, { message: 'El subtotal debe ser un número' })
   subtotal: number;
+
+  @IsNotEmpty({ message: 'El costo de envío es requerido' })
+  @IsNumber({}, { message: 'El costo de envío debe ser un número' })
   shipping: number;
+
+  @IsNotEmpty({ message: 'El total es requerido' })
+  @IsNumber({}, { message: 'El total debe ser un número' })
   total: number;
+
+  @IsNotEmpty({ message: 'El monto de reserva es requerido' })
+  @IsNumber({}, { message: 'El monto de reserva debe ser un número' })
   reserveAmount: number;
+
+  @IsNotEmpty({ message: 'La dirección es requerida' })
+  @IsString({ message: 'La dirección debe ser texto' })
   address: string;
+
+  @IsNotEmpty({ message: 'La ciudad es requerida' })
+  @IsString({ message: 'La ciudad debe ser texto' })
   city: string;
+
+  @IsNotEmpty({ message: 'El código postal es requerido' })
+  @IsString({ message: 'El código postal debe ser texto' })
   postalCode: string;
+
+  @IsNotEmpty({ message: 'El teléfono es requerido' })
+  @IsString({ message: 'El teléfono debe ser texto' })
   phone: string;
 }
 
