@@ -2,7 +2,7 @@ import { registerAs } from '@nestjs/config';
 import { DataSourceOptions } from 'typeorm';
 
 /**
- * Configuración compartida de la base de datos
+ * Configuracion compartida de la base de datos
  * Usada por:
  * - NestJS TypeORM (app.module.ts)
  * - Seeders (database/seeders/index.ts)
@@ -10,8 +10,8 @@ import { DataSourceOptions } from 'typeorm';
  */
 export function getDatabaseConfig(): DataSourceOptions {
   // ONE master flag controls the database mode
-  // DB_USE_MIGRATIONS=false (default) → synchronize mode (development)
-  // DB_USE_MIGRATIONS=true → migrations mode (production)
+  // DB_USE_MIGRATIONS=false (default) -> synchronize mode (development)
+  // DB_USE_MIGRATIONS=true -> migrations mode (production)
   const useMigrations = process.env.DB_USE_MIGRATIONS === 'true';
 
   return {
