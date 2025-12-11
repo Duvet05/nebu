@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 import { InventoryController } from './inventory.controller';
+import { InventoryPublicController } from './inventory-public.controller';
 import { InventoryService } from './inventory.service';
 import { Order } from './entities/order.entity';
 import { OrderItem } from './entities/order-item.entity';
@@ -26,7 +27,7 @@ import { ToysModule } from '../toys/toys.module';
     ]),
     ToysModule,
   ],
-  controllers: [OrdersController, InventoryController],
+  controllers: [OrdersController, InventoryController, InventoryPublicController],
   providers: [OrdersService, InventoryService],
   exports: [OrdersService, InventoryService],
 })

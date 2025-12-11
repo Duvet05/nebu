@@ -11,7 +11,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       return data({ error: "Product ID is required" }, { status: 400 });
     }
 
-    const response = await fetch(`${BACKEND_URL}/inventory/${encodeURIComponent(productId)}`);
+    const response = await fetch(`${BACKEND_URL}/inventory/${encodeURIComponent(productId)}/available`);
 
     if (!response.ok) {
       return data({ availableUnits: 20 }, { status: 200 }); // Fallback
@@ -20,11 +20,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const inventory = await response.json();
 
     return data({
-      product: inventory.product,
+      productId: inventory.productId,
       availableUnits: inventory.availableUnits,
       totalUnits: inventory.totalUnits,
-      reservedUnits: inventory.reservedUnits,
-      soldUnits: inventory.soldUnits,
+      isAvailable: inventory.isAvailable,
     });
   } catch (error) {
     console.error("Inventory fetch error:", error);
