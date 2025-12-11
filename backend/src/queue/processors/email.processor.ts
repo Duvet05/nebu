@@ -21,13 +21,14 @@ export class EmailProcessor {
     try {
       this.logger.log(`Sending email to ${job.data.to}`);
 
-      // TODO: Implement actual email sending
-      // - Use email service to send email
-      // - Render template with context
-      // - Handle different email types
-
-      // Simulate email sending
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Use email service to send email
+      await this.emailService.sendNotificationEmail({
+        to: job.data.to,
+        title: job.data.subject,
+        message: job.data.context.message || '',
+        actionUrl: job.data.context.actionUrl,
+        actionText: job.data.context.actionText,
+      });
 
       this.logger.log(`Email sent to ${job.data.to}`);
 
@@ -117,13 +118,17 @@ export class EmailProcessor {
     try {
       this.logger.log(`Sending order shipped email to ${job.data.userEmail}`);
 
-      // TODO: Implement order shipped email sending
-      // - Use email service to send shipping notification
-      // - Include tracking information
-      // - Track email delivery
-
-      // Simulate email sending
-      await new Promise(resolve => setTimeout(resolve, 1300));
+      // Enviar email de pedido enviado usando el servicio de email
+      await this.emailService.sendNotificationEmail({
+        to: job.data.userEmail,
+        title: `Tu pedido #${job.data.orderNumber} ha sido enviado`,
+        message: `
+          <p>Hola ${job.data.userName},</p>
+          <p>Tu pedido <strong>#${job.data.orderNumber}</strong> ha sido enviado.</p>
+          ${job.data.trackingNumber ? `<p>Número de seguimiento: <strong>${job.data.trackingNumber}</strong></p>` : ''}
+          <p>Tu pedido llegará pronto. ¡Gracias por tu compra!</p>
+        `,
+      });
 
       this.logger.log(`Order shipped email sent to ${job.data.userEmail}`);
 

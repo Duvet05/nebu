@@ -13,6 +13,7 @@ import { EmailProviderService } from './services/email-provider.service';
 import { EmailService } from './services/email.service';
 import { EmailTemplateService } from './services/email-template.service';
 import { TemplateEngineService } from './services/template-engine.service';
+import { ResendEmailService } from './services/resend-email.service';
 
 // Controllers
 import { EmailController } from './controllers/email.controller';
@@ -35,6 +36,7 @@ import { EmailTemplateController } from './controllers/email-template.controller
     EmailService,
     EmailTemplateService,
     TemplateEngineService,
+    ResendEmailService,
   ],
   controllers: [
     EmailController,
@@ -47,6 +49,7 @@ import { EmailTemplateController } from './controllers/email-template.controller
     EmailService,
     EmailTemplateService,
     TemplateEngineService,
+    ResendEmailService,
   ],
 })
 export class EmailModule {}

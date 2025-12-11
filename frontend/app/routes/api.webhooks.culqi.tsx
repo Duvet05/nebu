@@ -1,6 +1,15 @@
 import { data, type ActionFunctionArgs } from "@remix-run/node";
-import { processWebhook } from "~/lib/culqi.server";
 
+/**
+ * Webhook de Culqi - Proxy al Backend
+ *
+ * Este endpoint redirige los webhooks de Culqi al backend de NestJS
+ * donde se procesa toda la lógica de negocio.
+ *
+ * Configuración en Culqi:
+ * - URL: https://tu-dominio.com/api/webhooks/culqi
+ * - Eventos: charge.succeeded, charge.failed, order.expired, refund.succeeded
+ */
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
     return data({ error: "Method not allowed" }, { status: 405 });
@@ -9,34 +18,31 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     const event = await request.json();
 
-    const result = await processWebhook(event);
+    console.log("[Culqi Webhook] Received event:", event.object);
 
-    if (!result.success) {
-      console.error("Webhook processing failed:", result.error);
-      return data({ error: "Webhook processing failed" }, { status: 500 });
+    // Reenviar al backend
+    const backendUrl = process.env.BACKEND_URL || "http://localhost:3001";
+    const response = await fetch(`${backendUrl}/api/v1/webhooks/culqi`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(event),
+    });
+
+    if (!response.ok) {
+      console.error("[Culqi Webhook] Backend processing failed:", response.statusText);
+      // Retornar 200 para que Culqi no reintente
+      return data({ received: true, processed: false });
     }
 
-    // Handle different event types
-    switch (result.type) {
-      case "charge_succeeded":
-        // TODO: Update database, send notification, etc.
-        break;
+    const result = await response.json();
+    console.log("[Culqi Webhook] Backend processed successfully:", result);
 
-      case "charge_failed":
-        // TODO: Send failure notification
-        break;
-
-      case "order_expired":
-        // TODO: Update order status
-        break;
-
-      default:
-        break;
-    }
-
-    return data({ received: true });
+    return data({ received: true, processed: true });
   } catch (error) {
-    console.error("Webhook error:", error);
-    return data({ error: "Webhook error" }, { status: 500 });
+    console.error("[Culqi Webhook] Error:", error);
+    // Retornar 200 para que Culqi no reintente
+    return data({ received: true, error: true });
   }
 }
