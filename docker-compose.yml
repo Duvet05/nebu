@@ -184,6 +184,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db/init-master.sh:/docker-entrypoint-initdb.d/init-master.sh:ro
+    ports:
+      # Solo accesible desde localhost para debugging/backups
+      - "127.0.0.1:5432:5432"
     networks:
       - nebu-network
     deploy:
@@ -223,6 +226,9 @@ services:
       - "60"
       - --timeout
       - "300"
+    ports:
+      # Solo accesible desde localhost para debugging
+      - "127.0.0.1:6379:6379"
     volumes:
       - redis_data:/data
     networks:
@@ -325,8 +331,9 @@ services:
       # Email Verification Configuration
       # Set to 'false' to disable email verification (useful when SMTP is not configured)
       - REQUIRE_EMAIL_VERIFICATION=${REQUIRE_EMAIL_VERIFICATION:-false}
-    ports:
-      - "3001:3001"
+    # Puerto solo para desarrollo - cerrado en producción
+    # En producción, acceso solo via Traefik (api.domain.com)
+    # Para desarrollo local, usar docker-compose.override.yml
     volumes:
       - backend_uploads:/app/uploads:rw
     networks:

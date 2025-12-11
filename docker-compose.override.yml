@@ -4,44 +4,54 @@
 # Este archivo se aplica AUTOMÁTICAMENTE sobre docker-compose.yml
 # Expone puertos de servicios para desarrollo local
 #
+# IMPORTANTE: En producción, elimina o renombra este archivo
+# para que no exponga puertos innecesarios.
+#
 # INSTRUCCIONES:
-# 1. Descomenta las secciones que necesites exponer
-# 2. Reinicia el servicio: docker-compose up -d <servicio>
-# 3. Conecta desde tu cliente favorito (DBeaver, RedisInsight, etc)
+# 1. Para desarrollo: docker compose up -d (usa override automáticamente)
+# 2. Para producción: docker compose -f docker-compose.yml up -d (ignora override)
 
 services:
   # ==============================================
+  # BACKEND - EXPONER PUERTO PARA DESARROLLO
+  # ==============================================
+  backend:
+    ports:
+      - "127.0.0.1:3001:3001"  # Solo localhost
+    networks:
+      - traefik-network
+      - nebu-network
+      - default
+
+  # ==============================================
   # POSTGRES - EXPONER PUERTO PARA DESARROLLO
   # ==============================================
-  # Descomenta para conectarte desde localhost:5432
   # Cliente sugerido: DBeaver, pgAdmin, DataGrip
   postgres:
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"  # Solo localhost
     networks:
       - nebu-network
-      - default  # Necesario para exponer puertos desde red interna
+      - default
 
   # ==============================================
   # REDIS - EXPONER PUERTO PARA DESARROLLO
   # ==============================================
-  # Descomenta para conectarte desde localhost:6379
   # Cliente sugerido: RedisInsight, Redis Commander
   redis:
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"  # Solo localhost
     networks:
       - nebu-network
-      - default  # Necesario para exponer puertos desde red interna
+      - default
 
   # ==============================================
   # CHROMADB - EXPONER PUERTO PARA DESARROLLO
   # ==============================================
-  # Descomenta para acceder a ChromaDB desde localhost:8001
   # URL: http://localhost:8001
   chromadb:
     ports:
-      - "8001:8000"  # Puerto 8000 puede estar ocupado, usamos 8001
+      - "127.0.0.1:8001:8000"  # Solo localhost (puerto 8000 puede estar ocupado)
     networks:
       - nebu-network
-      - default  # Necesario para exponer puertos desde red interna
+      - default
