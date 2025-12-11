@@ -76,7 +76,9 @@ export class EmailPublicController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Enviar email de bienvenida al newsletter' })
   @ApiResponse({ status: 200, description: 'Email enviado exitosamente' })
-  async sendNewsletterWelcome(@Body() data: SendNewsletterWelcomeDto) {
+  async sendNewsletterWelcome(
+    @Body() data: SendNewsletterWelcomeDto,
+  ) {
     try {
       this.logger.log(`Sending newsletter welcome email to ${data.email}`);
 
@@ -104,7 +106,9 @@ export class EmailPublicController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Enviar confirmación de pre-orden al cliente' })
   @ApiResponse({ status: 200, description: 'Email enviado exitosamente' })
-  async sendPreOrderConfirmation(@Body() data: SendPreOrderConfirmationDto) {
+  async sendPreOrderConfirmation(
+    @Body() data: SendPreOrderConfirmationDto,
+  ) {
     try {
       this.logger.log(`Sending pre-order confirmation to ${data.email}`);
 
@@ -147,7 +151,9 @@ export class EmailPublicController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Enviar notificación de pre-orden al equipo' })
   @ApiResponse({ status: 200, description: 'Email enviado exitosamente' })
-  async sendPreOrderNotification(@Body() data: SendPreOrderNotificationDto) {
+  async sendPreOrderNotification(
+    @Body() data: SendPreOrderNotificationDto,
+  ) {
     try {
       this.logger.log(`Sending pre-order notification for ${data.email}`);
 
