@@ -59,6 +59,7 @@ export async function action({ request }: ActionFunctionArgs) {
       }
 
       culqiChargeId = chargeResult.data?.id;
+      // eslint-disable-next-line no-console
       console.log("[Pre-Order] Culqi charge successful:", culqiChargeId);
     }
 

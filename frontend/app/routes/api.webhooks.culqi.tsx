@@ -18,6 +18,7 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     const event = await request.json();
 
+    // eslint-disable-next-line no-console
     console.log("[Culqi Webhook] Received event:", event.object);
 
     // Reenviar al backend
@@ -37,6 +38,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     const result = await response.json();
+    // eslint-disable-next-line no-console
     console.log("[Culqi Webhook] Backend processed successfully:", result);
 
     return data({ received: true, processed: true });

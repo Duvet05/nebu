@@ -42,6 +42,7 @@ export function ProductImage({ images, name, slug, gradient = 'from-gray-200 to-
   return (
     <div className="absolute inset-0 flex items-center justify-center">
       {hasImages && !imageError ? (
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
         <img
           src={images[0]}
           alt={name}

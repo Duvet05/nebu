@@ -110,6 +110,7 @@ function logCulqiOperation(
   } else if (status === "retry") {
     console.warn(`[CULQI RETRY] ${operation}:`, JSON.stringify(logEntry, null, 2));
   } else {
+    // eslint-disable-next-line no-console
     console.log(`[CULQI SUCCESS] ${operation}:`, JSON.stringify(logEntry, null, 2));
   }
 }

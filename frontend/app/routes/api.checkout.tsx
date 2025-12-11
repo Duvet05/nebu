@@ -211,7 +211,7 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 }
 
-function generateCustomerConfirmationEmail(data: CheckoutData, orderId: string): string {
+function _generateCustomerConfirmationEmail(data: CheckoutData, orderId: string): string {
   const itemsHtml = data.items
     .map(
       (item) => {
@@ -374,7 +374,7 @@ function generateCustomerConfirmationEmail(data: CheckoutData, orderId: string):
   `;
 }
 
-function generateCompanyNotificationEmail(data: CheckoutData, orderId: string): string {
+function _generateCompanyNotificationEmail(data: CheckoutData, orderId: string): string {
   const itemsHtml = data.items
     .map(
       (item) => {

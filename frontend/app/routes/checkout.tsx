@@ -26,7 +26,7 @@ export default function CheckoutPage() {
     handleInputChange,
     handleSubmit,
     reserveAmount,
-    shippingCost,
+    shippingCost: _shippingCost,
     finalTotal,
   } = useCheckoutForm();
 

@@ -112,7 +112,7 @@ async function bootstrap() {
       const { execSync } = await import('child_process');
       execSync('npm run seed', { stdio: 'inherit' });
       logger.log('✅ Database seeders completed successfully');
-    } catch (error) {
+    } catch {
       logger.warn('⚠️  Database seeders failed (data may already exist)');
     }
     

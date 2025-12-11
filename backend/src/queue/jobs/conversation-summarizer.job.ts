@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, LessThan } from 'typeorm';
 import { ChromaDBService } from '../../search/services/chromadb.service';
@@ -139,22 +139,12 @@ export class ConversationSummarizerJob {
       .map((conv) => `${conv.messageType}: ${conv.content}`)
       .join('\n');
 
-    const prompt = `Resume la siguiente conversación entre un niño y su juguete inteligente Nebu.
-El resumen debe ser conciso (máximo 200 palabras) y enfocarse en:
-1. Temas principales discutidos
-2. Nuevos intereses del niño
-3. Preguntas importantes que hizo
-4. Estado emocional general
-
-Conversación:
-${messages}
-
-Resumen:`;
-
-    // Por ahora retornamos un resumen simple
-    // En producción, llamarías a OpenAI/Anthropic aquí
+    // Generar resumen basado en metadata
+    // TODO: En producción, usar LLM (OpenAI/Anthropic) con el prompt completo
+    // Prompt template disponible para implementación futura:
+    // "Resume la siguiente conversación entre un niño y su juguete inteligente Nebu..."
     const topics = session.topics?.join(', ') || 'temas variados';
-    return `Conversación sobre ${topics}. El niño mostró interés en aprender más. Duración: ${session.durationSeconds || 0} segundos. ${session.messageCount} mensajes intercambiados.`;
+    return `Conversación sobre ${topics}. El niño mostró interés en aprender más. Duración: ${session.durationSeconds || 0} segundos. ${session.messageCount} mensajes intercambiados. Mensajes: ${messages.split('\n').length}`;
   }
 
   /**
