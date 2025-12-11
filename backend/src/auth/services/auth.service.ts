@@ -404,14 +404,19 @@ export class AuthService {
     return await this.userRepository.save(newUser);
   }
 
-  private generateUsername(email: string, firstName: string, lastName: string): string {
+  private generateUsername(email: string, firstName?: string, lastName?: string): string {
     // Generate username from email prefix + first letter of names
     const emailPrefix = email.split('@')[0];
-    const firstInitial = firstName.charAt(0).toLowerCase();
-    const lastInitial = lastName.charAt(0).toLowerCase();
+    const firstInitial = firstName && firstName.length > 0 ? firstName.charAt(0).toLowerCase() : '';
+    const lastInitial = lastName && lastName.length > 0 ? lastName.charAt(0).toLowerCase() : '';
     const timestamp = Date.now().toString().slice(-4); // Last 4 digits of timestamp
 
-    return `${emailPrefix}_${firstInitial}${lastInitial}${timestamp}`;
+    // If we have initials, use them; otherwise just use email prefix
+    if (firstInitial || lastInitial) {
+      return `${emailPrefix}_${firstInitial}${lastInitial}${timestamp}`;
+    }
+    
+    return `${emailPrefix}_${timestamp}`;
   }
 
   private isEmailVerificationRequired(): boolean {

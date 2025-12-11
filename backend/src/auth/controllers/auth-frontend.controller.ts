@@ -12,18 +12,19 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 
 import { AuthService } from '../services/auth.service';
 import { Public } from '../decorators/public.decorator';
+import { RegisterDto } from '../dto/register.dto';
 
-@ApiTags('NextAuth Integration')
-@Controller('nextauth')
-export class NextAuthController {
-  private readonly logger = new Logger(NextAuthController.name);
+@ApiTags('Frontend Auth')
+@Controller('auth/frontend')
+export class AuthFrontendController {
+  private readonly logger = new Logger(AuthFrontendController.name);
 
   constructor(private readonly authService: AuthService) {}
 
   @Public()
   @Post('signin')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Autenticación para NextAuth.js' })
+  @ApiOperation({ summary: 'Autenticación para el frontend (Remix)' })
   @ApiBody({
     schema: {
       type: 'object',
@@ -80,25 +81,13 @@ export class NextAuthController {
 
   @Public()
   @Post('signup')
-  @ApiOperation({ summary: 'Registro para NextAuth.js' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        email: { type: 'string' },
-        password: { type: 'string' },
-        firstName: { type: 'string' },
-        lastName: { type: 'string' },
-      },
-      required: ['email', 'password', 'firstName', 'lastName'],
-    },
-  })
+  @ApiOperation({ summary: 'Registro de usuario desde el frontend (Remix + NextAuth)' })
   @ApiResponse({
     status: 201,
     description: 'Usuario registrado exitosamente',
   })
   async signUp(
-    @Body() userData: { email: string; password: string; firstName: string; lastName: string }
+    @Body() userData: RegisterDto
   ) {
     const result = await this.authService.register({
       email: userData.email,
@@ -172,13 +161,13 @@ export class NextAuthController {
 
   @Public()
   @Get('session')
-  @ApiOperation({ summary: 'Obtener sesión actual para NextAuth.js' })
+  @ApiOperation({ summary: 'Obtener sesión actual desde el frontend' })
   @ApiResponse({
     status: 200,
     description: 'Información de sesión',
   })
   async getSession() {
-    // This endpoint will be handled by NextAuth.js middleware
+    // This endpoint provides session structure for the frontend
     // Just return basic structure for documentation
     return {
       user: null,

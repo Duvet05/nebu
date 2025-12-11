@@ -8,7 +8,7 @@ import { User } from '../users/entities/user.entity';
 import { AuthService } from './services/auth.service';
 import { TokenValidationService } from './services/token-validation.service';
 import { AuthController } from './controllers/auth.controller';
-import { NextAuthController } from './controllers/nextauth.controller';
+import { AuthFrontendController } from './controllers/auth-frontend.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { FeaturesConfig } from '../config/features.config';
 import { EmailModule } from '../email/email.module';
@@ -33,7 +33,7 @@ import { EmailModule } from '../email/email.module';
     }),
   ],
   providers: [AuthService, TokenValidationService, JwtStrategy, FeaturesConfig],
-  controllers: [AuthController, NextAuthController],
+  controllers: [AuthController, AuthFrontendController],
   exports: [AuthService, TokenValidationService, JwtStrategy, FeaturesConfig, PassportModule],
 })
 export class AuthModule {}
