@@ -1,5 +1,4 @@
 import { data, type ActionFunctionArgs } from "@remix-run/node";
-import { sendNewsletterWelcome } from "~/lib/resend.server";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
 
@@ -35,15 +34,28 @@ export async function action({ request }: ActionFunctionArgs) {
       // Continue even if backend fails
     }
 
-    // Send welcome email via Resend
-    const result = await sendNewsletterWelcome(email);
+    // Send welcome email via backend
+    try {
+      const emailResponse = await fetch(`${BACKEND_URL}/email/public/newsletter-welcome`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
 
-    if (!result.success) {
-      console.error("Failed to send email:", result.error);
-      return data(
-        { error: "Error al enviar email" },
-        { status: 500 }
-      );
+      const emailResult = await emailResponse.json();
+
+      if (!emailResult.success) {
+        console.error("Failed to send email:", emailResult.error);
+        return data(
+          { error: "Error al enviar email" },
+          { status: 500 }
+        );
+      }
+    } catch (error) {
+      console.error("Failed to send email via backend:", error);
+      // Continue even if email fails - don't block the signup
     }
 
     return data({

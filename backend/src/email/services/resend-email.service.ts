@@ -71,7 +71,7 @@ export class ResendEmailService {
         subject: data.subject,
         html: data.html,
         text: data.text,
-        reply_to: data.replyTo,
+        replyTo: data.replyTo,
         tags: data.tags,
       });
 

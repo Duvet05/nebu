@@ -20,6 +20,7 @@ import { EmailController } from './controllers/email.controller';
 // import { EmailTestController } from './controllers/email-test.controller'; // Disabled for production
 import { EmailRealController } from './controllers/email-real.controller';
 import { EmailTemplateController } from './controllers/email-template.controller';
+import { EmailPublicController } from './controllers/email-public.controller';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { EmailTemplateController } from './controllers/email-template.controller
     // EmailTestController, // Disabled for production
     EmailRealController,
     EmailTemplateController,
+    EmailPublicController,
   ],
   exports: [
     EmailProviderService,

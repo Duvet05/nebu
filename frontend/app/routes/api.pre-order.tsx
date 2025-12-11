@@ -1,8 +1,4 @@
 import { data, type ActionFunctionArgs } from "@remix-run/node";
-import {
-  sendPreOrderConfirmation,
-  sendPreOrderNotification,
-} from "~/lib/resend.server";
 import { createCharge } from "~/lib/culqi.server";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
@@ -137,37 +133,59 @@ export async function action({ request }: ActionFunctionArgs) {
       // Backend connection error, continue to send emails anyway
     }
 
-    // Send confirmation email to customer
-    const customerEmail = await sendPreOrderConfirmation({
-      email,
-      firstName,
-      lastName,
-      quantity,
-      color,
-      totalPrice,
-    });
+    // Send confirmation email to customer via backend
+    try {
+      const customerEmailResponse = await fetch(`${BACKEND_URL}/email/public/pre-order-confirmation`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          firstName,
+          lastName,
+          quantity,
+          color,
+          totalPrice,
+        }),
+      });
 
-    if (!customerEmail.success) {
-      console.error("Failed to send customer email:", customerEmail.error);
+      const customerEmailResult = await customerEmailResponse.json();
+      if (!customerEmailResult.success) {
+        console.error("Failed to send customer email:", customerEmailResult.error);
+      }
+    } catch (error) {
+      console.error("Failed to send customer email via backend:", error);
     }
 
-    // Send notification email to internal team
-    const teamEmail = await sendPreOrderNotification({
-      email,
-      firstName,
-      lastName,
-      phone,
-      address,
-      city,
-      postalCode,
-      quantity,
-      color,
-      totalPrice,
-      paymentMethod,
-    });
+    // Send notification email to internal team via backend
+    try {
+      const teamEmailResponse = await fetch(`${BACKEND_URL}/email/public/pre-order-notification`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          firstName,
+          lastName,
+          phone,
+          address,
+          city,
+          postalCode,
+          quantity,
+          color,
+          totalPrice,
+          paymentMethod,
+        }),
+      });
 
-    if (!teamEmail.success) {
-      console.error("Failed to send team notification:", teamEmail.error);
+      const teamEmailResult = await teamEmailResponse.json();
+      if (!teamEmailResult.success) {
+        console.error("Failed to send team notification:", teamEmailResult.error);
+      }
+    } catch (error) {
+      console.error("Failed to send team notification via backend:", error);
     }
 
     // Return success even if emails fail (don't block the order)

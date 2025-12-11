@@ -1,12 +1,10 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { data } from "@remix-run/node";
-import { Resend } from "resend";
-import { CONTACT, BUSINESS } from "~/config/constants";
 import { createCharge as createCulqiCharge } from "~/lib/culqi.server";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const CULQI_SECRET_KEY = process.env.CULQI_SECRET_KEY || "";
 const CULQI_API_URL = "https://api.culqi.com/v2";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
 
 interface CheckoutItem {
   productId: string;
@@ -112,24 +110,35 @@ export async function action({ request }: ActionFunctionArgs) {
       // Continue even if Culqi order creation fails
     }
 
-    // Send confirmation email to customer
-    const _customerEmail = await resend.emails.send({
-      from: `Nebu - ${BUSINESS.name} <${CONTACT.email.sales}>`,
-      to: checkoutData.email,
-      subject: `Confirmación de Pre-orden - ${orderId}`,
-      html: generateCustomerConfirmationEmail(checkoutData, orderId),
-    });
-
-    // Send notification email to company
-    const _companyEmail = await resend.emails.send({
-      from: `Nebu Orders <${CONTACT.email.sales}>`,
-      to: CONTACT.email.sales,
-      subject: `Nueva Pre-orden Recibida - ${orderId}`,
-      html: generateCompanyNotificationEmail(checkoutData, orderId),
-    });
+    // Send confirmation emails via backend
+    try {
+      await fetch(`${BACKEND_URL}/email/public/order-confirmation`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: checkoutData.email,
+          firstName: checkoutData.firstName,
+          lastName: checkoutData.lastName,
+          orderId,
+          items: checkoutData.items,
+          subtotal: checkoutData.subtotal,
+          shipping: checkoutData.shipping,
+          total: checkoutData.total,
+          reserveAmount: checkoutData.reserveAmount,
+          address: checkoutData.address,
+          city: checkoutData.city,
+          postalCode: checkoutData.postalCode,
+          phone: checkoutData.phone,
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to send emails via backend:", error);
+      // Continue even if email fails
+    }
 
     // Create order in backend (validates stock and decrements automatically)
-    const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
 
     try {
       const orderResponse = await fetch(`${BACKEND_URL}/orders/checkout`, {
