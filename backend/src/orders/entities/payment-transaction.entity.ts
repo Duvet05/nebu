@@ -13,7 +13,7 @@ import { User } from '../../users/entities/user.entity';
 
 export enum PaymentMethod {
   YAPE = 'yape',
-  STRIPE = 'stripe',
+  CULQI = 'culqi',
   PAYPAL = 'paypal',
   BANK_TRANSFER = 'bank_transfer',
   CASH = 'cash',

@@ -28,7 +28,7 @@ export enum OrderStatus {
 
 export enum PaymentMethod {
   YAPE = 'yape',
-  STRIPE = 'stripe',
+  CULQI = 'culqi',
   PAYPAL = 'paypal',
 }
 
