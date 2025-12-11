@@ -231,9 +231,9 @@ export class IoTService {
    * MÉTODO MEJORADO: getESP32Token con gestión inteligente de sesiones
    *
    * Edge Cases manejados:
-   * 1. Primera conexión → Crear nuevo room único
-   * 2. Reconexión rápida (< 5 min) → Crear nuevo room (por diseño)
-   * 3. Device no existe → Crear automáticamente
+   * 1. Primera conexión -> Crear nuevo room único
+   * 2. Reconexión rápida (< 5 min) -> Crear nuevo room (por diseño)
+   * 3. Device no existe -> Crear automáticamente
    * 4. Actualizar métricas del dispositivo
    */
   async getESP32Token(

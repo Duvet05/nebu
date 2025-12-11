@@ -274,7 +274,7 @@ export class CulqiWebhookService {
     }
 
     if (newStatus !== order.status) {
-      this.logger.log(`Updating order ${order.orderNumber} status: ${order.status} → ${newStatus}`);
+      this.logger.log(`Updating order ${order.orderNumber} status: ${order.status} -> ${newStatus}`);
       order.status = newStatus;
       await this.orderRepository.save(order);
     }

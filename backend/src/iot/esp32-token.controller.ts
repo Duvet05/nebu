@@ -46,8 +46,8 @@ export class ESP32TokenController {
    * Retorna un nuevo room de LiveKit y token de acceso.
    *
    * Edge cases manejados:
-   * - Primera conexión → Crear dispositivo y room
-   * - Reconexión → Crear nuevo room (por diseño, cada request = nuevo room)
+   * - Primera conexión -> Crear dispositivo y room
+   * - Reconexión -> Crear nuevo room (por diseño, cada request = nuevo room)
    * - Actualizar métricas del dispositivo
    */
   @Public()

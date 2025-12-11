@@ -49,6 +49,6 @@ export class OrderStatusHistory {
   // Helper method
   get statusChange(): string {
     const from = this.fromStatus || 'NEW';
-    return `${from} → ${this.toStatus}`;
+    return `${from} -> ${this.toStatus}`;
   }
 }
