@@ -12,6 +12,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { User, UserStatus } from '../../users/entities/user.entity';
+import { Person } from '../../users/entities/person.entity';
+import { PersonName } from '../../users/entities/person-name.entity';
 import { RegisterDto } from '../dto/register.dto';
 import { LoginDto } from '../dto/login.dto';
 import { AuthResponseDto, AuthUserDto } from '../dto/auth-response.dto';
@@ -34,6 +36,8 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Person)
+    private personRepository: Repository<Person>,
     private jwtService: JwtService,
     private emailService: EmailService,
     private configService: ConfigService,
@@ -67,20 +71,40 @@ export class AuthService {
     // Generate username if not provided
     const generatedUsername = username || this.generateUsername(email, firstName, lastName);
 
+    // Create Person first
+    const person = this.personRepository.create({
+      email,
+      preferredLanguage: preferredLanguage || 'es',
+    });
+    const savedPerson = await this.personRepository.save(person);
+
+    // Create PersonName
+    const personName = this.personRepository.manager.create(PersonName, {
+      personId: savedPerson.id,
+      givenName: firstName,
+      familyName: lastName,
+      preferred: true,
+    });
+    await this.personRepository.manager.save(PersonName, personName);
+
     // Create user
     const user = this.userRepository.create({
       email,
       password: hashedPassword,
-      firstName,
-      lastName,
       username: generatedUsername,
-      preferredLanguage: preferredLanguage || 'es',
+      person: savedPerson,
       emailVerificationToken,
       status: this.isEmailVerificationRequired() ? UserStatus.PENDING : UserStatus.ACTIVE,
       emailVerified: !this.isEmailVerificationRequired(), // Solo verificar automáticamente en desarrollo
     });
 
-    const savedUser = await this.userRepository.save(user);
+    let savedUser = await this.userRepository.save(user);
+
+    // Reload user with all relations to get PersonName
+    savedUser = await this.userRepository.findOne({
+      where: { id: savedUser.id },
+      relations: ['person', 'person.names'],
+    });
 
     // Send verification email only if required
     if (this.isEmailVerificationRequired()) {
