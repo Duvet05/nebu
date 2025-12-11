@@ -65,7 +65,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         ...configService.get('database'),
-        entities: [], // Let autoLoadEntities handle this
+        autoLoadEntities: true,
       }),
       inject: [ConfigService],
     }),
@@ -76,7 +76,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
       isGlobal: true,
       useFactory: async (configService: ConfigService) => {
         const password = configService.get<string>('redis.password');
-        const cacheConfig: any = {
+        const baseConfig = {
           store: redisStore,
           socket: {
             host: configService.get<string>('redis.host'),
@@ -86,46 +86,33 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
         };
 
         // Only add password if it's not empty
-        if (password && password.trim() !== '') {
-          cacheConfig.password = password;
-        }
-
-        return cacheConfig;
+        return password && password.trim() !== ''
+          ? { ...baseConfig, password }
+          : baseConfig;
       },
       inject: [ConfigService],
     }),
 
-    // Rate Limiting
-    ThrottlerModule.forRoot([
-      {
-        name: 'short',
-        ttl: 1000, // 1 second
-        limit: 10, // 10 requests per second
-      },
-      {
-        name: 'medium',
-        ttl: 60000, // 1 minute
-        limit: 100, // 100 requests per minute
-      },
-      {
-        name: 'long',
-        ttl: 3600000, // 1 hour
-        limit: 1000, // 1000 requests per hour
-      },
-    ]),
+    // Rate Limiting - Global default
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          name: 'default',
+          ttl: 60000, // 60 seconds (1 minute)
+          limit: 100, // 100 requests per minute
+        },
+      ],
+    }),
 
     // JWT Module (Global)
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => {
-        const expiresIn = configService.get<string>('auth.jwtExpiresIn') || '1h';
-        return {
-          secret: configService.get<string>('auth.jwtSecret'),
-          signOptions: {
-            expiresIn: expiresIn as any, // Cast needed for compatibility with @nestjs/jwt v11
-          },
-        };
-      },
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('auth.jwtSecret'),
+        signOptions: {
+          expiresIn: configService.get<string>('auth.jwtExpiresIn') || '1h' as any,
+        },
+      }),
       inject: [ConfigService],
       global: true,
     }),
@@ -145,7 +132,6 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     LiveKitModule,
     IoTModule,
     VoiceModule,
-  // Agents personalization module
   // AgentsModule, // Temporalmente desactivado por error de @nestjs/axios
     ToysModule,
     // MemoryModule, // Temporalmente desactivado (depende de agents)
@@ -158,10 +144,12 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     DynamicModulesConfig.forRoot(new ConfigService()),
   ],
   providers: [
+    // Rate limiting guard - Applied globally
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
+    // JWT authentication guard - Applied globally (handles @Public() decorator internally)
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
