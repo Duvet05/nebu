@@ -8,6 +8,7 @@ config({ path: ['.env.local', '.env'] });
  * TypeORM CLI Configuration
  * Usa la misma configuración compartida que el resto de la aplicación
  */
+// Para CLI/migraciones: usa solo JS compilado
 export default new DataSource({
   ...getDatabaseConfig(),
   entities: ['dist/**/*.entity.js'],

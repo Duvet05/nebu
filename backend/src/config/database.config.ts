@@ -21,7 +21,7 @@ export function getDatabaseConfig(): DataSourceOptions {
     username: process.env.DATABASE_USERNAME!,
     password: process.env.DATABASE_PASSWORD!,
     database: process.env.DATABASE_NAME!,
-    entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+    // entities solo para seeders/scripts, no para runtime
     synchronize: !useMigrations,
     migrationsRun: useMigrations,
     logging: process.env.NODE_ENV === 'development',
@@ -45,6 +45,7 @@ export const databaseConfig = registerAs('database', () => {
 
   return {
     ...getDatabaseConfig(),
+    // entities no se incluye aquí, solo autoLoadEntities
     autoLoadEntities: true,
     retryAttempts: 3,
     retryDelay: 3000,
