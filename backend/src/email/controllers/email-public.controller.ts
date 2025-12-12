@@ -217,9 +217,9 @@ export class EmailPublicController {
       const renderedContent = template.content.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
       const renderedHtml = template.htmlContent.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
 
-      // Send the email using Resend
+      // Send the email using Resend (use replyTo because 'from' is not accepted by the sendEmail payload type)
       const result = await this.resendEmailService.sendEmail({
-        from: fromAccount.email,
+        replyTo: fromAccount.email,
         to: data.email,
         subject: renderedSubject,
         text: renderedContent,
