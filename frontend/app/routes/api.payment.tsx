@@ -1,9 +1,6 @@
 import { data, type ActionFunctionArgs } from "@remix-run/node";
 import { createCharge } from "~/lib/culqi.server";
-import {
-  sendPreOrderConfirmation,
-  sendPreOrderNotification,
-} from "~/lib/resend.server";
+import { apiClient } from "~/lib/api-client";
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
@@ -56,30 +53,40 @@ export async function action({ request }: ActionFunctionArgs) {
 
     const charge = chargeResult.data;
 
-    // Send confirmation email to customer
-    await sendPreOrderConfirmation({
-      email,
-      firstName,
-      lastName,
-      quantity,
-      color,
-      totalPrice,
-    });
+    // Send confirmation email to customer via backend
+    try {
+      await apiClient.post('/email/public/pre-order-confirmation', {
+        email,
+        firstName,
+        lastName,
+        quantity,
+        color,
+        totalPrice,
+      });
+    } catch (error) {
+      console.error("Failed to send customer email via backend:", error);
+      // Continue even if email fails
+    }
 
-    // Send notification email to internal team
-    await sendPreOrderNotification({
-      email,
-      firstName,
-      lastName,
-      phone,
-      address,
-      city,
-      postalCode,
-      quantity,
-      color,
-      totalPrice,
-      paymentMethod: "Culqi - Tarjeta",
-    });
+    // Send notification email to internal team via backend
+    try {
+      await apiClient.post('/email/public/pre-order-notification', {
+        email,
+        firstName,
+        lastName,
+        phone,
+        address,
+        city,
+        postalCode,
+        quantity,
+        color,
+        totalPrice,
+        paymentMethod: "Culqi - Tarjeta",
+      });
+    } catch (error) {
+      console.error("Failed to send team notification via backend:", error);
+      // Continue even if email fails
+    }
 
     return data({
       success: true,

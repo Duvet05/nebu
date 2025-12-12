@@ -251,27 +251,56 @@ export class EmailPublicController {
     @Body() data: SendPreOrderConfirmationDto,
   ) {
     try {
-      this.logger.log(`Sending pre-order confirmation to ${data.email}`);
+      this.logger.log(`📧 Sending pre-order confirmation to ${data.email}`);
 
-      // For now, use the generic notification email until we create specific templates
-      const result = await this.resendEmailService.sendNotificationEmail({
+      // Get the pre-order confirmation template from database
+      const template = await this.emailTemplateService.findByName('pre-order-confirmation');
+
+      if (!template) {
+        this.logger.error('❌ Pre-order confirmation template not found in database');
+        throw new Error('Pre-order confirmation template not found. Please run seeders.');
+      }
+
+      // Get the "ventas" email account
+      const fromAccount = await this.emailAccountService.findByEmail('ventas@flow-telligence.com');
+
+      if (!fromAccount) {
+        this.logger.error('❌ Email account ventas@flow-telligence.com not found');
+        throw new Error('Email account not found. Please run seeders.');
+      }
+
+      // Calculate reserve amount (50%)
+      const reserveAmount = (data.totalPrice * 0.5).toFixed(2);
+      const remainingAmount = (data.totalPrice * 0.5).toFixed(2);
+
+      // Prepare template variables
+      const variables = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        productName: 'Nebu Dino',
+        color: data.color,
+        quantity: data.quantity.toString(),
+        totalPrice: data.totalPrice.toFixed(2),
+        reserveAmount,
+        remainingAmount,
+        year: new Date().getFullYear().toString(),
+      };
+
+      // Render the template with variables
+      const renderedSubject = template.subject.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
+      const renderedContent = template.content.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
+      const renderedHtml = template.htmlContent.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
+
+      // Send the email using Resend
+      const result = await this.resendEmailService.sendEmail({
+        replyTo: fromAccount.email,
         to: data.email,
-        title: '¡Pre-orden Confirmada!',
-        message: `
-          <p>Hola <strong>${data.firstName} ${data.lastName}</strong>,</p>
-          <p>¡Gracias por tu pre-orden!</p>
-          <h3>Detalles de tu pedido:</h3>
-          <ul>
-            <li><strong>Producto:</strong> Nebu Dino</li>
-            <li><strong>Color:</strong> ${data.color}</li>
-            <li><strong>Cantidad:</strong> ${data.quantity}</li>
-            <li><strong>Total:</strong> S/ ${data.totalPrice.toFixed(2)}</li>
-            <li><strong>Reserva (50%):</strong> S/ ${(data.totalPrice * 0.5).toFixed(2)}</li>
-          </ul>
-          <p>Pronto te enviaremos las instrucciones de pago.</p>
-          <p>¡Gracias por confiar en Nebu!</p>
-        `,
+        subject: renderedSubject,
+        text: renderedContent,
+        html: renderedHtml,
       });
+
+      this.logger.log(`✅ Pre-order confirmation email sent successfully to: ${data.email}`);
 
       return {
         success: true,
@@ -279,7 +308,7 @@ export class EmailPublicController {
         emailId: result.id,
       };
     } catch (error) {
-      this.logger.error(`Failed to send pre-order confirmation: ${error.message}`);
+      this.logger.error(`❌ Failed to send pre-order confirmation: ${error.message}`);
       return {
         success: false,
         error: error.message,
@@ -349,43 +378,71 @@ export class EmailPublicController {
   @ApiResponse({ status: 200, description: 'Email enviado exitosamente' })
   async sendOrderConfirmation(@Body() data: SendOrderConfirmationDto) {
     try {
-      this.logger.log(`Sending order confirmation to ${data.email} for order ${data.orderId}`);
+      this.logger.log(`📧 Sending order confirmation to ${data.email} for order ${data.orderId}`);
 
+      // Get the order confirmation template from database
+      const template = await this.emailTemplateService.findByName('order-confirmation');
+
+      if (!template) {
+        this.logger.error('❌ Order confirmation template not found in database');
+        throw new Error('Order confirmation template not found. Please run seeders.');
+      }
+
+      // Get the "ventas" email account
+      const fromAccount = await this.emailAccountService.findByEmail('ventas@flow-telligence.com');
+
+      if (!fromAccount) {
+        this.logger.error('❌ Email account ventas@flow-telligence.com not found');
+        throw new Error('Email account not found. Please run seeders.');
+      }
+
+      // Build items list for template
       const itemsList = data.items
+        .map(item => `- ${item.productName} - ${item.colorName} (${item.quantity}x) - S/ ${(item.price * item.quantity).toFixed(2)}`)
+        .join('\n');
+
+      // Calculate remaining amount
+      const remainingAmount = (data.total - data.reserveAmount).toFixed(2);
+
+      // Prepare template variables
+      const variables = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        orderId: data.orderId,
+        itemsList,
+        subtotal: data.subtotal.toFixed(2),
+        total: data.total.toFixed(2),
+        reserveAmount: data.reserveAmount.toFixed(2),
+        remainingAmount,
+        address: data.address,
+        city: data.city,
+        postalCode: data.postalCode,
+        phone: data.phone,
+        year: new Date().getFullYear().toString(),
+      };
+
+      // Render the template with variables
+      const renderedSubject = template.subject.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
+      const renderedContent = template.content.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
+      const renderedHtml = template.htmlContent.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
+
+      // Send the email to customer using Resend
+      const customerResult = await this.resendEmailService.sendEmail({
+        replyTo: fromAccount.email,
+        to: data.email,
+        subject: renderedSubject,
+        text: renderedContent,
+        html: renderedHtml,
+      });
+
+      this.logger.log(`✅ Order confirmation email sent successfully to: ${data.email}`);
+
+      // Email to admin (keep this hardcoded as it's internal)
+      const adminEmail = process.env.RESEND_FROM_EMAIL || 'admin@flow-telligence.com';
+      const itemsListHtml = data.items
         .map(item => `<li>${item.productName} - ${item.colorName} (${item.quantity}x) - S/ ${(item.price * item.quantity).toFixed(2)}</li>`)
         .join('');
 
-      // Email to customer
-      const customerResult = await this.resendEmailService.sendNotificationEmail({
-        to: data.email,
-        title: `Confirmación de Pre-orden - ${data.orderId}`,
-        message: `
-          <p>Hola <strong>${data.firstName} ${data.lastName}</strong>,</p>
-          <p>¡Gracias por tu pre-orden!</p>
-
-          <h3>📦 Detalles de tu Pedido #${data.orderId}</h3>
-          <ul>${itemsList}</ul>
-
-          <p><strong>Subtotal:</strong> S/ ${data.subtotal.toFixed(2)}</p>
-          <p><strong>Envío:</strong> GRATIS</p>
-          <p><strong>Total:</strong> S/ ${data.total.toFixed(2)}</p>
-
-          <div style="background: #eff6ff; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6; margin: 20px 0;">
-            <p><strong>💰 Modalidad de Pre-orden (50%)</strong></p>
-            <p><strong>A pagar ahora:</strong> S/ ${data.reserveAmount.toFixed(2)}</p>
-            <p><strong>Saldo al entregar:</strong> S/ ${(data.total - data.reserveAmount).toFixed(2)}</p>
-          </div>
-
-          <h3>📍 Dirección de Envío</h3>
-          <p>${data.address}<br>${data.city}, ${data.postalCode}<br>📱 ${data.phone}</p>
-
-          <p>Te enviaremos un enlace de pago para completar la reserva.</p>
-          <p>¡Gracias por confiar en Nebu!</p>
-        `,
-      });
-
-      // Email to admin
-      const adminEmail = process.env.RESEND_FROM_EMAIL || 'admin@flow-telligence.com';
       await this.resendEmailService.sendNotificationEmail({
         to: adminEmail,
         title: `Nueva Pre-orden Recibida - ${data.orderId}`,
@@ -396,7 +453,7 @@ export class EmailPublicController {
           <p>${data.firstName} ${data.lastName}<br>${data.email}<br>${data.phone}</p>
 
           <h3>📦 Productos</h3>
-          <ul>${itemsList}</ul>
+          <ul>${itemsListHtml}</ul>
 
           <p><strong>Total:</strong> S/ ${data.total.toFixed(2)}</p>
           <p><strong>Reserva (50%):</strong> S/ ${data.reserveAmount.toFixed(2)}</p>
@@ -412,7 +469,7 @@ export class EmailPublicController {
         emailId: customerResult.id,
       };
     } catch (error) {
-      this.logger.error(`Failed to send order confirmation: ${error.message}`);
+      this.logger.error(`❌ Failed to send order confirmation: ${error.message}`);
       return {
         success: false,
         error: error.message,
