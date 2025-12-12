@@ -62,7 +62,6 @@ const ROUTE_STRATEGIES = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Precaching assets');
       return cache.addAll(PRECACHE_ASSETS);
     })
   );
@@ -80,7 +79,6 @@ self.addEventListener('activate', (event) => {
         cacheNames
           .filter((cacheName) => cacheName !== CACHE_NAME)
           .map((cacheName) => {
-            console.log('[SW] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           })
       );

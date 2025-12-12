@@ -17,19 +17,11 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   try {
-    const formData = await request.json();
+    const _formData = await request.json();
 
     // Generate unique complaint number
     const timestamp = Date.now();
     const hojaNumber = `LR-${timestamp.toString().slice(-8)}`;
-
-    // Log the complaint for audit purposes
-    console.log(`[Complaint Registered] ${hojaNumber}`, {
-      type: formData.tipoReclamo,
-      customer: `${formData.nombres} ${formData.apellidos}`,
-      email: formData.email,
-      timestamp: new Date().toISOString(),
-    });
 
     // TODO: In production, this should call the backend API to:
     // 1. Store the complaint in the database

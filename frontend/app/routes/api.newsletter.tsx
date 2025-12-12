@@ -4,7 +4,7 @@ import { z } from "zod";
 
 // Schema for newsletter signup
 const NewsletterRequestSchema = z.object({
-  email: z.string().email("Email inválido"),
+  email: z.email("Email inválido"),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
 });
@@ -40,9 +40,7 @@ export async function action({ request }: ActionFunctionArgs) {
     try {
       const url = '/email/public/newsletter-welcome';
       const body = { email: validatedData.email };
-      console.log(`[NEWSLETTER] Sending welcome email. URL: ${url}, body:`, body);
       const emailResponse = await apiClient.post<{ success: boolean; error?: string }>(url, body);
-      console.log('[NEWSLETTER] Email response:', emailResponse);
 
       if (!emailResponse.success) {
         console.error("[NEWSLETTER] Failed to send email:", emailResponse.error);
