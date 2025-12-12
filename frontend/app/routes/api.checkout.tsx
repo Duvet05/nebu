@@ -1,10 +1,11 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { data } from "@remix-run/node";
 import { createCharge as createCulqiCharge } from "~/lib/culqi.server";
+import { BUSINESS, CONTACT } from "~/config/constants";
+import { apiClient } from "~/lib/api-client";
 
 const CULQI_SECRET_KEY = process.env.CULQI_SECRET_KEY || "";
 const CULQI_API_URL = "https://api.culqi.com/v2";
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
 
 interface CheckoutItem {
   productId: string;
@@ -112,26 +113,20 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Send confirmation emails via backend
     try {
-      await fetch(`${BACKEND_URL}/email/public/order-confirmation`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: checkoutData.email,
-          firstName: checkoutData.firstName,
-          lastName: checkoutData.lastName,
-          orderId,
-          items: checkoutData.items,
-          subtotal: checkoutData.subtotal,
-          shipping: checkoutData.shipping,
-          total: checkoutData.total,
-          reserveAmount: checkoutData.reserveAmount,
-          address: checkoutData.address,
-          city: checkoutData.city,
-          postalCode: checkoutData.postalCode,
-          phone: checkoutData.phone,
-        }),
+      await apiClient.post('/email/public/order-confirmation', {
+        email: checkoutData.email,
+        firstName: checkoutData.firstName,
+        lastName: checkoutData.lastName,
+        orderId,
+        items: checkoutData.items,
+        subtotal: checkoutData.subtotal,
+        shipping: checkoutData.shipping,
+        total: checkoutData.total,
+        reserveAmount: checkoutData.reserveAmount,
+        address: checkoutData.address,
+        city: checkoutData.city,
+        postalCode: checkoutData.postalCode,
+        phone: checkoutData.phone,
       });
     } catch (error) {
       console.error("Failed to send emails via backend:", error);
@@ -139,48 +134,27 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     // Create order in backend (validates stock and decrements automatically)
-
     try {
-      const orderResponse = await fetch(`${BACKEND_URL}/orders/checkout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const order = await apiClient.post<{ id: string; orderNumber?: string }>('/orders/checkout', {
+        email: checkoutData.email,
+        firstName: checkoutData.firstName,
+        lastName: checkoutData.lastName,
+        phone: checkoutData.phone,
+        address: checkoutData.address,
+        city: checkoutData.city,
+        postalCode: checkoutData.postalCode,
+        items: checkoutData.items,
+        subtotal: checkoutData.subtotal,
+        shipping: checkoutData.shipping,
+        total: checkoutData.total,
+        reserveAmount: checkoutData.reserveAmount,
+        agreeTerms: checkoutData.agreeTerms,
+        subscribeNewsletter: checkoutData.subscribeNewsletter,
+        metadata: {
+          culqiOrderId,
+          culqiChargeId,
         },
-        body: JSON.stringify({
-          email: checkoutData.email,
-          firstName: checkoutData.firstName,
-          lastName: checkoutData.lastName,
-          phone: checkoutData.phone,
-          address: checkoutData.address,
-          city: checkoutData.city,
-          postalCode: checkoutData.postalCode,
-          items: checkoutData.items,
-          subtotal: checkoutData.subtotal,
-          shipping: checkoutData.shipping,
-          total: checkoutData.total,
-          reserveAmount: checkoutData.reserveAmount,
-          agreeTerms: checkoutData.agreeTerms,
-          subscribeNewsletter: checkoutData.subscribeNewsletter,
-          metadata: {
-            culqiOrderId,
-            culqiChargeId,
-          },
-        }),
       });
-
-      if (!orderResponse.ok) {
-        const errorData = await orderResponse.json();
-        console.error("Backend order creation failed:", errorData);
-        return data(
-          {
-            error: errorData.message || "Error al crear la orden",
-            outOfStock: errorData.message?.includes("stock"),
-          },
-          { status: 400 }
-        );
-      }
-
-      const order = await orderResponse.json();
 
       return data({
         success: true,

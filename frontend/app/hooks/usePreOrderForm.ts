@@ -1,17 +1,9 @@
-import { useState, useEffect, type FormEvent } from "react";
+import { useState, useEffect, useCallback, useRef, type FormEvent } from "react";
 import { analytics } from "~/lib/analytics";
-import type { ProductColor } from "~/lib/api/products";
+import type { Product, ProductColor } from "~/lib/api/products";
 import { useCulqi } from "~/hooks/useCulqi";
+import { debounce } from "~/lib/debounce";
 
-interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  price: number;
-  stockCount: number;
-  colors?: ProductColor[];
-  [key: string]: any;
-}
 
 interface FormData {
   email: string;
@@ -54,22 +46,29 @@ export function usePreOrderForm(
   const [availableUnits, setAvailableUnits] = useState(selectedProduct.stockCount || 0);
   const soldOut = availableUnits <= 0;
 
+  // Debounced inventory fetch
+  const fetchInventoryDebounced = useRef(
+    debounce((productId: string) => {
+      fetch(`/api/inventory?productId=${encodeURIComponent(productId)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.availableUnits !== undefined) {
+            setAvailableUnits(data.availableUnits);
+          }
+        })
+        .catch(err => {
+          console.error("Failed to fetch inventory:", err);
+        });
+    }, 300) // 300ms debounce
+  ).current;
+
   // Track page view and fetch inventory on mount
   useEffect(() => {
     analytics.viewProduct(selectedProduct.id, selectedProduct.name);
-
-    // Fetch inventory from backend using product ID (UUID)
-    fetch(`/api/inventory?productId=${encodeURIComponent(selectedProduct.id)}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.availableUnits !== undefined) {
-          setAvailableUnits(data.availableUnits);
-        }
-      })
-      .catch(err => {
-        console.error("Failed to fetch inventory:", err);
-      });
-  }, [selectedProduct]);
+    
+    // Fetch inventory with debouncing
+    fetchInventoryDebounced(selectedProduct.id);
+  }, [selectedProduct, fetchInventoryDebounced]);
 
   // Update selected color when product changes
   useEffect(() => {

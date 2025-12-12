@@ -1,6 +1,8 @@
 import { data, type LoaderFunctionArgs, type ActionFunctionArgs } from "@remix-run/node";
-
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
+import { apiClient } from "~/lib/api-client";
+import { InventorySchema } from "~/lib/api/schemas";
+import { getCached, CACHE_TTL } from "~/lib/cache";
+import { z } from "zod";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -11,13 +13,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
       return data({ error: "Product ID is required" }, { status: 400 });
     }
 
-    const response = await fetch(`${BACKEND_URL}/inventory/${encodeURIComponent(productId)}/available`);
+    const cacheKey = `inventory:${productId}`;
 
-    if (!response.ok) {
-      return data({ availableUnits: 20 }, { status: 200 }); // Fallback
-    }
-
-    const inventory = await response.json();
+    const inventory = await getCached(
+      cacheKey,
+      async () => {
+        const response = await apiClient.get<unknown>(`/inventory/${encodeURIComponent(productId)}/available`);
+        return InventorySchema.parse(response);
+      },
+      CACHE_TTL.SHORT // 5 seconds cache for inventory
+    );
 
     return data({
       productId: inventory.productId,
@@ -32,6 +37,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   }
 }
 
+// Schema for notification request
+const NotificationRequestSchema = z.object({
+  email: z.string().email("Email inválido"),
+  productId: z.string().min(1, "Product ID es requerido"),
+  productName: z.string().min(1, "Product name es requerido"),
+});
+
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
     return data({ error: "Method not allowed" }, { status: 405 });
@@ -39,45 +51,35 @@ export async function action({ request }: ActionFunctionArgs) {
 
   try {
     const formData = await request.formData();
-    const email = formData.get("email") as string;
-    const productId = formData.get("productId") as string;
-    const productName = formData.get("productName") as string;
+    
+    // Extract and validate data
+    const requestData = {
+      email: formData.get("email") as string,
+      productId: formData.get("productId") as string,
+      productName: formData.get("productName") as string,
+    };
 
-    if (!email || !productId || !productName) {
-      return data({ error: "Faltan campos requeridos" }, { status: 400 });
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return data({ error: "Email inválido" }, { status: 400 });
-    }
+    // Validate with Zod
+    const validatedData = NotificationRequestSchema.parse(requestData);
 
     // Send to backend
-    const response = await fetch(`${BACKEND_URL}/inventory/notifications`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        productId,
-        productName,
-      }),
-    });
-
-    if (!response.ok) {
-      // If backend fails, we could store locally or log
-      console.error("Failed to register back-in-stock notification", await response.text());
-      // Still return success to user - we'll handle it manually if needed
-    }
+    await apiClient.post('/inventory/notifications', validatedData);
 
     return data({
       success: true,
-      message: `¡Perfecto! Te notificaremos a ${email} cuando ${productName} esté disponible.`,
+      message: `¡Perfecto! Te notificaremos a ${validatedData.email} cuando ${validatedData.productName} esté disponible.`,
     });
   } catch (error) {
     console.error("Back in stock notification error:", error);
+    
+    if (error instanceof z.ZodError) {
+      const firstError = error.issues[0];
+      return data(
+        { error: firstError.message },
+        { status: 400 }
+      );
+    }
+
     return data(
       { error: "Error al registrar la notificación. Por favor intenta de nuevo." },
       { status: 500 }

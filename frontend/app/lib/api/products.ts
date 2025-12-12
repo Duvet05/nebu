@@ -3,58 +3,13 @@
  * Connects to backend NestJS API
  */
 
-export interface ProductColor {
-  id: string;
-  name: string;
-  hex: string;
-  gradient: string;
-}
+import { apiClient } from '~/lib/api-client';
+import { ProductSchema, ProductsArraySchema, type Product, type ProductColor } from '~/lib/api/schemas';
+import { getCached, CACHE_TTL, invalidateCacheByPattern } from '~/lib/cache';
 
-export interface Product {
-  id: string;
-  slug: string;
-  name: string;
-  concept?: string;
-  originalCharacter?: string;
-  description: string;
-  shortDescription?: string;
-  price: number;
-  originalPrice?: number;
-  depositAmount?: number;
-  preOrder: boolean;
-  inStock: boolean;
-  stockCount: number;
-  images: string[];
-  videoPlaybackId?: string;
-  videoProvider?: 'cloudflare' | 'youtube';
-  videoThumbnail?: string;
-  colors?: ProductColor[];
-  ageRange?: string;
-  features: string[];
-  category: string;
-  badge?: string;
-  active: boolean;
-  viewCount: number;
-  orderCount: number;
-  createdAt: string;
-  updatedAt: string;
-}
+// Re-export types for backward compatibility
+export type { Product, ProductColor } from '~/lib/api/schemas';
 
-// Construct API base URL with proper /api/v1 prefix
-const getApiBaseUrl = () => {
-  const backendUrl = process.env.BACKEND_URL;
-
-  // If BACKEND_URL already includes /api/v1, use it as-is
-  if (backendUrl?.includes('/api/v1')) {
-    return backendUrl;
-  }
-
-  // Otherwise, append /api/v1 to the base URL
-  const baseUrl = backendUrl || 'http://127.0.0.1:3001';
-  return `${baseUrl}/api/v1`;
-};
-
-const API_BASE_URL = getApiBaseUrl();
 
 // Fallback dummy products (used only when backend is unreachable and in dev)
 const dummyProducts: Product[] = [
@@ -111,22 +66,24 @@ const dummyProducts: Product[] = [
 ];
 
 /**
- * Fetch all active products
+ * Fetch all active products (with cache)
  */
 export async function fetchProducts(includeInactive = false): Promise<Product[]> {
+  const cacheKey = `products:${includeInactive ? 'all' : 'active'}`;
+  
   try {
-    const url = `${API_BASE_URL}/products${includeInactive ? '?includeInactive=true' : ''}`;
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
+    return await getCached(
+      cacheKey,
+      async () => {
+        const endpoint = `/products${includeInactive ? '?includeInactive=true' : ''}`;
+        const response = await apiClient.get<unknown>(endpoint);
+        
+        // Validate response with Zod
+        const products = ProductsArraySchema.parse(response);
+        return products;
       },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch products: ${response.statusText}`);
-    }
-
-    return await response.json();
+      CACHE_TTL.LONG // 5 minutes cache
+    );
   } catch (error) {
     console.error('Error fetching products:', error);
     const isDev = process.env.NODE_ENV !== 'production';
@@ -139,21 +96,21 @@ export async function fetchProducts(includeInactive = false): Promise<Product[]>
 }
 
 /**
- * Fetch products currently in stock
+ * Fetch products currently in stock (with cache)
  */
 export async function fetchInStockProducts(): Promise<Product[]> {
+  const cacheKey = 'products:inStock';
+  
   try {
-    const response = await fetch(`${API_BASE_URL}/products/in-stock`, {
-      headers: {
-        'Content-Type': 'application/json',
+    return await getCached(
+      cacheKey,
+      async () => {
+        const response = await apiClient.get<unknown>('/products/in-stock');
+        const products = ProductsArraySchema.parse(response);
+        return products;
       },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch in-stock products: ${response.statusText}`);
-    }
-
-    return await response.json();
+      CACHE_TTL.LONG // 5 minutes cache
+    );
   } catch (error) {
     console.error('Error fetching in-stock products:', error);
     const isDev = process.env.NODE_ENV !== 'production';
@@ -170,17 +127,9 @@ export async function fetchInStockProducts(): Promise<Product[]> {
  */
 export async function fetchPreOrderProducts(): Promise<Product[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/products/pre-orders`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch pre-order products: ${response.statusText}`);
-    }
-
-    return await response.json();
+    const response = await apiClient.get<unknown>('/products/pre-orders');
+    const products = ProductsArraySchema.parse(response);
+    return products;
   } catch (error) {
     console.error('Error fetching pre-order products:', error);
     const isDev = process.env.NODE_ENV !== 'production';
@@ -197,17 +146,9 @@ export async function fetchPreOrderProducts(): Promise<Product[]> {
  */
 export async function fetchProductById(id: string): Promise<Product> {
   try {
-    const response = await fetch(`${API_BASE_URL}/products/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch product: ${response.statusText}`);
-    }
-
-    return await response.json();
+    const response = await apiClient.get<unknown>(`/products/${id}`);
+    const product = ProductSchema.parse(response);
+    return product;
   } catch (error) {
     console.error(`Error fetching product ${id}:`, error);
     const isDev = process.env.NODE_ENV !== 'production';
@@ -224,17 +165,9 @@ export async function fetchProductById(id: string): Promise<Product> {
  */
 export async function fetchProductBySlug(slug: string): Promise<Product> {
   try {
-    const response = await fetch(`${API_BASE_URL}/products/slug/${slug}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch product: ${response.statusText}`);
-    }
-
-    return await response.json();
+    const response = await apiClient.get<unknown>(`/products/slug/${slug}`);
+    const product = ProductSchema.parse(response);
+    return product;
   } catch (error) {
     console.error(`Error fetching product ${slug}:`, error);
     const isDev = process.env.NODE_ENV !== 'production';
@@ -290,7 +223,7 @@ export function enrichProduct(product: Product): Product {
     ...product,
     colors: enrichedColors,
     features: Array.isArray(product.features) ? product.features : [],
-    images: Array.isArray(product.images) && product.images.length > 0
+    images: Array.isArray(product.images) && product.images.length >  0
       ? product.images
       : ['/assets/products/placeholder.jpg'],
   };

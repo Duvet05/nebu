@@ -1,6 +1,13 @@
 import { data, type ActionFunctionArgs } from "@remix-run/node";
+import { apiClient } from "~/lib/api-client";
+import { z } from "zod";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:3001/api/v1";
+// Schema for newsletter signup
+const NewsletterRequestSchema = z.object({
+  email: z.string().email("Email inválido"),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+});
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
@@ -9,26 +16,19 @@ export async function action({ request }: ActionFunctionArgs) {
 
   try {
     const formData = await request.formData();
-    const email = formData.get("email") as string;
-    const firstName = formData.get("firstName") as string;
-    const lastName = formData.get("lastName") as string;
+    
+    const requestData = {
+      email: formData.get("email") as string,
+      firstName: formData.get("firstName") as string | null,
+      lastName: formData.get("lastName") as string | null,
+    };
 
-    if (!email || !email.includes("@")) {
-      return data(
-        { error: "Email inválido" },
-        { status: 400 }
-      );
-    }
+    // Validate with Zod
+    const validatedData = NewsletterRequestSchema.parse(requestData);
 
     // Save lead to backend
     try {
-      await fetch(`${BACKEND_URL}/leads/newsletter`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, firstName, lastName }),
-      });
+      await apiClient.post('/leads/newsletter', validatedData);
     } catch (error) {
       console.error("Failed to save newsletter lead to backend:", error);
       // Continue even if backend fails
@@ -36,18 +36,13 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Send welcome email via backend
     try {
-      const emailResponse = await fetch(`${BACKEND_URL}/email/public/newsletter-welcome`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      const emailResponse = await apiClient.post<{ success: boolean; error?: string }>(
+        '/email/public/newsletter-welcome',
+        { email: validatedData.email }
+      );
 
-      const emailResult = await emailResponse.json();
-
-      if (!emailResult.success) {
-        console.error("Failed to send email:", emailResult.error);
+      if (!emailResponse.success) {
+        console.error("Failed to send email:", emailResponse.error);
         return data(
           { error: "Error al enviar email" },
           { status: 500 }
@@ -64,6 +59,15 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   } catch (error) {
     console.error("Newsletter signup error:", error);
+    
+    if (error instanceof z.ZodError) {
+      const firstError = error.issues[0];
+      return data(
+        { error: firstError.message },
+        { status: 400 }
+      );
+    }
+
     return data(
       { error: "Error al procesar la solicitud" },
       { status: 500 }
