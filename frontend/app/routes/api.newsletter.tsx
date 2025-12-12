@@ -17,39 +17,42 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     const formData = await request.formData();
     
+
     const requestData = {
       email: formData.get("email") as string,
-      firstName: formData.get("firstName") as string | null,
-      lastName: formData.get("lastName") as string | null,
+      firstName: formData.get("firstName") || undefined,
+      lastName: formData.get("lastName") || undefined,
     };
 
     // Validate with Zod
     const validatedData = NewsletterRequestSchema.parse(requestData);
 
+
     // Save lead to backend
     try {
       await apiClient.post('/leads/newsletter', validatedData);
     } catch (error) {
-      console.error("Failed to save newsletter lead to backend:", error);
+      console.error("[NEWSLETTER] Failed to save newsletter lead to backend:", error);
       // Continue even if backend fails
     }
 
     // Send welcome email via backend
     try {
-      const emailResponse = await apiClient.post<{ success: boolean; error?: string }>(
-        '/email/public/newsletter-welcome',
-        { email: validatedData.email }
-      );
+      const url = '/email/public/newsletter-welcome';
+      const body = { email: validatedData.email };
+      console.log(`[NEWSLETTER] Sending welcome email. URL: ${url}, body:`, body);
+      const emailResponse = await apiClient.post<{ success: boolean; error?: string }>(url, body);
+      console.log('[NEWSLETTER] Email response:', emailResponse);
 
       if (!emailResponse.success) {
-        console.error("Failed to send email:", emailResponse.error);
+        console.error("[NEWSLETTER] Failed to send email:", emailResponse.error);
         return data(
           { error: "Error al enviar email" },
           { status: 500 }
         );
       }
     } catch (error) {
-      console.error("Failed to send email via backend:", error);
+      console.error("[NEWSLETTER] Failed to send email via backend:", error);
       // Continue even if email fails - don't block the signup
     }
 

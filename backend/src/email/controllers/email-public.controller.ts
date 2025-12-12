@@ -186,6 +186,7 @@ export class EmailPublicController {
     @Body() data: SendNewsletterWelcomeDto,
   ) {
     try {
+      this.logger.log(`➡️  [INCOMING] POST /email/public/newsletter-welcome body: ${JSON.stringify(data)}`);
       this.logger.log(`📧 Sending newsletter welcome email to ${data.email}`);
 
       // Get the newsletter welcome template from database
