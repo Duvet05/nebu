@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, type FormEvent } from "react";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import { analytics } from "~/lib/analytics";
 import type { Product, ProductColor } from "~/lib/api/products";
 import { useCulqi } from "~/hooks/useCulqi";

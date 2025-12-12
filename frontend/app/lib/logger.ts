@@ -23,6 +23,7 @@ class RequestLogger {
     const timestamp = Date.now();
     
     if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
       console.log(`🌐 [API] ${method} ${url}`);
     }
 
@@ -47,6 +48,7 @@ class RequestLogger {
 
     if (process.env.NODE_ENV === 'development') {
       const emoji = status >= 200 && status < 300 ? '✅' : '⚠️';
+      // eslint-disable-next-line no-console
       console.log(`${emoji} [API] ${method} ${url} - ${status} (${duration}ms)`);
     }
   }
@@ -68,6 +70,7 @@ class RequestLogger {
     this.addLog(entry);
 
     if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
       console.error(`❌ [API] ${method} ${url} - Error: ${error.message} (${duration}ms)`);
     }
   }
@@ -128,5 +131,6 @@ export const requestLogger = new RequestLogger();
 // Expose to window in development for debugging
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   (window as any).__apiLogger = requestLogger;
+  // eslint-disable-next-line no-console
   console.log('💡 API Logger available at window.__apiLogger');
 }

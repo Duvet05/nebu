@@ -5,10 +5,12 @@
 
 import { apiClient } from '~/lib/api-client';
 import { ProductSchema, ProductsArraySchema, type Product, type ProductColor } from '~/lib/api/schemas';
-import { getCached, CACHE_TTL, invalidateCacheByPattern } from '~/lib/cache';
+import { getCached, CACHE_TTL } from '~/lib/cache';
 
 // Re-export types for backward compatibility
 export type { Product, ProductColor } from '~/lib/api/schemas';
+// Re-export cache utilities for product invalidation
+export { invalidateCacheByPattern } from '~/lib/cache';
 
 
 // Fallback dummy products (used only when backend is unreachable and in dev)
