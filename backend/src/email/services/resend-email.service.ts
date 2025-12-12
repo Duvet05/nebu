@@ -74,6 +74,26 @@ export class ResendEmailService {
 
       this.logger.log(`Sending email from: ${fromField} to: ${data.to}`);
 
+      // Detect if this is a newsletter (por convención: subject o tags)
+      const isNewsletter = (data.subject && data.subject.toLowerCase().includes('newsletter')) || (data.tags && data.tags.some(t => t.name === 'category' && t.value === 'newsletter'));
+
+      // Construir headers personalizados
+      let headers: Record<string, string> = {};
+      if (isNewsletter && typeof data.to === 'string') {
+        // List-Unsubscribe header (mailto y link)
+        const unsubscribeMail = `mailto:unsubscribe@flow-telligence.com?subject=Unsubscribe`;
+        const unsubscribeUrl = `https://flow-telligence.com/unsubscribe?email=${encodeURIComponent(data.to)}`;
+        headers['List-Unsubscribe'] = `<${unsubscribeMail}>, <${unsubscribeUrl}>`;
+        headers['List-Unsubscribe-Post'] = 'List-Unsubscribe=One-Click';
+        headers['Feedback-ID'] = `newsletter.flow-telligence.com`;
+      }
+
+      // Log headers si existen
+      if (Object.keys(headers).length > 0) {
+        this.logger.log(`Custom email headers: ${JSON.stringify(headers)}`);
+      }
+
+      // Enviar email con headers personalizados si hay
       const result = await this.resend.emails.send({
         from: fromField,
         to: data.to,
@@ -82,6 +102,7 @@ export class ResendEmailService {
         text: data.text,
         replyTo: data.replyTo,
         tags: data.tags,
+        headers: Object.keys(headers).length > 0 ? headers : undefined,
       });
 
       if (result.error) {
@@ -90,6 +111,9 @@ export class ResendEmailService {
       }
 
       this.logger.log(`Email sent successfully: ${result.data?.id}`);
+      if (result.data?.id) {
+        this.logger.log(`Message-ID: ${result.data.id}`);
+      }
       return { id: result.data?.id || '', success: true };
     } catch (error) {
       this.logger.error('Failed to send email:', error);
