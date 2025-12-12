@@ -19,11 +19,9 @@ interface CulqiSettings {
 }
 
 declare global {
-  interface Window {
-    Culqi: any;
-    CULQI_PUBLIC_KEY: string;
-    culqi: () => void;
-  }
+  var Culqi: any;
+  var CULQI_PUBLIC_KEY: string;
+  var culqi: () => void;
 }
 
 /**

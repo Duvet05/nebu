@@ -6,9 +6,11 @@
  * - Request timeouts
  * - Standardized error handling
  * - Type-safe responses
+ * - Request logging
  */
 
 import { env } from '~/config/env.server';
+import { requestLogger } from '~/lib/logger';
 
 export class ApiError extends Error {
   constructor(
@@ -95,6 +97,9 @@ export class ApiClient {
     const url = `${this.baseURL}${endpoint}`;
     const requestHeaders = { ...this.defaultHeaders, ...headers };
 
+    // Log request start
+    const startTime = requestLogger.logRequest(method, endpoint);
+
     let lastError: Error;
 
     for (let attempt = 0; attempt <= retries; attempt++) {
@@ -117,6 +122,9 @@ export class ApiClient {
           await this.handleErrorResponse(response);
         }
 
+        // Log successful response
+        requestLogger.logResponse(method, endpoint, response.status, startTime);
+
         // Validate content type
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
@@ -136,11 +144,15 @@ export class ApiClient {
           (error.status >= 400 && error.status < 500) &&
           !error.retryable
         ) {
+          // Log error
+          requestLogger.logError(method, endpoint, error, startTime);
           throw error;
         }
 
         // Don't retry on the last attempt
         if (attempt === retries) {
+          // Log final error
+          requestLogger.logError(method, endpoint, lastError, startTime);
           throw lastError;
         }
 
