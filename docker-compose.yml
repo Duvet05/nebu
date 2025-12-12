@@ -279,6 +279,43 @@ services:
       start_period: 10s
 
   # ==============================================
+  # BACKEND INIT - MIGRACIONES Y SEEDS
+  # ==============================================
+  backend-init:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.init
+    container_name: nebu-backend-init
+    restart: "no"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_SSL=false
+      # ChromaDB Configuration
+      - CHROMADB_HOST=chromadb
+      - CHROMADB_PORT=8000
+      # Redis Configuration
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      # OpenAI Configuration (para embeddings en seeds)
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # Database Mode Configuration
+      - DB_USE_MIGRATIONS=${DB_USE_MIGRATIONS:-false}
+      - AUTO_SEED=${AUTO_SEED:-true}
+    networks:
+      - nebu-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      chromadb:
+        condition: service_healthy
+
+  # ==============================================
   # BACKEND - CON HEALTH CHECK Y OPTIMIZACIONES
   # ==============================================
   backend:
@@ -325,8 +362,10 @@ services:
       # DB_USE_MIGRATIONS=false (default): Use synchronize mode (development)
       # DB_USE_MIGRATIONS=true: Use migrations mode (production)
       - DB_USE_MIGRATIONS=${DB_USE_MIGRATIONS:-false}
-      # Auto-seed only works in synchronize mode (DB_USE_MIGRATIONS=false)
-      - AUTO_SEED=${AUTO_SEED:-true}
+      # Disable auto-init in main app (handled by backend-init)
+      - DB_SYNCHRONIZE=false
+      - DB_MIGRATIONS_RUN=false
+      - AUTO_SEED=false
       # Email Verification Configuration
       # Set to 'false' to disable email verification (useful when SMTP is not configured)
       - REQUIRE_EMAIL_VERIFICATION=${REQUIRE_EMAIL_VERIFICATION:-false}
@@ -339,6 +378,8 @@ services:
       - traefik-network
       - nebu-network
     depends_on:
+      backend-init:
+        condition: service_completed_successfully
       postgres:
         condition: service_healthy
       redis:

@@ -62,11 +62,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
     // Database - Using shared configuration
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        ...configService.get('database'),
-        entities: [], // Let autoLoadEntities handle this
-      }),
+      useFactory: (configService: ConfigService) => configService.get('database'),
       inject: [ConfigService],
     }),
 

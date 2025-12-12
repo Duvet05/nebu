@@ -15,6 +15,7 @@
     "chromadb:seed": "ts-node -r dotenv/config src/scripts/chromadb-cli.ts seed",
     "chromadb:clear": "ts-node -r dotenv/config src/scripts/chromadb-cli.ts clear",
     "chromadb:stats": "ts-node -r dotenv/config src/scripts/chromadb-cli.ts stats",
+    "init:db": "ts-node -r dotenv/config src/scripts/init-db.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "npm run typeorm -- migration:generate -d ormconfig.ts",
     "migration:create": "npm run typeorm -- migration:create",

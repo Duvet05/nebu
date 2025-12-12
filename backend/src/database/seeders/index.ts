@@ -23,6 +23,7 @@ async function runSeeders() {
   // Crear conexión a la base de datos usando configuración compartida
   const dataSource = new DataSource({
     ...getDatabaseConfig(),
+    entities: ['src/**/*.entity.ts'], // Explicitly use TS entities for seeders
     synchronize: true, // Sincronizar en seeders
   });
 

@@ -22,8 +22,8 @@ export function getDatabaseConfig(): DataSourceOptions {
     password: process.env.DATABASE_PASSWORD!,
     database: process.env.DATABASE_NAME!,
     // entities solo para seeders/scripts, no para runtime
-    synchronize: !useMigrations,
-    migrationsRun: useMigrations,
+    synchronize: process.env.DB_SYNCHRONIZE ? process.env.DB_SYNCHRONIZE === 'true' : !useMigrations,
+    migrationsRun: process.env.DB_MIGRATIONS_RUN ? process.env.DB_MIGRATIONS_RUN === 'true' : useMigrations,
     logging: process.env.NODE_ENV === 'development',
     ssl: process.env.DATABASE_SSL === 'true' ? {
       rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false',
