@@ -16,6 +16,7 @@ import { ChromaDBService } from '../search/services/chromadb.service';
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule, {
     logger: ['log', 'error', 'warn'],
+    abortOnError: false, // Don't abort on connection errors
   });
 
   const seederService = app.get(ChromaDBSeederService);
@@ -78,13 +79,15 @@ async function bootstrap() {
       }
     }
 
+    // Ensure all connections are properly closed
     await app.close();
-    process.exit(0);
+    // Force exit after a short delay to ensure cleanup
+    setTimeout(() => process.exit(0), 1000);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('\n❌ Error:', error.message);
     await app.close();
-    process.exit(1);
+    setTimeout(() => process.exit(1), 1000);
   }
 }
 

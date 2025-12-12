@@ -10,8 +10,8 @@ import { DataSourceOptions } from 'typeorm';
  */
 export function getDatabaseConfig(): DataSourceOptions {
   // ONE master flag controls the database mode
-  // DB_USE_MIGRATIONS=false (default) → synchronize mode (development)
-  // DB_USE_MIGRATIONS=true → migrations mode (production)
+  // DB_USE_MIGRATIONS=false (default) → synchronize mode (development, handled by backend-init)
+  // DB_USE_MIGRATIONS=true → migrations mode (production, handled by backend-init)
   const useMigrations = process.env.DB_USE_MIGRATIONS === 'true';
 
   return {
@@ -21,9 +21,10 @@ export function getDatabaseConfig(): DataSourceOptions {
     username: process.env.DATABASE_USERNAME!,
     password: process.env.DATABASE_PASSWORD!,
     database: process.env.DATABASE_NAME!,
-    // entities solo para seeders/scripts, no para runtime
-    synchronize: process.env.DB_SYNCHRONIZE ? process.env.DB_SYNCHRONIZE === 'true' : !useMigrations,
-    migrationsRun: process.env.DB_MIGRATIONS_RUN ? process.env.DB_MIGRATIONS_RUN === 'true' : useMigrations,
+    // DB initialization (sync/migrations) is handled by backend-init service
+    // Main app should never auto-sync or auto-migrate
+    synchronize: false,
+    migrationsRun: false,
     logging: process.env.NODE_ENV === 'development',
     ssl: process.env.DATABASE_SSL === 'true' ? {
       rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false',

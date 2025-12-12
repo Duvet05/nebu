@@ -99,12 +99,7 @@ services:
       - APP_URL=https://${DOMAIN:-flow-telligence.com}
       - BACKEND_URL=http://backend:3001/api/v1
       - SESSION_SECRET=${SESSION_SECRET}
-      - LIVEKIT_URL=${LIVEKIT_URL}
-      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
-      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
-      - RESEND_API_KEY=${RESEND_API_KEY}
-      - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL}
-      - CULQI_SECRET_KEY=${CULQI_SECRET_KEY}
+      # Public keys only (secrets handled by backend)
       - CULQI_PUBLIC_KEY=${CULQI_PUBLIC_KEY}
       - VITE_CULQI_PUBLIC_KEY=${CULQI_PUBLIC_KEY}
     volumes:
@@ -289,28 +284,31 @@ services:
     restart: "no"
     environment:
       - NODE_ENV=production
+      # Database Configuration
       - DATABASE_HOST=postgres
       - DATABASE_PORT=5432
       - DATABASE_USERNAME=${DATABASE_USERNAME}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_SSL=false
-      # ChromaDB Configuration
-      - CHROMADB_HOST=chromadb
-      - CHROMADB_PORT=8000
-      # Redis Configuration
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      # OpenAI Configuration (para embeddings en seeds)
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
       # Database Mode Configuration
       - DB_USE_MIGRATIONS=${DB_USE_MIGRATIONS:-false}
       - AUTO_SEED=${AUTO_SEED:-true}
+      # ChromaDB Configuration (for seeding)
+      - CHROMADB_HOST=chromadb
+      - CHROMADB_PORT=8000
+      # Redis Configuration (for NestJS context)
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      # OpenAI Configuration (for embeddings in seeds)
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
     networks:
       - nebu-network
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
       chromadb:
         condition: service_healthy
@@ -358,14 +356,8 @@ services:
       # Memory Configuration
       - MEMORY_RETENTION_DAYS=${MEMORY_RETENTION_DAYS:-30}
       - ENABLE_MEMORY_DECAY=${ENABLE_MEMORY_DECAY:-true}
-      # Database Mode Configuration (see backend/DATABASE_MODES.md)
-      # DB_USE_MIGRATIONS=false (default): Use synchronize mode (development)
-      # DB_USE_MIGRATIONS=true: Use migrations mode (production)
-      - DB_USE_MIGRATIONS=${DB_USE_MIGRATIONS:-false}
-      # Disable auto-init in main app (handled by backend-init)
-      - DB_SYNCHRONIZE=false
-      - DB_MIGRATIONS_RUN=false
-      - AUTO_SEED=false
+      # Database Mode Configuration
+      # DB initialization is handled by backend-init service
       # Email Verification Configuration
       # Set to 'false' to disable email verification (useful when SMTP is not configured)
       - REQUIRE_EMAIL_VERIFICATION=${REQUIRE_EMAIL_VERIFICATION:-false}
