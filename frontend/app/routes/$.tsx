@@ -61,7 +61,7 @@ export default function NotFound() {
             >
               <Link
                 to="/"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200"
+                className="relative inline-flex items-center justify-center gap-2 font-gochi font-bold text-lg px-6 py-4 rounded-full w-auto self-center min-w-[200px] md:min-w-[240px] bg-primary text-white shadow-[0_6px_20px_rgba(255,181,74,0.3)] hover:shadow-[0_10px_30px_rgba(255,181,74,0.45)] transition-all duration-200 ease-out disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Home className="w-5 h-5" />
                 {t("notFound.goHome")}
