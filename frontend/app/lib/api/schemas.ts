@@ -18,31 +18,37 @@ export const ProductColorSchema = z.object({
 export type ProductColor = z.infer<typeof ProductColorSchema>;
 
 /**
- * Product Schema
+ * API Product Schema (Backend DTO)
+ * Represents the raw data coming from the API (strings for decimals, etc.)
  */
-export const ProductSchema = z.object({
+export const ApiProductSchema = z.object({
   id: z.string().uuid(),
   slug: z.string(),
   name: z.string(),
-  concept: z.string().optional(),
-  originalCharacter: z.string().optional(),
+  concept: z.string().optional().nullable(),
+  originalCharacter: z.string().optional().nullable(),
   description: z.string(),
-  shortDescription: z.string().optional(),
-  price: z.number().positive(),
-  originalPrice: z.number().positive().optional(),
-  depositAmount: z.number().nonnegative().optional(),
+  shortDescription: z.string().optional().nullable(),
+  // Backend returns Postgres DECIMAL as string
+  price: z.string(),
+  originalPrice: z.string().optional().nullable(),
+  depositAmount: z.string().optional().nullable(),
   preOrder: z.boolean(),
   inStock: z.boolean(),
   stockCount: z.number().int().nonnegative(),
   images: z.array(z.string()),
-  videoPlaybackId: z.string().optional(),
-  videoProvider: z.enum(['cloudflare', 'youtube']).optional(),
-  videoThumbnail: z.string().optional(),
-  colors: z.array(ProductColorSchema).optional(),
-  ageRange: z.string().optional(),
-  features: z.array(z.string()),
+  videoPlaybackId: z.string().optional().nullable(),
+  videoProvider: z.enum(['cloudflare', 'youtube']).optional().nullable(),
+  videoThumbnail: z.string().optional().nullable(),
+  // Backend can return colors as string array (legacy) or ProductColor objects (new)
+  colors: z.union([
+    z.array(ProductColorSchema),
+    z.array(z.string())
+  ]).optional().default([]),
+  ageRange: z.string().optional().nullable(),
+  features: z.array(z.string()).default([]),
   category: z.string(),
-  badge: z.string().optional(),
+  badge: z.string().optional().nullable(),
   active: z.boolean(),
   viewCount: z.number().int().nonnegative(),
   orderCount: z.number().int().nonnegative(),
@@ -50,12 +56,24 @@ export const ProductSchema = z.object({
   updatedAt: z.string().datetime(),
 });
 
-export type Product = z.infer<typeof ProductSchema>;
+export type ApiProduct = z.infer<typeof ApiProductSchema>;
 
 /**
- * Products Array Schema
+ * Domain Product Model (UI Optimized)
+ * This is the main 'Product' type used throughout the frontend application.
+ * It has proper number types for prices and normalized color objects.
  */
-export const ProductsArraySchema = z.array(ProductSchema);
+export interface Product extends Omit<ApiProduct, 'price' | 'originalPrice' | 'depositAmount' | 'colors'> {
+  price: number;
+  originalPrice?: number;
+  depositAmount?: number;
+  colors: ProductColor[];
+}
+
+/**
+ * API Products Array Schema
+ */
+export const ApiProductsArraySchema = z.array(ApiProductSchema);
 
 /**
  * Inventory Schema

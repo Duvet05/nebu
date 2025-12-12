@@ -23,7 +23,7 @@ async function runSeeders() {
   // Crear conexión a la base de datos usando configuración compartida
   const dataSource = new DataSource({
     ...getDatabaseConfig(),
-    synchronize: false, // No sincronizar en seeders
+    synchronize: true, // Sincronizar en seeders
   });
 
   try {

@@ -41,6 +41,7 @@ interface LoaderData {
   env: {
     NODE_ENV: string;
     PUBLIC_URL: string;
+    BACKEND_URL: string;
   };
 }
 
@@ -116,6 +117,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     env: {
       NODE_ENV: process.env.NODE_ENV || 'development',
       PUBLIC_URL: process.env.PUBLIC_URL || BUSINESS.website,
+      BACKEND_URL: process.env.BACKEND_URL || 'http://localhost:3001/api/v1',
     },
   };
 }
@@ -162,6 +164,13 @@ export function Layout({ children }: { children: ReactNode }) {
             <GoogleAnalytics measurementId="G-XHR2FBL4Z3" />
           </>
         )}
+        
+        {/* Expose environment variables to client */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.__ENV__ = ${JSON.stringify(loaderData?.env || {})};`,
+          }}
+        />
       </head>
       <body>
 

@@ -11,14 +11,27 @@
 
 import { requestLogger } from '~/lib/logger';
 
+// Declare window.__ENV__ type
+declare global {
+  interface Window {
+    __ENV__?: {
+      BACKEND_URL?: string;
+      [key: string]: any;
+    };
+  }
+}
+
 // Get backend URL - works in both server and client contexts
 function getBackendUrl(): string {
-  const backendUrl = typeof  window === 'undefined' 
-    ? process.env.BACKEND_URL 
-    : (window as any).__ENV__?.BACKEND_URL || process.env.BACKEND_URL;
+  // In browser: read from window.__ENV__ (set by root loader)
+  // In server: read from process.env
+  const backendUrl = typeof window !== 'undefined' 
+    ? window.__ENV__?.BACKEND_URL || process.env.BACKEND_URL
+    : process.env.BACKEND_URL;
   
   if (!backendUrl) {
-    throw new Error('BACKEND_URL environment variable is not set');
+    console.error('BACKEND_URL is not set. Using fallback.');
+    return 'http://localhost:3001/api/v1';
   }
 
   // Ensure it ends with /api/v1
@@ -248,6 +261,25 @@ export class ApiClient {
 }
 
 /**
- * Singleton API client instance
+ * Get API client instance (lazy initialization)
+ * This ensures BACKEND_URL is read at runtime, not build time
  */
-export const apiClient = new ApiClient();
+let clientInstance: ApiClient | null = null;
+
+function getApiClient(): ApiClient {
+  if (!clientInstance) {
+    clientInstance = new ApiClient();
+  }
+  return clientInstance;
+}
+
+/**
+ * Singleton API client instance (lazy)
+ */
+export const apiClient = new Proxy({} as ApiClient, {
+  get(_target, prop) {
+    const client = getApiClient();
+    const value = client[prop as keyof ApiClient];
+    return typeof value === 'function' ? value.bind(client) : value;
+  },
+});

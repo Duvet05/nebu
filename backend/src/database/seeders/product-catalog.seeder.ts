@@ -42,7 +42,11 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
         'https://imagedelivery.net/MYEKC5pvgdAkEdXGy8suoQ/dino_1/public',
         'https://imagedelivery.net/MYEKC5pvgdAkEdXGy8suoQ/dino_2/public'
       ],
-      colors: ['#FF69B4', '#90EE90', '#87CEEB'], // Rosa, Verde, Azul
+      colors: [
+        { id: 'rosa', name: 'Rosa', hex: '#FF69B4', gradient: 'from-pink-400 to-rose-500' },
+        { id: 'verde', name: 'Verde', hex: '#90EE90', gradient: 'from-green-400 to-emerald-500' },
+        { id: 'azul', name: 'Azul', hex: '#87CEEB', gradient: 'from-sky-400 to-blue-500' }
+      ], // Rosa, Verde, Azul
       features: [
         'IA personalizada adaptada a cada niño',
         'Conversaciones educativas ilimitadas',
@@ -74,7 +78,11 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
         'https://imagedelivery.net/MYEKC5pvgdAkEdXGy8suoQ/capibara_1/public',
         'https://imagedelivery.net/MYEKC5pvgdAkEdXGy8suoQ/capibara_2/public'
       ],
-      colors: ['#8B7355', '#A0826D', '#C19A6B'], // Marrón, Beige, Camel
+      colors: [
+        { id: 'marron', name: 'Marrón', hex: '#8B7355', gradient: 'from-amber-700 to-orange-800' },
+        { id: 'beige', name: 'Beige', hex: '#A0826D', gradient: 'from-stone-400 to-stone-600' },
+        { id: 'camel', name: 'Camel', hex: '#C19A6B', gradient: 'from-orange-300 to-amber-500' }
+      ], // Marrón, Beige, Camel
       features: [
         'IA personalizada adaptada a cada niño',
         'Conversaciones educativas ilimitadas',

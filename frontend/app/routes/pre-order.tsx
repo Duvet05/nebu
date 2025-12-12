@@ -19,7 +19,7 @@ export async function loader({ request: _request }: LoaderFunctionArgs) {
   const products = await fetchPreOrderProducts();
   // Filtrar solo productos que estén disponibles en pre-orden
   const availablePreOrderProducts = products.filter(p => p.preOrder && p.inStock);
-  return { products: availablePreOrderProducts.map(enrichProduct) };
+  return { products: availablePreOrderProducts };
 }
 
 export const meta: MetaFunction = () => {
