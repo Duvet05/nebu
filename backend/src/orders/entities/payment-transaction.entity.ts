@@ -90,6 +90,7 @@ export class PaymentTransaction {
   @Column({ type: 'text', nullable: true })
   refundReason: string;
 
+
   // OpenMRS-style auditing
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
@@ -104,6 +105,14 @@ export class PaymentTransaction {
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'changedById' })
   changedBy: User;
+
+  // Nuevo: usuario que procesó el pago
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'processedById' })
+  processedBy: User;
+
+  @Column({ type: 'uuid', nullable: true })
+  processedById: string;
 
   @Column({ default: false })
   voided: boolean;
