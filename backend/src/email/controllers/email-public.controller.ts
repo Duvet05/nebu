@@ -15,6 +15,8 @@ import { IsEmail, IsNotEmpty, IsString, IsArray, IsNumber, ValidateNested } from
 import { Type } from 'class-transformer';
 import { Public } from '../../auth/decorators/public.decorator';
 import { ResendEmailService } from '../services/resend-email.service';
+import { EmailTemplateService } from '../services/email-template.service';
+import { EmailAccountService } from '../services/email-account.service';
 
 class SendNewsletterWelcomeDto {
   @IsNotEmpty({ message: 'El email es requerido' })
@@ -171,6 +173,8 @@ export class EmailPublicController {
 
   constructor(
     private readonly resendEmailService: ResendEmailService,
+    private readonly emailTemplateService: EmailTemplateService,
+    private readonly emailAccountService: EmailAccountService,
   ) {}
 
   @Public()
@@ -182,12 +186,47 @@ export class EmailPublicController {
     @Body() data: SendNewsletterWelcomeDto,
   ) {
     try {
-      this.logger.log(`Sending newsletter welcome email to ${data.email}`);
+      this.logger.log(`📧 Sending newsletter welcome email to ${data.email}`);
 
-      const result = await this.resendEmailService.sendWelcomeEmail(
-        data.email,
-        data.email, // Use email as name if not provided
-      );
+      // Get the newsletter welcome template from database
+      const template = await this.emailTemplateService.findByName('newsletter-welcome');
+
+      if (!template) {
+        this.logger.error('❌ Newsletter welcome template not found in database');
+        throw new Error('Newsletter welcome template not found. Please run seeders.');
+      }
+
+      // Get the "info" email account
+      const fromAccount = await this.emailAccountService.findByEmail('info@flow-telligence.com');
+
+      if (!fromAccount) {
+        this.logger.error('❌ Email account info@flow-telligence.com not found');
+        throw new Error('Email account not found. Please run seeders.');
+      }
+
+      // Prepare template variables
+      const variables = {
+        name: data.email.split('@')[0], // Use email username as name
+        email: data.email,
+        unsubscribeUrl: `${process.env.FRONTEND_URL || 'https://flow-telligence.com'}/unsubscribe?email=${encodeURIComponent(data.email)}`,
+        year: new Date().getFullYear().toString(),
+      };
+
+      // Render the template with variables using the template engine service directly
+      const renderedSubject = template.subject.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
+      const renderedContent = template.content.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
+      const renderedHtml = template.htmlContent.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
+
+      // Send the email using Resend
+      const result = await this.resendEmailService.sendEmail({
+        from: fromAccount.email,
+        to: data.email,
+        subject: renderedSubject,
+        text: renderedContent,
+        html: renderedHtml,
+      });
+
+      this.logger.log(`✅ Newsletter welcome email sent successfully to: ${data.email}`);
 
       return {
         success: true,
@@ -195,7 +234,7 @@ export class EmailPublicController {
         emailId: result.id,
       };
     } catch (error) {
-      this.logger.error(`Failed to send newsletter welcome email: ${error.message}`);
+      this.logger.error(`❌ Failed to send newsletter welcome email: ${error.message}`);
       return {
         success: false,
         error: error.message,

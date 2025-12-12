@@ -10,6 +10,7 @@ import { EmailTemplate } from './entities/email-template.entity';
 
 // Services
 import { EmailProviderService } from './services/email-provider.service';
+import { EmailAccountService } from './services/email-account.service';
 import { EmailService } from './services/email.service';
 import { EmailTemplateService } from './services/email-template.service';
 import { TemplateEngineService } from './services/template-engine.service';
@@ -34,6 +35,7 @@ import { EmailPublicController } from './controllers/email-public.controller';
   ],
   providers: [
     EmailProviderService,
+    EmailAccountService,
     EmailService,
     EmailTemplateService,
     TemplateEngineService,
@@ -48,6 +50,7 @@ import { EmailPublicController } from './controllers/email-public.controller';
   ],
   exports: [
     EmailProviderService,
+    EmailAccountService,
     EmailService,
     EmailTemplateService,
     TemplateEngineService,

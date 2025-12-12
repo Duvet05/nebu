@@ -6,6 +6,8 @@ import { seedProducts } from './product-catalog.seeder';
 import { seedInventory } from './inventory.seeder';
 import { seedToys } from './toys.seeder';
 import { seedIoTDevices } from './iot-devices.seeder';
+import { seedEmailAccounts } from './email-accounts.seeder';
+import { seedEmailTemplates } from './email-templates.seeder';
 import { getDatabaseConfig } from '../../config/database.config';
 
 // Cargar variables de entorno
@@ -35,19 +37,25 @@ async function runSeeders() {
     // Ejecutar seeders en orden
     logger.log('🌱 Ejecutando seeders...');
 
-    // 1. Usuarios (deben crearse primero para relaciones)
+    // 1. Email Accounts (sin dependencias)
+    await seedEmailAccounts(dataSource);
+
+    // 2. Email Templates (newsletter, órdenes, etc)
+    await seedEmailTemplates(dataSource);
+
+    // 3. Usuarios (deben crearse primero para relaciones)
     await seedUsers(dataSource);
 
-    // 2. Productos (antes de inventario y juguetes)
+    // 3. Productos (antes de inventario y juguetes)
     await seedProducts(dataSource);
 
-    // 3. Inventario
+    // 4. Inventario
     await seedInventory(dataSource);
 
-    // 4. Dispositivos IoT (antes de juguetes)
+    // 5. Dispositivos IoT (antes de juguetes)
     await seedIoTDevices(dataSource);
 
-    // 5. Juguetes (requiere usuarios, productos y dispositivos IoT)
+    // 6. Juguetes (requiere usuarios, productos y dispositivos IoT)
     await seedToys(dataSource);
 
     logger.log('✅ Todos los seeders completados exitosamente');
