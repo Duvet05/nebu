@@ -78,10 +78,12 @@ async function bootstrap() {
 
       logger.log('🌱 Seeding ChromaDB...');
       try {
-        execSync('npm run chromadb:seed', { stdio: 'inherit' });
+        // Set a timeout for chromadb seeding to prevent hanging
+        execSync('npm run chromadb:seed', { stdio: 'inherit', timeout: 60000 }); // 60 second timeout
         logger.log('✅ ChromaDB seeded successfully');
       } catch (error) {
-        logger.warn('⚠️ ChromaDB seeding failed');
+        logger.warn('⚠️ ChromaDB seeding failed or timed out (this is non-critical)');
+        // Don't fail the whole initialization if ChromaDB seeding fails
       }
     } else {
       logger.log('ℹ️ AUTO_SEED is not true, skipping seeders.');
