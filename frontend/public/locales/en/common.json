@@ -1171,5 +1171,13 @@
         }
       }
     }
+  },
+  "unsubscribe": {
+    "title": "Unsubscribed",
+    "success": "The email <1>{{email}}</1> has been removed from the Nebu newsletter.",
+    "resubscribe": "If this was a mistake, you can resubscribe at any time.",
+    "invalid": "No valid email found in the link.",
+    "goHome": "Back to home",
+    "resubscribeCta": "Want to resubscribe? Click here"
   }
 }

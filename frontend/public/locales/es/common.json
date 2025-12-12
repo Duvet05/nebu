@@ -1171,5 +1171,13 @@
       "paragraph3": "La <strong>arquitectura de seguridad</strong> incluye filtros de contenido inapropiado, detección de situaciones de riesgo (bullying, ansiedad, comportamiento atípico) y notificaciones automáticas a los padres cuando se detectan patrones preocupantes. Nunca compartimos datos con terceros ni usamos la información para publicidad.",
       "paragraph4": "El sistema de <strong>aprendizaje adaptativo</strong> utiliza machine learning para entender el perfil único de cada niño: si prefiere aventuras de acción o historias tranquilas, si aprende mejor con ejemplos visuales descritos o con analogías, si necesita más refuerzo positivo o desafíos intelectuales. Con el tiempo, Nebu se convierte en el compañero perfecto para TU hijo específicamente."
     }
+  },
+  "unsubscribe": {
+    "title": "Suscripción cancelada",
+    "success": "El email <1>{{email}}</1> ha sido dado de baja del newsletter de Nebu.",
+    "resubscribe": "Si esto fue un error, puedes volver a suscribirte en cualquier momento.",
+    "invalid": "No se encontró un email válido en el enlace.",
+    "goHome": "Volver al inicio",
+    "resubscribeCta": "¿Quieres volver a suscribirte? Haz clic aquí"
   }
 }
