@@ -57,6 +57,8 @@ export class ResendEmailService {
     subject: string;
     html: string;
     text?: string;
+    from?: string; // Email from address (optional, uses default if not provided)
+    fromName?: string; // From name (optional, uses default if not provided)
     replyTo?: string;
     tags?: { name: string; value: string }[];
   }): Promise<{ id: string; success: boolean }> {
@@ -65,8 +67,15 @@ export class ResendEmailService {
     }
 
     try {
+      // Use provided from address or default
+      const fromEmail = data.from || this.fromEmail;
+      const fromName = data.fromName || this.fromName;
+      const fromField = `${fromName} <${fromEmail}>`;
+
+      this.logger.log(`Sending email from: ${fromField} to: ${data.to}`);
+
       const result = await this.resend.emails.send({
-        from: `${this.fromName} <${this.fromEmail}>`,
+        from: fromField,
         to: data.to,
         subject: data.subject,
         html: data.html,

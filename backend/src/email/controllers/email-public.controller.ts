@@ -217,9 +217,10 @@ export class EmailPublicController {
       const renderedContent = template.content.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
       const renderedHtml = template.htmlContent.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
 
-      // Send the email using Resend (use replyTo because 'from' is not accepted by the sendEmail payload type)
+      // Send the email using Resend with the correct from address
       const result = await this.resendEmailService.sendEmail({
-        replyTo: fromAccount.email,
+        from: fromAccount.email,
+        fromName: 'Nebu',
         to: data.email,
         subject: renderedSubject,
         text: renderedContent,
@@ -291,9 +292,10 @@ export class EmailPublicController {
       const renderedContent = template.content.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
       const renderedHtml = template.htmlContent.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
 
-      // Send the email using Resend
+      // Send the email using Resend with the correct from address
       const result = await this.resendEmailService.sendEmail({
-        replyTo: fromAccount.email,
+        from: fromAccount.email,
+        fromName: 'Nebu',
         to: data.email,
         subject: renderedSubject,
         text: renderedContent,
@@ -426,9 +428,10 @@ export class EmailPublicController {
       const renderedContent = template.content.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
       const renderedHtml = template.htmlContent.replace(/\{\{(\w+)\}\}/g, (match, key) => variables[key] || match);
 
-      // Send the email to customer using Resend
+      // Send the email to customer using Resend with the correct from address
       const customerResult = await this.resendEmailService.sendEmail({
-        replyTo: fromAccount.email,
+        from: fromAccount.email,
+        fromName: 'Nebu',
         to: data.email,
         subject: renderedSubject,
         text: renderedContent,
