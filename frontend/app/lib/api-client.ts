@@ -9,8 +9,25 @@
  * - Request logging
  */
 
-import { env } from '~/config/env.server';
 import { requestLogger } from '~/lib/logger';
+
+// Get backend URL - works in both server and client contexts
+function getBackendUrl(): string {
+  const backendUrl = typeof  window === 'undefined' 
+    ? process.env.BACKEND_URL 
+    : (window as any).__ENV__?.BACKEND_URL || process.env.BACKEND_URL;
+  
+  if (!backendUrl) {
+    throw new Error('BACKEND_URL environment variable is not set');
+  }
+
+  // Ensure it ends with /api/v1
+  if (backendUrl.includes('/api/v1')) {
+    return backendUrl;
+  }
+  
+  return `${backendUrl}/api/v1`;
+}
 
 export class ApiError extends Error {
   constructor(
@@ -42,18 +59,10 @@ interface RequestConfig {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   headers?: Record<string, string>;
   body?: any;
-  timeout?: number; // milliseconds
-  retries?: number;
-  retryDelay?: number; // milliseconds
-  validateStatus?: (status: number) => boolean;
-}
-
-interface ApiClientConfig {
-  baseURL: string;
   timeout?: number;
   retries?: number;
   retryDelay?: number;
-  headers?: Record<string, string>;
+  validateStatus?: (status: number) => boolean;
 }
 
 /**
@@ -66,14 +75,13 @@ export class ApiClient {
   private defaultRetryDelay: number;
   private defaultHeaders: Record<string, string>;
 
-  constructor(config: ApiClientConfig) {
-    this.baseURL = config.baseURL;
-    this.defaultTimeout = config.timeout ?? 30000; // 30 seconds
-    this.defaultRetries = config.retries ?? 3;
-    this.defaultRetryDelay = config.retryDelay ?? 1000; // 1 second
+  constructor() {
+    this.baseURL = getBackendUrl();
+    this.defaultTimeout = 30000; // 30 seconds
+    this.defaultRetries = 3;
+    this.defaultRetryDelay = 1000; // 1 second
     this.defaultHeaders = {
       'Content-Type': 'application/json',
-      ...config.headers,
     };
   }
 
@@ -240,27 +248,6 @@ export class ApiClient {
 }
 
 /**
- * Get the API base URL with proper /api/v1 prefix
- */
-function getApiBaseUrl(): string {
-  const backendUrl = env.BACKEND_URL;
-
-  // If BACKEND_URL already includes /api/v1, use it as-is
-  if (backendUrl?.includes('/api/v1')) {
-    return backendUrl;
-  }
-
-  // Otherwise, append /api/v1 to the base URL
-  const baseUrl = backendUrl || 'http://127.0.0.1:3001';
-  return `${baseUrl}/api/v1`;
-}
-
-/**
  * Singleton API client instance
  */
-export const apiClient = new ApiClient({
-  baseURL: getApiBaseUrl(),
-  timeout: 30000,
-  retries: 3,
-  retryDelay: 1000,
-});
+export const apiClient = new ApiClient();
