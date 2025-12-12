@@ -81,13 +81,21 @@ async function bootstrap() {
 
     // Ensure all connections are properly closed
     await app.close();
-    // Force exit after a short delay to ensure cleanup
-    setTimeout(() => process.exit(0), 1000);
+
+    // Force process termination (NestJS context may have lingering connections)
+    // This is safe here as we're in a standalone script, not a long-running app
+    process.exit(0);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('\n❌ Error:', error.message);
-    await app.close();
-    setTimeout(() => process.exit(1), 1000);
+
+    try {
+      await app.close();
+    } catch (closeError) {
+      // Ignore close errors during error handling
+    }
+
+    process.exit(1);
   }
 }
 
