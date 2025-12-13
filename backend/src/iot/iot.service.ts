@@ -431,4 +431,69 @@ export class IoTService {
     this.logger.debug(`💓 Heartbeat received from ${device.name}`);
   }
 
+  /**
+   * Get device metadata including user/child and toy information
+   */
+  async getDeviceMetadata(deviceId: string): Promise<any> {
+    this.logger.log(`📦 Fetching metadata for device: ${deviceId}`);
+
+    // Find device with toy and user relationships
+    const device = await this.iotDeviceRepository.findOne({
+      where: { deviceId },
+      relations: ['toy', 'toy.user', 'toy.user.person', 'toy.productCatalog'],
+    });
+
+    if (!device) {
+      this.logger.warn(`Device not found: ${deviceId}`);
+      return null;
+    }
+
+    if (!device.toy) {
+      this.logger.warn(`Device ${deviceId} has no toy assigned`);
+      return null;
+    }
+
+    const toy = device.toy;
+    const user = toy.user;
+
+    if (!user) {
+      this.logger.warn(`Toy ${toy.id} has no user assigned`);
+      return null;
+    }
+
+    const person = user.person;
+
+    // Build metadata object
+    const metadata: any = {
+      child_name: person?.firstName || user.username,
+      agent_prompt: toy.prompt || 'Eres un asistente amigable que ayuda a niños a aprender y divertirse.',
+    };
+
+    // Add optional fields from person metadata/preferences
+    if (person?.metadata?.interests) {
+      metadata.child_interests = person.metadata.interests;
+    }
+    if (person?.metadata?.learning_goals) {
+      metadata.learning_goals = person.metadata.learning_goals;
+    }
+    if (person?.preferredLanguage) {
+      metadata.preferred_language = person.preferredLanguage;
+    }
+    if (person?.timezone) {
+      metadata.timezone = person.timezone;
+    }
+    if (toy.name) {
+      metadata.toy_name = toy.name;
+    }
+    if (toy.model) {
+      metadata.toy_model = toy.model;
+    }
+    if (person?.age) {
+      metadata.child_age = person.age;
+    }
+
+    this.logger.log(`✅ Metadata retrieved for device ${deviceId}`);
+    return metadata;
+  }
+
 }

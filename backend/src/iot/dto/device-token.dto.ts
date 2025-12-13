@@ -1,16 +1,68 @@
-import { IsString, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class DeviceTokenRequestDto {
+/**
+ * Metadata DTO - User and toy information
+ */
+export class DeviceMetadataDto {
   @ApiProperty({
-    description: 'Device ID (MAC address or unique identifier)',
-    example: 'ESP32_AA:BB:CC:DD:EE:FF',
+    description: 'User/child name',
+    example: 'Lucas',
   })
-  @IsString()
-  @IsNotEmpty()
-  device_id: string;
+  child_name: string;
+
+  @ApiProperty({
+    description: 'AI agent prompt for the toy',
+    example: 'Eres un asistente amigable que ayuda a niños a aprender...',
+  })
+  agent_prompt: string;
+
+  @ApiPropertyOptional({
+    description: 'Child interests',
+    example: ['dinosaurios', 'espacio', 'robots'],
+  })
+  child_interests?: string[];
+
+  @ApiPropertyOptional({
+    description: 'Learning goals',
+    example: ['idiomas', 'matemáticas'],
+  })
+  learning_goals?: string[];
+
+  @ApiPropertyOptional({
+    description: 'User preferred language',
+    example: 'es',
+  })
+  preferred_language?: string;
+
+  @ApiPropertyOptional({
+    description: 'User timezone',
+    example: 'America/Lima',
+  })
+  timezone?: string;
+
+  @ApiPropertyOptional({
+    description: 'Toy name',
+    example: 'Mi Robot Azul',
+  })
+  toy_name?: string;
+
+  @ApiPropertyOptional({
+    description: 'Toy model',
+    example: 'NebuBot Pro',
+  })
+  toy_model?: string;
+
+  @ApiPropertyOptional({
+    description: 'Child age',
+    example: 7,
+  })
+  child_age?: number;
 }
 
+/**
+ * Device Token Response DTO
+ */
 export class DeviceTokenResponseDto {
   @ApiProperty({
     description: 'LiveKit access token for real-time communication',
@@ -41,4 +93,63 @@ export class DeviceTokenResponseDto {
     example: 'ESP32_AA:BB:CC:DD:EE:FF',
   })
   participant_identity: string;
+
+  @ApiPropertyOptional({
+    description: 'User and toy metadata (only included if getMetadata=true)',
+    type: DeviceMetadataDto,
+  })
+  metadata?: DeviceMetadataDto;
+}
+
+/**
+ * Device Heartbeat DTO
+ */
+export class DeviceHeartbeatDto {
+  @ApiProperty({
+    description: 'Device ID',
+    example: 'ESP32_8CBFEA877D0C',
+  })
+  @IsString()
+  @IsNotEmpty()
+  device_id: string;
+
+  @ApiPropertyOptional({
+    description: 'Battery level (0-100)',
+    example: 85,
+  })
+  @IsNumber()
+  @IsOptional()
+  battery_level?: number;
+
+  @ApiPropertyOptional({
+    description: 'WiFi signal strength (dBm)',
+    example: -45,
+  })
+  @IsNumber()
+  @IsOptional()
+  signal_strength?: number;
+
+  @ApiPropertyOptional({
+    description: 'Device temperature (°C)',
+    example: 42,
+  })
+  @IsNumber()
+  @IsOptional()
+  temperature?: number;
+
+  @ApiPropertyOptional({
+    description: 'CPU usage (%)',
+    example: 35,
+  })
+  @IsNumber()
+  @IsOptional()
+  cpu_usage?: number;
+
+  @ApiPropertyOptional({
+    description: 'Memory usage (%)',
+    example: 60,
+  })
+  @IsNumber()
+  @IsOptional()
+  memory_usage?: number;
 }
