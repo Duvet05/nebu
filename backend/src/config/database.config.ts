@@ -12,7 +12,6 @@ export function getDatabaseConfig(): DataSourceOptions {
   // ONE master flag controls the database mode
   // DB_USE_MIGRATIONS=false (default) → synchronize mode (development, handled by backend-init)
   // DB_USE_MIGRATIONS=true → migrations mode (production, handled by backend-init)
-  const useMigrations = process.env.DB_USE_MIGRATIONS === 'true';
 
   return {
     type: 'postgres',

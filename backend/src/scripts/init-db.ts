@@ -20,7 +20,7 @@ async function waitForDatabase(dataSource: DataSource, maxRetries = 30, retryDel
       await dataSource.query('SELECT 1');
       logger.log('✅ PostgreSQL is ready');
       return true;
-    } catch (error) {
+    } catch {
       retries++;
       logger.warn(`⏳ Waiting for PostgreSQL to be ready... (${retries}/${maxRetries})`);
       await new Promise(resolve => setTimeout(resolve, retryDelay));
@@ -72,6 +72,7 @@ async function bootstrap() {
         logger.warn('⚠️ Database seeding failed (data might already exist or error occurred)');
         // Don't swallow the error completely, let's see it if we are debugging
         if (process.env.NODE_ENV !== 'production') {
+            // eslint-disable-next-line no-console
             console.error(error);
         }
       }
@@ -81,7 +82,7 @@ async function bootstrap() {
         // Set a timeout for chromadb seeding to prevent hanging
         execSync('npm run chromadb:seed', { stdio: 'inherit', timeout: 60000 }); // 60 second timeout
         logger.log('✅ ChromaDB seeded successfully');
-      } catch (error) {
+      } catch {
         logger.warn('⚠️ ChromaDB seeding failed or timed out (this is non-critical)');
         // Don't fail the whole initialization if ChromaDB seeding fails
       }

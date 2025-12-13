@@ -91,7 +91,7 @@ async function bootstrap() {
 
     try {
       await app.close();
-    } catch (closeError) {
+    } catch {
       // Ignore close errors during error handling
     }
 
