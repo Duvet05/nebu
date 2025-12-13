@@ -1,0 +1,29 @@
+services:
+  postgres-backup:
+    image: postgres:17-alpine
+    container_name: nebu-postgres-backup
+    restart: unless-stopped
+    environment:
+      - PGHOST=postgres
+      - PGUSER=${DATABASE_USERNAME}
+      - PGDATABASE=${DATABASE_NAME}
+      - PGPASSWORD=${DATABASE_PASSWORD}
+      - BACKUP_RETENTION_DAYS=${BACKUP_RETENTION_DAYS:-7}
+    volumes:
+      - ./scripts/backup-postgres.sh:/backup.sh:ro
+      - ./backups/postgres:/backups
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        apk add --no-cache supercronic
+        echo "0 2 * * * /backup.sh" > /etc/crontab
+        echo "Backup service started - daily at 2:00 AM"
+        supercronic /etc/crontab
+    networks:
+      - nebu-network
+    depends_on:
+      - postgres
+
+networks:
+  nebu-network:
+    external: true

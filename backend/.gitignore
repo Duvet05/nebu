@@ -78,3 +78,4 @@ temp/
 *.bak
 *.backup
 *.old
+*.sql.gz
