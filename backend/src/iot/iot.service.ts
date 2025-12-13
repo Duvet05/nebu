@@ -437,10 +437,10 @@ export class IoTService {
   async getDeviceMetadata(deviceId: string): Promise<any> {
     this.logger.log(`📦 Fetching metadata for device: ${deviceId}`);
 
-    // Find device with toy and user relationships
+    // Find device with toy, owner (person), and user relationships
     const device = await this.iotDeviceRepository.findOne({
       where: { deviceId },
-      relations: ['toy', 'toy.user', 'toy.user.person', 'toy.productCatalog'],
+      relations: ['toy', 'toy.owner', 'toy.user', 'toy.productCatalog'],
     });
 
     if (!device) {
@@ -454,33 +454,33 @@ export class IoTService {
     }
 
     const toy = device.toy;
-    const user = toy.user;
+    const owner = toy.owner; // The specific Person (child) who owns the toy
+    const user = toy.user;   // The User account (parent)
 
-    if (!user) {
-      this.logger.warn(`Toy ${toy.id} has no user assigned`);
+    if (!owner && !user) {
+      this.logger.warn(`Toy ${toy.id} has no owner or user assigned`);
       return null;
     }
 
-    const person = user.person;
-
     // Build metadata object
+    // owner_name: Use the owner's name if available, otherwise fallback to user data
     const metadata: any = {
-      child_name: person?.firstName || user.username,
+      owner_name: owner?.firstName || user?.person?.firstName || user?.username || 'Unknown',
       agent_prompt: toy.prompt || 'Eres un asistente amigable que ayuda a niños a aprender y divertirse.',
     };
 
-    // Add optional fields from person metadata/preferences
-    if (person?.metadata?.interests) {
-      metadata.child_interests = person.metadata.interests;
+    // Add optional fields from owner (person) metadata/preferences
+    if (owner?.metadata?.interests) {
+      metadata.owner_interests = owner.metadata.interests;
     }
-    if (person?.metadata?.learning_goals) {
-      metadata.learning_goals = person.metadata.learning_goals;
+    if (owner?.metadata?.learning_goals) {
+      metadata.learning_goals = owner.metadata.learning_goals;
     }
-    if (person?.preferredLanguage) {
-      metadata.preferred_language = person.preferredLanguage;
+    if (owner?.preferredLanguage) {
+      metadata.preferred_language = owner.preferredLanguage;
     }
-    if (person?.timezone) {
-      metadata.timezone = person.timezone;
+    if (owner?.timezone) {
+      metadata.timezone = owner.timezone;
     }
     if (toy.name) {
       metadata.toy_name = toy.name;
@@ -488,8 +488,8 @@ export class IoTService {
     if (toy.model) {
       metadata.toy_model = toy.model;
     }
-    if (person?.age) {
-      metadata.child_age = person.age;
+    if (owner?.age) {
+      metadata.owner_age = owner.age;
     }
 
     this.logger.log(`✅ Metadata retrieved for device ${deviceId}`);

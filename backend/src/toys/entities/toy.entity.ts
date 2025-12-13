@@ -111,6 +111,15 @@ export class Toy {
   @Column({ type: 'uuid', nullable: true })
   userId?: string;
 
+  // Owner (Person) - El niño específico que usa este juguete
+  @ManyToOne('Person', { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'ownerId' })
+  owner?: any;
+
+  @Column({ type: 'uuid', nullable: true })
+  @Index()
+  ownerId?: string;
+
   // OpenMRS-style auditing
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;

@@ -6,10 +6,10 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
  */
 export class DeviceMetadataDto {
   @ApiProperty({
-    description: 'User/child name',
+    description: 'Owner/child name (the person who uses the toy)',
     example: 'Lucas',
   })
-  child_name: string;
+  owner_name: string;
 
   @ApiProperty({
     description: 'AI agent prompt for the toy',
@@ -18,10 +18,10 @@ export class DeviceMetadataDto {
   agent_prompt: string;
 
   @ApiPropertyOptional({
-    description: 'Child interests',
+    description: 'Owner interests',
     example: ['dinosaurios', 'espacio', 'robots'],
   })
-  child_interests?: string[];
+  owner_interests?: string[];
 
   @ApiPropertyOptional({
     description: 'Learning goals',
@@ -30,13 +30,13 @@ export class DeviceMetadataDto {
   learning_goals?: string[];
 
   @ApiPropertyOptional({
-    description: 'User preferred language',
+    description: 'Owner preferred language',
     example: 'es',
   })
   preferred_language?: string;
 
   @ApiPropertyOptional({
-    description: 'User timezone',
+    description: 'Owner timezone',
     example: 'America/Lima',
   })
   timezone?: string;
@@ -54,10 +54,10 @@ export class DeviceMetadataDto {
   toy_model?: string;
 
   @ApiPropertyOptional({
-    description: 'Child age',
+    description: 'Owner age',
     example: 7,
   })
-  child_age?: number;
+  owner_age?: number;
 }
 
 /**

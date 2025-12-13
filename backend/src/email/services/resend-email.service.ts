@@ -78,7 +78,7 @@ export class ResendEmailService {
       const isNewsletter = (data.subject && data.subject.toLowerCase().includes('newsletter')) || (data.tags && data.tags.some(t => t.name === 'category' && t.value === 'newsletter'));
 
       // Construir headers personalizados
-      let headers: Record<string, string> = {};
+      const headers: Record<string, string> = {};
       if (isNewsletter && typeof data.to === 'string') {
         // List-Unsubscribe header (mailto y link)
         const unsubscribeMail = `mailto:unsubscribe@flow-telligence.com?subject=Unsubscribe`;
