@@ -59,7 +59,9 @@ export class HealthService {
       }
 
       // Verificar umbrales críticos
-      if (healthData.memory.heapUsedPercent > 90 || healthData.performance.responseTime > 5000) {
+      // Note: Node.js heap usage at 80-90% is normal - the heap grows dynamically as needed
+      // Only mark as critical if heap is extremely high (>95%) or response time is too slow
+      if (healthData.memory.heapUsedPercent > 95 || healthData.performance.responseTime > 5000) {
         healthData.status = 'critical';
       }
 
