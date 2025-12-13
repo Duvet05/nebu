@@ -2,25 +2,25 @@
 # =============================================================================
 # NEBU - PostgreSQL Restore Script
 # =============================================================================
-# Este script restaura backups de PostgreSQL
+# This script restores PostgreSQL backups from a compressed .sql.gz file.
 # =============================================================================
 
 set -e  # Exit on error
 
 # =============================================================================
-# CONFIGURACIÓN
+# CONFIGURATION
 # =============================================================================
 
 BACKUP_DIR="/root/nebu/backups/postgres"
 POSTGRES_CONTAINER="nebu-postgres-prod"
 
-# Cargar variables de entorno
+# Load environment variables
 if [ -f /root/nebu/.env ]; then
     source <(grep -E '^(DATABASE_|POSTGRES_)' /root/nebu/.env | sed 's/^/export /')
 fi
 
 # =============================================================================
-# FUNCIONES
+# FUNCTIONS
 # =============================================================================
 
 log() {
@@ -32,74 +32,74 @@ error() {
 }
 
 # =============================================================================
-# VALIDACIONES
+# VALIDATIONS
 # =============================================================================
 
-# Verificar que se proporcionó un archivo de backup
+# Check if a backup file is provided
 if [ -z "$1" ]; then
-    error "Uso: $0 <archivo_backup.sql.gz>"
+    error "Usage: $0 <backup_file.sql.gz>"
     echo ""
-    echo "Backups disponibles:"
-    ls -lh "$BACKUP_DIR"/*.sql.gz 2>/dev/null || echo "  No hay backups disponibles"
+    echo "Available backups:"
+    ls -lh "$BACKUP_DIR"/*.sql.gz 2>/dev/null || echo "No backups available"
     exit 1
 fi
 
 BACKUP_FILE="$1"
 
-# Si es solo el nombre del archivo, buscar en el directorio de backups
+# If only the filename is provided, search for it in the backup directory
 if [ ! -f "$BACKUP_FILE" ]; then
     if [ -f "$BACKUP_DIR/$BACKUP_FILE" ]; then
         BACKUP_FILE="$BACKUP_DIR/$BACKUP_FILE"
     else
-        error "Archivo de backup no encontrado: $BACKUP_FILE"
+        error "Backup file not found: $BACKUP_FILE"
         exit 1
     fi
 fi
 
-log "🔄 Iniciando restauración de backup..."
-log "📁 Archivo: $BACKUP_FILE"
+log "Starting backup restoration..."
+log "Backup file: $BACKUP_FILE"
 
-# Verificar que el contenedor está corriendo
+# Check if the PostgreSQL container is running
 if ! docker ps | grep -q "$POSTGRES_CONTAINER"; then
-    error "El contenedor $POSTGRES_CONTAINER no está corriendo"
+    error "The container $POSTGRES_CONTAINER is not running."
     exit 1
 fi
 
 # =============================================================================
-# ADVERTENCIA
+# WARNING
 # =============================================================================
 
 echo ""
-echo "⚠️  ADVERTENCIA: Esta operación eliminará todos los datos actuales"
-echo "   y los reemplazará con el backup seleccionado."
+echo "WARNING: This operation will delete all current data"
+echo "   and replace it with the selected backup."
 echo ""
-read -p "¿Estás seguro de continuar? (escribe 'SI' para confirmar): " CONFIRM
+read -p "Are you sure you want to continue? (type 'YES' to confirm): " CONFIRM
 
-if [ "$CONFIRM" != "SI" ]; then
-    log "❌ Operación cancelada por el usuario"
+if [ "$CONFIRM" != "YES" ]; then
+    log "Operation canceled by the user."
     exit 0
 fi
 
 # =============================================================================
-# RESTAURAR BACKUP
+# RESTORE BACKUP
 # =============================================================================
 
-log "📦 Descomprimiendo y restaurando backup..."
+log "Uncompressing and restoring the backup..."
 
-# Descomprimir y restaurar el backup
+# Uncompress and restore the backup
 gunzip -c "$BACKUP_FILE" | docker exec -i "$POSTGRES_CONTAINER" psql \
     -U "${DATABASE_USERNAME}" \
     -d postgres
 
 if [ $? -eq 0 ]; then
-    log "✅ Backup restaurado exitosamente"
+    log "Backup restored successfully."
 else
-    error "Falló la restauración del backup"
+    error "Backup restoration failed."
     exit 1
 fi
 
 log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-log "✅ Restauración completada"
+log "Restoration completed successfully."
 log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 exit 0

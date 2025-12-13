@@ -2,44 +2,44 @@
 # =============================================================================
 # NEBU - PostgreSQL Backup Script
 # =============================================================================
-# Este script crea backups automáticos de PostgreSQL con:
-# - Compresión gzip
-# - Timestamp en el nombre
-# - Retención de backups antiguos (7 días por defecto)
-# - Validación del backup
+# This script performs automated backups of PostgreSQL with the following features:
+# - Gzip compression
+# - Timestamp in the file name
+# - Retention of old backups (7 days by default)
+# - Backup validation
 # =============================================================================
 
 set -e  # Exit on error
 
 # =============================================================================
-# CONFIGURACIÓN
+# CONFIGURATION
 # =============================================================================
 
-# Directorio donde se guardarán los backups
+# Directory where backups will be stored
 BACKUP_DIR="/root/nebu/backups/postgres"
 
-# Días de retención de backups (backups más antiguos se eliminan)
+# Retention days for backups (older backups will be deleted)
 RETENTION_DAYS=${BACKUP_RETENTION_DAYS:-7}
 
-# Cargar variables de entorno
+# Load environment variables
 if [ -f /root/nebu/.env ]; then
     source <(grep -E '^(DATABASE_|POSTGRES_)' /root/nebu/.env | sed 's/^/export /')
 fi
 
-# Nombre del contenedor de PostgreSQL
+# Name of the PostgreSQL container
 POSTGRES_CONTAINER="nebu-postgres-prod"
 
-# Timestamp para el nombre del archivo
+# Timestamp for the filename
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
-# Nombre del archivo de backup
+# Backup file name
 BACKUP_FILE="nebu_db_backup_${TIMESTAMP}.sql.gz"
 
-# Path completo del backup
+# Full path to the backup file
 BACKUP_PATH="${BACKUP_DIR}/${BACKUP_FILE}"
 
 # =============================================================================
-# FUNCIONES
+# FUNCTIONS
 # =============================================================================
 
 log() {
@@ -51,30 +51,30 @@ error() {
 }
 
 # =============================================================================
-# VALIDACIONES PREVIAS
+# PRE-BACKUP VALIDATIONS
 # =============================================================================
 
-log "🗄️  Iniciando backup de PostgreSQL..."
+log "Starting PostgreSQL backup..."
 
-# Verificar que existe el directorio de backups
+# Check if the backup directory exists
 if [ ! -d "$BACKUP_DIR" ]; then
-    log "📁 Creando directorio de backups: $BACKUP_DIR"
+    log "Creating backup directory: $BACKUP_DIR"
     mkdir -p "$BACKUP_DIR"
 fi
 
-# Verificar que el contenedor está corriendo
+# Check if the PostgreSQL container is running
 if ! docker ps | grep -q "$POSTGRES_CONTAINER"; then
-    error "El contenedor $POSTGRES_CONTAINER no está corriendo"
+    error "The container $POSTGRES_CONTAINER is not running."
     exit 1
 fi
 
 # =============================================================================
-# CREAR BACKUP
+# CREATE BACKUP
 # =============================================================================
 
-log "📦 Creando backup: $BACKUP_FILE"
+log "Creating backup: $BACKUP_FILE"
 
-# Ejecutar pg_dump dentro del contenedor y comprimir
+# Run pg_dump inside the container and compress the output
 docker exec -t "$POSTGRES_CONTAINER" pg_dump \
     -U "${DATABASE_USERNAME}" \
     -d "${DATABASE_NAME}" \
@@ -84,59 +84,59 @@ docker exec -t "$POSTGRES_CONTAINER" pg_dump \
     --verbose \
     2>&1 | gzip > "$BACKUP_PATH"
 
-# Verificar que el backup se creó correctamente
+# Verify that the backup file was created successfully
 if [ ! -f "$BACKUP_PATH" ]; then
-    error "El archivo de backup no se creó: $BACKUP_PATH"
+    error "The backup file was not created: $BACKUP_PATH"
     exit 1
 fi
 
-# Obtener tamaño del backup
+# Get the backup file size
 BACKUP_SIZE=$(du -h "$BACKUP_PATH" | cut -f1)
-log "✅ Backup creado exitosamente: $BACKUP_FILE ($BACKUP_SIZE)"
+log "Backup created successfully: $BACKUP_FILE ($BACKUP_SIZE)"
 
 # =============================================================================
-# VALIDAR BACKUP
+# VALIDATE BACKUP
 # =============================================================================
 
-log "🔍 Validando integridad del backup..."
+log "Validating backup integrity..."
 
-# Verificar que el archivo gzip es válido
+# Check if the gzip file is valid
 if gzip -t "$BACKUP_PATH" 2>/dev/null; then
-    log "✅ Backup validado correctamente"
+    log "Backup validated successfully"
 else
-    error "El backup está corrupto"
+    error "The backup is corrupted."
     exit 1
 fi
 
 # =============================================================================
-# LIMPIAR BACKUPS ANTIGUOS
+# CLEAN OLD BACKUPS
 # =============================================================================
 
-log "🧹 Limpiando backups antiguos (> $RETENTION_DAYS días)..."
+log "Cleaning old backups (> $RETENTION_DAYS days)..."
 
-# Eliminar backups más antiguos que RETENTION_DAYS
+# Delete backups older than RETENTION_DAYS
 DELETED_COUNT=$(find "$BACKUP_DIR" -name "nebu_db_backup_*.sql.gz" -type f -mtime +$RETENTION_DAYS -delete -print | wc -l)
 
 if [ "$DELETED_COUNT" -gt 0 ]; then
-    log "🗑️  Eliminados $DELETED_COUNT backups antiguos"
+    log "Deleted $DELETED_COUNT old backups."
 else
-    log "ℹ️  No hay backups antiguos para eliminar"
+    log "No old backups to delete."
 fi
 
 # =============================================================================
-# RESUMEN
+# SUMMARY
 # =============================================================================
 
-# Contar backups actuales
+# Count the current backups
 BACKUP_COUNT=$(find "$BACKUP_DIR" -name "nebu_db_backup_*.sql.gz" -type f | wc -l)
 
 log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-log "✅ Backup completado exitosamente"
+log "Backup completed successfully"
 log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-log "📁 Ubicación: $BACKUP_PATH"
-log "📊 Tamaño: $BACKUP_SIZE"
-log "🗄️  Total backups: $BACKUP_COUNT"
-log "⏱️  Retención: $RETENTION_DAYS días"
+log "Backup location: $BACKUP_PATH"
+log "Backup size: $BACKUP_SIZE"
+log "Total backups: $BACKUP_COUNT"
+log "Retention period: $RETENTION_DAYS days"
 log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 exit 0
