@@ -1,0 +1,3023 @@
+{
+    "info": {
+        "_postman_id": "1d07a377-10d5-4543-895e-d99ad2fac41b",
+        "name": "Nebu API Collection - Nuevo",
+        "description": "Complete API documentation for Nebu Backend - IoT & Voice Agent Platform",
+        "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+        "_exporter_id": "48726965",
+        "_collection_link": "https://richard-779270.postman.co/workspace/NEBU~5513456d-21ab-4b3e-8747-48f6a907822b/collection/48726965-1d07a377-10d5-4543-895e-d99ad2fac41b?action=share&source=collection_link&creator=48726965"
+    },
+    "item": [
+        {
+            "name": "1. Authentication",
+            "item": [
+                {
+                    "name": "Register",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"gonzalo.galvezc@pucp.edu.pe\",\n  \"firstName\": \"Gonzalo\",\n  \"lastName\": \"Galvez\",\n  \"password\": \"Password123\"\n}"
+                        },
+                        "url": "{{base_url}}/auth/register"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200 || pm.response.code === 201) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    if (jsonData.accessToken) {",
+                                    "        pm.collectionVariables.set('jwt_token', jsonData.accessToken);",
+                                    "    }",
+                                    "    if (jsonData.user && jsonData.user.id) {",
+                                    "        pm.collectionVariables.set('user_id', jsonData.user.id);",
+                                    "    }",
+                                    "}"
+                                ],
+                                "type": "text/javascript",
+                                "packages": {},
+                                "requests": {}
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"admin@nebu.com\",\n  \"password\": \"Admin123\"\n}"
+                        },
+                        "url": "{{base_url}}/auth/login"
+                    },
+                    "response": [
+                        {
+                            "name": "Login",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"email\": \"admin\",\n  \"password\": \"Admin123\"\n}"
+                                },
+                                "url": "{{base_url}}/auth/login"
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": null,
+                            "header": [
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 15 Dec 2025 16:01:16 GMT"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "access-control-allow-credentials",
+                                    "value": "true"
+                                },
+                                {
+                                    "key": "content-security-policy",
+                                    "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://checkout.culqi.com https://static.cloudflareinsights.com https://embed.cloudflarestream.com https://www.tiktok.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.flow-telligence.com wss://api.flow-telligence.com https://www.google-analytics.com https://analytics.google.com https://www.facebook.com; frame-src https://checkout.culqi.com https://customer-zbno8sqqfzr3s0ue.cloudflarestream.com https://customer-6wol0f3dx3u8wuhd.cloudflarestream.com https://iframe.cloudflarestream.com https://www.facebook.com https://web.facebook.com https://www.tiktok.com; media-src 'self' https://customer-zbno8sqqfzr3s0ue.cloudflarestream.com https://customer-6wol0f3dx3u8wuhd.cloudflarestream.com blob:;"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin-allow-popups"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "etag",
+                                    "value": "W/\"359-cqGEl9xgJD9lX2lEMC8+hZYWALE\""
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "permissions-policy",
+                                    "value": "camera=(), microphone=(), geolocation=()"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "strict-origin-when-cross-origin"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=31536000; includeSubDomains; preload"
+                                },
+                                {
+                                    "key": "vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-powered-by",
+                                    "value": "Express"
+                                },
+                                {
+                                    "key": "x-ratelimit-limit-long",
+                                    "value": "1000"
+                                },
+                                {
+                                    "key": "x-ratelimit-limit-medium",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "x-ratelimit-limit-short",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "x-ratelimit-remaining-long",
+                                    "value": "998"
+                                },
+                                {
+                                    "key": "x-ratelimit-remaining-medium",
+                                    "value": "98"
+                                },
+                                {
+                                    "key": "x-ratelimit-remaining-short",
+                                    "value": "9"
+                                },
+                                {
+                                    "key": "x-ratelimit-reset-long",
+                                    "value": "3590"
+                                },
+                                {
+                                    "key": "x-ratelimit-reset-medium",
+                                    "value": "50"
+                                },
+                                {
+                                    "key": "x-ratelimit-reset-short",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "1; mode=block"
+                                },
+                                {
+                                    "key": "cf-cache-status",
+                                    "value": "DYNAMIC"
+                                },
+                                {
+                                    "key": "Nel",
+                                    "value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
+                                },
+                                {
+                                    "key": "Report-To",
+                                    "value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=c76jXZvjia0GhNxKKhsD4qCKj1yGvsfmIjh2U1GRmiZVncg840ZM%2FHHrsSsTqI%2FTVrIe6upCxdrPx011%2BZzp%2BFXpWH6aR822Ii6SJ8wibLUueXaiwg%3D%3D\"}]}"
+                                },
+                                {
+                                    "key": "Content-Encoding",
+                                    "value": "br"
+                                },
+                                {
+                                    "key": "Server",
+                                    "value": "cloudflare"
+                                },
+                                {
+                                    "key": "CF-RAY",
+                                    "value": "9ae7289aac150ba0-EZE"
+                                },
+                                {
+                                    "key": "alt-svc",
+                                    "value": "h3=\":443\"; ma=86400"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDE1MTc5MC1hYWM0LTQwMzEtOTVlMS1mMTI5YzVmNDBiNGYiLCJlbWFpbCI6ImFkbWluQG5lYnUuY29tIiwicm9sZSI6ImFkbWluIiwidG9rZW5UeXBlIjoiYWNjZXNzIiwiaWF0IjoxNzY1ODE0NDc2LCJleHAiOjE3NjU4MTUzNzZ9.sZpaSCsc_0efM_D5Vjp5iIQj85QnrOVaKcpOWxeFbFI\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDE1MTc5MC1hYWM0LTQwMzEtOTVlMS1mMTI5YzVmNDBiNGYiLCJlbWFpbCI6ImFkbWluQG5lYnUuY29tIiwicm9sZSI6ImFkbWluIiwidG9rZW5UeXBlIjoicmVmcmVzaCIsImlhdCI6MTc2NTgxNDQ3NiwiZXhwIjoxNzY2NDE5Mjc2fQ.dNEzjDgTj7BCxHiAXh-KnpExUvbiG0Oq0drPM-sbvj8\",\n    \"expiresIn\": 900,\n    \"user\": {\n        \"id\": \"00151790-aac4-4031-95e1-f129c5f40b4f\",\n        \"email\": \"admin@nebu.com\",\n        \"firstName\": \"\",\n        \"lastName\": \"\",\n        \"username\": \"admin\",\n        \"role\": \"admin\",\n        \"status\": \"active\",\n        \"emailVerified\": true,\n        \"preferredLanguage\": \"es\",\n        \"createdAt\": \"2025-12-12T09:28:29.591Z\",\n        \"fullName\": \"Unknown\"\n    }\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Current User (Me)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/auth/me"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Refresh Token",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"refreshToken\": \"your-refresh-token\"\n}"
+                        },
+                        "url": "{{base_url}}/auth/refresh"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": "{{base_url}}/auth/logout"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Verify Email",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/auth/verify-email?token=verification-token",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "verify-email"
+                            ],
+                            "query": [
+                                {
+                                    "key": "token",
+                                    "value": "verification-token"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Forgot Password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"user@example.com\"\n}"
+                        },
+                        "url": "{{base_url}}/auth/forgot-password"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Reset Password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"token\": \"reset-token\",\n  \"newPassword\": \"NewPassword123!\"\n}"
+                        },
+                        "url": "{{base_url}}/auth/reset-password"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Google Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"token\": \"google-oauth-token\"\n}"
+                        },
+                        "url": "{{base_url}}/auth/google"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "2. Voice & AI",
+            "item": [
+                {
+                    "name": "Create Voice Session",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"toyId\": \"{{toy_id}}\",\n  \"roomName\": \"session-room-001\"\n}"
+                        },
+                        "url": "{{base_url}}/voice/sessions"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Voice Sessions",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/voice/sessions"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Voice Session Metrics",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/voice/sessions/metrics"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Active Sessions",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/voice/sessions/active"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "End Voice Session",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reason\": \"User ended session\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/voice/sessions/:id/end",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "voice",
+                                "sessions",
+                                ":id",
+                                "end"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "session-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Add Conversation Message",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"sessionId\": \"session-id\",\n  \"role\": \"user\",\n  \"content\": \"Hello, how are you?\"\n}"
+                        },
+                        "url": "{{base_url}}/voice/conversations"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Generate Voice Agent Token",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomName\": \"voice-room-001\",\n  \"identity\": \"agent-001\"\n}"
+                        },
+                        "url": "{{base_url}}/voice/agent/token"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "3. Toys",
+            "item": [
+                {
+                    "name": "Register Toy",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"macAddress\": \"AA:BB:CC:DD:EE:11\",\n  \"name\": \"Nebu Dino_2\",\n  \"modelType\": \"NEBU_DINO_V1\",\n  \"firmwareVersion\": \"1.0.0\"\n}"
+                        },
+                        "url": "{{base_url}}/toys"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Toys",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/toys?page=1&limit=10",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "toys"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "active",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "search",
+                                    "value": "",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get My Toys",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/toys/my-toys"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Toy Statistics",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/toys/statistics"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Toy by ID",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/toys/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "toys",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{toy_id}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Toy by MAC Address",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/toys/mac/:macAddress",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "toys",
+                                "mac",
+                                ":macAddress"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "macAddress",
+                                    "value": "AA:BB:CC:DD:EE:FF"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Toy",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Nebu Dino de Lucas\",\n  \"model\": \"Nebu Dino v1\",\n  \"manufacturer\": \"Nebu Technologies\",\n  \"status\": \"active\",\n  \"firmwareVersion\": \"2.0.1\",\n  \"batteryLevel\": \"85%\",\n  \"signalStrength\": \"-45dBm\",\n  \"userId\": \"00151790-aac4-4031-95e1-f129c5f40b4f\",\n  \"ownerId\": \"aaeb7132-78a4-43f2-9992-360ed91ddc53\",\n  \"notes\": \"Juguete para Lucas, 7 años. Intereses: dinosaurios, espacio, aventuras\",\n  \"lastSeenAt\": \"2025-12-15T18:00:00Z\",\n  \"activatedAt\": \"2025-12-15T10:30:00Z\",\n  \"settings\": {\n    \"volume\": 75,\n    \"brightness\": 85,\n    \"language\": \"es\",\n    \"timezone\": \"America/Lima\",\n    \"autoUpdate\": true\n  },\n  \"capabilities\": {\n    \"voice\": true,\n    \"movement\": true,\n    \"lights\": true,\n    \"sensors\": [\"temperature\", \"proximity\"],\n    \"aiFeatures\": [\"speech_recognition\", \"face_detection\"]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/toys/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "toys",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{toy_id}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Assign Toy to User",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"macAddress\": \"8C:BF:EA:87:7D:0C\",\n    \"userId\": \"{{user_id}}\"\n}"
+                        },
+                        "url": "{{base_url}}/toys/assign"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Unassign Toy",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/toys/:id/unassign",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "toys",
+                                ":id",
+                                "unassign"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{toy_id}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Connection Status",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"batteryLevel\": 85,\n  \"signalStrength\": -45\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/toys/connection/:macAddress",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "toys",
+                                "connection",
+                                ":macAddress"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "macAddress",
+                                    "value": "AA:BB:CC:DD:EE:FF"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Toy",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/toys/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "toys",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{toy_id}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "4. Products",
+            "item": [
+                {
+                    "name": "Get All Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/products"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get In-Stock Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/products/in-stock"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Pre-Order Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/products/pre-orders"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Product by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/products/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "products",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "product-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Product by Slug",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/products/slug/:slug",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "products",
+                                "slug",
+                                ":slug"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "slug",
+                                    "value": "nebu-dino"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Product (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Nebu Dino\",\n  \"slug\": \"nebu-dino\",\n  \"description\": \"Interactive AI toy dinosaur\",\n  \"price\": 149.99,\n  \"category\": \"TOYS\",\n  \"inventory\": 100,\n  \"status\": \"IN_STOCK\"\n}"
+                        },
+                        "url": "{{base_url}}/products"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Product (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Product Name\",\n  \"price\": 159.99\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/products/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "products",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "product-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Stock (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"inventory\": 200\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/products/:id/stock",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "products",
+                                ":id",
+                                "stock"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "product-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "5. IoT Devices",
+            "item": [
+                {
+                    "name": "Create IoT Device",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"deviceId\": \"device-002\",\n  \"macAddress\": \"AA:BB:CC:DD:EE:11\",\n  \"deviceType\": \"sensor\",\n  \"userId\": \"{{user_id}}\",\n  \"name\": \"My Smart Toy\",\n  \"location\": \"Living Room\"\n}"
+                        },
+                        "url": "{{base_url}}/iot/devices"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List IoT Devices",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/iot/devices",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "iot",
+                                "devices"
+                            ],
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "online",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "deviceType",
+                                    "value": "SMART_TOY",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "List IoT Devices",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/iot/devices",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "iot",
+                                        "devices"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "status",
+                                            "value": "online",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "deviceType",
+                                            "value": "SMART_TOY",
+                                            "disabled": true
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": null,
+                            "header": [
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 15 Dec 2025 16:02:46 GMT"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "access-control-allow-credentials",
+                                    "value": "true"
+                                },
+                                {
+                                    "key": "content-security-policy",
+                                    "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://checkout.culqi.com https://static.cloudflareinsights.com https://embed.cloudflarestream.com https://www.tiktok.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://api.flow-telligence.com wss://api.flow-telligence.com https://www.google-analytics.com https://analytics.google.com https://www.facebook.com; frame-src https://checkout.culqi.com https://customer-zbno8sqqfzr3s0ue.cloudflarestream.com https://customer-6wol0f3dx3u8wuhd.cloudflarestream.com https://iframe.cloudflarestream.com https://www.facebook.com https://web.facebook.com https://www.tiktok.com; media-src 'self' https://customer-zbno8sqqfzr3s0ue.cloudflarestream.com https://customer-6wol0f3dx3u8wuhd.cloudflarestream.com blob:;"
+                                },
+                                {
+                                    "key": "cross-origin-opener-policy",
+                                    "value": "same-origin-allow-popups"
+                                },
+                                {
+                                    "key": "cross-origin-resource-policy",
+                                    "value": "same-origin"
+                                },
+                                {
+                                    "key": "etag",
+                                    "value": "W/\"ff0-+xMhJtkiQIFg/gzcbl2YG+lDPxg\""
+                                },
+                                {
+                                    "key": "origin-agent-cluster",
+                                    "value": "?1"
+                                },
+                                {
+                                    "key": "permissions-policy",
+                                    "value": "camera=(), microphone=(), geolocation=()"
+                                },
+                                {
+                                    "key": "referrer-policy",
+                                    "value": "strict-origin-when-cross-origin"
+                                },
+                                {
+                                    "key": "strict-transport-security",
+                                    "value": "max-age=31536000; includeSubDomains; preload"
+                                },
+                                {
+                                    "key": "vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "x-dns-prefetch-control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "x-download-options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "x-frame-options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "x-permitted-cross-domain-policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "x-powered-by",
+                                    "value": "Express"
+                                },
+                                {
+                                    "key": "x-ratelimit-limit-long",
+                                    "value": "1000"
+                                },
+                                {
+                                    "key": "x-ratelimit-limit-medium",
+                                    "value": "100"
+                                },
+                                {
+                                    "key": "x-ratelimit-limit-short",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "x-ratelimit-remaining-long",
+                                    "value": "999"
+                                },
+                                {
+                                    "key": "x-ratelimit-remaining-medium",
+                                    "value": "99"
+                                },
+                                {
+                                    "key": "x-ratelimit-remaining-short",
+                                    "value": "9"
+                                },
+                                {
+                                    "key": "x-ratelimit-reset-long",
+                                    "value": "3600"
+                                },
+                                {
+                                    "key": "x-ratelimit-reset-medium",
+                                    "value": "60"
+                                },
+                                {
+                                    "key": "x-ratelimit-reset-short",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "x-xss-protection",
+                                    "value": "1; mode=block"
+                                },
+                                {
+                                    "key": "cf-cache-status",
+                                    "value": "DYNAMIC"
+                                },
+                                {
+                                    "key": "Nel",
+                                    "value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
+                                },
+                                {
+                                    "key": "Report-To",
+                                    "value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=iokYp8i8VmXTElq1S9H2tDCUvVphRCx5o1RezPzzkDwZ%2FTWCO8T%2F9fQqJKZkz7Ouwe6%2Fk9rH5XU3tnvnpeYSXuh70hQciGrsvWeG8aXIbjvaqyLk4w%3D%3D\"}]}"
+                                },
+                                {
+                                    "key": "Content-Encoding",
+                                    "value": "br"
+                                },
+                                {
+                                    "key": "Server",
+                                    "value": "cloudflare"
+                                },
+                                {
+                                    "key": "CF-RAY",
+                                    "value": "9ae72acd2bfd3580-EZE"
+                                },
+                                {
+                                    "key": "alt-svc",
+                                    "value": "h3=\":443\"; ma=86400"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "[\n    {\n        \"id\": \"19224eb9-b93d-42aa-835f-ea27c618cd59\",\n        \"deviceModelId\": null,\n        \"name\": \"ESP32 Dev Board 2\",\n        \"macAddress\": \"11:22:33:44:55:66\",\n        \"deviceId\": \"ESP32_11:22:33:44:55:66\",\n        \"ipAddress\": null,\n        \"deviceType\": \"controller\",\n        \"status\": \"online\",\n        \"locationId\": null,\n        \"currentFirmwareId\": null,\n        \"metadata\": null,\n        \"userId\": \"569fb8d8-901e-49c0-90bd-5b3accd3f6ca\",\n        \"roomName\": null,\n        \"lastSeen\": \"2025-12-15T15:59:30.533Z\",\n        \"lastDataReceived\": null,\n        \"temperature\": null,\n        \"humidity\": null,\n        \"batteryLevel\": 85,\n        \"signalStrength\": -52,\n        \"createdAt\": \"2025-12-12T09:28:31.283Z\",\n        \"updatedAt\": \"2025-12-15T15:59:30.538Z\",\n        \"retired\": false,\n        \"dateRetired\": null,\n        \"retireReason\": null\n    },\n    {\n        \"id\": \"8f91a586-0192-4888-910d-c2283e41ff37\",\n        \"deviceModelId\": null,\n        \"name\": \"ESP32 de Pedro\",\n        \"macAddress\": \"AA:BB:CC:11:22:33\",\n        \"deviceId\": \"ESP32_PEDRO_001\",\n        \"ipAddress\": null,\n        \"deviceType\": \"controller\",\n        \"status\": \"online\",\n        \"locationId\": null,\n        \"currentFirmwareId\": null,\n        \"metadata\": null,\n        \"userId\": null,\n        \"roomName\": null,\n        \"lastSeen\": \"2025-12-13T00:40:07.844Z\",\n        \"lastDataReceived\": null,\n        \"temperature\": null,\n        \"humidity\": null,\n        \"batteryLevel\": null,\n        \"signalStrength\": null,\n        \"createdAt\": \"2025-12-13T00:40:07.026Z\",\n        \"updatedAt\": \"2025-12-13T00:40:07.846Z\",\n        \"retired\": false,\n        \"dateRetired\": null,\n        \"retireReason\": null\n    },\n    {\n        \"id\": \"403a8c74-c0b4-495b-8c92-a034ed584caa\",\n        \"deviceModelId\": null,\n        \"name\": \"ESP32 Dev Board 1\",\n        \"macAddress\": \"AA:BB:CC:DD:EE:FF\",\n        \"deviceId\": \"ESP32_AA:BB:CC:DD:EE:FF\",\n        \"ipAddress\": null,\n        \"deviceType\": \"controller\",\n        \"status\": \"online\",\n        \"locationId\": null,\n        \"currentFirmwareId\": null,\n        \"metadata\": null,\n        \"userId\": \"480fe156-f98a-4032-ad8a-f792d0ef8328\",\n        \"roomName\": null,\n        \"lastSeen\": \"2025-12-13T00:29:27.203Z\",\n        \"lastDataReceived\": null,\n        \"temperature\": null,\n        \"humidity\": null,\n        \"batteryLevel\": 100,\n        \"signalStrength\": -45,\n        \"createdAt\": \"2025-12-12T09:28:31.279Z\",\n        \"updatedAt\": \"2025-12-13T00:29:27.206Z\",\n        \"retired\": false,\n        \"dateRetired\": null,\n        \"retireReason\": null\n    },\n    {\n        \"id\": \"4be8a718-e10b-4dc0-9a25-c126fa12671c\",\n        \"deviceModelId\": null,\n        \"name\": \"ESP32-ESP32_TE\",\n        \"macAddress\": \"ESP32_TEST123\",\n        \"deviceId\": null,\n        \"ipAddress\": null,\n        \"deviceType\": \"controller\",\n        \"status\": \"online\",\n        \"locationId\": null,\n        \"currentFirmwareId\": null,\n        \"metadata\": null,\n        \"userId\": null,\n        \"roomName\": null,\n        \"lastSeen\": \"2025-12-13T00:08:13.988Z\",\n        \"lastDataReceived\": null,\n        \"temperature\": 45,\n        \"humidity\": null,\n        \"batteryLevel\": 75,\n        \"signalStrength\": -50,\n        \"createdAt\": \"2025-12-13T00:07:54.089Z\",\n        \"updatedAt\": \"2025-12-13T00:08:13.993Z\",\n        \"retired\": false,\n        \"dateRetired\": null,\n        \"retireReason\": null\n    },\n    {\n        \"id\": \"23ea4649-df24-4ac3-86da-e3a225980dd5\",\n        \"deviceModelId\": null,\n        \"name\": \"ESP32 Dev Board 3\",\n        \"macAddress\": \"AA:BB:CC:DD:EE:01\",\n        \"deviceId\": \"ESP32_AA:BB:CC:DD:EE:01\",\n        \"ipAddress\": null,\n        \"deviceType\": \"controller\",\n        \"status\": \"offline\",\n        \"locationId\": null,\n        \"currentFirmwareId\": null,\n        \"metadata\": null,\n        \"userId\": \"a7c36a2b-4a77-49b3-b939-91246428fbce\",\n        \"roomName\": null,\n        \"lastSeen\": null,\n        \"lastDataReceived\": null,\n        \"temperature\": null,\n        \"humidity\": null,\n        \"batteryLevel\": 92,\n        \"signalStrength\": -38,\n        \"createdAt\": \"2025-12-12T09:28:31.287Z\",\n        \"updatedAt\": \"2025-12-12T09:28:31.362Z\",\n        \"retired\": false,\n        \"dateRetired\": null,\n        \"retireReason\": null\n    },\n    {\n        \"id\": \"7c3054d2-17d6-4903-a431-e11903e12bfa\",\n        \"deviceModelId\": null,\n        \"name\": \"ESP32 Dev Board 5\",\n        \"macAddress\": \"AA:BB:CC:DD:EE:03\",\n        \"deviceId\": \"ESP32_AA:BB:CC:DD:EE:03\",\n        \"ipAddress\": null,\n        \"deviceType\": \"controller\",\n        \"status\": \"offline\",\n        \"locationId\": null,\n        \"currentFirmwareId\": null,\n        \"metadata\": null,\n        \"userId\": null,\n        \"roomName\": null,\n        \"lastSeen\": null,\n        \"lastDataReceived\": null,\n        \"temperature\": null,\n        \"humidity\": null,\n        \"batteryLevel\": 95,\n        \"signalStrength\": -42,\n        \"createdAt\": \"2025-12-12T09:28:31.292Z\",\n        \"updatedAt\": \"2025-12-12T09:28:31.292Z\",\n        \"retired\": false,\n        \"dateRetired\": null,\n        \"retireReason\": null\n    },\n    {\n        \"id\": \"75aba9f2-e364-4155-bf42-15618223b47e\",\n        \"deviceModelId\": null,\n        \"name\": \"ESP32 Dev Board 4\",\n        \"macAddress\": \"AA:BB:CC:DD:EE:02\",\n        \"deviceId\": \"ESP32_AA:BB:CC:DD:EE:02\",\n        \"ipAddress\": null,\n        \"deviceType\": \"sensor\",\n        \"status\": \"offline\",\n        \"locationId\": null,\n        \"currentFirmwareId\": null,\n        \"metadata\": null,\n        \"userId\": null,\n        \"roomName\": null,\n        \"lastSeen\": null,\n        \"lastDataReceived\": null,\n        \"temperature\": null,\n        \"humidity\": null,\n        \"batteryLevel\": 78,\n        \"signalStrength\": -58,\n        \"createdAt\": \"2025-12-12T09:28:31.289Z\",\n        \"updatedAt\": \"2025-12-12T09:28:31.289Z\",\n        \"retired\": false,\n        \"dateRetired\": null,\n        \"retireReason\": null\n    }\n]"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Device Metrics",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/iot/devices/metrics"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Online Devices",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/iot/devices/online"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Device by ID",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/iot/devices/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "iot",
+                                "devices",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "device-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Device Status",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"online\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/iot/devices/:id/status",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "iot",
+                                "devices",
+                                ":id",
+                                "status"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "device-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Sensor Data",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"temperature\": 22.5,\n  \"humidity\": 45,\n  \"batteryLevel\": 80\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/iot/devices/:id/sensor-data",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "iot",
+                                "devices",
+                                ":id",
+                                "sensor-data"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "device-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Generate LiveKit Token",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/iot/devices/:id/livekit-token",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "iot",
+                                "devices",
+                                ":id",
+                                "livekit-token"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "device-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Device Token (Public)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/iot/device/token?device_id=ESP32_AA:BB:CC:DD:EE:FF&getMetadata=true",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "iot",
+                                "device",
+                                "token"
+                            ],
+                            "query": [
+                                {
+                                    "key": "device_id",
+                                    "value": "ESP32_AA:BB:CC:DD:EE:FF"
+                                },
+                                {
+                                    "key": "firmware_version",
+                                    "value": "1.0.0",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "battery_level",
+                                    "value": "80",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "getMetadata",
+                                    "value": "true"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Get Device Token (Public)",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{base_url}}/iot/device/token?device_id=device-001",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "iot",
+                                        "device",
+                                        "token"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "device_id",
+                                            "value": "device-001"
+                                        },
+                                        {
+                                            "key": "firmware_version",
+                                            "value": "1.0.0",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "key": "battery_level",
+                                            "value": "80",
+                                            "disabled": true
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "_postman_previewlanguage": null,
+                            "header": [
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 15 Dec 2025 15:12:22 GMT"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "text/plain; charset=utf-8"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                },
+                                {
+                                    "key": "x-content-type-options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "cf-cache-status",
+                                    "value": "DYNAMIC"
+                                },
+                                {
+                                    "key": "Nel",
+                                    "value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
+                                },
+                                {
+                                    "key": "Report-To",
+                                    "value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=WAjDP8xFlNIZtzq78StaAsC71hESUn5S1NiVQGqhFpPmp%2BE3XjWyqJLkoxp9wVyjbnG9W9DKkbuARzetDfhJIMmsMK3glf%2BrmqPSNYmc%2BNPvAQs%3D\"}]}"
+                                },
+                                {
+                                    "key": "Content-Encoding",
+                                    "value": "br"
+                                },
+                                {
+                                    "key": "Server",
+                                    "value": "cloudflare"
+                                },
+                                {
+                                    "key": "CF-RAY",
+                                    "value": "9ae6e0fc9cf717d3-EZE"
+                                },
+                                {
+                                    "key": "alt-svc",
+                                    "value": "h3=\":443\"; ma=86400"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "404 page not found\n"
+                        }
+                    ]
+                },
+                {
+                    "name": "Device Heartbeat (Public)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"deviceId\": \"device-001\",\n  \"status\": \"online\",\n  \"metadata\": {\n    \"batteryLevel\": 75\n  }\n}"
+                        },
+                        "url": "{{base_url}}/iot/device/heartbeat"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "6. Users",
+            "item": [
+                {
+                    "name": "Create User (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"newuser@example.com\",\n  \"password\": \"Password123!\",\n  \"name\": \"New User\",\n  \"role\": \"CUSTOMER\"\n}"
+                        },
+                        "url": "{{base_url}}/users"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Users (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/users?page=1&limit=10",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "users"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get User by ID",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/users/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "users",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "{{user_id}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update My Profile",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Name\",\n  \"phone\": \"+1234567890\"\n}"
+                        },
+                        "url": "{{base_url}}/users/me"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Suspend User (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reason\": \"Terms of service violation\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/users/:id/suspend",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "users",
+                                ":id",
+                                "suspend"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "user-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Reactivate User (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/users/:id/reactivate",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "users",
+                                ":id",
+                                "reactivate"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "user-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "7. Orders",
+            "item": [
+                {
+                    "name": "Create Order",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"customerEmail\": \"customer@example.com\",\n  \"customerName\": \"John Doe\",\n  \"items\": [\n    {\n      \"productId\": \"product-id\",\n      \"quantity\": 1,\n      \"price\": 149.99\n    }\n  ],\n  \"shippingAddress\": {\n    \"street\": \"123 Main St\",\n    \"city\": \"Lima\",\n    \"country\": \"Peru\",\n    \"zipCode\": \"15001\"\n  }\n}"
+                        },
+                        "url": "{{base_url}}/orders"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Checkout Order",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"customer@example.com\",\n  \"name\": \"John Doe\",\n  \"productId\": \"product-id\",\n  \"quantity\": 1\n}"
+                        },
+                        "url": "{{base_url}}/orders/checkout"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Orders",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/orders"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Order Statistics",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/orders/stats"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Order by ID",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/orders/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "orders",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "order-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Order Status",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"SHIPPED\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/orders/:id/status",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "orders",
+                                ":id",
+                                "status"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "order-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "8. Inventory",
+            "item": [
+                {
+                    "name": "Get All Inventory (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/inventory"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Product Inventory (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/inventory/:product",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "inventory",
+                                ":product"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "product",
+                                    "value": "NEBU_DINO"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Check Product Availability",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/inventory/:productId/available",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "inventory",
+                                ":productId",
+                                "available"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "productId",
+                                    "value": "product-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Register for Notification",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"customer@example.com\",\n  \"productId\": \"product-id\",\n  \"productName\": \"Nebu Dino\"\n}"
+                        },
+                        "url": "{{base_url}}/inventory/notifications"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Reserve Units (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"quantity\": 5\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/inventory/:product/reserve",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "inventory",
+                                ":product",
+                                "reserve"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "product",
+                                    "value": "NEBU_DINO"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Confirm Sale (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"quantity\": 5\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/inventory/:product/confirm",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "inventory",
+                                ":product",
+                                "confirm"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "product",
+                                    "value": "NEBU_DINO"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "9. LiveKit",
+            "item": [
+                {
+                    "name": "Generate Access Token",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"roomName\": \"room-001\",\n  \"identity\": \"user-001\",\n  \"metadata\": {}\n}"
+                        },
+                        "url": "{{base_url}}/livekit/token"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Room",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"room-001\",\n  \"emptyTimeout\": 300,\n  \"maxParticipants\": 10\n}"
+                        },
+                        "url": "{{base_url}}/livekit/rooms"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Active Rooms",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/livekit/rooms"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Room Info",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/livekit/rooms/:roomName",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "livekit",
+                                "rooms",
+                                ":roomName"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "roomName",
+                                    "value": "room-001"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "List Participants",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/livekit/rooms/:roomName/participants",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "livekit",
+                                "rooms",
+                                ":roomName",
+                                "participants"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "roomName",
+                                    "value": "room-001"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Room",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/livekit/rooms/:roomName",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "livekit",
+                                "rooms",
+                                ":roomName"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "roomName",
+                                    "value": "room-001"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "10. Search & ChromaDB",
+            "item": [
+                {
+                    "name": "Platform Search",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"search term\"\n}"
+                        },
+                        "url": "{{base_url}}/search"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Save Toy Personality",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"toyId\": \"{{toy_id}}\",\n  \"personality\": \"Friendly and playful dinosaur who loves to learn\",\n  \"traits\": [\"curious\", \"energetic\", \"kind\"]\n}"
+                        },
+                        "url": "{{base_url}}/chromadb/personalities"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Toy Personality",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/chromadb/personalities/:toyId",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "chromadb",
+                                "personalities",
+                                ":toyId"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "toyId",
+                                    "value": "{{toy_id}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Search Similar Personalities",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"playful and educational\",\n  \"limit\": 5\n}"
+                        },
+                        "url": "{{base_url}}/chromadb/personalities/search"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Save Conversation Memory",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"toyId\": \"{{toy_id}}\",\n  \"userId\": \"{{user_id}}\",\n  \"content\": \"We talked about dinosaurs today\",\n  \"metadata\": {}\n}"
+                        },
+                        "url": "{{base_url}}/chromadb/memories"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Search Memories",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"toyId\": \"{{toy_id}}\",\n  \"query\": \"dinosaurs\",\n  \"limit\": 10\n}"
+                        },
+                        "url": "{{base_url}}/chromadb/memories/search"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Search Knowledge Base",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"query\": \"What are dinosaurs?\",\n  \"limit\": 5\n}"
+                        },
+                        "url": "{{base_url}}/chromadb/knowledge/search"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Build AI Context",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"toyId\": \"{{toy_id}}\",\n  \"userId\": \"{{user_id}}\",\n  \"query\": \"Tell me about my toy\"\n}"
+                        },
+                        "url": "{{base_url}}/chromadb/context/build"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get ChromaDB Statistics",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/chromadb/stats"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "11. Notifications",
+            "item": [
+                {
+                    "name": "Get My Notifications",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/notifications/my?limit=20",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "notifications",
+                                "my"
+                            ],
+                            "query": [
+                                {
+                                    "key": "limit",
+                                    "value": "20"
+                                },
+                                {
+                                    "key": "offset",
+                                    "value": "0",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Unread Notifications",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/notifications/my/unread"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Notification Stats",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/notifications/my/stats"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark as Read",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/notifications/:id/read",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "notifications",
+                                ":id",
+                                "read"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "notification-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Mark All as Read",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "PATCH",
+                        "header": [],
+                        "url": "{{base_url}}/notifications/read-all"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Notification",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/notifications/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "notifications",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "notification-id"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Notification (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"type\": \"INFO\",\n  \"title\": \"New Feature\",\n  \"message\": \"Check out our new voice features!\"\n}"
+                        },
+                        "url": "{{base_url}}/notifications"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Send Bulk Notifications (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userIds\": [\"user-1\", \"user-2\"],\n  \"type\": \"ANNOUNCEMENT\",\n  \"title\": \"System Maintenance\",\n  \"message\": \"Scheduled maintenance on Sunday\"\n}"
+                        },
+                        "url": "{{base_url}}/notifications/bulk"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "12. Leads",
+            "item": [
+                {
+                    "name": "Newsletter Subscription",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"subscriber@example.com\",\n  \"name\": \"John Doe\",\n  \"preferences\": {\n    \"productUpdates\": true,\n    \"newsletter\": true\n  }\n}"
+                        },
+                        "url": "{{base_url}}/leads/newsletter"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Pre-Order Registration",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"customer@example.com\",\n  \"name\": \"Jane Smith\",\n  \"productId\": \"product-id\",\n  \"quantity\": 1,\n  \"phone\": \"+1234567890\"\n}"
+                        },
+                        "url": "{{base_url}}/leads/pre-order"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Leads (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/leads"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "13. Email",
+            "item": [
+                {
+                    "name": "Send Newsletter Welcome",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"subscriber@example.com\",\n  \"name\": \"John Doe\"\n}"
+                        },
+                        "url": "{{base_url}}/email/public/newsletter-welcome"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Send Pre-Order Confirmation",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"customer@example.com\",\n  \"name\": \"Jane Smith\",\n  \"productName\": \"Nebu Dino\",\n  \"quantity\": 1\n}"
+                        },
+                        "url": "{{base_url}}/email/public/pre-order-confirmation"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Send Order Confirmation",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"customer@example.com\",\n  \"orderNumber\": \"ORD-12345\",\n  \"customerName\": \"John Doe\",\n  \"items\": [],\n  \"total\": 149.99\n}"
+                        },
+                        "url": "{{base_url}}/email/public/order-confirmation"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Email Logs (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/email/logs?limit=50",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "email",
+                                "logs"
+                            ],
+                            "query": [
+                                {
+                                    "key": "limit",
+                                    "value": "50"
+                                },
+                                {
+                                    "key": "offset",
+                                    "value": "0",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Email Statistics (Admin)",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/email/stats"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "14. Activities",
+            "item": [
+                {
+                    "name": "Create Activity",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"toyId\": \"{{toy_id}}\",\n  \"type\": \"PLAY_SESSION\",\n  \"description\": \"Played with dinosaur toy\",\n  \"duration\": 1800\n}"
+                        },
+                        "url": "{{base_url}}/activities"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get User Activities",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/activities?userId={{user_id}}&limit=20",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "activities"
+                            ],
+                            "query": [
+                                {
+                                    "key": "userId",
+                                    "value": "{{user_id}}"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "20"
+                                },
+                                {
+                                    "key": "toyId",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "type",
+                                    "value": "",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Activity Statistics",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": {
+                                "token": "{{jwt_token}}"
+                            }
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/activities/stats/:userId",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "activities",
+                                "stats",
+                                ":userId"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "userId",
+                                    "value": "{{user_id}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "15. Health & System",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/health"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Readiness Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/health/readiness"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Liveness Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/health/liveness"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Products Health",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/products/health"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Company Info",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": "{{base_url}}/company-info"
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": {
+            "token": "{{jwt_token}}"
+        }
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:3000",
+            "type": "string"
+        },
+        {
+            "key": "jwt_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "user_id",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "toy_id",
+            "value": "",
+            "type": "string"
+        }
+    ]
+}
