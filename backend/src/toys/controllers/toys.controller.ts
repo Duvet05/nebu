@@ -37,7 +37,7 @@ import { User } from '../../users/entities/user.entity';
 @ApiBearerAuth()
 export class ToysController {
   constructor(private readonly toysService: ToysService) {}
-
+//solo macaddress como deviceID = macAddress, documentar
   @Post()
   @ApiOperation({
     summary: 'Registrar nuevo juguete',

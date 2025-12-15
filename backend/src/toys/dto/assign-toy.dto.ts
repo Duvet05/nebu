@@ -9,7 +9,7 @@ export class AssignToyDto {
   @IsString()
   @IsNotEmpty()
   macAddress: string;
-
+ //TODO: CAMBIAR A TOYID? O DEJAR COMO MACADDRESS?
   @ApiProperty({
     description: 'ID del usuario al que asignar el juguete',
     example: '123e4567-e89b-12d3-a456-426614174000',

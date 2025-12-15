@@ -78,7 +78,7 @@ export class Toy {
     sensors?: string[];
     aiFeatures?: string[];
   };
-
+  //todo: COMPLETAMENTE FUERA DE CONTEXTO, PERO AGREGAR ENDPOINTS DE PERSONAS
   @Column({ type: 'jsonb', nullable: true })
   settings: {
     // Configuraciones del juguete

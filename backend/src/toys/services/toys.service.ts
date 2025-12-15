@@ -218,11 +218,13 @@ export class ToysService {
 
   /**
    * Actualizar un juguete
+   * TODO: Agregar validación de permisos - solo el owner o admin pueden actualizar
+   * TODO: Agregar audit log para cambios importantes (cambio de owner, settings críticos)
    */
   async update(id: string, updateToyDto: UpdateToyDto): Promise<ToyResponseDto> {
     const toy = await this.toyRepository.findOne({
       where: { id },
-      relations: ['iotDevice', 'user']
+      relations: ['iotDevice', 'user', 'owner']
     });
 
     if (!toy) {
@@ -230,6 +232,16 @@ export class ToysService {
     }
 
     // MAC address no se puede actualizar directamente, se maneja via IoTDevice
+
+    // TODO: Validar que el ownerId existe y es una Person válida
+    // Verificar owner si se está actualizando
+    if (updateToyDto.ownerId) {
+      // TODO: Implementar verificación de Person entity
+      // const owner = await this.personRepository.findOne({ where: { id: updateToyDto.ownerId } });
+      // if (!owner) {
+      //   throw new NotFoundException(`Person (owner) con ID ${updateToyDto.ownerId} no encontrado`);
+      // }
+    }
 
     // Verificar usuario si se está actualizando
     if (updateToyDto.userId) {
@@ -251,16 +263,39 @@ export class ToysService {
 
     // Convertir strings de fecha a Date objects
     if (updateToyDto.lastSeenAt) {
-      updateToyDto.lastSeenAt = new Date(updateToyDto.lastSeenAt).toISOString();
+      try {
+        updateToyDto.lastSeenAt = new Date(updateToyDto.lastSeenAt).toISOString();
+      } catch (error) {
+        throw new BadRequestException(`Formato de fecha inválido para lastSeenAt: ${updateToyDto.lastSeenAt}`);
+      }
     }
     if (updateToyDto.activatedAt) {
-      updateToyDto.activatedAt = new Date(updateToyDto.activatedAt).toISOString();
+      try {
+        updateToyDto.activatedAt = new Date(updateToyDto.activatedAt).toISOString();
+      } catch (error) {
+        throw new BadRequestException(`Formato de fecha inválido para activatedAt: ${updateToyDto.activatedAt}`);
+      }
     }
 
-    await this.toyRepository.update(id, updateToyDto);
+    // TODO: Validar que settings y capabilities tienen el formato correcto
+    // if (updateToyDto.settings) {
+    //   // Validar que volume está entre 0-100, etc.
+    // }
+
+    try {
+      await this.toyRepository.update(id, updateToyDto);
+    } catch (error) {
+      // TODO: Mejorar manejo de errores específicos de base de datos
+      if (error.code === '23503') {
+        // Foreign key violation
+        throw new BadRequestException(`ID de referencia inválido. Verifica que userId u ownerId existen.`);
+      }
+      throw new BadRequestException(`Error al actualizar el juguete: ${error.message}`);
+    }
+
     const updatedToy = await this.toyRepository.findOne({
       where: { id },
-      relations: ['user'],
+      relations: ['user', 'owner', 'iotDevice'],
     });
 
     return this.mapToyToResponseDto(updatedToy);
