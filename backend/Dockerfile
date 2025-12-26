@@ -1,7 +1,7 @@
 FROM node:22-alpine AS base
 
-# Install curl para el startup script
-RUN apk add --no-cache curl
+# Install dependencies required for some packages (like bcrypt) and curl for health checks
+RUN apk add --no-cache python3 make g++ curl
 
 WORKDIR /app
 
@@ -11,8 +11,12 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci
 
-# Copy source code  
+# Copy source code
 COPY . .
+
+# Init stage - Database migrations and seeds
+FROM base AS init
+CMD ["npm", "run", "init:db"]
 
 # Development stage
 FROM base AS development
