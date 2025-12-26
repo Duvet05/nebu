@@ -4,7 +4,8 @@
 # Docker Compose Specification (version field obsoleto desde 2025)
 # Incluye solo servicios core: Traefik, Frontend, Backend, PostgreSQL, Redis, ChromaDB
 # Para monitoreo (Prometheus, Grafana, Loki, Promtail), usar: docker compose -f docker-compose.monitoring.yml up -d
-# Fecha: Enero 2025
+# Fecha: Enero 2025 
+
 
 networks:
   traefik-network:

@@ -109,8 +109,6 @@ temp/
 ehthumbs.db
 Thumbs.db
 
-# Docker
-.docker/
 
 # Database
 *.sqlite
