@@ -198,6 +198,35 @@ services:
       timeout: 10s
       retries: 3
 
+  postgres-slave:
+    image: postgres:15.4-alpine
+    container_name: nebu-postgres-slave
+    restart: on-failure:3
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+      REPLICA_HOST: ${REPLICA_HOST}
+      REPLICA_PORT: ${REPLICA_PORT}
+      REPLICA_USER: ${REPLICA_USER}
+      REPLICA_PASSWORD: ${REPLICA_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    command: >
+      postgres  -c max_connections=100  -c shared_buffers=256MB  -c wal_level=replica  -c hot_standby=on
+    volumes:
+      - postgres_data_slave:/var/lib/postgresql/data
+      - ./db/init-slave.sh:/docker-entrypoint-initdb.d/init-slave.sh:ro
+    networks:
+      - nebu-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
   # ==============================================
   # REDIS - CON AUTENTICACIÓN Y AOF MEJORADO
   # ==============================================
