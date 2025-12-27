@@ -14,10 +14,6 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Init stage - Database migrations and seeds
-FROM base AS init
-CMD ["npm", "run", "init:db"]
-
 # Development stage
 FROM base AS development
 EXPOSE 3001
