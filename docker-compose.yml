@@ -26,6 +26,8 @@ volumes:
   # Core service volumes
   postgres_data:
     driver: local
+  postgres_data_slave:
+    driver: local
   redis_data:
     driver: local
   chromadb_data:
@@ -174,8 +176,10 @@ services:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+      REPLICATION_USER: ${REPLICATION_USER}
+      REPLICATION_PASSWORD: ${REPLICATION_PASSWORD}
     command: >
-      postgres  -c max_connections=200  -c shared_buffers=512MB  -c effective_cache_size=2GB  -c maintenance_work_mem=128MB  -c checkpoint_completion_target=0.9  -c wal_buffers=16MB  -c default_statistics_target=100  -c random_page_cost=1.1  -c effective_io_concurrency=200  -c work_mem=8MB  -c min_wal_size=1GB  -c max_wal_size=4GB  -c max_worker_processes=4  -c max_parallel_workers_per_gather=2  -c max_parallel_workers=4 -c log_min_duration_statement=1000 -c log_checkpoints=on -c log_connections=on -c log_disconnections=on -c log_lock_waits=on
+      postgres  -c max_connections=200  -c shared_buffers=512MB  -c effective_cache_size=2GB  -c maintenance_work_mem=128MB  -c checkpoint_completion_target=0.9  -c wal_buffers=16MB  -c default_statistics_target=100  -c random_page_cost=1.1  -c effective_io_concurrency=200  -c work_mem=8MB  -c min_wal_size=1GB  -c max_wal_size=4GB  -c max_worker_processes=4  -c max_parallel_workers_per_gather=2  -c max_parallel_workers=4 -c log_min_duration_statement=1000 -c log_checkpoints=on -c log_connections=on -c log_disconnections=on -c log_lock_waits=on -c wal_level=replica -c max_wal_senders=3 -c wal_keep_size=64
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./db/init-master.sh:/docker-entrypoint-initdb.d/init-master.sh:ro
@@ -206,21 +210,32 @@ services:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
-      REPLICA_HOST: ${REPLICA_HOST}
-      REPLICA_PORT: ${REPLICA_PORT}
-      REPLICA_USER: ${REPLICA_USER}
-      REPLICA_PASSWORD: ${REPLICA_PASSWORD}
+      REPLICA_HOST: postgres
+      REPLICA_PORT: 5432
+      REPLICA_USER: ${REPLICATION_USER}
+      REPLICA_PASSWORD: ${REPLICATION_PASSWORD}
       PGDATA: /var/lib/postgresql/data
     command: >
       postgres  -c max_connections=100  -c shared_buffers=256MB  -c wal_level=replica  -c hot_standby=on
     volumes:
       - postgres_data_slave:/var/lib/postgresql/data
       - ./db/init-slave.sh:/docker-entrypoint-initdb.d/init-slave.sh:ro
+    ports:
+      # Solo accesible desde localhost para debugging
+      - "127.0.0.1:5433:5432"
     networks:
       - nebu-network
     depends_on:
       postgres:
         condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}" ]
       interval: 30s
