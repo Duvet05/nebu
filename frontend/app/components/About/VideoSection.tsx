@@ -6,7 +6,7 @@ export default function VideoSection() {
 
   return (
     <motion.div
-      className="mb-16"
+      className="mb-16 relative z-10"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.7 }}
@@ -18,13 +18,16 @@ export default function VideoSection() {
       </div>
 
       <div className="flex justify-center">
-        <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-200 max-w-md w-full">
-          <div className="relative overflow-hidden rounded-xl" style={{ paddingBottom: '177.78%' }}>
+        <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-200 max-w-md w-full relative z-20">
+          <div
+            className="relative overflow-hidden rounded-xl"
+            style={{ paddingBottom: '177.78%', pointerEvents: 'auto' }}
+          >
             <iframe
               title="Video de presentación de Nebu"
               src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1538072024288534&show_text=false&width=267&t=0"
               className="absolute top-0 left-0 w-full h-full"
-              style={{ border: 'none', overflow: 'hidden' }}
+              style={{ border: 'none', overflow: 'hidden', pointerEvents: 'auto' }}
               allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
               allowFullScreen={true}
             />

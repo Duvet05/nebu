@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Star, Brain, Shield, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-// Memoized card component to prevent unnecessary re-renders
 const BenefitCard = memo(function BenefitCard({
   benefit,
   index: _index
@@ -14,47 +13,41 @@ const BenefitCard = memo(function BenefitCard({
   const IconComponent = benefit.icon;
 
   return (
-    <div
-      className="benefit-card flex-shrink-0 w-72 lg:w-80 bg-white rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow duration-300 border-l-4 h-auto min-h-[180px] flex flex-col"
-      style={{ borderLeftColor: benefit.color }}
-    >
-      {/* Icon and title in one row */}
-      <div className="flex items-start gap-3 mb-3">
+    <div className="benefit-card flex-shrink-0 w-[300px] lg:w-[330px] bg-white rounded-2xl p-5 border border-gray-200/80">
+      {/* Category */}
+      <span className="text-[11px] font-medium uppercase tracking-wide text-gray-400 mb-4 block">
+        {benefit.category}
+      </span>
+
+      {/* Icon + Title row */}
+      <div className="flex items-center gap-3 mb-3">
         <div
           className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-          style={{ backgroundColor: `${benefit.color}15` }}
+          style={{ backgroundColor: benefit.color }}
         >
           {benefit.iconType === 'svg' ? (
             <img
               src={benefit.iconPath}
-              alt={`Icono de beneficio: ${benefit.title}`}
-              className="w-5 h-5"
+              alt=""
+              className="w-5 h-5 brightness-0 invert"
               aria-hidden="true"
               loading="lazy"
-              style={{ filter: 'brightness(0.8)' }}
             />
           ) : (
-            IconComponent && <IconComponent className="w-5 h-5" style={{ color: benefit.color }} />
+            IconComponent && <IconComponent className="w-5 h-5 text-white" strokeWidth={2} />
           )}
         </div>
 
-        <div className="flex-1">
-          <h3 className="text-base font-bold text-gray-900 mb-1 leading-tight">
-            {benefit.title}
-          </h3>
-          <span
-            className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide"
-            style={{
-              backgroundColor: `${benefit.color}20`,
-              color: benefit.color
-            }}
-          >
-            {benefit.category}
-          </span>
-        </div>
+        <h3 className="text-base font-semibold text-gray-800 leading-snug">
+          {benefit.title}
+        </h3>
       </div>
 
-      <p className="text-gray-600 text-sm leading-relaxed">
+      {/* Simple line */}
+      <div className="w-12 h-[3px] rounded-full bg-gray-200 mb-3" />
+
+      {/* Description */}
+      <p className="text-gray-500 text-[13px] leading-relaxed">
         {benefit.description}
       </p>
     </div>
@@ -75,7 +68,6 @@ interface Benefit {
 export default function BenefitsCarousel() {
   const { t } = useTranslation("common");
 
-  // Memoize benefits array to prevent recreation on each render
   const benefits: Benefit[] = useMemo(() => [
     {
       id: 1,
@@ -142,26 +134,18 @@ export default function BenefitsCarousel() {
     }
   ], [t]);
 
-  // Only duplicate once for seamless loop
   const extendedBenefits = useMemo(() => [...benefits, ...benefits], [benefits]);
 
   return (
     <>
-      {/* CSS for performant animations - uses GPU acceleration */}
       <style>{`
         @keyframes scroll-carousel {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
         
         .carousel-track {
           animation: scroll-carousel 40s linear infinite;
-          will-change: transform;
-          transition: animation-duration 2s ease;
         }
         
         .carousel-track:hover {
@@ -169,22 +153,17 @@ export default function BenefitsCarousel() {
         }
         
         .benefit-card {
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-          margin: 1rem 0;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .benefit-card:hover {
           transform: translateY(-4px);
+          box-shadow: 0 8px 24px -8px rgba(0,0,0,0.1);
         }
         
-        /* Reduce motion for accessibility */
         @media (prefers-reduced-motion: reduce) {
-          .carousel-track {
-            animation: none;
-          }
-          .benefit-card:hover {
-            transform: none;
-          }
+          .carousel-track { animation: none; }
+          .benefit-card:hover { transform: none; }
         }
       `}</style>
 
@@ -194,12 +173,11 @@ export default function BenefitsCarousel() {
         aria-labelledby="benefits-title"
       >
         <div className="max-w-full px-4 sm:px-6 lg:px-8">
-          {/* Header - keeping motion here is fine, it only runs once */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-8 max-w-7xl mx-auto"
+            className="text-center mb-10 max-w-7xl mx-auto"
           >
             <h2 
               id="benefits-title" 
@@ -212,16 +190,9 @@ export default function BenefitsCarousel() {
             </p>
           </motion.div>
 
-          {/* Optimized Carousel using CSS animations */}
-          <div 
-            className="relative w-full" 
-            aria-label="Carousel de beneficios de Nebu"
-          >
-            <div className="overflow-hidden" style={{ padding: '2rem 0' }}>
-              <div 
-                className="carousel-track flex gap-5"
-                aria-live="polite"
-              >
+          <div className="relative w-full" aria-label="Carousel de beneficios de Nebu">
+            <div className="overflow-hidden py-4">
+              <div className="carousel-track flex gap-5" aria-live="polite">
                 {extendedBenefits.map((benefit, index) => (
                   <BenefitCard
                     key={`${benefit.id}-${index}`}
@@ -232,14 +203,14 @@ export default function BenefitsCarousel() {
               </div>
             </div>
 
-            {/* Gradient fade effects */}
+            {/* Fade edges */}
             <div 
-              className="absolute left-0 top-0 bottom-0 w-40 pointer-events-none z-10" 
-              style={{ background: 'linear-gradient(to right, #FFF7F0, transparent)' }} 
+              className="absolute left-0 top-0 bottom-0 w-24 pointer-events-none z-10"
+              style={{ background: 'linear-gradient(to right, #FFF7F0, transparent)' }}
             />
             <div 
-              className="absolute right-0 top-0 bottom-0 w-40 pointer-events-none z-10" 
-              style={{ background: 'linear-gradient(to left, #FFF7F0, transparent)' }} 
+              className="absolute right-0 top-0 bottom-0 w-24 pointer-events-none z-10"
+              style={{ background: 'linear-gradient(to left, #FFF7F0, transparent)' }}
             />
           </div>
         </div>

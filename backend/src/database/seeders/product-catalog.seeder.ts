@@ -18,11 +18,10 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
   // Verificar si ya hay productos
   const count = await productRepository.count();
   if (count > 0) {
-    logger.warn(`Ya existen ${count} productos. Saltando seed inicial.`);
-    return;
+    logger.log(`📝 Ya existen ${count} productos. Actualizando precios...`);
+  } else {
+    logger.log('🌱 Insertando 15 productos iniciales...');
   }
-
-  logger.log('🌱 Insertando 15 productos iniciales...');
 
   const products = [
     {
@@ -333,9 +332,52 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
     },
   ];
 
-  // Insertar productos
-  const productEntities = products.map((data) => productRepository.create(data));
-  await productRepository.save(productEntities);
+  // Insertar o actualizar productos
+  for (const productData of products) {
+    const existing = await productRepository.findOne({ where: { slug: productData.slug } });
 
-  logger.log('✅ 15 productos insertados exitosamente (incluyendo Nebu Dino y Nebu Capibara)');
+    if (existing) {
+      // Actualizar producto existente
+      await productRepository.update(existing.id, productData);
+      logger.log(`  ✓ Actualizado: ${productData.name} - Precio: S/ ${productData.price}`);
+    } else {
+      // Insertar nuevo producto
+      const newProduct = productRepository.create(productData);
+      await productRepository.save(newProduct);
+      logger.log(`  ✓ Creado: ${productData.name} - Precio: S/ ${productData.price}`);
+    }
+  }
+
+  logger.log('✅ 15 productos procesados exitosamente (incluyendo Nebu Dino y Nebu Capibara)');
+}
+
+// Runner independiente para ejecutar directamente
+if (require.main === module) {
+  import('dotenv').then((dotenv) => {
+    dotenv.config({ path: ['.env.local', '.env'] });
+
+    import('../../config/database.config').then(({ getDatabaseConfig }) => {
+      const dataSource = new DataSource({
+        ...getDatabaseConfig(),
+        entities: ['src/**/*.entity.ts'],
+        synchronize: false,
+      });
+
+      const logger = new Logger('ProductSeederRunner');
+
+      dataSource
+        .initialize()
+        .then(async () => {
+          logger.log('📦 Conectado a la base de datos');
+          await seedProducts(dataSource);
+          await dataSource.destroy();
+          logger.log('📦 Conexión cerrada');
+          process.exit(0);
+        })
+        .catch((error) => {
+          logger.error('❌ Error:', error);
+          process.exit(1);
+        });
+    });
+  });
 }
