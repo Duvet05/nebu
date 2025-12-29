@@ -1,0 +1,68 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo con gradiente -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFF7F0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFEFE0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+
+  <!-- Círculos decorativos -->
+  <circle cx="1000" cy="200" r="150" fill="#FFE5D0" opacity="0.3"/>
+  <circle cx="150" cy="500" r="100" fill="#E0F2F7" opacity="0.3"/>
+  <circle cx="1075" cy="530" r="75" fill="#FFF0E5" opacity="0.3"/>
+
+  <!-- Sparkles -->
+  <text x="850" y="140" font-size="40" fill="#FFD700" opacity="0.6">✨</text>
+  <text x="950" y="240" font-size="40" fill="#FFD700" opacity="0.8">✨</text>
+  <text x="250" y="550" font-size="40" fill="#FFD700" opacity="0.7">✨</text>
+
+  <!-- Logo NEBU -->
+  <text x="100" y="140" font-family="Arial, sans-serif" font-size="100" font-weight="bold" letter-spacing="3">
+    <tspan fill="#FF9D5C">n</tspan>
+    <tspan fill="#5EC1D8">e</tspan>
+    <tspan fill="#FF6B8A">b</tspan>
+    <tspan fill="#A78BFA">u</tspan>
+  </text>
+
+  <!-- Línea decorativa bajo el logo -->
+  <rect x="100" y="160" width="200" height="8" rx="4" fill="url(#logoGradient)"/>
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF9D5C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5EC1D8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Título principal -->
+  <text x="100" y="240" font-family="Arial, sans-serif" font-size="52" font-weight="bold" fill="#2C3E50">
+    Tu compañero inteligente
+  </text>
+
+  <!-- Subtítulo -->
+  <text x="100" y="300" font-family="Arial, sans-serif" font-size="48" font-weight="600" fill="#5EC1D8">
+    Aprende jugando sin pantallas
+  </text>
+
+  <!-- Características -->
+  <text x="100" y="380" font-family="Arial, sans-serif" font-size="32" font-weight="500" fill="#FF9D5C">
+    ✨ IA personalizada
+  </text>
+  <text x="600" y="380" font-family="Arial, sans-serif" font-size="32" font-weight="500" fill="#FF9D5C">
+    🌍 Multiidioma
+  </text>
+
+  <text x="100" y="440" font-family="Arial, sans-serif" font-size="32" font-weight="500" fill="#FF9D5C">
+    🔒 Seguro y privado
+  </text>
+  <text x="600" y="440" font-family="Arial, sans-serif" font-size="32" font-weight="500" fill="#FF9D5C">
+    🎯 Sin pantallas
+  </text>
+
+  <!-- Footer -->
+  <text x="100" y="570" font-family="Arial, sans-serif" font-size="28" fill="#7F8C8D">
+    flow-telligence.com
+  </text>
+</svg>

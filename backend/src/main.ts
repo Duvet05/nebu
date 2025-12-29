@@ -6,6 +6,7 @@ import { ErrorHandlingInterceptor } from './common/interceptors/error-handling.i
 import { QueryOptimizationInterceptor } from './common/interceptors/query-optimization.interceptor';
 import { PaginationInterceptor } from './common/interceptors/pagination.interceptor';
 import { ValidationSanitizationPipe } from './common/pipes/validation-sanitization.pipe';
+import { ApiExceptionFilter } from './common/filters/api-exception.filter';
 import { getCorsOrigins } from './config/cors.config';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -51,6 +52,9 @@ async function bootstrap() {
     logger.log(`FRONTEND_URL: ${process.env.FRONTEND_URL}`);
     logger.log(`DOMAIN: ${process.env.DOMAIN}`);
   }
+
+  // Global exception filter - debe ir PRIMERO para capturar todas las excepciones
+  app.useGlobalFilters(new ApiExceptionFilter());
 
   // Global validation pipe with sanitization
   app.useGlobalPipes(new ValidationSanitizationPipe());

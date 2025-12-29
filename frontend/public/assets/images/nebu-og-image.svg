@@ -1,0 +1,113 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Definiciones -->
+  <defs>
+    <!-- Gradiente de fondo principal -->
+    <linearGradient id="mainBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFF9F5;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFF7F0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFE8D6;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Gradiente para logo -->
+    <linearGradient id="logoLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF9D5C;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF6B8A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5EC1D8;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Sombra suave -->
+    <filter id="softGlow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fondo principal -->
+  <rect width="1200" height="630" fill="url(#mainBg)"/>
+
+  <!-- Elementos decorativos de fondo -->
+  <!-- Círculo grande superior derecha -->
+  <circle cx="950" cy="180" r="180" fill="#FFE5D0" opacity="0.25"/>
+  <circle cx="950" cy="180" r="120" fill="#FFDDC4" opacity="0.3"/>
+
+  <!-- Círculo inferior izquierda -->
+  <circle cx="200" cy="500" r="130" fill="#E0F2F7" opacity="0.25"/>
+  <circle cx="200" cy="500" r="80" fill="#D0EAF5" opacity="0.3"/>
+
+  <!-- Círculo pequeño inferior derecha -->
+  <circle cx="1050" cy="520" r="90" fill="#FFF0E5" opacity="0.3"/>
+
+  <!-- Sparkles decorativos -->
+  <text x="800" y="120" font-size="50" opacity="0.5">✨</text>
+  <text x="920" y="280" font-size="45" opacity="0.6">✨</text>
+  <text x="180" y="580" font-size="42" opacity="0.55">✨</text>
+  <text x="1080" y="450" font-size="38" opacity="0.5">✨</text>
+
+  <!-- Contenedor principal -->
+  <g filter="url(#softGlow)">
+
+    <!-- Logo NEBU con efecto moderno -->
+    <text x="80" y="135" font-family="Arial, Helvetica, sans-serif" font-size="110" font-weight="bold" letter-spacing="5">
+      <tspan fill="#FF9D5C">n</tspan>
+      <tspan fill="#5EC1D8">e</tspan>
+      <tspan fill="#FF6B8A">b</tspan>
+      <tspan fill="#A78BFA">u</tspan>
+    </text>
+
+    <!-- Línea decorativa animada bajo el logo -->
+    <rect x="80" y="155" width="250" height="6" rx="3" fill="url(#logoLine)"/>
+
+  </g>
+
+  <!-- Título principal -->
+  <text x="80" y="250" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="bold" fill="#2C3E50">
+    Tu compañero inteligente
+  </text>
+
+  <!-- Subtítulo con color accent -->
+  <text x="80" y="320" font-family="Arial, Helvetica, sans-serif" font-size="50" font-weight="600" fill="#5EC1D8">
+    Aprende jugando sin pantallas
+  </text>
+
+  <!-- Grid de características con iconos emoji -->
+  <g font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="500">
+    <!-- Fila 1 -->
+    <g transform="translate(80, 400)">
+      <text x="0" y="0" fill="#FF9D5C">✨ IA personalizada</text>
+    </g>
+
+    <g transform="translate(550, 400)">
+      <text x="0" y="0" fill="#FF9D5C">🌍 Multiidioma</text>
+    </g>
+
+    <!-- Fila 2 -->
+    <g transform="translate(80, 465)">
+      <text x="0" y="0" fill="#FF9D5C">🔒 Seguro y privado</text>
+    </g>
+
+    <g transform="translate(550, 465)">
+      <text x="0" y="0" fill="#FF9D5C">🎯 Sin pantallas</text>
+    </g>
+  </g>
+
+  <!-- Footer con website -->
+  <text x="80" y="580" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="400" fill="#7F8C8D">
+    flow-telligence.com
+  </text>
+
+  <!-- Badge "Nuevo 2025" en esquina superior derecha -->
+  <g transform="translate(1000, 50)">
+    <rect x="0" y="0" width="160" height="45" rx="22" fill="#FF6B8A" opacity="0.9"/>
+    <text x="80" y="30" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">
+      Nuevo 2025
+    </text>
+  </g>
+
+</svg>

@@ -1,43 +1,73 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { data } from "@remix-run/node";
+import { data, json } from "@remix-run/node";
 
 /**
  * Complaints API Route
  *
- * This endpoint registers complaints/claims in the "Libro de Reclamaciones"
- * (Complaint Book) as required by Peruvian law.
+ * Este endpoint registra reclamos/quejas en el "Libro de Reclamaciones Virtual"
+ * conforme al D.S. N° 011-2011-PCM (Perú).
  *
- * NOTE: Email notifications should be handled by the backend API.
- * This frontend endpoint only registers the complaint and generates a unique ID.
+ * FLOW S.A.C.S cuenta con un Libro de Reclamaciones Virtual. Complete el formulario para registrar su reclamo o queja.
+ *
+ * NOTA: Las notificaciones por email deben ser gestionadas por el backend.
+ * Este endpoint solo registra el reclamo y genera un ID único.
  */
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== "POST") {
-    return data({ error: "Method not allowed" }, { status: 405 });
+    return json({ error: "Método no permitido. Solo se acepta POST." }, { status: 405 });
   }
 
   try {
     const _formData = await request.json();
 
-    // Generate unique complaint number
-    const timestamp = Date.now();
-    const hojaNumber = `LR-${timestamp.toString().slice(-8)}`;
+    // Validación básica de campos requeridos
+    if (!_formData || typeof _formData !== "object") {
+      return json({ error: "Datos inválidos. Complete el formulario correctamente." }, { status: 400 });
+    }
+    const { nombre, email, tipo, descripcion } = _formData;
+    if (!nombre || !email || !tipo || !descripcion) {
+      return json({ error: "Faltan campos obligatorios: nombre, email, tipo y descripción." }, { status: 422 });
+    }
 
-    // TODO: In production, this should call the backend API to:
-    // 1. Store the complaint in the database
-    // 2. Send email notifications to both customer and company
-    // Example: await fetch(`${process.env.BACKEND_URL}/complaints`, { ... })
+    // Simulación de control de duplicados (ejemplo: hash simple por email+desc)
+    // En producción, esto debe hacerse en backend con persistencia real
+    const duplicateKey = `${email}:${descripcion}`;
+    // Aquí podrías usar un cache temporal o base de datos para evitar duplicados recientes
+    // Por ahora, solo ejemplo en memoria (no persistente)
+    if (globalThis.__complaintsCache === undefined) {
+      globalThis.__complaintsCache = {};
+    }
+    const cache = globalThis.__complaintsCache as Record<string, number>;
+    const now = Date.now();
+    // Si ya existe un reclamo igual en los últimos 10 minutos, rechazar
+    if (cache[duplicateKey] && now - cache[duplicateKey] < 10 * 60 * 1000) {
+      return json({
+        error: "Ya hemos recibido un reclamo similar recientemente. Por favor, espere unos minutos antes de volver a enviar.",
+        code: "DUPLICATE_REQUEST"
+      }, { status: 429 });
+    }
+    cache[duplicateKey] = now;
 
-    return data({
+    // Generar número de hoja único
+    const hojaNumber = `LR-${now.toString().slice(-8)}`;
+
+    // TODO: En producción, llamar al backend para almacenar y notificar
+
+    return json({
       success: true,
       hojaNumber,
-      message: "Reclamo registrado exitosamente",
+      message: "Reclamo registrado exitosamente.",
       note: "Recibirás una copia de tu reclamo por correo electrónico en las próximas 24 horas.",
+      legal: "Conforme al D.S. N° 011-2011-PCM, FLOW S.A.C.S cuenta con un Libro de Reclamaciones Virtual. Complete el siguiente formulario para registrar su reclamo o queja.",
     });
-  } catch (error) {
+  } catch (error: any) {
+    if (error instanceof SyntaxError) {
+      return json({ error: "El formato de los datos enviados no es válido (JSON inválido)." }, { status: 400 });
+    }
     console.error("Error processing complaint:", error);
-    return data(
-      { error: "Error al procesar el reclamo" },
+    return json(
+      { error: "Error inesperado al procesar el reclamo. Intente nuevamente más tarde." },
       { status: 500 }
     );
   }
