@@ -52,38 +52,31 @@
     "subtitle": "Todo lo que hace de Nebu el compañero perfecto para el desarrollo de tu hijo",
     "reduceScreenTime": {
       "title": "Reduce el tiempo de pantalla",
-      "description": "Transforma el tiempo de pantalla en conversaciones significativas mediante historias interactivas en lugar de visualización pasiva.",
-      "category": "Digital"
+      "description": "Transforma el tiempo de pantalla en conversaciones significativas mediante historias interactivas en lugar de visualización pasiva."
     },
     "nurtureImagination": {
       "title": "Nutre la imaginación",
-      "description": "Las historias se adaptan a los intereses de tu hijo, despertando creatividad y curiosidad mediante aventuras personalizadas.",
-      "category": "Creatividad"
+      "description": "Las historias se adaptan a los intereses de tu hijo, despertando creatividad y curiosidad mediante aventuras personalizadas."
     },
     "buildConfidence": {
       "title": "Construye confianza",
-      "description": "Conversaciones pacientes y sin juicios ayudan a los niños a encontrar su voz y desarrollar habilidades comunicativas esenciales.",
-      "category": "Desarrollo"
+      "description": "Conversaciones pacientes y sin juicios ayudan a los niños a encontrar su voz y desarrollar habilidades comunicativas esenciales."
     },
     "developEmpathy": {
       "title": "Desarrolla empatía",
-      "description": "Las historias enseñan inteligencia emocional mediante escenarios relacionables, ayudando a comprender perspectivas y desarrollar compasión.",
-      "category": "Valores"
+      "description": "Las historias enseñan inteligencia emocional mediante escenarios relacionables, ayudando a comprender perspectivas y desarrollar compasión."
     },
     "stimulateLearning": {
       "title": "Estimula el aprendizaje",
-      "description": "El contenido personalizado se adapta al ritmo de tu hijo, transformando temas en conversaciones atractivas que fomentan la curiosidad.",
-      "category": "Educación"
+      "description": "El contenido personalizado se adapta al ritmo de tu hijo, transformando temas en conversaciones atractivas que fomentan la curiosidad."
     },
     "safeAndPrivate": {
       "title": "Seguro y privado",
-      "description": "Seguridad empresarial con conversaciones encriptadas y control parental completo. Tu privacidad familiar protegida.",
-      "category": "Seguridad"
+      "description": "Seguridad empresarial con conversaciones encriptadas y control parental completo. Tu privacidad familiar protegida."
     },
     "helpsADHD": {
       "title": "Ayuda con TDAH",
-      "description": "El uso diario de Nebu puede ayudar a regular el cuerpo y enfocar la mente, aliviando síntomas del Trastorno por Déficit de Atención e Hiperactividad (TDAH).",
-      "category": "Bienestar"
+      "description": "El uso diario de Nebu puede ayudar a regular el cuerpo y enfocar la mente, aliviando síntomas del Trastorno por Déficit de Atención e Hiperactividad (TDAH)."
     }
   },
   "productCTA": {

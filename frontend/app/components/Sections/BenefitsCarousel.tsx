@@ -14,11 +14,6 @@ const BenefitCard = memo(function BenefitCard({
 
   return (
     <div className="benefit-card flex-shrink-0 w-[300px] lg:w-[330px] bg-white rounded-2xl p-5 border border-gray-200/80">
-      {/* Category */}
-      <span className="text-[11px] font-medium uppercase tracking-wide text-gray-400 mb-4 block">
-        {benefit.category}
-      </span>
-
       {/* Icon + Title row */}
       <div className="flex items-center gap-3 mb-3">
         <div
@@ -62,7 +57,6 @@ interface Benefit {
   title: string;
   description: string;
   color: string;
-  category: string;
 }
 
 export default function BenefitsCarousel() {
@@ -76,7 +70,6 @@ export default function BenefitsCarousel() {
       title: t("benefits.reduceScreenTime.title"),
       description: t("benefits.reduceScreenTime.description"),
       color: "#3b82f6",
-      category: t("benefits.reduceScreenTime.category")
     },
     {
       id: 2,
@@ -85,7 +78,6 @@ export default function BenefitsCarousel() {
       title: t("benefits.nurtureImagination.title"),
       description: t("benefits.nurtureImagination.description"),
       color: "#a855f7",
-      category: t("benefits.nurtureImagination.category")
     },
     {
       id: 3,
@@ -94,7 +86,6 @@ export default function BenefitsCarousel() {
       title: t("benefits.buildConfidence.title"),
       description: t("benefits.buildConfidence.description"),
       color: "#f59e0b",
-      category: t("benefits.buildConfidence.category")
     },
     {
       id: 4,
@@ -103,7 +94,6 @@ export default function BenefitsCarousel() {
       title: t("benefits.developEmpathy.title"),
       description: t("benefits.developEmpathy.description"),
       color: "#ec4899",
-      category: t("benefits.developEmpathy.category")
     },
     {
       id: 5,
@@ -112,7 +102,6 @@ export default function BenefitsCarousel() {
       title: t("benefits.stimulateLearning.title"),
       description: t("benefits.stimulateLearning.description"),
       color: "#10b981",
-      category: t("benefits.stimulateLearning.category")
     },
     {
       id: 6,
@@ -121,7 +110,6 @@ export default function BenefitsCarousel() {
       title: t("benefits.safeAndPrivate.title"),
       description: t("benefits.safeAndPrivate.description"),
       color: "#6366f1",
-      category: t("benefits.safeAndPrivate.category")
     },
     {
       id: 7,
@@ -130,7 +118,6 @@ export default function BenefitsCarousel() {
       title: t("benefits.helpsADHD.title"),
       description: t("benefits.helpsADHD.description"),
       color: "#14b8a6",
-      category: t("benefits.helpsADHD.category")
     }
   ], [t]);
 
