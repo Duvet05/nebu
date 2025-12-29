@@ -7,7 +7,7 @@ export class CreateIoTDeviceDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ 
+  @ApiProperty({
     description: 'Type of IoT device',
     enum: ['sensor', 'actuator', 'camera', 'microphone', 'speaker', 'controller'],
     example: 'sensor'
@@ -15,10 +15,21 @@ export class CreateIoTDeviceDto {
   @IsEnum(['sensor', 'actuator', 'camera', 'microphone', 'speaker', 'controller'])
   deviceType: DeviceType;
 
-  @ApiProperty({ description: 'MAC address', example: '00:1B:44:11:3A:B7' })
+  @ApiProperty({
+    description: 'Dirección MAC física del dispositivo (se normaliza automáticamente al formato AA:BB:CC:DD:EE:FF)',
+    example: '8C:BF:EA:87:7D:0C'
+  })
   @IsNotEmpty()
   @IsString()
   macAddress: string;
+
+  @ApiPropertyOptional({
+    description: 'Identificador lógico del dispositivo para BLE (formato ESP32_XXXX). Si no se proporciona, se deriva automáticamente desde macAddress',
+    example: 'ESP32_8CBFEA877D0C'
+  })
+  @IsOptional()
+  @IsString()
+  deviceId?: string;
 
   @ApiPropertyOptional({ description: 'IP address', example: '192.168.1.100' })
   @IsOptional()

@@ -37,13 +37,23 @@ export class IoTDevice {
   @Column({ length: 255 })
   name: string;
 
+  /**
+   * Dirección MAC física del dispositivo (formato: AA:BB:CC:DD:EE:FF)
+   * Este es el identificador único a nivel de hardware.
+   * Se normaliza automáticamente al formato estándar con ':' como separador.
+   */
   @Column({ length: 32, unique: true, nullable: true })
   @Index()
   macAddress?: string;
 
+  /**
+   * Identificador lógico del dispositivo para BLE (formato: ESP32_AABBCCDDEEFF)
+   * Este es el identificador usado en comunicaciones BLE y la aplicación.
+   * Se puede derivar automáticamente desde macAddress usando deriveDeviceIdFromMac().
+   */
   @Column({ length: 64, unique: true, nullable: true })
   @Index()
-  deviceId?: string; // Device ID para ESP32 BLE (ej: "ESP32_8CBFEA877D0C")
+  deviceId?: string;
 
   @Column({ type: 'inet', nullable: true })
   ipAddress?: string;
@@ -185,5 +195,51 @@ export class IoTDevice {
       this.signalStrength = sensorData.signalStrength;
     }
     this.lastDataReceived = new Date();
+  }
+
+  /**
+   * Deriva un deviceId desde una macAddress
+   * Convierte AA:BB:CC:DD:EE:FF -> ESP32_AABBCCDDEEFF
+   *
+   * @param macAddress - Dirección MAC en formato AA:BB:CC:DD:EE:FF
+   * @returns deviceId en formato ESP32_AABBCCDDEEFF
+   */
+  static deriveDeviceIdFromMac(macAddress: string): string {
+    if (!macAddress) {
+      throw new Error('macAddress is required');
+    }
+
+    // Remover separadores comunes (: - .)
+    const cleanMac = macAddress.replace(/[:\-\.]/g, '').toUpperCase();
+
+    // Validar que tenga 12 caracteres hexadecimales
+    if (!/^[0-9A-F]{12}$/.test(cleanMac)) {
+      throw new Error(`Invalid MAC address format: ${macAddress}`);
+    }
+
+    return `ESP32_${cleanMac}`;
+  }
+
+  /**
+   * Normaliza una macAddress al formato estándar AA:BB:CC:DD:EE:FF
+   *
+   * @param macAddress - Dirección MAC en cualquier formato
+   * @returns macAddress normalizada con formato AA:BB:CC:DD:EE:FF
+   */
+  static normalizeMacAddress(macAddress: string): string {
+    if (!macAddress) {
+      throw new Error('macAddress is required');
+    }
+
+    // Remover separadores
+    const cleanMac = macAddress.replace(/[:\-\.]/g, '').toUpperCase();
+
+    // Validar que tenga 12 caracteres hexadecimales
+    if (!/^[0-9A-F]{12}$/.test(cleanMac)) {
+      throw new Error(`Invalid MAC address format: ${macAddress}`);
+    }
+
+    // Agregar ':' cada 2 caracteres
+    return cleanMac.match(/.{1,2}/g)?.join(':') || cleanMac;
   }
 }

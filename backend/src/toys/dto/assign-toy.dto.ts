@@ -1,15 +1,27 @@
-import { IsUUID, IsOptional, IsString, IsNotEmpty } from 'class-validator';
+import { IsUUID, IsOptional, IsString, IsNotEmpty, ValidateIf } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class AssignToyDto {
-  @ApiProperty({
-    description: 'MAC address del juguete a asignar',
-    example: 'AA:BB:CC:DD:EE:FF',
+  @ApiPropertyOptional({
+    description: '⚠️ PREFERIR deviceId. Device ID del juguete a asignar (recomendado)',
+    example: 'ESP32_8CBFEA877D0C',
   })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  macAddress: string;
- //TODO: CAMBIAR A TOYID? O DEJAR COMO MACADDRESS?
+  @ValidateIf(o => !o.macAddress)
+  @IsNotEmpty({ message: 'Debe proporcionar macAddress o deviceId' })
+  deviceId?: string;
+
+  @ApiPropertyOptional({
+    description: '⚠️ LEGACY. MAC address del juguete a asignar (solo si deviceId no está disponible)',
+    example: '8C:BF:EA:87:7D:0C',
+  })
+  @IsOptional()
+  @IsString()
+  @ValidateIf(o => !o.deviceId)
+  @IsNotEmpty({ message: 'Debe proporcionar macAddress o deviceId' })
+  macAddress?: string;
+
   @ApiProperty({
     description: 'ID del usuario al que asignar el juguete',
     example: '123e4567-e89b-12d3-a456-426614174000',

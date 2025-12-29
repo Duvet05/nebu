@@ -21,12 +21,20 @@ export async function seedIoTDevices(dataSource: DataSource): Promise<void> {
 
     logger.log('🌱 Creando dispositivos IoT de prueba...');
 
-    // Crear dispositivos IoT de prueba con device_id
+    // Crear dispositivos IoT de prueba con device_id (se deriva automáticamente de macAddress)
+    const macAddresses = [
+      'AA:BB:CC:DD:EE:FF',
+      '11:22:33:44:55:66',
+      'AA:BB:CC:DD:EE:01',
+      'AA:BB:CC:DD:EE:02',
+      'AA:BB:CC:DD:EE:03',
+    ];
+
     const devicesData = [
       {
         name: 'ESP32 Dev Board 1',
-        deviceId: 'ESP32_AA:BB:CC:DD:EE:FF',
-        macAddress: 'AA:BB:CC:DD:EE:FF',
+        deviceId: IoTDevice.deriveDeviceIdFromMac(macAddresses[0]),  // ESP32_AABBCCDDEEFF
+        macAddress: macAddresses[0],
         deviceType: 'controller' as const,
         status: 'offline' as const,
         batteryLevel: 100,
@@ -34,8 +42,8 @@ export async function seedIoTDevices(dataSource: DataSource): Promise<void> {
       },
       {
         name: 'ESP32 Dev Board 2',
-        deviceId: 'ESP32_11:22:33:44:55:66',
-        macAddress: '11:22:33:44:55:66',
+        deviceId: IoTDevice.deriveDeviceIdFromMac(macAddresses[1]),  // ESP32_112233445566
+        macAddress: macAddresses[1],
         deviceType: 'controller' as const,
         status: 'offline' as const,
         batteryLevel: 85,
@@ -43,8 +51,8 @@ export async function seedIoTDevices(dataSource: DataSource): Promise<void> {
       },
       {
         name: 'ESP32 Dev Board 3',
-        deviceId: 'ESP32_AA:BB:CC:DD:EE:01',
-        macAddress: 'AA:BB:CC:DD:EE:01',
+        deviceId: IoTDevice.deriveDeviceIdFromMac(macAddresses[2]),  // ESP32_AABBCCDDEE01
+        macAddress: macAddresses[2],
         deviceType: 'controller' as const,
         status: 'offline' as const,
         batteryLevel: 92,
@@ -52,8 +60,8 @@ export async function seedIoTDevices(dataSource: DataSource): Promise<void> {
       },
       {
         name: 'ESP32 Dev Board 4',
-        deviceId: 'ESP32_AA:BB:CC:DD:EE:02',
-        macAddress: 'AA:BB:CC:DD:EE:02',
+        deviceId: IoTDevice.deriveDeviceIdFromMac(macAddresses[3]),  // ESP32_AABBCCDDEE02
+        macAddress: macAddresses[3],
         deviceType: 'sensor' as const,
         status: 'offline' as const,
         batteryLevel: 78,
@@ -61,8 +69,8 @@ export async function seedIoTDevices(dataSource: DataSource): Promise<void> {
       },
       {
         name: 'ESP32 Dev Board 5',
-        deviceId: 'ESP32_AA:BB:CC:DD:EE:03',
-        macAddress: 'AA:BB:CC:DD:EE:03',
+        deviceId: IoTDevice.deriveDeviceIdFromMac(macAddresses[4]),  // ESP32_AABBCCDDEE03
+        macAddress: macAddresses[4],
         deviceType: 'controller' as const,
         status: 'offline' as const,
         batteryLevel: 95,

@@ -4,8 +4,19 @@ import { ToyStatus } from '../entities/toy.entity';
 
 export class CreateToyDto {
   @ApiPropertyOptional({
-    description: 'MAC address del dispositivo IoT (requerido si no se proporciona deviceId)',
-    example: 'AA:BB:CC:DD:EE:FF',
+    description: '⚠️ PREFERIR deviceId. Device ID del ESP32 obtenido vía BLE (recomendado)',
+    example: 'ESP32_8CBFEA877D0C',
+  })
+  @IsOptional()
+  @IsString()
+  @Length(1, 64)
+  @ValidateIf(o => !o.macAddress)
+  @IsNotEmpty({ message: 'Debe proporcionar macAddress o deviceId' })
+  deviceId?: string;
+
+  @ApiPropertyOptional({
+    description: '⚠️ LEGACY. MAC address del dispositivo IoT (solo usar si deviceId no está disponible)',
+    example: '8C:BF:EA:87:7D:0C',
   })
   @IsOptional()
   @IsString()
@@ -15,17 +26,6 @@ export class CreateToyDto {
   @ValidateIf(o => !o.deviceId)
   @IsNotEmpty({ message: 'Debe proporcionar macAddress o deviceId' })
   macAddress?: string;
-
-  @ApiPropertyOptional({
-    description: 'Device ID del ESP32 obtenido vía BLE (requerido si no se proporciona macAddress)',
-    example: 'ESP32_8CBFEA877D0C',
-  })
-  @IsOptional()
-  @IsString()
-  @Length(1, 64)
-  @ValidateIf(o => !o.macAddress)
-  @IsNotEmpty({ message: 'Debe proporcionar macAddress o deviceId' })
-  deviceId?: string;
 
   @ApiProperty({
     description: 'Nombre del juguete',

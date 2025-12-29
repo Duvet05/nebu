@@ -53,16 +53,29 @@ export class ToysService {
       }
     } else {
       // Buscar por MAC address (flujo legacy)
-      const normalizedMacAddress = this.normalizeMacAddress(createToyDto.macAddress);
+      const normalizedMacAddress = IoTDevice.normalizeMacAddress(createToyDto.macAddress);
+
+      // Derivar deviceId desde macAddress automáticamente
+      const derivedDeviceId = IoTDevice.deriveDeviceIdFromMac(normalizedMacAddress);
+
+      // Intentar buscar primero por deviceId derivado
       iotDevice = await this.iotDeviceRepository.findOne({
-        where: { macAddress: normalizedMacAddress },
+        where: { deviceId: derivedDeviceId },
       });
 
+      // Si no existe, buscar por macAddress
       if (!iotDevice) {
-        // Crear nuevo IoTDevice con MAC address
+        iotDevice = await this.iotDeviceRepository.findOne({
+          where: { macAddress: normalizedMacAddress },
+        });
+      }
+
+      if (!iotDevice) {
+        // Crear nuevo IoTDevice con ambos identificadores
         iotDevice = this.iotDeviceRepository.create({
           name: createToyDto.name,
           macAddress: normalizedMacAddress,
+          deviceId: derivedDeviceId,
           deviceType: 'controller',
           status: 'offline',
           userId: userId || null,
@@ -147,7 +160,7 @@ export class ToysService {
 
     if (search) {
       queryBuilder.andWhere(
-        '(toy.name ILIKE :search OR toy.model ILIKE :search OR toy.manufacturer ILIKE :search OR iotDevice.macAddress ILIKE :search)',
+        '(toy.name ILIKE :search OR toy.model ILIKE :search OR toy.manufacturer ILIKE :search OR iotDevice.macAddress ILIKE :search OR iotDevice.deviceId ILIKE :search)',
         { search: `%${search}%` },
       );
     }
@@ -184,20 +197,24 @@ export class ToysService {
   }
 
   /**
-   * Obtener un juguete por MAC address
+   * Obtener un juguete por MAC address o deviceId
+   * NOTA: Se mantiene por compatibilidad pero se recomienda usar deviceId
    */
   async findByMacAddress(macAddress: string): Promise<ToyResponseDto> {
-    const normalizedMacAddress = this.normalizeMacAddress(macAddress);
+    const normalizedMacAddress = IoTDevice.normalizeMacAddress(macAddress);
+    const derivedDeviceId = IoTDevice.deriveDeviceIdFromMac(normalizedMacAddress);
 
+    // Buscar por deviceId primero (preferido), luego por macAddress
     const toy = await this.toyRepository.findOne({
-      where: {
-        iotDevice: { macAddress: normalizedMacAddress }
-      },
+      where: [
+        { iotDevice: { deviceId: derivedDeviceId } },
+        { iotDevice: { macAddress: normalizedMacAddress } }
+      ],
       relations: ['user', 'iotDevice'],
     });
 
     if (!toy) {
-      throw new NotFoundException(`Juguete con MAC address ${normalizedMacAddress} no encontrado`);
+      throw new NotFoundException(`Juguete con identificador ${normalizedMacAddress} / ${derivedDeviceId} no encontrado`);
     }
 
     return this.mapToyToResponseDto(toy);
@@ -315,22 +332,45 @@ export class ToysService {
   }
 
   /**
-   * Asignar juguete a un usuario usando macAddress
+   * Asignar juguete a un usuario usando macAddress o deviceId
+   * NOTA: Se prefiere deviceId pero se mantiene compatibilidad con macAddress
    */
   async assignToy(assignToyDto: AssignToyDto): Promise<AssignToyResponseDto> {
-    const normalizedMacAddress = this.normalizeMacAddress(assignToyDto.macAddress);
+    if (!assignToyDto.macAddress && !assignToyDto.deviceId) {
+      throw new BadRequestException('Debe proporcionar macAddress o deviceId');
+    }
 
-    // Buscar toy por MAC address
+    let whereConditions: any[] = [];
+    let identifier: string;
+
+    // Preferir deviceId si está disponible
+    if (assignToyDto.deviceId) {
+      whereConditions.push({ iotDevice: { deviceId: assignToyDto.deviceId } });
+      identifier = assignToyDto.deviceId;
+    }
+
+    // Si se proporciona macAddress, normalizarlo y agregarlo
+    if (assignToyDto.macAddress) {
+      const normalizedMacAddress = IoTDevice.normalizeMacAddress(assignToyDto.macAddress);
+      whereConditions.push({ iotDevice: { macAddress: normalizedMacAddress } });
+
+      // Si no hay deviceId, derivarlo de macAddress
+      if (!assignToyDto.deviceId) {
+        const derivedDeviceId = IoTDevice.deriveDeviceIdFromMac(normalizedMacAddress);
+        whereConditions.push({ iotDevice: { deviceId: derivedDeviceId } });
+        identifier = `${normalizedMacAddress} / ${derivedDeviceId}`;
+      }
+    }
+
+    // Buscar toy
     const toy = await this.toyRepository.findOne({
-      where: {
-        iotDevice: { macAddress: normalizedMacAddress }
-      },
+      where: whereConditions,
       relations: ['user', 'iotDevice'],
     });
 
     if (!toy) {
       throw new NotFoundException(
-        `Juguete con MAC address ${normalizedMacAddress} no encontrado`
+        `Juguete con identificador ${identifier} no encontrado`
       );
     }
 
@@ -406,6 +446,7 @@ export class ToysService {
 
   /**
    * Actualizar estado de conexión de un juguete (usado por dispositivos IoT)
+   * NOTA: Se prefiere deviceId pero se mantiene compatibilidad con macAddress
    */
   async updateConnectionStatus(
     macAddress: string,
@@ -413,17 +454,20 @@ export class ToysService {
     batteryLevel?: string,
     signalStrength?: string,
   ): Promise<ToyResponseDto> {
-    const normalizedMacAddress = this.normalizeMacAddress(macAddress);
+    const normalizedMacAddress = IoTDevice.normalizeMacAddress(macAddress);
+    const derivedDeviceId = IoTDevice.deriveDeviceIdFromMac(normalizedMacAddress);
 
+    // Buscar por deviceId primero, luego por MAC address
     const toy = await this.toyRepository.findOne({
-      where: {
-        iotDevice: { macAddress: normalizedMacAddress }
-      },
+      where: [
+        { iotDevice: { deviceId: derivedDeviceId } },
+        { iotDevice: { macAddress: normalizedMacAddress } }
+      ],
       relations: ['user', 'iotDevice'],
     });
 
     if (!toy) {
-      throw new NotFoundException(`Juguete con MAC address ${normalizedMacAddress} no encontrado`);
+      throw new NotFoundException(`Juguete con identificador ${normalizedMacAddress} / ${derivedDeviceId} no encontrado`);
     }
 
     const updateData: Partial<Toy> = {
@@ -501,21 +545,6 @@ export class ToysService {
     };
   }
 
-  /**
-   * Normalizar MAC address a formato estándar (XX:XX:XX:XX:XX:XX)
-   */
-  private normalizeMacAddress(macAddress: string): string {
-    // Remover cualquier carácter que no sea hexadecimal
-    const cleaned = macAddress.replace(/[^0-9A-Fa-f]/g, '');
-    
-    // Verificar que tenga exactamente 12 caracteres
-    if (cleaned.length !== 12) {
-      throw new BadRequestException('MAC address debe tener exactamente 12 caracteres hexadecimales');
-    }
-
-    // Formatear como XX:XX:XX:XX:XX:XX
-    return cleaned.match(/.{2}/g).join(':').toUpperCase();
-  }
 
   /**
    * Mapear entidad Toy a ToyResponseDto

@@ -18,9 +18,42 @@ export class IoTService {
   ) {}
 
   async create(createIoTDeviceDto: CreateIoTDeviceDto): Promise<IoTDevice> {
+    // Validar que no exista un dispositivo con el mismo macAddress o deviceId
+    if (createIoTDeviceDto.macAddress) {
+      const normalizedMac = IoTDevice.normalizeMacAddress(createIoTDeviceDto.macAddress);
+      const existingByMac = await this.iotDeviceRepository.findOne({
+        where: { macAddress: normalizedMac },
+      });
+
+      if (existingByMac) {
+        throw new ConflictException(
+          `Ya existe un dispositivo registrado con la dirección MAC: ${normalizedMac}`
+        );
+      }
+
+      createIoTDeviceDto.macAddress = normalizedMac;
+
+      // Si no se proporcionó deviceId, derivarlo de macAddress
+      if (!createIoTDeviceDto.deviceId) {
+        createIoTDeviceDto.deviceId = IoTDevice.deriveDeviceIdFromMac(normalizedMac);
+      }
+    }
+
+    if (createIoTDeviceDto.deviceId) {
+      const existingByDeviceId = await this.iotDeviceRepository.findOne({
+        where: { deviceId: createIoTDeviceDto.deviceId },
+      });
+
+      if (existingByDeviceId) {
+        throw new ConflictException(
+          `Ya existe un dispositivo registrado con el deviceId: ${createIoTDeviceDto.deviceId}`
+        );
+      }
+    }
+
     const device = this.iotDeviceRepository.create(createIoTDeviceDto);
     const savedDevice = await this.iotDeviceRepository.save(device);
-    
+
     this.logger.log(`IoT device created: ${savedDevice.name} (${savedDevice.id})`);
     return savedDevice;
   }
@@ -253,16 +286,16 @@ export class IoTService {
   }> {
     this.logger.log(`🔧 ESP32 Token Request from device: ${deviceId}`);
 
-    // 1. Buscar o crear el dispositivo por macAddress
+    // 1. Buscar o crear el dispositivo por deviceId
     let device = await this.iotDeviceRepository.findOne({
-      where: { macAddress: deviceId },
+      where: { deviceId },
     });
 
     if (!device) {
       this.logger.log(`📱 Device not found, creating new device: ${deviceId}`);
       device = this.iotDeviceRepository.create({
         name: `ESP32-${deviceId.substring(0, 8)}`,
-        macAddress: deviceId,
+        deviceId: deviceId,
         deviceType: 'controller' as DeviceType,
         status: 'online' as DeviceStatus,
         lastSeen: new Date(),
@@ -404,7 +437,7 @@ export class IoTService {
     },
   ): Promise<void> {
     const device = await this.iotDeviceRepository.findOne({
-      where: { macAddress: deviceId },
+      where: { deviceId },
     });
 
     if (!device) {
