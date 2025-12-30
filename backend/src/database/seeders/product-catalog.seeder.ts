@@ -338,7 +338,8 @@ export async function seedProducts(dataSource: DataSource): Promise<void> {
 
     if (existing) {
       // Actualizar producto existente
-      await productRepository.update(existing.id, productData);
+      Object.assign(existing, productData);
+      await productRepository.save(existing);
       logger.log(`  ✓ Actualizado: ${productData.name} - Precio: S/ ${productData.price}`);
     } else {
       // Insertar nuevo producto
