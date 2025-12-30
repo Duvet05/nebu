@@ -42,8 +42,8 @@ export const CONTACT = {
  */
 export const BUSINESS = {
   name: 'Flow-Telligence',
-  legalName: 'FLOW SACS',
-  ruc: '10703363135',
+  legalName: 'FLOW S.A.C.S.',
+  ruc: '20615226093',
   website: 'https://flow-telligence.com',
   address: {
     city: 'Lima',

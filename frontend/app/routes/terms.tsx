@@ -167,7 +167,7 @@ export default function TermsOfService() {
                         <div className="grid md:grid-cols-2 gap-4">
                           <div>
                             <p className="text-sm text-gray-500 mb-1">Razón Social</p>
-                            <p className="font-semibold text-gray-900">FLOW SACS</p>
+                            <p className="font-semibold text-gray-900">{BUSINESS.legalName}</p>
                           </div>
                           <div>
                             <p className="text-sm text-gray-500 mb-1">RUC</p>
@@ -225,7 +225,7 @@ export default function TermsOfService() {
                           </p>
                         </div>
                         <p className="text-gray-600 leading-relaxed">
-                          FLOW SACS se reserva el derecho de actualizar estos términos. Los cambios serán notificados 
+                          {BUSINESS.legalName} se reserva el derecho de actualizar estos términos. Los cambios serán notificados 
                           por correo electrónico con al menos 15 días de anticipación. El uso continuado constituye 
                           aceptación de los nuevos términos.
                         </p>
@@ -451,7 +451,7 @@ export default function TermsOfService() {
                               administrativos.
                             </p>
                             <p className="text-sm text-gray-700">
-                              <strong>Por FLOW SACS:</strong> Nos reservamos el derecho de cancelar por falta 
+                              <strong>Por {BUSINESS.legalName}:</strong> Nos reservamos el derecho de cancelar por falta 
                               de stock, problemas de pago o detección de fraude. Reembolso completo en 5-10 
                               días hábiles.
                             </p>
@@ -877,7 +877,7 @@ export default function TermsOfService() {
                         </p>
 
                         <div>
-                          <h4 className="font-semibold text-gray-900 mb-2">Propiedad de FLOW SACS:</h4>
+                          <h4 className="font-semibold text-gray-900 mb-2">Propiedad de {BUSINESS.legalName}:</h4>
                           <ul className="space-y-2 text-sm text-gray-600">
                             <li>• Marca registrada "Nebu" y logotipos asociados</li>
                             <li>• Diseño industrial del dispositivo Nebu</li>
