@@ -401,6 +401,9 @@ services:
       # Memory Configuration
       - MEMORY_RETENTION_DAYS=${MEMORY_RETENTION_DAYS:-30}
       - ENABLE_MEMORY_DECAY=${ENABLE_MEMORY_DECAY:-true}
+      # Culqi Payment Gateway (Peru)
+      - CULQI_SECRET_KEY=${CULQI_SECRET_KEY}
+      - CULQI_PUBLIC_KEY=${CULQI_PUBLIC_KEY}
       # Database Mode Configuration
       # DB initialization is handled by backend-init service
       # Email Verification Configuration
