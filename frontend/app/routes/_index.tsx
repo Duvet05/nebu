@@ -208,8 +208,7 @@ export default function Index() {
 
         <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
-        {/* Benefits Carousel Section */}
-        <BenefitsCarousel />
+        {/* Benefits Carousel Section <BenefitsCarousel /> COMENTADO*/}
         
         <Divider variant="solid" color="gray" spacing="xl" opacity={0.1} />
 
