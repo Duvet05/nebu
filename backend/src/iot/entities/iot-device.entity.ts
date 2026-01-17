@@ -210,7 +210,7 @@ export class IoTDevice {
     }
 
     // Remover separadores comunes (: - .)
-    const cleanMac = macAddress.replace(/[:\-\.]/g, '').toUpperCase();
+    const cleanMac = macAddress.replace(/[:\-.]/g, '').toUpperCase();
 
     // Validar que tenga 12 caracteres hexadecimales
     if (!/^[0-9A-F]{12}$/.test(cleanMac)) {
@@ -232,7 +232,7 @@ export class IoTDevice {
     }
 
     // Remover separadores
-    const cleanMac = macAddress.replace(/[:\-\.]/g, '').toUpperCase();
+    const cleanMac = macAddress.replace(/[:\-.]/g, '').toUpperCase();
 
     // Validar que tenga 12 caracteres hexadecimales
     if (!/^[0-9A-F]{12}$/.test(cleanMac)) {

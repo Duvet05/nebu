@@ -282,14 +282,14 @@ export class ToysService {
     if (updateToyDto.lastSeenAt) {
       try {
         updateToyDto.lastSeenAt = new Date(updateToyDto.lastSeenAt).toISOString();
-      } catch (error) {
+      } catch {
         throw new BadRequestException(`Formato de fecha inválido para lastSeenAt: ${updateToyDto.lastSeenAt}`);
       }
     }
     if (updateToyDto.activatedAt) {
       try {
         updateToyDto.activatedAt = new Date(updateToyDto.activatedAt).toISOString();
-      } catch (error) {
+      } catch {
         throw new BadRequestException(`Formato de fecha inválido para activatedAt: ${updateToyDto.activatedAt}`);
       }
     }
@@ -340,7 +340,7 @@ export class ToysService {
       throw new BadRequestException('Debe proporcionar macAddress o deviceId');
     }
 
-    let whereConditions: any[] = [];
+    const whereConditions: any[] = [];
     let identifier: string;
 
     // Preferir deviceId si está disponible

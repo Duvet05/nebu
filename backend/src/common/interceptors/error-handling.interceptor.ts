@@ -40,7 +40,7 @@ export class ErrorHandlingInterceptor implements NestInterceptor {
           const detail = error.detail || '';
 
           switch (error.code) {
-            case '23505': // Unique constraint violation
+            case '23505': { // Unique constraint violation
               const field = this.extractFieldFromConstraint(constraintName, detail);
               return throwError(
                 () => new HttpException(
@@ -50,6 +50,7 @@ export class ErrorHandlingInterceptor implements NestInterceptor {
                   HttpStatus.CONFLICT
                 )
               );
+            }
 
             case '23503': // Foreign key constraint violation
               return throwError(
@@ -59,7 +60,7 @@ export class ErrorHandlingInterceptor implements NestInterceptor {
                 )
               );
 
-            case '23502': // Not null constraint violation
+            case '23502': { // Not null constraint violation
               const missingField = this.extractFieldFromError(error);
               return throwError(
                 () => new HttpException(
@@ -69,6 +70,7 @@ export class ErrorHandlingInterceptor implements NestInterceptor {
                   HttpStatus.BAD_REQUEST
                 )
               );
+            }
 
             case '23514': // Check constraint violation
               return throwError(

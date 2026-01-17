@@ -1,4 +1,3 @@
-// app/root.tsx - Versión Optimizada
 import {
   Links,
   Meta,
