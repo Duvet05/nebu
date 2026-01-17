@@ -6,6 +6,20 @@ import { IoTDevice, DeviceStatus } from '../iot/entities/iot-device.entity';
 import { Toy, ToyStatus } from '../toys/entities/toy.entity';
 import { VoiceSession } from '../voice/entities/voice-session.entity';
 
+function serializeBigInt<T>(obj: T): T {
+  if (obj === null || obj === undefined) return obj;
+  if (typeof obj === 'bigint') return Number(obj) as unknown as T;
+  if (Array.isArray(obj)) return obj.map(serializeBigInt) as unknown as T;
+  if (typeof obj === 'object') {
+    const result: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj)) {
+      result[key] = serializeBigInt(value);
+    }
+    return result as T;
+  }
+  return obj;
+}
+
 @Injectable()
 export class LiveKitService {
   private readonly logger = new Logger(LiveKitService.name);
@@ -236,7 +250,7 @@ export class LiveKitService {
   async listRooms(): Promise<any[]> {
     try {
       const rooms = await this.roomService.listRooms();
-      return rooms;
+      return serializeBigInt(rooms);
     } catch (error) {
       this.logger.error('Failed to list rooms:', error);
       throw error;
@@ -252,7 +266,7 @@ export class LiveKitService {
       if (!rooms || rooms.length === 0) {
         throw new NotFoundException(`Sala ${roomName} no encontrada`);
       }
-      return rooms[0];
+      return serializeBigInt(rooms[0]);
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
       this.logger.error(`Failed to get room ${roomName}:`, error);
@@ -281,7 +295,7 @@ export class LiveKitService {
   async listParticipants(roomName: string): Promise<any[]> {
     try {
       const participants = await this.roomService.listParticipants(roomName);
-      return participants;
+      return serializeBigInt(participants);
     } catch (error) {
       this.logger.error(`Failed to list participants for room ${roomName}:`, error);
       throw error;
@@ -294,7 +308,7 @@ export class LiveKitService {
   async getParticipant(roomName: string, identity: string): Promise<any> {
     try {
       const participant = await this.roomService.getParticipant(roomName, identity);
-      return participant;
+      return serializeBigInt(participant);
     } catch (error) {
       this.logger.error(`Failed to get participant ${identity} in room ${roomName}:`, error);
       throw error;
@@ -356,7 +370,8 @@ export class LiveKitService {
       this.logger.log(`Participant ${identity} mute status updated - audio: ${muteAudio}, video: ${muteVideo}`);
 
       // Retornar estado actualizado
-      return await this.roomService.getParticipant(roomName, identity);
+      const updatedParticipant = await this.roomService.getParticipant(roomName, identity);
+      return serializeBigInt(updatedParticipant);
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
       this.logger.error(`Failed to mute participant ${identity} in room ${roomName}:`, error);
