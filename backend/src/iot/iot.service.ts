@@ -538,4 +538,64 @@ export class IoTService {
     return metadata;
   }
 
+  /**
+   * Asignar un Toy existente a un dispositivo IoT
+   * 
+   * Este método vincula un juguete (Toy) con un dispositivo IoT físico,
+   * permitiendo que el agente de IA use el prompt configurado en el Toy.
+   * 
+   * @param deviceId - deviceId del dispositivo IoT (ej: "ESP32_AABBCCDDEEFF")
+   * @param toyId - UUID del Toy a asignar
+   * @returns El dispositivo IoT actualizado con el Toy asignado
+   */
+  async assignToyToDevice(deviceId: string, toyId: string): Promise<IoTDevice> {
+    this.logger.log(`🔗 Assigning Toy ${toyId} to device ${deviceId}`);
+
+    // 1. Buscar el dispositivo IoT por deviceId
+    const device = await this.iotDeviceRepository.findOne({
+      where: { deviceId },
+      relations: ['toy'],
+    });
+
+    if (!device) {
+      throw new NotFoundException(`IoT device with deviceId ${deviceId} not found`);
+    }
+
+    // 2. Verificar que el Toy existe y no esté ya asignado a otro dispositivo
+    const toyRepository = this.iotDeviceRepository.manager.getRepository('Toy');
+    const toy = await toyRepository.findOne({
+      where: { id: toyId },
+      relations: ['iotDevice'],
+    });
+
+    if (!toy) {
+      throw new NotFoundException(`Toy with ID ${toyId} not found`);
+    }
+
+    // 3. Verificar que el Toy no esté ya asignado a otro dispositivo
+    if (toy.iotDevice && toy.iotDevice.id !== device.id) {
+      throw new ConflictException(
+        `Toy ${toy.name} is already assigned to another device (${toy.iotDevice.name})`
+      );
+    }
+
+    // 4. Asignar el Toy al dispositivo
+    device.toy = toy;
+    toy.iotDevice = device;
+    toy.iotDeviceId = device.id;
+
+    // 5. Guardar cambios
+    await this.iotDeviceRepository.save(device);
+    await toyRepository.save(toy);
+
+    this.logger.log(`✅ Toy "${toy.name}" assigned to device "${device.name}" (${deviceId})`);
+    this.logger.log(`   Prompt configurado: ${toy.prompt ? 'Sí' : 'No (usará fallback)'}`);
+
+    // 6. Retornar el dispositivo actualizado con las relaciones cargadas
+    return this.iotDeviceRepository.findOne({
+      where: { id: device.id },
+      relations: ['toy', 'toy.owner', 'toy.user'],
+    });
+  }
+
 }

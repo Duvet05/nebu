@@ -19,6 +19,7 @@ import {
   IoTDeviceFilters,
   UpdateSensorDataDto,
   UpdateDeviceStatusDto,
+  AssignToyToDeviceDto,
 } from './dto/iot-device.dto';
 import { IoTDevice } from './entities/iot-device.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -135,6 +136,25 @@ export class IoTController {
   async markInactiveDevicesOffline(): Promise<{ message: string }> {
     await this.iotService.markDeviceOfflineIfInactive();
     return { message: 'Inactive devices have been marked as offline' };
+  }
+
+  @Patch('devices/:deviceId/assign-toy')
+  @ApiOperation({ 
+    summary: 'Asignar un Toy a un dispositivo IoT',
+    description: 'Vincula un juguete (Toy) con un dispositivo IoT físico para que el agente use el prompt configurado'
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Toy asignado exitosamente al dispositivo',
+    type: IoTDevice 
+  })
+  @ApiResponse({ status: 404, description: 'Device o Toy no encontrado' })
+  @ApiResponse({ status: 409, description: 'El Toy ya está asignado a otro dispositivo' })
+  async assignToyToDevice(
+    @Param('deviceId') deviceId: string,
+    @Body() assignToyDto: AssignToyToDeviceDto,
+  ): Promise<IoTDevice> {
+    return this.iotService.assignToyToDevice(deviceId, assignToyDto.toyId);
   }
 
 }

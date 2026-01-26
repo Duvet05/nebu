@@ -168,3 +168,13 @@ export class UpdateDeviceStatusDto {
   @IsEnum(['online', 'offline', 'error', 'maintenance'])
   status: DeviceStatus;
 }
+
+export class AssignToyToDeviceDto {
+  @ApiProperty({ 
+    description: 'ID del Toy a asignar al dispositivo IoT',
+    example: '550e8400-e29b-41d4-a716-446655440000'
+  })
+  @IsUUID()
+  @IsNotEmpty()
+  toyId: string;
+}
