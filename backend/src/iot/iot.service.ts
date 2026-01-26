@@ -322,27 +322,36 @@ export class IoTService {
     // 3. Generar nombre de room único (un nuevo room por cada request)
     const timestamp = Date.now();
     const random = Math.random().toString(36).substring(7);
-    const roomName = `esp32-${deviceId.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}-${timestamp}-${random}`;
+    const roomName = `iot-device-${deviceId.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}-${timestamp}-${random}`;
 
-    // 4. Crear room en LiveKit (intentar, ignorar si ya existe)
+    // 4. Obtener metadata del toy/owner para configurar el agente
+    const toyMetadata = await this.getDeviceMetadata(deviceId);
+
+    // 5. Crear room en LiveKit con metadata del agente
     try {
       await this.livekitService.createRoom(roomName, {
         maxParticipants: 10,
         emptyTimeout: 300, // 5 minutos cuando está vacío
         metadata: JSON.stringify({
+          // Metadata técnica del device
           deviceId,
           deviceName: device.name,
           createdAt: new Date().toISOString(),
           firmwareVersion: metadata?.firmwareVersion,
+          // Metadata del agente (prompt, toy_name, owner_name, etc.)
+          ...(toyMetadata || {}),
         }),
       });
       this.logger.log(`🏠 Room created: ${roomName}`);
+      if (toyMetadata) {
+        this.logger.log(`📦 Agent metadata included: ${toyMetadata.toy_name || 'N/A'} for ${toyMetadata.owner_name || 'N/A'}`);
+      }
     } catch (error) {
       // Room ya existe (poco probable con UUID), solo log
       this.logger.warn(`⚠️  Room ${roomName} already exists or error: ${error.message}`);
     }
 
-    // 5. Generar token de acceso para el ESP32
+    // 6. Generar token de acceso para el ESP32
     const token = await this.livekitService.generateIoTToken(deviceId, roomName);
 
     this.logger.log(`✅ ESP32 Token generated successfully`);
@@ -374,11 +383,11 @@ export class IoTService {
    * Busca rooms que:
    * - No tienen participantes
    * - Llevan más de 15 minutos vacíos
-   * - Pertenecen a ESP32 (room name empieza con "esp32-")
+   * - Pertenecen a dispositivos IoT (room name empieza con "iot-device-")
    */
   @Cron('*/10 * * * *') // Cada 10 minutos
   async cleanupEmptyESP32Rooms(): Promise<void> {
-    this.logger.log('🧹 Running cleanup of empty ESP32 rooms...');
+    this.logger.log('🧹 Running cleanup of empty IoT device rooms...');
 
     try {
       // Obtener todos los rooms de LiveKit
@@ -387,8 +396,8 @@ export class IoTService {
       let cleanedCount = 0;
 
       for (const room of rooms) {
-        // Solo procesar rooms de ESP32
-        if (!room.name.startsWith('esp32-') && !room.name.startsWith('iot-device-')) {
+        // Solo procesar rooms de dispositivos IoT
+        if (!room.name.startsWith('iot-device-')) {
           continue;
         }
 
