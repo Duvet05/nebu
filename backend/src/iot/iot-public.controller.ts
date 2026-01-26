@@ -64,29 +64,22 @@ export class IoTPublicController {
     if (signalStrength) this.logger.log(`  Signal: ${signalStrength}dBm`);
 
     try {
-      // Use ESP32 optimized method if device metrics are provided
-      let livekitResult;
-
-      if (firmwareVersion || batteryLevel || signalStrength) {
-        // ESP32-optimized flow with metrics
-        livekitResult = await this.iotService.getESP32Token(deviceId, {
-          firmwareVersion,
-          batteryLevel,
-          signalStrength,
-        });
-      } else {
-        // Generic device flow
-        livekitResult = await this.iotService.generateLiveKitTokenForDevice(deviceId);
-      }
+      // ALWAYS use ESP32 optimized method to ensure room is created with metadata
+      // This allows the agent to read toy prompts and personalization data
+      const livekitResult = await this.iotService.getESP32Token(deviceId, {
+        firmwareVersion,
+        batteryLevel,
+        signalStrength,
+      });
 
       this.logger.log('✅ LiveKit Session Created');
-      this.logger.log(`  Room: ${livekitResult.roomName || livekitResult.room_name}`);
+      this.logger.log(`  Room: ${livekitResult.room_name}`);
 
       const response: DeviceTokenResponseDto = {
-        access_token: livekitResult.token || livekitResult.access_token,
-        room_name: livekitResult.roomName || livekitResult.room_name,
-        expires_in: livekitResult.expires_in || 900,
-        server_url: livekitResult.livekitUrl || livekitResult.server_url,
+        access_token: livekitResult.access_token,
+        room_name: livekitResult.room_name,
+        expires_in: livekitResult.expires_in,
+        server_url: livekitResult.server_url,
         participant_identity: deviceId,
       };
 
