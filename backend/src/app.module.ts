@@ -33,6 +33,7 @@ import { LiveKitModule } from './livekit/livekit.module';
 import { IoTModule } from './iot/iot.module';
 import { VoiceModule } from './voice/voice.module';
 // import { AgentsModule } from './agents/agents.module'; // Temporalmente desactivado por error de @nestjs/axios
+import { AgentModule } from './agent/agent.module';
 import { ToysModule } from './toys/toys.module';
 // import { MemoryModule } from './memory/memory.module'; // Temporalmente desactivado (depende de agents)
 import { OrdersModule } from './orders/orders.module';
@@ -141,8 +142,8 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     LiveKitModule,
     IoTModule,
     VoiceModule,
-  // Agents personalization module
   // AgentsModule, // Temporalmente desactivado por error de @nestjs/axios
+    AgentModule,
     ToysModule,
     // MemoryModule, // Temporalmente desactivado (depende de agents)
     OrdersModule,
