@@ -6,9 +6,12 @@ import {
   Body,
   HttpCode,
   HttpStatus,
+  HttpException,
   Logger,
   ParseBoolPipe,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { IoTService } from './iot.service';
 import { DeviceTokenResponseDto, DeviceHeartbeatDto } from './dto/device-token.dto';
@@ -49,12 +52,14 @@ export class IoTPublicController {
   })
   @ApiResponse({ status: 400, description: 'Invalid device ID' })
   @ApiResponse({ status: 404, description: 'Device not found' })
+  @ApiResponse({ status: 503, description: 'LiveKit service unavailable - check retry_after field' })
   async getDeviceToken(
     @Query('device_id') deviceId: string,
     @Query('getMetadata', new ParseBoolPipe({ optional: true })) getMetadata?: boolean,
     @Query('firmware_version') firmwareVersion?: string,
     @Query('battery_level') batteryLevel?: number,
     @Query('signal_strength') signalStrength?: number,
+    @Res({ passthrough: true }) res?: Response,
   ): Promise<DeviceTokenResponseDto> {
     this.logger.log('📱 IoT Device Token Request');
     this.logger.log(`  Device ID: ${deviceId}`);
@@ -97,6 +102,25 @@ export class IoTPublicController {
       this.logger.error('❌ Failed to create LiveKit session');
       this.logger.error(`  Error: ${error.message}`);
       this.logger.error(`  Device ID: ${deviceId}`);
+
+      // Si es error de LiveKit/conexión, devolver 503 con Retry-After
+      const isLivekitError = error.message?.includes('LiveKit')
+        || error.message?.includes('ECONNREFUSED')
+        || error.message?.includes('ETIMEDOUT')
+        || error.message?.includes('RoomService');
+
+      if (isLivekitError) {
+        res?.setHeader('Retry-After', '5');
+        throw new HttpException(
+          {
+            statusCode: 503,
+            message: 'LiveKit service temporarily unavailable',
+            retry_after: 5,
+          },
+          HttpStatus.SERVICE_UNAVAILABLE,
+        );
+      }
+
       throw error;
     }
   }

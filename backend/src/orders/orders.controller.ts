@@ -6,10 +6,12 @@ import { CreateCheckoutOrderDto } from './dto/create-checkout-order.dto';
 import { Order, OrderStatus } from './entities/order.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Public } from '../auth/decorators/public.decorator';
+import { DuplicateRequestGuard } from '../common/guards/duplicate-request.guard';
+import { PreventDuplicateRequest } from '../common/decorators/duplicate-request.decorator';
 
 @ApiTags('orders')
 @Controller('orders')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, DuplicateRequestGuard)
 @ApiBearerAuth()
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
@@ -21,6 +23,7 @@ export class OrdersController {
   @Public()
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @PreventDuplicateRequest({ ttl: 30, fields: ['email', 'totalPrice', 'product'], message: 'Orden duplicada detectada. Espere 30 segundos antes de reintentar.' })
   async create(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
     return this.ordersService.create(createOrderDto);
   }
@@ -32,6 +35,7 @@ export class OrdersController {
   @Public()
   @Post('checkout')
   @HttpCode(HttpStatus.CREATED)
+  @PreventDuplicateRequest({ ttl: 30, fields: ['email', 'total', 'items'], message: 'Checkout duplicado detectado. Espere 30 segundos antes de reintentar.' })
   async createFromCheckout(@Body() dto: CreateCheckoutOrderDto): Promise<Order> {
     return this.ordersService.createFromCheckout(dto);
   }
