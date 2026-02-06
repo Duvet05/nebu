@@ -21,17 +21,8 @@ import { WebhookReceiver } from 'livekit-server-sdk';
 @Public()
 export class LiveKitWebhookController {
   private readonly logger = new Logger(LiveKitWebhookController.name);
-  private webhookReceiver: WebhookReceiver;
 
-  constructor(private readonly livekitService: LiveKitService) {
-    // Inicializar WebhookReceiver para validar firmas
-    const apiKey = process.env.LIVEKIT_API_KEY;
-    const apiSecret = process.env.LIVEKIT_API_SECRET;
-
-    if (apiKey && apiSecret) {
-      this.webhookReceiver = new WebhookReceiver(apiKey, apiSecret);
-    }
-  }
+  constructor(private readonly livekitService: LiveKitService) {}
 
   @Post('webhook')
   @HttpCode(HttpStatus.OK)
@@ -45,11 +36,15 @@ export class LiveKitWebhookController {
     @Headers('authorization') authHeader?: string,
     @Req() req?: RawBodyRequest<Request>
   ) {
-    // Validar firma del webhook si esta configurado
-    if (this.webhookReceiver && authHeader) {
+    // Validar firma del webhook usando credenciales centralizadas
+    const apiKey = this.livekitService.getApiKey();
+    const apiSecret = this.livekitService.getApiSecret();
+
+    if (apiKey && apiSecret && authHeader) {
       try {
+        const webhookReceiver = new WebhookReceiver(apiKey, apiSecret);
         const rawBody = req?.rawBody?.toString() || JSON.stringify(webhookData);
-        const event = await this.webhookReceiver.receive(rawBody, authHeader);
+        const event = await webhookReceiver.receive(rawBody, authHeader);
         // Si la validacion pasa, usar el evento validado
         webhookData = event as any;
       } catch (error) {

@@ -50,7 +50,7 @@ export class LiveKitController {
       token,
       roomName,
       participantName,
-      livekitUrl: process.env.LIVEKIT_URL!,
+      livekitUrl: this.livekitService.getLivekitUrl(),
     };
   }
 
@@ -68,7 +68,7 @@ export class LiveKitController {
       token,
       roomName,
       participantName: `user-${userId}`,
-      livekitUrl: process.env.LIVEKIT_URL!,
+      livekitUrl: this.livekitService.getLivekitUrl(),
       type: 'voice-agent'
     };
   }
@@ -86,7 +86,7 @@ export class LiveKitController {
       token,
       roomName,
       participantName: `device-${deviceId}`,
-      livekitUrl: process.env.LIVEKIT_URL!,
+      livekitUrl: this.livekitService.getLivekitUrl(),
       type: 'iot-device'
     };
   }

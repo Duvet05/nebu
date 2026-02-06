@@ -209,7 +209,7 @@ export class IoTService {
       token,
       roomName,
       participantName: deviceId, // Use device_id directly as participant name
-      livekitUrl: process.env.LIVEKIT_URL!,
+      livekitUrl: this.livekitService.getLivekitUrl(),
     };
   }
 
@@ -365,7 +365,7 @@ export class IoTService {
       access_token: token,
       room_name: roomName,
       expires_in: 3600, // 1 hora para ESP32
-      server_url: process.env.LIVEKIT_URL!,
+      server_url: this.livekitService.getLivekitUrl(),
       participant_identity: deviceId,
       device_info: {
         device_id: device.id,

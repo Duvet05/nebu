@@ -148,7 +148,7 @@ export class VoiceService {
       token,
       roomName: session.roomName,
       participantName: `user-${userId}`,
-      livekitUrl: process.env.LIVEKIT_WS_URL || 'ws://localhost:7880',
+      livekitUrl: this.livekitService.getLivekitWsUrl(),
       sessionId: session.id,
     };
   }

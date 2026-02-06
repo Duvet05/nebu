@@ -49,6 +49,13 @@ export class LiveKitService {
     this.roomService = new RoomServiceClient(this.livekitUrl, this.apiKey, this.apiSecret);
   }
 
+  // ==================== Config Getters ====================
+
+  getLivekitUrl(): string { return this.livekitUrl; }
+  getLivekitWsUrl(): string { return this.livekitWsUrl; }
+  getApiKey(): string { return this.apiKey; }
+  getApiSecret(): string { return this.apiSecret; }
+
   // ==================== Token Generation ====================
 
   /**
